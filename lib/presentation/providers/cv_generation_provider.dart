@@ -38,11 +38,24 @@ class CVDisplayNotifier extends AutoDisposeAsyncNotifier<CVData> {
     );
   }
 
-  void updateSummary(String newSummary) {
-    final currentValue = state.value;
-    if (currentValue != null) {
-      state = AsyncData(currentValue.copyWith(generatedSummary: newSummary));
+  Future<void> updateSummary(String newSummary) async {
+    final currentState = state.value;
+    if (currentState != null) {
+      // Create new CVData with updated summary
+      final updatedCV = CVData(
+        id: currentState.id,
+        userProfile: currentState.userProfile,
+        generatedSummary: newSummary,
+        tailoredSkills: currentState.tailoredSkills,
+        styleId: currentState.styleId,
+        createdAt: currentState.createdAt,
+      );
+      state = AsyncValue.data(updatedCV);
     }
+  }
+
+  void loadCV(CVData cvData) {
+    state = AsyncValue.data(cvData);
   }
 }
 

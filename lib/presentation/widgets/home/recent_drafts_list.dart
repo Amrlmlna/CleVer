@@ -1,65 +1,89 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import '../../../domain/entities/cv_data.dart';
+import '../../providers/draft_provider.dart';
+import '../../providers/cv_generation_provider.dart';
 
-class RecentDraftsList extends StatelessWidget {
+// ... imports
+
+class RecentDraftsList extends ConsumerWidget {
   const RecentDraftsList({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Mock Data
-    final drafts = [
-      {'title': 'Senior Product Manager', 'date': 'Edited 2h ago'},
-      {'title': 'Flutter Engineer', 'date': 'Edited 1d ago'},
-    ];
+  Widget build(BuildContext context, WidgetRef ref) {
+    final draftsAsync = ref.watch(draftsProvider);
 
-    return SizedBox(
-      height: 140,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: drafts.length + 1, // +1 for "See All"
-        separatorBuilder: (context, index) => const SizedBox(width: 12),
-        itemBuilder: (context, index) {
-          if (index == drafts.length) {
-             return _buildSeeAllCard(context);
-          }
-          return _buildDraftCard(context, drafts[index]['title']!, drafts[index]['date']!);
-        },
-      ),
+    return draftsAsync.when(
+      data: (drafts) {
+        if (drafts.isEmpty) {
+          return const SizedBox(
+            height: 100,
+            child: Center(child: Text('No drafts yet. Start creating!')),
+          );
+        }
+
+        return SizedBox(
+          height: 140,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: drafts.length + 1, // +1 for "See All"
+            separatorBuilder: (context, index) => const SizedBox(width: 12),
+            itemBuilder: (context, index) {
+              if (index == drafts.length) {
+                return _buildSeeAllCard(context);
+              }
+              final draft = drafts[index];
+              return _buildDraftCard(context, ref, draft);
+            },
+          ),
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) => Center(child: Text('Error: $err')),
     );
   }
 
-  Widget _buildDraftCard(BuildContext context, String title, String date) {
-    return Container(
-      width: 160,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(8),
+  Widget _buildDraftCard(BuildContext context, WidgetRef ref, CVData draft) {
+    return InkWell(
+      onTap: () {
+        ref.read(generatedCVProvider.notifier).loadCV(draft);
+        context.push('/preview');
+      },
+      child: Container(
+        width: 160,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(Icons.description_outlined, size: 20, color: Colors.black87),
             ),
-            child: const Icon(Icons.description_outlined, size: 20, color: Colors.black87),
-          ),
-          const Spacer(),
-          Text(
-            title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            date,
-            style: TextStyle(fontSize: 10, color: Colors.grey[500]),
-          ),
-        ],
+            const Spacer(),
+            Text(
+              draft.userProfile.fullName.isNotEmpty ? draft.userProfile.fullName : 'Untitled',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              timeago.format(draft.createdAt),
+              style: TextStyle(fontSize: 10, color: Colors.grey[500]),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -73,7 +97,9 @@ class RecentDraftsList extends StatelessWidget {
         border: Border.all(color: Colors.grey.shade200),
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+           context.go('/drafts');
+        },
         borderRadius: BorderRadius.circular(12),
         child: const Center(
           child: Column(

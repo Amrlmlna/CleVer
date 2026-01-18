@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/utils/pdf_generator.dart';
 import '../providers/cv_generation_provider.dart';
+import '../providers/draft_provider.dart';
 
 class CVPreviewPage extends ConsumerWidget {
   const CVPreviewPage({super.key});
@@ -15,6 +16,21 @@ class CVPreviewPage extends ConsumerWidget {
         title: const Text('Your CV Preview'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.save_alt),
+            onPressed: () async {
+               final currentData = ref.read(generatedCVProvider).asData?.value;
+               if (currentData != null) {
+                 await ref.read(draftsProvider.notifier).saveDraft(currentData);
+                 if (context.mounted) {
+                   ScaffoldMessenger.of(context).showSnackBar(
+                     const SnackBar(content: Text('Draft Saved Successfully!')),
+                   );
+                 }
+               }
+            },
+            tooltip: 'Save Draft',
+          ),
+          IconButton(
             icon: const Icon(Icons.download),
             onPressed: () {
                final currentData = ref.read(generatedCVProvider).asData?.value;
@@ -22,6 +38,7 @@ class CVPreviewPage extends ConsumerWidget {
                  PDFGenerator.generateAndPrint(currentData);
                }
             },
+            tooltip: 'Export PDF',
           ),
         ],
       ),
