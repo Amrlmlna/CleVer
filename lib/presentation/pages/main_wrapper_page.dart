@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../widgets/custom_app_bar.dart';
 
 class MainWrapperPage extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
@@ -12,6 +13,7 @@ class MainWrapperPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBar(),
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: navigationShell.currentIndex,
@@ -33,9 +35,9 @@ class MainWrapperPage extends StatelessWidget {
             label: 'Drafts',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.auto_awesome_outlined),
+            activeIcon: Icon(Icons.auto_awesome),
+            label: 'AI Tools',
           ),
         ],
       ),
@@ -56,11 +58,11 @@ class MainWrapperPage extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
+              leading: const Icon(Icons.person),
+              title: const Text('My Profile'),
               onTap: () {
-                Navigator.pop(context);
-                // TODO: Navigate to Settings
+                Navigator.pop(context); // Close Drawer
+                context.push('/profile'); // Push Profile Page
               },
             ),
              ListTile(

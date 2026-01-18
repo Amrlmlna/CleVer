@@ -3,7 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../presentation/pages/home_page.dart';
 import '../../presentation/pages/main_wrapper_page.dart';
-import '../../presentation/pages/other_pages.dart';
+import '../../presentation/pages/drafts_page.dart';
+import '../../presentation/pages/ai_page.dart';
+import '../../presentation/pages/profile_page.dart';
 import '../../presentation/pages/job_input_page.dart';
 import '../../presentation/pages/user_data_form_page.dart';
 import '../../presentation/pages/style_selection_page.dart';
@@ -41,8 +43,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/profile',
-                builder: (context, state) => const ProfilePage(),
+                path: '/ai-tools',
+                builder: (context, state) => const AIPage(),
               ),
             ],
           ),
@@ -63,6 +65,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/preview',
         builder: (context, state) => const CVPreviewPage(),
+      ),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => const ProfilePage(),
       ),
     ],
   );
