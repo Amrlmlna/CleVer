@@ -13,7 +13,11 @@ final cvRepositoryProvider = Provider<CVRepository>((ref) {
   return CVRepositoryImpl(mockAIService: aiService);
 });
 
-final generatedCVProvider = AsyncNotifierProvider<CVDisplayNotifier, CVData>(CVDisplayNotifier.new);
+final generatedCVProvider = AsyncNotifierProvider<CVDisplayNotifier, CVData>(() {
+  return CVDisplayNotifier();
+});
+
+final unsavedChangesProvider = StateProvider<bool>((ref) => false);
 
 class CVDisplayNotifier extends AsyncNotifier<CVData> {
   @override
@@ -49,13 +53,85 @@ class CVDisplayNotifier extends AsyncNotifier<CVData> {
         tailoredSkills: currentState.tailoredSkills,
         styleId: currentState.styleId,
         createdAt: currentState.createdAt,
+        jobTitle: currentState.jobTitle,
       );
       state = AsyncValue.data(updatedCV);
+      ref.read(unsavedChangesProvider.notifier).state = true;
+    }
+  }
+
+  Future<void> updateStyle(String newStyleId) async {
+    final currentState = state.value;
+    if (currentState != null) {
+      final updatedCV = CVData(
+        id: currentState.id,
+        userProfile: currentState.userProfile,
+        generatedSummary: currentState.generatedSummary,
+        tailoredSkills: currentState.tailoredSkills,
+        styleId: newStyleId,
+        createdAt: currentState.createdAt,
+        jobTitle: currentState.jobTitle,
+      );
+      state = AsyncValue.data(updatedCV);
+      ref.read(unsavedChangesProvider.notifier).state = true;
+    }
+  }
+
+  Future<void> updateExperience(Experience oldExp, String newDescription) async {
+    final currentState = state.value;
+    if (currentState != null) {
+      final newExperienceList = currentState.userProfile.experience.map((e) {
+        if (e == oldExp) {
+          // Equatable makes this work if properties match
+          // We need to create a copy of Experience with new description
+          return Experience(
+              jobTitle: e.jobTitle,
+              companyName: e.companyName,
+              startDate: e.startDate,
+              endDate: e.endDate,
+              description: newDescription);
+        }
+        return e;
+      }).toList();
+
+      final updatedProfile = currentState.userProfile.copyWith(experience: newExperienceList);
+      
+      final updatedCV = CVData(
+        id: currentState.id,
+        userProfile: updatedProfile,
+        generatedSummary: currentState.generatedSummary,
+        tailoredSkills: currentState.tailoredSkills,
+        styleId: currentState.styleId,
+        createdAt: currentState.createdAt,
+        jobTitle: currentState.jobTitle,
+      );
+      state = AsyncValue.data(updatedCV);
+      ref.read(unsavedChangesProvider.notifier).state = true;
+    }
+  }
+
+  Future<void> addSkill(String newSkill) async {
+    final currentState = state.value;
+    if (currentState != null) {
+      final updatedSkills = List<String>.from(currentState.tailoredSkills)..add(newSkill);
+      
+      final updatedCV = CVData(
+        id: currentState.id,
+        userProfile: currentState.userProfile,
+        generatedSummary: currentState.generatedSummary,
+        tailoredSkills: updatedSkills,
+        styleId: currentState.styleId,
+        createdAt: currentState.createdAt,
+        jobTitle: currentState.jobTitle,
+      );
+      state = AsyncValue.data(updatedCV);
+      ref.read(unsavedChangesProvider.notifier).state = true;
     }
   }
 
   void loadCV(CVData cvData) {
     state = AsyncValue.data(cvData);
+    ref.read(unsavedChangesProvider.notifier).state = false; // Reset on load
   }
 }
 
@@ -67,6 +143,7 @@ extension CVDataCopyWith on CVData {
     List<String>? tailoredSkills,
     String? styleId,
     DateTime? createdAt,
+    String? jobTitle,
   }) {
     return CVData(
       id: id ?? this.id,
@@ -75,6 +152,7 @@ extension CVDataCopyWith on CVData {
       tailoredSkills: tailoredSkills ?? this.tailoredSkills,
       styleId: styleId ?? this.styleId,
       createdAt: createdAt ?? this.createdAt,
+      jobTitle: jobTitle ?? this.jobTitle,
     );
   }
 }

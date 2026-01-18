@@ -1,0 +1,40 @@
+Analyzing cv_master...                                          
+
+  error - The name 'CVData' isn't a type, so it can't be used as a type argument - lib\data\datasources\mock_ai_service.dart:7:10 - non_type_as_type_argument
+  error - Undefined name 'summary' - lib\data\datasources\mock_ai_service.dart:15:7 - undefined_identifier
+  error - Undefined name 'skills' - lib\data\datasources\mock_ai_service.dart:16:7 - undefined_identifier
+  error - This literal must be either a map or a set, but the elements don't have enough information for type inference to work - lib\data\datasources\mock_ai_service.dart:20:25 - ambiguous_set_or_map_literal_either
+  error - Undefined name 'skills' - lib\data\datasources\mock_ai_service.dart:20:29 - undefined_identifier
+  error - Undefined name 'profile' - lib\data\datasources\mock_ai_service.dart:20:40 - undefined_identifier
+  error - Expected a class member - lib\data\datasources\mock_ai_service.dart:22:5 - expected_class_member
+   info - Missing type annotation - lib\data\datasources\mock_ai_service.dart:22:12 - strict_top_level_inference
+   info - The variable name 'CVData' isn't a lowerCamelCase identifier - lib\data\datasources\mock_ai_service.dart:22:12 - non_constant_identifier_names
+  error - 'CVData' must have a method body because 'MockAIService' isn't abstract - lib\data\datasources\mock_ai_service.dart:22:12 - concrete_class_with_abstract_member
+   info - Missing type annotation - lib\data\datasources\mock_ai_service.dart:23:7 - strict_top_level_inference
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - lib\data\datasources\mock_ai_service.dart:23:9 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - lib\data\datasources\mock_ai_service.dart:23:9 - obsolete_colon_for_default_value
+  error - Methods can't be invoked in constant expressions - lib\data\datasources\mock_ai_service.dart:23:11 - const_eval_method_invocation
+   info - Missing type annotation - lib\data\datasources\mock_ai_service.dart:24:7 - strict_top_level_inference
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - lib\data\datasources\mock_ai_service.dart:24:18 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - lib\data\datasources\mock_ai_service.dart:24:18 - obsolete_colon_for_default_value
+  error - Undefined name 'profile' - lib\data\datasources\mock_ai_service.dart:24:20 - undefined_identifier
+   info - Missing type annotation - lib\data\datasources\mock_ai_service.dart:25:7 - strict_top_level_inference
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - lib\data\datasources\mock_ai_service.dart:25:23 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - lib\data\datasources\mock_ai_service.dart:25:23 - obsolete_colon_for_default_value
+  error - Undefined name 'summary' - lib\data\datasources\mock_ai_service.dart:25:25 - undefined_identifier
+   info - Missing type annotation - lib\data\datasources\mock_ai_service.dart:26:7 - strict_top_level_inference
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - lib\data\datasources\mock_ai_service.dart:26:21 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - lib\data\datasources\mock_ai_service.dart:26:21 - obsolete_colon_for_default_value
+  error - The default value of an optional parameter must be constant - lib\data\datasources\mock_ai_service.dart:26:23 - non_constant_default_value
+   info - Missing type annotation - lib\data\datasources\mock_ai_service.dart:27:7 - strict_top_level_inference
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - lib\data\datasources\mock_ai_service.dart:27:14 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - lib\data\datasources\mock_ai_service.dart:27:14 - obsolete_colon_for_default_value
+  error - Undefined name 'styleId' - lib\data\datasources\mock_ai_service.dart:27:16 - undefined_identifier
+   info - Missing type annotation - lib\data\datasources\mock_ai_service.dart:28:7 - strict_top_level_inference
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - lib\data\datasources\mock_ai_service.dart:28:16 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - lib\data\datasources\mock_ai_service.dart:28:16 - obsolete_colon_for_default_value
+  error - The default value of an optional parameter must be constant - lib\data\datasources\mock_ai_service.dart:28:18 - non_constant_default_value
+  error - Expected a method, getter, setter or operator declaration - lib\data\datasources\mock_ai_service.dart:31:1 - expected_executable
+  error - A value of type 'Future<dynamic>' can't be returned from the method 'generateCV' because it has a return type of 'Future<CVData>' - lib\data\repositories\cv_repository_impl.dart:18:12 - return_of_invalid_type
+  error - The method 'rewriteContent' isn't defined for the type 'MockAIService' - lib\data\repositories\cv_repository_impl.dart:26:26 - undefined_method
+

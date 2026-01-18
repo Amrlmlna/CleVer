@@ -21,4 +21,8 @@ class CVRepositoryImpl implements CVRepository {
       styleId: styleId,
     );
   }
+  @override
+  Future<String> rewriteContent(String originalText) {
+    return mockAIService.rewriteContent(originalText);
+  }
 }

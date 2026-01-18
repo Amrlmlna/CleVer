@@ -34,15 +34,30 @@ class MockAIService {
     }
 
     // Merge with user's existing skills if any, or prioritize "AI" skills
-    final finalSkills = {...skills, ...profile.skills}.toList(); // Use Set literal
+    final finalSkills = {...skills, ...profile.skills}.toList(); 
 
     return CVData(
       id: const Uuid().v4(),
-      userProfile: profile.copyWith(skills: finalSkills), // Update profile with tailored skills
+      userProfile: profile.copyWith(skills: finalSkills),
       generatedSummary: summary,
       tailoredSkills: finalSkills,
       styleId: styleId,
       createdAt: DateTime.now(),
+      jobTitle: jobInput.jobTitle,
     );
+  }
+
+  Future<String> rewriteContent(String originalText) async {
+    await Future.delayed(const Duration(seconds: 1));
+    // Simple mock logic
+    if (originalText.startsWith('Passionate')) {
+      return originalText.replaceFirst('Passionate', 'Highly skilled and motivated');
+    } else if (originalText.startsWith('Dedicated')) {
+      return originalText.replaceFirst('Dedicated', 'Results-oriented');
+    } else if (originalText.startsWith('Results-oriented')) {
+      return originalText.replaceFirst('Results-oriented', 'Strategic and efficient');
+    } else {
+      return "Professional version: $originalText";
+    }
   }
 }

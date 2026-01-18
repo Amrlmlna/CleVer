@@ -8,4 +8,6 @@ abstract class CVRepository {
     required JobInput jobInput,
     required String styleId,
   });
+
+  Future<String> rewriteContent(String originalText);
 }

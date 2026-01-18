@@ -3,6 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../domain/entities/user_profile.dart';
 import '../providers/cv_creation_provider.dart';
+import '../widgets/form/education_list_form.dart';
+import '../widgets/form/experience_list_form.dart';
+import '../widgets/form/skills_input_form.dart';
+import '../widgets/form/personal_info_form.dart';
 
 class UserDataFormPage extends ConsumerStatefulWidget {
   const UserDataFormPage({super.key});
@@ -15,13 +19,16 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   int _currentStep = 0;
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers
+  // Personal Info Controllers
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _locationController = TextEditingController();
   
-  // TODO: Add controllers for lists (Education, Experience) - simplified for MVP first pass
+  // Lists
+  List<Experience> _experience = [];
+  List<Education> _education = [];
+  List<String> _skills = [];
 
   @override
   void dispose() {
@@ -34,9 +41,18 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
 
   void _onStepContinue() {
     if (_currentStep < 2) {
-      setState(() {
-        _currentStep += 1;
-      });
+      if (_currentStep == 0) {
+        // Validate personal info specifically before moving
+        if (_formKey.currentState!.validate()) {
+          setState(() {
+            _currentStep += 1;
+          });
+        }
+      } else {
+         setState(() {
+            _currentStep += 1;
+          });
+      }
     } else {
       _submit();
     }
@@ -57,10 +73,9 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         email: _emailController.text,
         phoneNumber: _phoneController.text,
         location: _locationController.text,
-        // TODO: Pass actual lists
-        experience: const [],
-        education: const [],
-        skills: const ['Leadership', 'Communication'], // Mock skills for now
+        experience: _experience,
+        education: _education,
+        skills: _skills.isNotEmpty ? _skills : ['Leadership', 'Communication'], // Fallback if empty, or just empty
       );
 
       ref.read(cvCreationProvider.notifier).setUserProfile(profile);
@@ -104,51 +119,36 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
             Step(
               title: const Text('Personal Info'),
               isActive: _currentStep >= 0,
-              content: Column(
-                children: [
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(labelText: 'Full Name'),
-                    validator: (v) => v!.isEmpty ? 'Required' : null,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(labelText: 'Email'),
-                    validator: (v) => v!.isEmpty ? 'Required' : null,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _phoneController,
-                    decoration: const InputDecoration(labelText: 'Phone Number'),
-                    keyboardType: TextInputType.phone,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _locationController,
-                    decoration: const InputDecoration(labelText: 'Location'),
-                  ),
-                ],
+              content: PersonalInfoForm(
+                nameController: _nameController,
+                emailController: _emailController,
+                phoneController: _phoneController,
+                locationController: _locationController,
               ),
             ),
             Step(
               title: const Text('Experience & Education'),
               isActive: _currentStep >= 1,
-              content: const Column(
+              content: Column(
                 children: [
-                  Text('Experience and Education forms will go here.'),
-                  // Placeholder for list editors
+                  ExperienceListForm(
+                    experiences: _experience,
+                    onChanged: (val) => setState(() => _experience = val),
+                  ),
+                  const Divider(height: 32),
+                  EducationListForm(
+                    education: _education,
+                    onChanged: (val) => setState(() => _education = val),
+                  ),
                 ],
               ),
             ),
             Step(
               title: const Text('Skills'),
               isActive: _currentStep >= 2,
-              content: const Column(
-                children: [
-                   Text('Skills input will go here.'),
-                ],
+              content: SkillsInputForm(
+                skills: _skills,
+                onChanged: (val) => setState(() => _skills = val),
               ),
             ),
           ],
