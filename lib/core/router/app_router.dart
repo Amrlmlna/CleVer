@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../presentation/pages/home_page.dart';
-import '../../presentation/pages/main_wrapper_page.dart';
-import '../../presentation/pages/drafts_page.dart';
-import '../../presentation/pages/ai_page.dart';
-import '../../presentation/pages/profile_page.dart';
-import '../../presentation/pages/job_input_page.dart';
-import '../../presentation/pages/user_data_form_page.dart';
-import '../../presentation/pages/style_selection_page.dart';
-import '../../presentation/pages/cv_preview_page.dart';
-import '../../presentation/pages/template_gallery_page.dart';
-import '../../presentation/pages/onboarding_page.dart';
-import '../../presentation/providers/onboarding_provider.dart';
+import '../../presentation/home/pages/home_page.dart';
+import '../../presentation/dashboard/pages/main_wrapper_page.dart';
+import '../../presentation/drafts/pages/drafts_page.dart';
+import '../../presentation/ai/pages/ai_page.dart';
+import '../../presentation/profile/pages/profile_page.dart';
+import '../../presentation/cv/pages/job_input_page.dart';
+import '../../presentation/cv/pages/user_data_form_page.dart';
+import '../../presentation/cv/pages/cv_preview_page.dart';
+import '../../presentation/templates/pages/style_selection_page.dart';
+import '../../presentation/templates/pages/template_gallery_page.dart';
+import '../../presentation/onboarding/pages/onboarding_page.dart';
+import '../../presentation/onboarding/providers/onboarding_provider.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 // final _shellNavigatorKey = GlobalKey<NavigatorState>(); // Unused

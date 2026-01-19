@@ -5,8 +5,8 @@ import 'core/router/app_router.dart';
 
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'presentation/providers/onboarding_provider.dart';
-import 'presentation/providers/profile_provider.dart';
+import 'presentation/onboarding/providers/onboarding_provider.dart';
+import 'presentation/profile/providers/profile_provider.dart';
 import 'domain/entities/user_profile.dart';
 
 void main() async {

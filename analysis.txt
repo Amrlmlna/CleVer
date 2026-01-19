@@ -1,5 +1,0 @@
-Analyzing cv_master...                                          
-
-  error - Target of URI doesn't exist: '../../domain/entities/cv_data.dart' - lib\presentation\widgets\home\recent_drafts_list.dart:5:8 - uri_does_not_exist
-  error - Undefined class 'CVData' - lib\presentation\widgets\home\recent_drafts_list.dart:48:63 - undefined_class
-
