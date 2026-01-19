@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/job_input.dart';
-import '../providers/cv_creation_provider.dart';
+import '../providers/cv_generation_provider.dart';
 import '../widgets/form/job_details_form.dart';
 
 class JobInputPage extends ConsumerStatefulWidget {

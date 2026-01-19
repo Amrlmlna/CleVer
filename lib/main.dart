@@ -3,24 +3,37 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme/app_theme.dart';
 import 'core/router/app_router.dart';
 
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'presentation/providers/onboarding_provider.dart';
+import 'presentation/providers/profile_provider.dart';
+import 'domain/entities/user_profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Check onboarding status before app starts to prevent flash
+  // Check onboarding status and load master profile
   final prefs = await SharedPreferences.getInstance();
   final onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
+  
+  UserProfile? initialProfile;
+  final profileJson = prefs.getString('master_profile_data');
+  if (profileJson != null) {
+    try {
+      initialProfile = UserProfile.fromJson(jsonDecode(profileJson));
+    } catch (e) {
+      debugPrint('Error loading profile: $e');
+    }
+  }
 
   runApp(ProviderScope(
     overrides: [
-      // Initialize provider with the stored value
+      // Initialize providers with stored values
       onboardingProvider.overrideWith((ref) {
-        // Manually set the state implementation is tricky with StateNotifierProvider overrides sometimes if not just passing value.
-        // Better: OnboardingNotifier can accept initial value.
-        // Let's modify OnboardingNotifier constructor instead.
         return OnboardingNotifier(initialState: onboardingCompleted);
+      }),
+      masterProfileProvider.overrideWith((ref) {
+        return MasterProfileNotifier(initialState: initialProfile);
       }),
     ],
     child: const MyApp(),

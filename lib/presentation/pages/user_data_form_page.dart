@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../domain/entities/user_profile.dart';
-import '../providers/cv_creation_provider.dart';
+import '../providers/cv_generation_provider.dart';
 import '../providers/profile_provider.dart';
 import '../widgets/form/education_list_form.dart';
 import '../widgets/form/experience_list_form.dart';

@@ -1,25 +1,33 @@
+import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/entities/user_profile.dart';
 
-// Provides the "Master" profile data (persisted across sessions ideally)
+// Provides the "Master" profile data (persisted across sessions)
 final masterProfileProvider = StateNotifierProvider<MasterProfileNotifier, UserProfile?>((ref) {
   return MasterProfileNotifier();
 });
 
 class MasterProfileNotifier extends StateNotifier<UserProfile?> {
-  MasterProfileNotifier() : super(null);
+  MasterProfileNotifier({UserProfile? initialState}) : super(initialState);
 
-  // Initialize with some dummy data for testing if empty, or load from storage
-  // In a real app, this would be an async 'load()' method
-  void loadProfile() {
-    // Simulating loading a saved profile (if any)
-    // For now, we start null so user has to enter it once.
-    // Or we could seed it for demo.
-  }
+  static const String _key = 'master_profile_data';
 
-  void saveProfile(UserProfile profile) {
+  Future<void> saveProfile(UserProfile profile) async {
     state = profile;
-    // TODO: Persist to SharedPreferences or Local Database
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_key, jsonEncode(profile.toJson()));
+  }
+  
+  // Method to manually re-load if needed (e.g. after clear)
+  Future<void> loadProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString(_key);
+    if (jsonString != null) {
+      state = UserProfile.fromJson(jsonDecode(jsonString));
+    } else {
+      state = null;
+    }
   }
 
   void updatePersonalInfo({
@@ -36,30 +44,30 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
       skills: [],
     );
 
-    state = current.copyWith(
+    final updated = current.copyWith(
       fullName: fullName,
       email: email,
       phoneNumber: phoneNumber,
       location: location,
     );
-    // TODO: Auto-save
+    saveProfile(updated);
   }
 
   void updateExperience(List<Experience> experience) {
      if (state == null) return;
-     state = state!.copyWith(experience: experience);
-     // TODO: Auto-save
+     final updated = state!.copyWith(experience: experience);
+     saveProfile(updated);
   }
 
   void updateEducation(List<Education> education) {
      if (state == null) return;
-     state = state!.copyWith(education: education);
-     // TODO: Auto-save
+     final updated = state!.copyWith(education: education);
+     saveProfile(updated);
   }
   
   void updateSkills(List<String> skills) {
      if (state == null) return;
-     state = state!.copyWith(skills: skills);
-     // TODO: Auto-save
+     final updated = state!.copyWith(skills: skills);
+     saveProfile(updated);
   }
 }

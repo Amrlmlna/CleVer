@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../data/repositories/template_repository.dart';
-import '../providers/cv_creation_provider.dart';
+import '../providers/cv_generation_provider.dart';
 
 class StyleSelectionPage extends ConsumerStatefulWidget {
   const StyleSelectionPage({super.key});
