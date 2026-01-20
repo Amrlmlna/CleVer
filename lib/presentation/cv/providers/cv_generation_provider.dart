@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../data/datasources/remote_ai_service.dart';
 import '../../../domain/entities/cv_data.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../../domain/repositories/cv_repository.dart';

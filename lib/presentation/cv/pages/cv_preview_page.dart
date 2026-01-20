@@ -70,11 +70,7 @@ class CVPreviewPage extends ConsumerWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: cvAsyncValue.when(
-             data: (data) => Text('Preview (Exp: ${data.userProfile.experience.length})', style: const TextStyle(fontSize: 16)),
-             loading: () => const Text('Preview'),
-             error: (_,__) => const Text('Preview'),
-          ),
+          title: const Text('CV Preview'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {

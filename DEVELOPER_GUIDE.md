@@ -1,78 +1,55 @@
 # 📘 Developer Guide
 
-## 🏗 Project Architecture
-This project follows a **Feature-First** directory structure. Code is organized by domain feature rather than by layer.
+## 🏗 System Architecture (Clean Architecture + Serverless)
 
-### Directory Structure
-*   `lib/presentation/`
-    *   `common/`: Shared widgets and utilities used across multiple features.
-    *   `<feature_name>/`: (e.g., `ads`, `cv`, `profile`)
-        *   `pages/`: Full screen widgets.
-        *   `widgets/`: Components specific to this feature.
-        *   `providers/`: State management (Riverpod) for this feature.
-*   `lib/domain/`: Entities and business logic.
-*   `lib/data/`: Repositories and data sources.
+This project uses a hybrid **Flutter (Client)** + **Next.js (Backend)** architecture to deliver AI features securely and cheaply.
 
----
+```mermaid
+sequenceDiagram
+    participant User
+    participant Flutter as Flutter App (Client)
+    participant NextJS as Next.js API (Backend)
+    participant Gemini as Gemini AI (LLM)
 
-## 🛠 Shared Components & Best Practices
+    User->>Flutter: Enters Master Profile & Job Input
+    User->>Flutter: Clicks "Generate CV"
+    
+    Note over Flutter: RemoteAIService packages data<br/>into JSON (Profile + Job)
+    
+    Flutter->>NextJS: POST /api/cv/generate
+    
+    Note over NextJS: "Career Coach" System Prompt<br/>Embeds user data + job description
+    
+    NextJS->>Gemini: Send Complex Prompt
+    Gemini-->>NextJS: Returns Structured JSON
+    
+    Note right of Gemini: JSON contains:<br/>1. Summary<br/>2. Tailored Skills<br/>3. REWRITTEN Experience
+    
+    NextJS-->>Flutter: Returns AI JSON
+    
+    Note over Flutter: RemoteAIService Merges Data:<br/>Replaces User's orig. description<br/>with AI's "Refined Description"
+    
+    Flutter->>User: Shows Preview Screen
+```
 
-### 1. Carousel & Banners
-**Widget:** `AutoSlideBanner`
-**Location:** `lib/presentation/common/widgets/auto_slide_banner.dart`
-**Usage:** Use this widget for *any* auto-sliding banner or carousel.
-*   ✅ **Do:** Use `AutoSlideBanner(items: [...], itemBuilder: ...)`
-*   ❌ **Don't:** Manually implement `Timer` or `PageController` in your widget.
+## 🛠 Directory Structure
+*   `lib/presentation/`: UI & Widgets (Feature-first).
+*   `lib/data/`: Data Layer.
+    *   `repositories/`: Logic that decides *where* to get data (Mock vs Remote).
+    *   `datasources/`: Actual API calls (`RemoteAIService.dart`).
+*   `backend/`: Next.js Serverless Project.
+    *   `app/api/`: API Routes.
+    *   `types/`: Shared TypeScript interfaces.
 
-### 2. Dialogs & Modals
-**Principle:** Single Responsibility.
-*   If a complex form is shown in a dialog, create a separate widget file for it (e.g., `ExperienceDialog`).
-*   Do not define private dialog classes (`_MyDialog`) inside a parent list widget.
-
-### 3. Theming & Styling
-*   **Colors:** Access colors via `Theme.of(context).colorScheme` or `context.theme`. Avoid hardcoded `Color(0xFF...)`.
-*   **Text:** Use `Theme.of(context).textTheme`.
+## 🚀 Key Data Follow
+1.  **Input**: User fills `UserDataFormPage`. Data is stored in `CVCreationProvider`.
+2.  **Trigger**: `CVDisplayNotifier.build()` calls `CVRepository.generateCV()`.
+3.  **API Call**: `RemoteAIService` hits `http://localhost:3000/api/cv/generate`.
+4.  **AI Logic**: Checks `backend/app/api/cv/generate/route.ts`. 
+5.  **Refinement**: The backend returns specific rewritten descriptions (`analyzedExperience`).
+6.  **Merging**: Flutter maps these new descriptions back into the `experience` list before showing it to the user.
 
 ---
 
 ## 🎨 How-To: Adding New CV Templates
-
-The system is designed to be dynamic. PDF generation requires precise layout logic.
-
-### Step 1: Add Template Metadata
-**File:** `lib/data/repositories/template_repository.dart`
-Add a new `CVTemplate` object to the `_allTemplates` list:
-
-```dart
-const CVTemplate(
-  id: 'MyNewDesign',          // Unique ID
-  name: 'Minimalist Pro',     // Display Name
-  description: 'Clean whitespace with a focus on typography.',
-  thumbnailPath: 'assets/templates/minimalist_preview.png', 
-  isPremium: true,
-  tags: ['Minimal', 'Clean'],
-),
-```
-
-### Step 2: Add Assets
-1.  Design a preview image.
-2.  Save it to `assets/templates/`.
-
-### Step 3: Implement PDF Rendering Logic
-**File:** `lib/core/utils/pdf_generator.dart`
-Update the switch case in `generateAndPrint`:
-
-```dart
-switch (cvData.styleId) {
-  case 'MyNewDesign':
-    return _buildMinimalistLayout(cvData);
-  // ...
-}
-```
-
-**Pro Tip:** Create a private method `_buildMinimalistLayout(CVData data)` that returns a `pw.Widget`.
-
----
-
-## 🚀 Deployment & Testing
-*   **Hot Restart:** Required after adding new assets or templates.
+... (Rest of the file)

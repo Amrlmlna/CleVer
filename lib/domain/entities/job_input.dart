@@ -11,4 +11,12 @@ class JobInput extends Equatable {
 
   @override
   List<Object?> get props => [jobTitle, jobDescription];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'jobTitle': jobTitle,
+      'company': 'Unknown Company', // Fallback as current JobInput doesn't have company field but backend expects it
+      'description': jobDescription ?? '',
+    };
+  }
 }
