@@ -20,7 +20,7 @@ class OnboardingFinalStep extends StatelessWidget {
           ),
           const SizedBox(height: 48),
           const Text(
-            'You\'re All Set!',
+            'Selesai!',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 28,
@@ -29,7 +29,7 @@ class OnboardingFinalStep extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           const Text(
-            'We saved your Master Profile locally. Your future CVs will be auto-magically generated using this data.',
+            'Master Profile kamu udah tersimpan. Nanti bisa dipakai buat generate CV otomatis.',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
@@ -39,7 +39,7 @@ class OnboardingFinalStep extends StatelessWidget {
           ),
           const SizedBox(height: 32),
           const Text(
-            'By tapping "Get Started", you agree to our Terms of Service and Privacy Policy.',
+            'Dengan menekan "Mulai Sekarang", kamu setuju dengan Syarat & Ketentuan kami.',
              textAlign: TextAlign.center,
              style: TextStyle(fontSize: 12, color: Colors.grey),
           ),

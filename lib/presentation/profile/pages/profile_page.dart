@@ -46,11 +46,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
   }
 
-  void _saveProfile() {
+    void _saveProfile() {
     // Validate?
     if (_nameController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your name')),
+        const SnackBar(content: Text('Isi nama dulu dong')),
       );
       return;
     }
@@ -69,7 +69,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     ref.read(masterProfileProvider.notifier).saveProfile(newProfile);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Profile Saved! It will be used for new CVs.')),
+      const SnackBar(content: Text('Profil Disimpan! Bakal dipake buat CV-mu selanjutnya.')),
     );
   }
 
@@ -77,7 +77,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Master Profile'),
+        title: const Text('Master Profil'),
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
@@ -98,14 +98,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ),
             const SizedBox(height: 8),
             const Text(
-              'Edit once, reuse everywhere.',
+              'Isi sekali, pake berkali-kali.',
                style: TextStyle(color: Colors.grey, fontSize: 12),
             ),
             const SizedBox(height: 32),
 
             // 1. Personal Info
             _SectionCard(
-              title: 'Personal Info',
+              title: 'Info Personal',
               icon: Icons.person_outline,
               child: PersonalInfoForm(
                 nameController: _nameController,
@@ -119,7 +119,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
             // 2. Experience
             _SectionCard(
-              title: 'Experience',
+              title: 'Pengalaman Kerja',
               icon: Icons.work_outline,
               child: ExperienceListForm(
                 experiences: _experience,
@@ -135,7 +135,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
             // 3. Education
             _SectionCard(
-              title: 'Education',
+              title: 'Pendidikan',
               icon: Icons.school_outlined,
               child: EducationListForm(
                 education: _education,
@@ -149,9 +149,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
             const SizedBox(height: 24),
 
-             // 4. Skills
+            // 4. Skills
             _SectionCard(
-              title: 'Skills',
+              title: 'Skill',
               icon: Icons.code,
               child: SkillsInputForm(
                 skills: _skills,
@@ -169,7 +169,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               child: ElevatedButton.icon(
                 onPressed: _saveProfile,
                 icon: const Icon(Icons.check),
-                label: const Text('Save Master Profile'),
+                label: const Text('Simpan Profil'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),

@@ -19,6 +19,7 @@ class UserDataFormPage extends ConsumerStatefulWidget {
 class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   int _currentStep = 0;
   final _formKey = GlobalKey<FormState>();
+  bool _updateMasterProfile = true;
 
   // Personal Info Controllers
   final _nameController = TextEditingController();
@@ -54,11 +55,11 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Data auto-filled from your Master Profile! ⚡'),
+            content: const Text('Data otomatis diisi dari Master Profile kamu! ⚡'),
             behavior: SnackBarBehavior.floating,
             backgroundColor: Theme.of(context).primaryColor,
             action: SnackBarAction(
-              label: 'Undo',
+              label: 'Batal',
               textColor: Colors.white,
               onPressed: () {
                  // Logic to clear if user didn't want this? 
@@ -129,6 +130,14 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
       );
 
       ref.read(cvCreationProvider.notifier).setUserProfile(profile);
+
+      if (_updateMasterProfile) {
+        ref.read(masterProfileProvider.notifier).saveProfile(profile);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Master Profile berhasil diupdate!')),
+        );
+      }
+
       context.push('/create/style-selection');
     }
   }
@@ -137,7 +146,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Details'),
+        title: const Text('Data Diri'),
       ),
       body: Form(
         key: _formKey,
@@ -152,13 +161,13 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
                 children: [
                   ElevatedButton(
                     onPressed: details.onStepContinue,
-                    child: Text(_currentStep == 2 ? 'Finish' : 'Next'),
+                    child: Text(_currentStep == 2 ? 'Selesai' : 'Lanjut'),
                   ),
                   if (_currentStep > 0) ...[
                     const SizedBox(width: 12),
                     TextButton(
                       onPressed: details.onStepCancel,
-                      child: const Text('Back'),
+                      child: const Text('Kembali'),
                     ),
                   ],
                 ],
@@ -167,7 +176,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
           },
           steps: [
             Step(
-              title: const Text('Personal Info'),
+              title: const Text('Info Personal'),
               isActive: _currentStep >= 0,
               content: PersonalInfoForm(
                 nameController: _nameController,
@@ -177,7 +186,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
               ),
             ),
             Step(
-              title: const Text('Experience & Education'),
+              title: const Text('Pengalaman & Edukasi'),
               isActive: _currentStep >= 1,
               content: Column(
                 children: [
@@ -194,11 +203,28 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
               ),
             ),
             Step(
-              title: const Text('Skills'),
+              title: const Text('Skill'),
               isActive: _currentStep >= 2,
-              content: SkillsInputForm(
-                skills: _skills,
-                onChanged: (val) => setState(() => _skills = val),
+              content: Column(
+                children: [
+                   SkillsInputForm(
+                    skills: _skills,
+                    onChanged: (val) => setState(() => _skills = val),
+                  ),
+                  const SizedBox(height: 24),
+                  CheckboxListTile(
+                    title: const Text('Update Master Profile'),
+                    subtitle: const Text('Simpan perubahan ini ke profil utama buat CV selanjutnya.'),
+                    value: _updateMasterProfile, 
+                    onChanged: (val) {
+                      setState(() {
+                        _updateMasterProfile = val ?? true;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ],
               ),
             ),
           ],

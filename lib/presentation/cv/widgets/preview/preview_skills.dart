@@ -16,7 +16,7 @@ class PreviewSkills extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionHeader(title: 'SKILLS'),
+        const SectionHeader(title: 'SKILL'),
         Wrap(
           spacing: 8.0,
           runSpacing: 4.0,
@@ -39,17 +39,17 @@ class PreviewSkills extends StatelessWidget {
                   builder: (context) {
                     String skill = '';
                     return AlertDialog(
-                      title: const Text('Add Skill'),
+                      title: const Text('Tambah Skill'),
                       content: TextField(
                         autofocus: true,
-                        decoration: const InputDecoration(hintText: 'Enter skill name'),
+                        decoration: const InputDecoration(hintText: 'Nama skill'),
                         onChanged: (val) => skill = val,
                       ),
                       actions: [
-                        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+                        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Batal')),
                         FilledButton(
                           onPressed: () => Navigator.pop(context, skill),
-                          child: const Text('Add'),
+                          child: const Text('Tambah'),
                         ),
                       ],
                     );

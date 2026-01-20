@@ -48,18 +48,18 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Experience', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            const Text('Pengalaman Kerja', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             TextButton.icon(
               onPressed: () => _editExperience(),
               icon: const Icon(Icons.add),
-              label: const Text('Add'),
+              label: const Text('Tambah'),
             ),
           ],
         ),
         if (widget.experiences.isEmpty)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('No experience added yet.', style: TextStyle(color: Colors.grey)),
+            child: Text('Belum ada pengalaman kerja.', style: TextStyle(color: Colors.grey)),
           ),
         ListView.separated(
           shrinkWrap: true,
@@ -72,7 +72,7 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
               margin: EdgeInsets.zero,
               child: ListTile(
                 title: Text(exp.jobTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text('${exp.companyName}\n${exp.startDate} - ${exp.endDate ?? "Present"}'),
+                subtitle: Text('${exp.companyName}\n${exp.startDate} - ${exp.endDate ?? "Sekarang"}'),
                 isThreeLine: true,
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),

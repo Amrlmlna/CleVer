@@ -20,7 +20,7 @@ class RecentDraftsList extends ConsumerWidget {
         if (drafts.isEmpty) {
           return const SizedBox(
             height: 100,
-            child: Center(child: Text('No drafts yet. Start creating!')),
+            child: Center(child: Text('Belum ada draft. Yuk bikin!')),
           );
         }
 
@@ -28,7 +28,7 @@ class RecentDraftsList extends ConsumerWidget {
           height: 140,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemCount: drafts.length + 1, // +1 for "See All"
+            itemCount: drafts.length + 1, // +1 for "Lihat Semua"
             separatorBuilder: (context, index) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
               if (index == drafts.length) {
@@ -72,7 +72,7 @@ class RecentDraftsList extends ConsumerWidget {
             ),
             const Spacer(),
             Text(
-              draft.userProfile.fullName.isNotEmpty ? draft.userProfile.fullName : 'Untitled',
+              draft.userProfile.fullName.isNotEmpty ? draft.userProfile.fullName : 'Tanpa Judul',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.bold),
@@ -107,7 +107,7 @@ class RecentDraftsList extends ConsumerWidget {
             children: [
                Icon(Icons.arrow_forward, color: Colors.grey),
                SizedBox(height: 4),
-               Text('See All', style: TextStyle(fontSize: 12, color: Colors.grey)),
+               Text('Lihat Semua', style: TextStyle(fontSize: 12, color: Colors.grey)),
             ],
           ),
         ),

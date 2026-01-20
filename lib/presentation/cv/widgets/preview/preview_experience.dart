@@ -20,9 +20,9 @@ class PreviewExperience extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionHeader(title: 'EXPERIENCE'),
+        const SectionHeader(title: 'PENGALAMAN KERJA'),
         if (experience.isEmpty)
-          const Text('No experience listed.'),
+          const Text('Belum ada pengalaman.'),
         ...experience.map((exp) => Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: Column(
@@ -33,7 +33,7 @@ class PreviewExperience extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               Text(
-                '${exp.startDate} - ${exp.endDate ?? "Present"}',
+                '${exp.startDate} - ${exp.endDate ?? "Sekarang"}',
                 style: TextStyle(color: Colors.grey[600], fontSize: 13),
               ),
               const SizedBox(height: 4),

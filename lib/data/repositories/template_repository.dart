@@ -7,21 +7,21 @@ class TemplateRepository {
     const CVTemplate(
       id: 'ATS',
       name: 'ATS-Friendly',
-      description: 'Optimized for Applicant Tracking Systems. Simple and clean.',
+      description: 'Dioptimalkan buat sistem ATS. Simpel dan bersih.',
       thumbnailPath: 'assets/templates/ats_preview.png', // Placeholder path
       tags: ['Simple', 'Professional'],
     ),
     const CVTemplate(
       id: 'Modern',
       name: 'Modern Tech',
-      description: 'Sleek design with subtle accents, perfect for startups and tech roles.',
+      description: 'Desain kekinian dengan aksen halus. Pas buat startup.',
       thumbnailPath: 'assets/templates/modern_preview.png',
       tags: ['Tech', 'Sleek'],
     ),
     const CVTemplate(
       id: 'Creative',
       name: 'Creative Bold',
-      description: 'Stand out with bold typography and unique layout.',
+      description: 'Tampil beda dengan tipografi tebal dan layout unik.',
       thumbnailPath: 'assets/templates/creative_preview.png',
       isPremium: true,
       tags: ['Design', 'Bold'],
@@ -29,7 +29,7 @@ class TemplateRepository {
      const CVTemplate(
       id: 'Executive',
       name: 'Executive Suite',
-      description: 'Professional and authoritative design for leadership roles.',
+      description: 'Profesional dan berwibawa. Cocok buat level pimpinan.',
       thumbnailPath: 'assets/templates/executive_preview.png',
       isPremium: true,
       tags: ['Leadership', 'Formal'],

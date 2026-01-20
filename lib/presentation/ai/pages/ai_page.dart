@@ -14,14 +14,14 @@ class AIPage extends StatelessWidget {
         children: [
           // Header
           Text(
-            'AI Tools',
+            'Tools AI',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
           ),
           const SizedBox(height: 8),
           const Text(
-            'Supercharge your job search with AI.',
+            'Bikin karirmu makin moncer pake AI.',
             style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 24),
@@ -40,23 +40,23 @@ class AIPage extends StatelessWidget {
               children: const [
                 AIToolCard(
                   icon: Icons.description_outlined,
-                  title: 'Resume Scanner',
-                  desc: 'Match vs Job Desc',
+                  title: 'Cek Resume',
+                  desc: 'Cocokin sama Job Desc',
                 ),
                 AIToolCard(
                   icon: Icons.auto_fix_high_outlined,
                   title: 'Cover Letter',
-                  desc: 'Auto-write & Edit',
+                  desc: 'Tulis & Edit Otomatis',
                 ),
                 AIToolCard(
                   icon: Icons.share_outlined,
-                  title: 'LinkedIn Opt',
-                  desc: 'Profile Enhancer',
+                  title: 'Optimasi LinkedIn',
+                  desc: 'Poles Profil Jadi Keren',
                 ),
                 AIToolCard(
                   icon: Icons.mic_none_outlined,
-                  title: 'Interview Prep',
-                  desc: 'AI Voice Coach',
+                  title: 'Latihan Interview',
+                  desc: 'Simulasi Suara AI',
                 ),
               ],
             ),

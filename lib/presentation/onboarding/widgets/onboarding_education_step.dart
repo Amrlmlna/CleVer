@@ -20,12 +20,12 @@ class OnboardingEducationStep extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Where did you learn?',
+            'Riwayat Pendidikan',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           const Text(
-            'Add your academic background.',
+            'Sekolah atau kuliah di mana nih?',
              style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 32),

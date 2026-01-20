@@ -21,9 +21,9 @@ class PersonalInfoForm extends StatelessWidget {
       children: [
         CustomTextFormField(
           controller: nameController,
-          labelText: 'Full Name',
+          labelText: 'Nama Lengkap',
           prefixIcon: Icons.person_outline,
-          validator: (v) => v!.isEmpty ? 'Required' : null,
+          validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
           textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: 16),
@@ -31,14 +31,14 @@ class PersonalInfoForm extends StatelessWidget {
           controller: emailController,
           labelText: 'Email',
           prefixIcon: Icons.email_outlined,
-          validator: (v) => v!.isEmpty ? 'Required' : null,
+          validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: 16),
         CustomTextFormField(
           controller: phoneController,
-          labelText: 'Phone Number',
+          labelText: 'Nomor HP',
           prefixIcon: Icons.phone_outlined,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
@@ -46,7 +46,7 @@ class PersonalInfoForm extends StatelessWidget {
         const SizedBox(height: 16),
         CustomTextFormField(
           controller: locationController,
-          labelText: 'Location',
+          labelText: 'Lokasi / Domisili',
           prefixIcon: Icons.location_on_outlined,
           textInputAction: TextInputAction.done,
         ),

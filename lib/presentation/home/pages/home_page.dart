@@ -16,13 +16,13 @@ class HomePage extends StatelessWidget {
           children: [
             // Welcome Header
             Text(
-              'Good Afternoon,',
+              'Halo,',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.grey[600],
                   ),
             ),
             Text(
-              'Ready to land your dream job?',
+              'Siap dapetin kerja impian?',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 32),
 
             // Recent Drafts
-            _buildSectionHeader(context, 'Recent Drafts'),
+            _buildSectionHeader(context, 'Draft Terakhir'),
             const SizedBox(height: 16),
             const RecentDraftsList(),
             const SizedBox(height: 32),

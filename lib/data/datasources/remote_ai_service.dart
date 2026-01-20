@@ -7,7 +7,11 @@ import '../../domain/entities/user_profile.dart';
 
 class RemoteAIService {
   // Use 10.0.2.2 for Android Emulator, 192.168.1.5 for local network
-  static const String baseUrl = 'http://10.0.2.2:3000/api/cv';
+  // Production (Vercel)
+  static const String baseUrl = 'https://cvmaster-chi.vercel.app/api/cv';
+  
+  // Dev (Emulator): 'http://10.0.2.2:3000/api/cv'
+  // Dev (Physical Device): 'http://192.168.x.x:3000/api/cv'
 
   Future<CVData> generateCV({
     required UserProfile profile,

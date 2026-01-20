@@ -29,14 +29,14 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Choose a Style'),
+        title: const Text('Pilih Gaya CV'),
       ),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Select a template for your CV',
+              'Pilih template yang paling cocok buat kamu',
               style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center,
             ),
@@ -154,7 +154,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: _generateCV,
-                child: const Text('Generate CV'),
+                child: const Text('Buat CV Sekarang'),
               ),
             ),
           ),

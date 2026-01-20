@@ -42,8 +42,8 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
               child: TextField(
                 controller: _controller,
                 decoration: const InputDecoration(
-                  labelText: 'Add Skill',
-                  hintText: 'e.g. Flutter, Project Management',
+                  labelText: 'Tambah Skill',
+                  hintText: 'contoh: Flutter, Leadership',
                 ),
                 onSubmitted: (_) => _addSkill(),
               ),
@@ -57,7 +57,7 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
         ),
         const SizedBox(height: 16),
         if (widget.skills.isEmpty)
-          const Text('No skills added yet.', style: TextStyle(color: Colors.grey))
+          const Text('Belum ada skill.', style: TextStyle(color: Colors.grey))
         else
           Wrap(
             spacing: 8.0,

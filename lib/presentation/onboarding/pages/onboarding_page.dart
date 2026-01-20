@@ -83,10 +83,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if (_currentPage > 0)
+                    if (_currentPage > 0)
                     TextButton(
                       onPressed: _prevPage,
-                      child: const Text('Back', style: TextStyle(color: Colors.grey)),
+                      child: const Text('Kembali', style: TextStyle(color: Colors.grey)),
                     )
                   else
                     const SizedBox(width: 80), // Spacer
@@ -98,7 +98,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                       backgroundColor: Colors.black,
                       foregroundColor: Colors.white,
                     ),
-                    child: Text(_currentPage == 5 ? 'Get Started' : 'Next'),
+                    child: Text(_currentPage == 5 ? 'Mulai Sekarang' : 'Lanjut'),
                   ),
                 ],
               ),
@@ -113,7 +113,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     // Validation Logic
     if (_currentPage == 1) {
       if (_nameController.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter your name.')));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Tolong isi nama lengkap dulu ya.')));
         return;
       }
     }

@@ -23,12 +23,12 @@ class OnboardingPersonalStep extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Who are you?',
+            'Kenalan Dulu Yuk',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           const Text(
-            'Let\'s start with the basics.',
+            'Isi data dirimu dulu ya biar kita bisa bantuin bikin CV.',
              style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 32),

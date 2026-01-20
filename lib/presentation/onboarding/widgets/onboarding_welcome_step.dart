@@ -20,7 +20,7 @@ class OnboardingWelcomeStep extends StatelessWidget {
           ),
           const SizedBox(height: 48),
           const Text(
-            'Stop Typing Generics.',
+            'Jangan Bikin CV Pasaran.',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 28,
@@ -29,7 +29,7 @@ class OnboardingWelcomeStep extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           const Text(
-            'Tolong isi data anda sekali saja. Sistem kami akan mengingatnya dan membiarkan AI membuatkan CV yang sempurna untuk setiap lowongan kerja.',
+            'Isi data sekali, pakai berkali-kali.\nSemua CV otomatis terisi dari data kamu.\nFokus ke karier, bukan ngetik ulang.',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,

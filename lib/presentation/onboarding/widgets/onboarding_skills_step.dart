@@ -19,12 +19,12 @@ class OnboardingSkillsStep extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'What are you good at?',
+            'Skill Kamu Apa Aja?',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           const Text(
-            'List your key technical and soft skills.',
+            'Tulis skill teknis atau soft skill kamu.',
              style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 32),

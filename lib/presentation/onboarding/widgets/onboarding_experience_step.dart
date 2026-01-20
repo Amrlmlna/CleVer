@@ -20,12 +20,12 @@ class OnboardingExperienceStep extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'What have you done?',
+            'Pengalaman Kerja',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           const Text(
-            'Add your relevant work history.',
+            'Ceritain pengalaman kerjamu di sini.',
              style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 32),

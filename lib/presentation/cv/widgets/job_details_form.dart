@@ -16,14 +16,14 @@ class JobDetailsForm extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'What job are you applying for?',
+          'Mau lamar posisi apa?',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
         const SizedBox(height: 8),
         Text(
-          'The AI will tailor your CV content specifically for this role.',
+          'AI bakal sesuaikan isi CV-mu khusus buat posisi ini.',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Colors.grey[600],
               ),
@@ -32,8 +32,8 @@ class JobDetailsForm extends StatelessWidget {
         TextFormField(
           controller: titleController,
           decoration: const InputDecoration(
-            labelText: 'Job Title',
-            hintText: 'e.g. Senior Product Manager',
+            labelText: 'Posisi / Jabatan',
+            hintText: 'contoh: Senior Product Manager',
             prefixIcon: Icon(Icons.work_outline),
             border: OutlineInputBorder(),
             filled: true,
@@ -41,7 +41,7 @@ class JobDetailsForm extends StatelessWidget {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter a job title';
+              return 'Posisi wajib diisi ya';
             }
             return null;
           },
@@ -51,8 +51,8 @@ class JobDetailsForm extends StatelessWidget {
         TextFormField(
           controller: descriptionController,
           decoration: const InputDecoration(
-            labelText: 'Job Description (Optional)',
-            hintText: 'Paste key requirements or responsibilities here...',
+            labelText: 'Deskripsi Pekerjaan (Opsional)',
+            hintText: 'Paste kualifikasi atau job desc di sini...',
             alignLabelWithHint: true,
             prefixIcon: Icon(Icons.description_outlined),
             border: OutlineInputBorder(),

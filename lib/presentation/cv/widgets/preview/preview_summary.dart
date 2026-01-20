@@ -19,7 +19,7 @@ class PreviewSummary extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionHeader(title: 'PROFESSIONAL SUMMARY'),
+        const SectionHeader(title: 'RINGKASAN PROFESIONAL'),
         AIEditableText(
           initialText: summary,
           style: Theme.of(context).textTheme.bodyLarge,

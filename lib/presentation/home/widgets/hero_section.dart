@@ -26,7 +26,7 @@ class HeroSection extends StatelessWidget {
           const Icon(Icons.auto_awesome, color: Colors.white, size: 32),
           const SizedBox(height: 16),
           const Text(
-            'Targeting a new role?',
+            'Lagi nyari kerja?',
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -35,7 +35,7 @@ class HeroSection extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           const Text(
-            'Create a tailored CV that highlights exactly what recruiters are looking for.',
+            'Bikin CV spesifik yang bakal dilirik HRD cuma dalam hitungan detik.',
             style: TextStyle(
               color: Colors.white70,
               height: 1.4,
@@ -51,7 +51,7 @@ class HeroSection extends StatelessWidget {
                 foregroundColor: Colors.black,
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
-              child: const Text('Create Tailored CV'),
+              child: const Text('Buat CV Spesifik'),
             ),
           ),
         ],

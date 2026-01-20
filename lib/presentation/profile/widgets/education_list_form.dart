@@ -47,18 +47,18 @@ class _EducationListFormState extends State<EducationListForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Education', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            const Text('Pendidikan', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             TextButton.icon(
               onPressed: () => _editEducation(),
               icon: const Icon(Icons.add),
-              label: const Text('Add'),
+              label: const Text('Tambah'),
             ),
           ],
         ),
         if (widget.education.isEmpty)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('No education added yet.', style: TextStyle(color: Colors.grey)),
+            child: Text('Belum ada riwayat pendidikan.', style: TextStyle(color: Colors.grey)),
           ),
         ListView.separated(
           shrinkWrap: true,
@@ -71,7 +71,7 @@ class _EducationListFormState extends State<EducationListForm> {
               margin: EdgeInsets.zero,
               child: ListTile(
                 title: Text(edu.schoolName, style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text('${edu.degree}\n${edu.startDate} - ${edu.endDate ?? "Present"}'),
+                subtitle: Text('${edu.degree}\n${edu.startDate} - ${edu.endDate ?? "Sekarang"}'),
                 isThreeLine: true,
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),
@@ -124,7 +124,7 @@ class _EducationDialogState extends State<_EducationDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.existing == null ? 'Add Education' : 'Edit Education'),
+      title: Text(widget.existing == null ? 'Tambah Pendidikan' : 'Edit Pendidikan'),
       content: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -133,14 +133,14 @@ class _EducationDialogState extends State<_EducationDialog> {
             children: [
               TextFormField(
                 controller: _schoolCtrl,
-                decoration: const InputDecoration(labelText: 'School / University'),
-                validator: (v) => v!.isEmpty ? 'Required' : null,
+                decoration: const InputDecoration(labelText: 'Sekolah / Universitas'),
+                validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _degreeCtrl,
-                decoration: const InputDecoration(labelText: 'Degree'),
-                validator: (v) => v!.isEmpty ? 'Required' : null,
+                decoration: const InputDecoration(labelText: 'Gelar / Jurusan'),
+                validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
               ),
               const SizedBox(height: 12),
               Row(
@@ -148,15 +148,15 @@ class _EducationDialogState extends State<_EducationDialog> {
                   Expanded(
                     child: TextFormField(
                       controller: _startCtrl,
-                      decoration: const InputDecoration(labelText: 'Start (Year)'),
-                      validator: (v) => v!.isEmpty ? 'Required' : null,
+                      decoration: const InputDecoration(labelText: 'Tahun Masuk'),
+                      validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: TextFormField(
                       controller: _endCtrl,
-                      decoration: const InputDecoration(labelText: 'End (Optional)'),
+                      decoration: const InputDecoration(labelText: 'Tahun Lulus (Opsional)'),
                     ),
                   ),
                 ],
@@ -166,7 +166,7 @@ class _EducationDialogState extends State<_EducationDialog> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Batal')),
         FilledButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
@@ -179,7 +179,7 @@ class _EducationDialogState extends State<_EducationDialog> {
               Navigator.pop(context, edu);
             }
           },
-          child: const Text('Save'),
+          child: const Text('Simpan'),
         ),
       ],
     );

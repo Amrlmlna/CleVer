@@ -6,20 +6,20 @@ class CareerTipCard extends StatelessWidget {
 
   static const _tips = [
     {
-      'title': 'Tailoring for Engineering?',
-      'desc': 'Focus on "System Design" and "Clean Code" principles over generic skills.',
+      'title': 'Lamar Jadi Engineer?',
+      'desc': 'Fokus ke "System Design" dan "Clean Code" daripada nulis skill umum.',
     },
     {
-      'title': 'Quantify Your Impact',
-      'desc': 'Use numbers! "Reduced latency by 20%" is better than "Improved performance".',
+      'title': 'Pake Angka, Jangan Cuma Kata',
+      'desc': '"Mengurangi latency 20%" lebih ngena daripada cuma "Meningkatkan performa".',
     },
     {
-      'title': 'ATS Friendly Formatting',
-      'desc': 'Avoid complex tables and columns. Keep it simple for the bots.',
+      'title': 'Format Ramah ATS',
+      'desc': 'Hindari tabel atau kolom yang ribet. Keep it simple biar kebaca sistem.',
     },
     {
-      'title': 'Action Verbs',
-      'desc': 'Start bullets with strong verbs: "Architected", "Deployed", "Spearheaded".',
+      'title': 'Kata Kerja Aktif',
+      'desc': 'Mulai poin dengan kata kerja kuat: "Membangun", "Meluncurkan", "Memimpin".',
     },
   ];
 

@@ -39,7 +39,7 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
           children: [
             if (_selectedFolder == null) ...[
               Text(
-                'My Drafts',
+                'Draft Saya',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -48,7 +48,7 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
               // Search Bar
               TextField(
                 decoration: InputDecoration(
-                  hintText: 'Search jobs...',
+                  hintText: 'Cari lowongan...',
                   prefixIcon: const Icon(Icons.search),
                   filled: true,
                   fillColor: Colors.grey[100],
@@ -95,7 +95,7 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
               child: draftsAsync.when(
                 data: (drafts) {
                   if (drafts.isEmpty) {
-                    return const Center(child: Text('No drafts yet.'));
+                    return const Center(child: Text('Belum ada draft.'));
                   }
 
                   // 1. Filter by Search (Global search on Job Title)
@@ -106,7 +106,7 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
                   // 2. Group by Job Title
                   final Map<String, List<CVData>> folders = {};
                   for (var draft in filteredDrafts) {
-                    final key = draft.jobTitle.isNotEmpty ? draft.jobTitle : 'Untitled';
+                    final key = draft.jobTitle.isNotEmpty ? draft.jobTitle : 'Tanpa Judul';
                     if (!folders.containsKey(key)) {
                       folders[key] = [];
                     }
@@ -114,7 +114,7 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
                   }
 
                   if (filteredDrafts.isEmpty) {
-                     return const Center(child: Text('No matching jobs found.'));
+                     return const Center(child: Text('Ga ada lowongan yang cocok.'));
                   }
 
                   // 3. Render
@@ -183,7 +183,7 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '$count drafts',
+                  '$count draft',
                   style: TextStyle(color: Colors.grey[600], fontSize: 13),
                 ),
               ],
@@ -195,7 +195,7 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
   }
 
   Widget _buildDraftList(List<CVData> drafts) {
-    if (drafts.isEmpty) return const Center(child: Text('Empty folder'));
+    if (drafts.isEmpty) return const Center(child: Text('Folder kosong'));
     
     // Sort by Date Descending
     final sorted = List<CVData>.from(drafts)..sort((a,b) => b.createdAt.compareTo(a.createdAt));
@@ -243,11 +243,11 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
                 child: const Icon(Icons.description, color: Colors.blue),
               ),
               title: Text(
-                draft.userProfile.fullName.isNotEmpty ? draft.userProfile.fullName : 'Untitled',
+                draft.userProfile.fullName.isNotEmpty ? draft.userProfile.fullName : 'Tanpa Judul',
                  style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               subtitle: Text(
-                'Created ${timeago.format(draft.createdAt)}',
+                'Dibuat ${timeago.format(draft.createdAt)}',
                 style: TextStyle(fontSize: 12, color: Colors.grey[500]),
               ),
               trailing: const Icon(Icons.chevron_right, color: Colors.grey),

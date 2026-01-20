@@ -39,7 +39,7 @@ class TemplateGalleryCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: const Text(
-                      'NEW',
+                      'BARU',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 10,
@@ -49,7 +49,7 @@ class TemplateGalleryCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   const Text(
-                    'Explore Template Gallery',
+                    'Pilih Template CV',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -58,7 +58,7 @@ class TemplateGalleryCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   const Text(
-                    'Find the perfect design for your industry.',
+                    'Pasti ada desain yang cocok buat karirmu.',
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 12,

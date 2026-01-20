@@ -42,7 +42,7 @@ class _ExperienceDialogState extends State<ExperienceDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.existing == null ? 'Add Experience' : 'Edit Experience'),
+      title: Text(widget.existing == null ? 'Tambah Pengalaman' : 'Edit Pengalaman'),
       content: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -52,14 +52,14 @@ class _ExperienceDialogState extends State<ExperienceDialog> {
 
               CustomTextFormField(
                 controller: _titleCtrl,
-                labelText: 'Job Title',
-                validator: (v) => v!.isEmpty ? 'Required' : null,
+                labelText: 'Posisi / Jabatan',
+                validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
               ),
               const SizedBox(height: 12),
               CustomTextFormField(
                 controller: _companyCtrl,
-                labelText: 'Company',
-                validator: (v) => v!.isEmpty ? 'Required' : null,
+                labelText: 'Perusahaan',
+                validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
               ),
               const SizedBox(height: 12),
               Row(
@@ -67,15 +67,15 @@ class _ExperienceDialogState extends State<ExperienceDialog> {
                   Expanded(
                     child: CustomTextFormField(
                       controller: _startCtrl,
-                      labelText: 'Start (MM/YYYY)',
-                      validator: (v) => v!.isEmpty ? 'Required' : null,
+                      labelText: 'Mulai (Bulan/Tahun)',
+                      validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: CustomTextFormField(
                       controller: _endCtrl,
-                      labelText: 'End (Optional)',
+                      labelText: 'Selesai (Opsional)',
                     ),
                   ),
                 ],
@@ -83,16 +83,16 @@ class _ExperienceDialogState extends State<ExperienceDialog> {
               const SizedBox(height: 12),
               CustomTextFormField(
                 controller: _descCtrl,
-                labelText: 'Description',
+                labelText: 'Deskripsi singkat',
                 maxLines: 4,
-                validator: (v) => v!.isEmpty ? 'Required' : null,
+                validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
               ),
             ],
           ),
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Batal')),
         FilledButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
@@ -106,7 +106,7 @@ class _ExperienceDialogState extends State<ExperienceDialog> {
               Navigator.pop(context, exp);
             }
           },
-          child: const Text('Save'),
+          child: const Text('Simpan'),
         ),
       ],
     );

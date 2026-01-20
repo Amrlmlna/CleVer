@@ -27,14 +27,14 @@ class CVPreviewPage extends ConsumerWidget {
         final shouldPop = await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Unsaved Changes'),
-            content: const Text('You have unsaved changes. Do you want to save them before leaving?'),
+            title: const Text('Ada perubahan yang belum disimpan'),
+            content: const Text('Kamu punya perubahan yang belum disimpan. Mau disimpan dulu sebelum keluar?'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(false); // Cancel
                 },
-                child: const Text('Cancel'),
+                child: const Text('Batal'),
               ),
               TextButton(
                 onPressed: () {
@@ -42,7 +42,7 @@ class CVPreviewPage extends ConsumerWidget {
                   ref.read(unsavedChangesProvider.notifier).state = false;
                   Navigator.of(context).pop(true);
                 },
-                child: const Text('Discard', style: TextStyle(color: Colors.red)),
+                child: const Text('Buang', style: TextStyle(color: Colors.red)),
               ),
               FilledButton(
                 onPressed: () async {
@@ -52,13 +52,13 @@ class CVPreviewPage extends ConsumerWidget {
                     ref.read(unsavedChangesProvider.notifier).state = false;
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Draft Saved')),
+                        const SnackBar(content: Text('Draft Disimpan')),
                       );
                       Navigator.of(context).pop(true);
                     }
                   }
                 },
-                child: const Text('Save & Exit'),
+                child: const Text('Simpan & Keluar'),
               ),
             ],
           ),
@@ -70,7 +70,7 @@ class CVPreviewPage extends ConsumerWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('CV Preview'),
+          title: const Text('Preview CV'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -91,12 +91,12 @@ class CVPreviewPage extends ConsumerWidget {
                    ref.read(unsavedChangesProvider.notifier).state = false; // Reset dirty state
                    if (context.mounted) {
                      ScaffoldMessenger.of(context).showSnackBar(
-                       const SnackBar(content: Text('Draft Saved')),
+                       const SnackBar(content: Text('Draft Disimpan')),
                      );
                    }
                  }
               },
-              child: const Text('Save'),
+              child: const Text('Simpan'),
             ),
             TextButton(
               onPressed: () async {
@@ -109,7 +109,7 @@ class CVPreviewPage extends ConsumerWidget {
                    PDFGenerator.generateAndPrint(currentData);
                  }
               },
-              child: const Text('Export PDF'),
+              child: const Text('Ekspor PDF'),
             ),
             const SizedBox(width: 8),
           ],
@@ -163,7 +163,7 @@ class CVPreviewPage extends ConsumerWidget {
             children: [
               CircularProgressIndicator(),
               SizedBox(height: 16),
-              Text('AI is tailoring your CV...'),
+              Text('AI lagi meracik CV kamu...'),
             ],
           ),
         ),
