@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entities/job_input.dart';
 import '../providers/cv_generation_provider.dart';
 import '../../profile/providers/profile_provider.dart';
+import '../widgets/job/job_input_hero_card.dart';
+import '../widgets/job/job_description_field.dart';
 
 class JobInputPage extends ConsumerStatefulWidget {
   const JobInputPage({super.key});
@@ -162,125 +164,16 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // 1. Black Card (Hero Style)
-                Container(
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.2),
-                        blurRadius: 15,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(Icons.auto_awesome, color: Colors.white, size: 28),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Kamu mau bikin CV buat posisi apa?',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'AI bakal bantuin bikin CV yang pas banget buat tujuan ini.',
-                        style: TextStyle(color: Colors.white70, height: 1.4),
-                      ),
-                      const SizedBox(height: 24),
-                      
-                      // White Input Pill
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                controller: _titleController,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                decoration: InputDecoration(
-                                  hintText: _hintText.isEmpty && _titleController.text.isEmpty 
-                                      ? '' 
-                                      : _hintText,
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey[400],
-                                  ),
-                                  border: InputBorder.none,
-                                  isDense: true,
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Wajib diisi ya';
-                                  }
-                                  return null;
-                                },
-                                textInputAction: TextInputAction.next,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            InkWell(
-                              onTap: _submit,
-                              child: const Icon(
-                                Icons.arrow_circle_right,
-                                color: Colors.black,
-                                size: 32,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                JobInputHeroCard(
+                  controller: _titleController,
+                  hintText: _hintText,
+                  onSubmit: _submit,
                 ),
 
                 const SizedBox(height: 32),
 
                 // 2. Standard Description Field (Outside Card)
-                const Text(
-                  'Detail / Kualifikasi (Opsional)',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: _descController,
-                  maxLines: 5,
-                  decoration: InputDecoration(
-                    hintText: 'Paste deskripsi posisi, persyaratan, atau kualiifikasi di sini...',
-                    hintStyle: TextStyle(color: Colors.grey[500]),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.black, width: 2),
-                    ),
-                    filled: true,
-                    fillColor: Colors.grey[50], 
-                  ),
-                ),
+                JobDescriptionField(controller: _descController),
 
                 const SizedBox(height: 24),
                 
