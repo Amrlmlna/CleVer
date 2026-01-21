@@ -4,11 +4,13 @@ import 'section_header.dart';
 class PreviewSkills extends StatelessWidget {
   final List<String> skills;
   final Function(String) onAddSkill;
+  final String language;
 
   const PreviewSkills({
     super.key,
     required this.skills,
     required this.onAddSkill,
+    this.language = 'id',
   });
 
   @override
@@ -16,7 +18,7 @@ class PreviewSkills extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionHeader(title: 'SKILL'),
+        SectionHeader(title: language == 'en' ? 'SKILLS' : 'SKILL'),
         Wrap(
           spacing: 8.0,
           runSpacing: 4.0,

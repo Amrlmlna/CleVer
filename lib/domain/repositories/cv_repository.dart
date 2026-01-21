@@ -7,7 +7,8 @@ abstract class CVRepository {
     required UserProfile profile,
     required JobInput jobInput,
     required String styleId,
+    required String language,
   });
 
-  Future<String> rewriteContent(String originalText);
+  Future<String> rewriteContent(String originalText, String language);
 }

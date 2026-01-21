@@ -17,6 +17,7 @@ class RemoteAIService {
     required UserProfile profile,
     required JobInput jobInput,
     required String styleId,
+    required String language,
   }) async {
     final url = Uri.parse('$baseUrl/generate');
 
@@ -27,6 +28,7 @@ class RemoteAIService {
         body: jsonEncode({
           'profile': profile.toJson(),
           'jobInput': jobInput.toJson(),
+          'language': language,
         }),
       );
 
@@ -93,6 +95,7 @@ class RemoteAIService {
           styleId: styleId,
           createdAt: DateTime.now(),
           jobTitle: jobInput.jobTitle,
+          language: language,
         );
       } else {
         throw Exception('Failed to generate CV: ${response.body}');
@@ -102,7 +105,7 @@ class RemoteAIService {
     }
   }
 
-  Future<String> rewriteContent(String originalText) async {
+  Future<String> rewriteContent(String originalText, String language) async {
     final url = Uri.parse('$baseUrl/rewrite');
 
     try {
@@ -111,6 +114,7 @@ class RemoteAIService {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'originalText': originalText,
+          'language': language,
         }),
       );
 

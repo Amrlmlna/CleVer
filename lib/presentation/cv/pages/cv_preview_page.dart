@@ -132,7 +132,8 @@ class CVPreviewPage extends ConsumerWidget {
                 PreviewSummary(
                   summary: cvData.generatedSummary,
                   onSave: (val) => notifier.updateSummary(val),
-                  onRewrite: (val) => repo.rewriteContent(val),
+                  onRewrite: (val) => repo.rewriteContent(val, cvData.language),
+                  language: cvData.language,
                 ),
                 const SizedBox(height: 24),
 
@@ -140,6 +141,7 @@ class CVPreviewPage extends ConsumerWidget {
                 PreviewSkills(
                   skills: cvData.tailoredSkills,
                   onAddSkill: (skill) => notifier.addSkill(skill),
+                  language: cvData.language,
                 ),
                 const SizedBox(height: 24),
 
@@ -147,12 +149,16 @@ class CVPreviewPage extends ConsumerWidget {
                 PreviewExperience(
                   experience: cvData.userProfile.experience,
                   onUpdateDescription: (exp, val) => notifier.updateExperience(exp, val),
-                  onRewrite: (val) => repo.rewriteContent(val),
+                  onRewrite: (val) => repo.rewriteContent(val, cvData.language),
+                  language: cvData.language,
                 ),
                 const SizedBox(height: 24),
 
                 // Education
-                PreviewEducation(education: cvData.userProfile.education),
+                PreviewEducation(
+                  education: cvData.userProfile.education,
+                  language: cvData.language,
+                ),
               ],
             ),
           );

@@ -41,6 +41,30 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
               textAlign: TextAlign.center,
             ),
           ),
+          
+          // Language Selection
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Bahasa CV:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(width: 12),
+                SegmentedButton<String>(
+                  segments: const [
+                     ButtonSegment(value: 'id', label: Text('Indonesia'), icon: Icon(Icons.flag)),
+                     ButtonSegment(value: 'en', label: Text('Inggris'), icon: Icon(Icons.language)),
+                  ],
+                  selected: {ref.watch(cvCreationProvider).language},
+                  onSelectionChanged: (Set<String> newSelection) {
+                    ref.read(cvCreationProvider.notifier).setLanguage(newSelection.first);
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.all(16),

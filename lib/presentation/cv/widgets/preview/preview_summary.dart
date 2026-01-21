@@ -6,12 +6,14 @@ class PreviewSummary extends StatelessWidget {
   final String summary;
   final Function(String) onSave;
   final Future<String> Function(String) onRewrite;
+  final String language;
 
   const PreviewSummary({
     super.key,
     required this.summary,
     required this.onSave,
     required this.onRewrite,
+    this.language = 'id',
   });
 
   @override
@@ -19,7 +21,7 @@ class PreviewSummary extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionHeader(title: 'RINGKASAN PROFESIONAL'),
+        SectionHeader(title: language == 'en' ? 'PROFESSIONAL SUMMARY' : 'RINGKASAN PROFESIONAL'),
         AIEditableText(
           initialText: summary,
           style: Theme.of(context).textTheme.bodyLarge,

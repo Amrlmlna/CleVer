@@ -4,10 +4,12 @@ import 'section_header.dart';
 
 class PreviewEducation extends StatelessWidget {
   final List<Education> education;
+  final String language;
 
   const PreviewEducation({
     super.key,
     required this.education,
+    this.language = 'id',
   });
 
   @override
@@ -15,16 +17,16 @@ class PreviewEducation extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionHeader(title: 'PENDIDIKAN'),
+        SectionHeader(title: language == 'en' ? 'EDUCATION' : 'PENDIDIKAN'),
         if (education.isEmpty)
-          const Text('Belum ada pendidikan.'),
+           Text(language == 'en' ? 'No education listed.' : 'Belum ada pendidikan.'),
         ...education.map((edu) => Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(edu.schoolName, style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text('${edu.degree} (${edu.startDate} - ${edu.endDate ?? "Sekarang"})'),
+              Text('${edu.degree} (${edu.startDate} - ${edu.endDate ?? (language == 'en' ? "Present" : "Sekarang")})'),
             ],
           ),
         )),

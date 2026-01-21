@@ -9,6 +9,7 @@ class CVData extends Equatable {
   final String styleId;
   final DateTime createdAt;
   final String jobTitle;
+  final String language;
 
   const CVData({
     required this.id,
@@ -18,6 +19,7 @@ class CVData extends Equatable {
     required this.styleId,
     required this.createdAt,
     required this.jobTitle,
+    this.language = 'id',
   });
 
   Map<String, dynamic> toJson() {
@@ -29,6 +31,7 @@ class CVData extends Equatable {
       'styleId': styleId,
       'createdAt': createdAt.toIso8601String(),
       'jobTitle': jobTitle,
+      'language': language,
     };
   }
 
@@ -41,9 +44,10 @@ class CVData extends Equatable {
       styleId: json['styleId'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       jobTitle: json['jobTitle'] as String? ?? 'Untitled Job', // Fallback for old data
+      language: json['language'] as String? ?? 'id', // Fallback
     );
   }
 
   @override
-  List<Object?> get props => [id, userProfile, generatedSummary, tailoredSkills, styleId, createdAt, jobTitle];
+  List<Object?> get props => [id, userProfile, generatedSummary, tailoredSkills, styleId, createdAt, jobTitle, language];
 }

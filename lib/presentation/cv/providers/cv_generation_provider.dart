@@ -42,6 +42,7 @@ class CVDisplayNotifier extends AsyncNotifier<CVData> {
       profile: creationState.userProfile!,
       jobInput: creationState.jobInput!,
       styleId: creationState.selectedStyle!,
+      language: creationState.language,
     );
   }
 
@@ -57,6 +58,7 @@ class CVDisplayNotifier extends AsyncNotifier<CVData> {
         styleId: currentState.styleId,
         createdAt: currentState.createdAt,
         jobTitle: currentState.jobTitle,
+        language: currentState.language,
       );
       state = AsyncValue.data(updatedCV);
       ref.read(unsavedChangesProvider.notifier).state = true;
@@ -74,6 +76,7 @@ class CVDisplayNotifier extends AsyncNotifier<CVData> {
         styleId: newStyleId,
         createdAt: currentState.createdAt,
         jobTitle: currentState.jobTitle,
+        language: currentState.language,
       );
       state = AsyncValue.data(updatedCV);
       ref.read(unsavedChangesProvider.notifier).state = true;
@@ -107,6 +110,7 @@ class CVDisplayNotifier extends AsyncNotifier<CVData> {
         styleId: currentState.styleId,
         createdAt: currentState.createdAt,
         jobTitle: currentState.jobTitle,
+        language: currentState.language,
       );
       state = AsyncValue.data(updatedCV);
       ref.read(unsavedChangesProvider.notifier).state = true;
@@ -126,11 +130,14 @@ class CVDisplayNotifier extends AsyncNotifier<CVData> {
         styleId: currentState.styleId,
         createdAt: currentState.createdAt,
         jobTitle: currentState.jobTitle,
+        language: currentState.language,
       );
       state = AsyncValue.data(updatedCV);
       ref.read(unsavedChangesProvider.notifier).state = true;
     }
   }
+
+
 
   void loadCV(CVData cvData) {
     state = AsyncValue.data(cvData);
@@ -147,6 +154,7 @@ extension CVDataCopyWith on CVData {
     String? styleId,
     DateTime? createdAt,
     String? jobTitle,
+    String? language,
   }) {
     return CVData(
       id: id ?? this.id,
@@ -156,6 +164,7 @@ extension CVDataCopyWith on CVData {
       styleId: styleId ?? this.styleId,
       createdAt: createdAt ?? this.createdAt,
       jobTitle: jobTitle ?? this.jobTitle,
+      language: language ?? this.language,
     );
   }
 }
@@ -164,22 +173,26 @@ class CVCreationState {
   final JobInput? jobInput;
   final UserProfile? userProfile;
   final String? selectedStyle;
+  final String language; // 'id' or 'en'
 
   const CVCreationState({
     this.jobInput,
     this.userProfile,
     this.selectedStyle,
+    this.language = 'id', // Default to Indonesian
   });
 
   CVCreationState copyWith({
     JobInput? jobInput,
     UserProfile? userProfile,
     String? selectedStyle,
+    String? language,
   }) {
     return CVCreationState(
       jobInput: jobInput ?? this.jobInput,
       userProfile: userProfile ?? this.userProfile,
       selectedStyle: selectedStyle ?? this.selectedStyle,
+      language: language ?? this.language,
     );
   }
 }
@@ -200,6 +213,10 @@ class CVCreationNotifier extends Notifier<CVCreationState> {
 
   void setStyle(String style) {
     state = state.copyWith(selectedStyle: style);
+  }
+
+  void setLanguage(String lang) {
+    state = state.copyWith(language: lang);
   }
 }
 
