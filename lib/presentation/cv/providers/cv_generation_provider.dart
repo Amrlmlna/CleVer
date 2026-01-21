@@ -5,6 +5,7 @@ import '../../../domain/entities/user_profile.dart';
 import '../../../domain/repositories/cv_repository.dart';
 import '../../../data/repositories/cv_repository_impl.dart';
 import '../../../domain/entities/job_input.dart';
+import '../../../core/services/analytics_service.dart';
 
 final remoteAIServiceProvider = Provider<RemoteAIService>((ref) => RemoteAIService());
 
@@ -38,12 +39,20 @@ class CVDisplayNotifier extends AsyncNotifier<CVData> {
     print('DEBUG: Generating CV');
     print('Profile Experience: ${creationState.userProfile?.experience.length}');
     
-    return repository.generateCV(
+    final result = await repository.generateCV(
       profile: creationState.userProfile!,
       jobInput: creationState.jobInput!,
       styleId: creationState.selectedStyle!,
       language: creationState.language,
     );
+
+    AnalyticsService().trackEvent('cv_generated', properties: {
+      'language': creationState.language,
+      'style': creationState.selectedStyle ?? 'unknown',
+      'job': creationState.jobInput!.jobTitle,
+    });
+
+    return result;
   }
 
   Future<void> updateSummary(String newSummary) async {

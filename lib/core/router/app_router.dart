@@ -1,3 +1,4 @@
+import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,6 +45,9 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       return null;
     },
+    observers: [
+      PosthogObserver(),
+    ],
     routes: [
       GoRoute(
         path: '/onboarding',

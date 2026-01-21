@@ -47,7 +47,7 @@ dependencies:
   timeago: ^3.7.1
   flutter_markdown: ^0.7.7+1
   http: ^1.6.0
-  posthog_flutter: ^4.0.1
+  posthog_flutter: ^5.0.0
   package_info_plus: ^8.0.0
   url_launcher: ^6.3.0
  

@@ -19,25 +19,25 @@ class AnalyticsService {
     }
   }
 
-  Future<void> screenView(String screenName, {Map<String, dynamic>? properties}) async {
+  Future<void> screenView(String screenName, {Map<String, Object>? properties}) async {
     try {
-      await PostHog().screen(screenName: screenName, properties: properties);
+      await Posthog().screen(screenName: screenName, properties: properties);
     } catch (e) {
       debugPrint('Analytics Error (Screen): $e');
     }
   }
 
-  Future<void> trackEvent(String eventName, {Map<String, dynamic>? properties}) async {
+  Future<void> trackEvent(String eventName, {Map<String, Object>? properties}) async {
     try {
-      await PostHog().capture(eventName: eventName, properties: properties);
+      await Posthog().capture(eventName: eventName, properties: properties);
     } catch (e) {
       debugPrint('Analytics Error (Track): $e');
     }
   }
 
-  Future<void> identifyUser(String userId, {Map<String, dynamic>? userProperties}) async {
+  Future<void> identifyUser(String userId, {Map<String, Object>? userProperties}) async {
     try {
-      await PostHog().identify(userId: userId, userProperties: userProperties);
+      await Posthog().identify(userId: userId, userProperties: userProperties);
     } catch (e) {
       debugPrint('Analytics Error (Identify): $e');
     }
@@ -45,7 +45,7 @@ class AnalyticsService {
   
   Future<void> reset() async {
      try {
-      await PostHog().reset();
+      await Posthog().reset();
     } catch (e) {
       debugPrint('Analytics Error (Reset): $e');
     }
