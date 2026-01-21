@@ -2,6 +2,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import '../../domain/entities/cv_data.dart';
+import '../../domain/entities/user_profile.dart';
 
 class PDFGenerator {
   static Future<void> generateAndPrint(CVData cvData) async {
@@ -65,32 +66,7 @@ class PDFGenerator {
               if (cvData.userProfile.experience.isEmpty)
                  pw.Text('No experience listed.', style: const pw.TextStyle(fontSize: 12))
               else
-                 ...cvData.userProfile.experience.map((exp) => pw.Padding(
-                   padding: const pw.EdgeInsets.only(bottom: 12.0),
-                   child: pw.Column(
-                     crossAxisAlignment: pw.CrossAxisAlignment.start,
-                     children: [
-                       pw.Row(
-                         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                         children: [
-                            pw.Text(
-                              '${exp.jobTitle} at ${exp.companyName}',
-                              style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
-                            ),
-                            pw.Text(
-                              '${exp.startDate} - ${exp.endDate ?? "Present"}',
-                              style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
-                            ),
-                         ],
-                       ),
-                       pw.SizedBox(height: 2),
-                       pw.Text(
-                         exp.description,
-                         style: const pw.TextStyle(fontSize: 10),
-                       ),
-                     ],
-                   ),
-                 )),
+                 ...cvData.userProfile.experience.map((exp) => _buildExperienceItem(exp)),
                  
               pw.SizedBox(height: 16),
 
@@ -99,22 +75,7 @@ class PDFGenerator {
               if (cvData.userProfile.education.isEmpty)
                  pw.Text('No education listed.', style: const pw.TextStyle(fontSize: 12))
               else
-                 ...cvData.userProfile.education.map((edu) => pw.Padding(
-                   padding: const pw.EdgeInsets.only(bottom: 8.0),
-                   child: pw.Column(
-                     crossAxisAlignment: pw.CrossAxisAlignment.start,
-                     children: [
-                       pw.Text(
-                         edu.schoolName, 
-                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
-                       ),
-                       pw.Text(
-                         '${edu.degree} (${edu.startDate} - ${edu.endDate ?? "Present"})',
-                         style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
-                       ),
-                     ],
-                   ),
-                 )),
+                 ...cvData.userProfile.education.map((edu) => _buildEducationItem(edu)),
             ],
           );
         },
@@ -142,6 +103,54 @@ class PDFGenerator {
         pw.Container(height: 1, color: PdfColors.black, width: 200), // Underline equivalent
         pw.SizedBox(height: 8),
       ],
+    );
+  }
+
+  static pw.Widget _buildExperienceItem(Experience exp) {
+    return pw.Padding(
+      padding: const pw.EdgeInsets.only(bottom: 12.0),
+      child: pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text(
+                '${exp.jobTitle} at ${exp.companyName}',
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
+              ),
+              pw.Text(
+                '${exp.startDate} - ${exp.endDate ?? "Present"}',
+                style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
+              ),
+            ],
+          ),
+          pw.SizedBox(height: 2),
+          pw.Text(
+            exp.description,
+            style: const pw.TextStyle(fontSize: 10),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static pw.Widget _buildEducationItem(Education edu) {
+    return pw.Padding(
+      padding: const pw.EdgeInsets.only(bottom: 8.0),
+      child: pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Text(
+            edu.schoolName, 
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
+          ),
+          pw.Text(
+            '${edu.degree} (${edu.startDate} - ${edu.endDate ?? "Present"})',
+            style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
+          ),
+        ],
+      ),
     );
   }
 }

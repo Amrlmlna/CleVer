@@ -16,7 +16,7 @@ import '../../presentation/onboarding/providers/onboarding_provider.dart';
 import '../../domain/entities/user_profile.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-// final _shellNavigatorKey = GlobalKey<NavigatorState>(); // Unused
+
 
 final routerProvider = Provider<GoRouter>((ref) {
   final onboardingCompleted = ref.watch(onboardingProvider);
@@ -27,16 +27,18 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       // If onboarding is NOT completed, redirect to /onboarding
       // Prevent infinite loop if already on /onboarding
-      if (!onboardingCompleted) {
-        if (state.uri.toString() != '/onboarding') {
-          return '/onboarding';
-        }
-      } else {
-        // If onboarding IS completed, but user tries to go to /onboarding, send them home
-        if (state.uri.toString() == '/onboarding') {
-          return '/';
-        }
+      final isGoingToOnboarding = state.uri.toString() == '/onboarding';
+      
+      // 1. Not completed -> Force Onboarding
+      if (!onboardingCompleted && !isGoingToOnboarding) {
+        return '/onboarding';
       }
+
+      // 2. Completed -> Prevent Onboarding
+      if (onboardingCompleted && isGoingToOnboarding) {
+        return '/';
+      }
+
       return null;
     },
     routes: [
