@@ -44,20 +44,72 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
+    // We return just the content, assuming the parent provides the scaffold/sheet structure
+    // But to respect the 'scroll' behavior request, the parent (Sheet) needs a ScrollController?
+    // User wants the SHEET to scroll, but the content inside (PageView) is not scrollable.
+    // So the Sheet scrolls UP/DOWN, revealing this content.
+    // This content should fill the available space in the sheet.
+    
+    return Column(
           children: [
-            // Progress Bar
-            LinearProgressIndicator(
-              value: (_currentPage + 1) / 5,
-              backgroundColor: Colors.grey[200],
-              valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+            // Handle Bar for Sheet
+            Center(
+              child: Container(
+                margin: const EdgeInsets.only(top: 16, bottom: 24),
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+
+            // Header "Kenalan Dulu Yuk" (Visible when sheet is collapsed/minimized)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                   const Text(
+                      'Kenalan dulu yuk! 👋',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    if (_currentPage == 0) ...[
+                      Text(
+                        'Isi data kamu sekali aja, bisa dipakai buat bikin ribuan CV otomatis. Gak perlu ngetik ulang terus-terusan.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                          height: 1.5,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                    ],
+                ],
+              ),
             ),
             
-            Expanded(
+            // Progress Bar (Only show if we start filling)
+            if (_currentPage > 0)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+              child: LinearProgressIndicator(
+                value: (_currentPage + 1) / 5,
+                backgroundColor: Colors.grey[200],
+                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+              ),
+            ),
+            
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.6, // Adjusted: Compact size
               child: Form(
-                key: _formKey, // Used mainly for personal info validation
+                key: _formKey, 
                 child: PageView(
                   controller: _pageController,
                   physics: const NeverScrollableScrollPhysics(), // Prevent swipe
@@ -114,9 +166,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               ),
             ),
           ],
-        ),
-      ),
-    );
+        );
   }
 
   void _nextPage() {

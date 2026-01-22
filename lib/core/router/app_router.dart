@@ -1,5 +1,7 @@
 import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:flutter/material.dart';
+import '../../presentation/onboarding/pages/onboarding_welcome_page.dart';
+import '../../presentation/splash/pages/splash_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../presentation/home/pages/home_page.dart';
@@ -27,18 +29,21 @@ final routerProvider = Provider<GoRouter>((ref) {
   
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: '/',
+    initialLocation: '/splash',
     redirect: (context, state) {
+      final isGoingToSplash = state.uri.toString() == '/splash';
+      if (isGoingToSplash) return null; // Allow Splash to run
+
       // If onboarding is NOT completed, redirect to /onboarding
       // Prevent infinite loop if already on /onboarding
-      final isGoingToOnboarding = state.uri.toString() == '/onboarding';
+      final isGoingToOnboarding = state.uri.toString().startsWith('/onboarding');
       
       // 1. Not completed -> Force Onboarding
       if (!onboardingCompleted && !isGoingToOnboarding) {
         return '/onboarding';
       }
 
-      // 2. Completed -> Prevent Onboarding
+      // 2. Completed -> Prevent Onboarding if actively trying to go there
       if (onboardingCompleted && isGoingToOnboarding) {
         return '/';
       }
@@ -50,8 +55,18 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
     routes: [
       GoRoute(
+        path: '/splash',
+        builder: (context, state) => const SplashPage(),
+      ),
+      GoRoute(
         path: '/onboarding',
-        builder: (context, state) => const OnboardingPage(),
+        builder: (context, state) => const OnboardingWelcomePage(),
+        routes: [
+          GoRoute(
+            path: 'form',
+            builder: (context, state) => const OnboardingPage(),
+          ),
+        ],
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
