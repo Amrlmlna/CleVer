@@ -6,11 +6,13 @@ import '../../common/widgets/custom_text_form_field.dart';
 class EducationListForm extends StatefulWidget {
   final List<Education> education;
   final Function(List<Education>) onChanged;
+  final bool isDark;
 
   const EducationListForm({
     super.key,
     required this.education,
     required this.onChanged,
+    this.isDark = false,
   });
 
   @override
@@ -43,28 +45,31 @@ class _EducationListFormState extends State<EducationListForm> {
 
   @override
   Widget build(BuildContext context) {
+    // Check both explicit flag and system theme
+    final effectiveIsDark = widget.isDark || Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Pendidikan', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white)),
+            Text('Pendidikan', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: effectiveIsDark ? Colors.white : Colors.black)),
             TextButton.icon(
               onPressed: () => _editEducation(),
-              icon: const Icon(Icons.add, color: Colors.white),
-              label: const Text('Tambah', style: TextStyle(color: Colors.white)),
+              icon: Icon(Icons.add, color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor),
+              label: Text('Tambah', style: TextStyle(color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor)),
               style: TextButton.styleFrom(
-                backgroundColor: Colors.white.withOpacity(0.1),
+                backgroundColor: effectiveIsDark ? Colors.white.withOpacity(0.1) : Colors.grey[100],
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               ),
             ),
           ],
         ),
         if (widget.education.isEmpty)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Belum ada riwayat pendidikan.', style: TextStyle(color: Colors.white54)),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text('Belum ada riwayat pendidikan.', style: TextStyle(color: effectiveIsDark ? Colors.white54 : Colors.grey)),
           ),
         ListView.separated(
           shrinkWrap: true,
@@ -75,9 +80,10 @@ class _EducationListFormState extends State<EducationListForm> {
             final edu = widget.education[index];
             return Card(
               margin: EdgeInsets.zero,
+              color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white, // Explicit card color for contrast
               child: ListTile(
-                title: Text(edu.schoolName, style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text('${edu.degree}\n${edu.startDate} - ${edu.endDate ?? "Sekarang"}'),
+                title: Text(edu.schoolName, style: TextStyle(fontWeight: FontWeight.bold, color: effectiveIsDark ? Colors.white : Colors.black)),
+                subtitle: Text('${edu.degree}\n${edu.startDate} - ${edu.endDate ?? "Sekarang"}', style: TextStyle(color: effectiveIsDark ? Colors.white70 : Colors.black87)),
                 isThreeLine: true,
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),

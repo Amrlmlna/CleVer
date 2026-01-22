@@ -33,11 +33,13 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Styles based on mode
-    final fillColor = isDark ? const Color(0xFF2C2C2C) : Colors.white;
-    final textColor = isDark ? Colors.white : Colors.black87;
-    final labelColor = isDark ? Colors.grey[400] : Colors.grey[600];
-    final borderColor = isDark ? Colors.transparent : Colors.grey.shade300;
+    // Styles based on mode (Explicit flag OR System Theme)
+    final effectiveIsDark = isDark || Theme.of(context).brightness == Brightness.dark;
+
+    final fillColor = effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white;
+    final textColor = effectiveIsDark ? Colors.white : Colors.black87;
+    final labelColor = effectiveIsDark ? Colors.grey[400] : Colors.grey[600];
+    final borderColor = effectiveIsDark ? Colors.transparent : Colors.grey.shade300;
     
     return TextFormField(
       controller: controller,
@@ -49,7 +51,7 @@ class CustomTextFormField extends StatelessWidget {
       onTap: onTap,
       onChanged: onChanged,
       style: TextStyle(color: textColor), // Input text color
-      cursorColor: isDark ? Colors.white : Colors.black, // Cursor color
+      cursorColor: effectiveIsDark ? Colors.white : Colors.black, // Cursor color
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(color: labelColor),
@@ -66,7 +68,7 @@ class CustomTextFormField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
            borderRadius: BorderRadius.circular(12),
-           borderSide: BorderSide(color: isDark ? Colors.white54 : Colors.black, width: 1.5),
+           borderSide: BorderSide(color: effectiveIsDark ? Colors.white54 : Colors.black, width: 1.5),
         ),
         filled: true,
         fillColor: fillColor,

@@ -55,32 +55,32 @@ class RecentDraftsList extends ConsumerWidget {
         width: 160,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade200),
+          color: const Color(0xFF1E1E1E), // Dark Card
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white.withOpacity(0.05)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
+                color: Colors.white.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(Icons.description_outlined, size: 20, color: Colors.black87),
+              child: const Icon(Icons.edit_document, size: 20, color: Colors.white),
             ),
             const Spacer(),
             Text(
               draft.userProfile.fullName.isNotEmpty ? draft.userProfile.fullName : 'Tanpa Judul',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
             Text(
               timeago.format(draft.createdAt),
-              style: TextStyle(fontSize: 10, color: Colors.grey[500]),
+              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
             ),
           ],
         ),
@@ -92,22 +92,29 @@ class RecentDraftsList extends ConsumerWidget {
     return Container(
       width: 100,
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
+        color: Colors.transparent, // Transparent for "Ghost" look or Dark
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.withOpacity(0.1)),
       ),
       child: InkWell(
         onTap: () {
            context.go('/drafts');
         },
-        borderRadius: BorderRadius.circular(12),
-        child: const Center(
+        borderRadius: BorderRadius.circular(20),
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-               Icon(Icons.arrow_forward, color: Colors.grey),
-               SizedBox(height: 4),
-               Text('Lihat Semua', style: TextStyle(fontSize: 12, color: Colors.grey)),
+               Container(
+                 padding: const EdgeInsets.all(12),
+                 decoration: BoxDecoration(
+                   shape: BoxShape.circle,
+                   color: Colors.white.withOpacity(0.05),
+                 ),
+                 child: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
+               ),
+               const SizedBox(height: 8),
+               const Text('Lihat Semua', style: TextStyle(fontSize: 12, color: Colors.white54)),
             ],
           ),
         ),

@@ -5,11 +5,13 @@ import 'experience_dialog.dart';
 class ExperienceListForm extends StatefulWidget {
   final List<Experience> experiences;
   final Function(List<Experience>) onChanged;
+  final bool isDark;
 
   const ExperienceListForm({
     super.key,
     required this.experiences,
     required this.onChanged,
+    this.isDark = false,
   });
 
   @override
@@ -42,28 +44,31 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
 
   @override
   Widget build(BuildContext context) {
+    // Check both explicit flag and system theme
+    final effectiveIsDark = widget.isDark || Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Pengalaman Kerja', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white)),
+            Text('Pengalaman Kerja', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: effectiveIsDark ? Colors.white : Colors.black)),
             TextButton.icon(
               onPressed: () => _editExperience(),
-              icon: const Icon(Icons.add, color: Colors.white),
-              label: const Text('Tambah', style: TextStyle(color: Colors.white)),
+              icon: Icon(Icons.add, color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor),
+              label: Text('Tambah', style: TextStyle(color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor)),
               style: TextButton.styleFrom(
-                backgroundColor: Colors.white.withOpacity(0.1),
+                backgroundColor: effectiveIsDark ? Colors.white.withOpacity(0.1) : Colors.grey[100],
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               ),
             ),
           ],
         ),
         if (widget.experiences.isEmpty)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Belum ada pengalaman kerja.', style: TextStyle(color: Colors.white54)),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text('Belum ada pengalaman kerja.', style: TextStyle(color: effectiveIsDark ? Colors.white54 : Colors.grey)),
           ),
         ListView.separated(
           shrinkWrap: true,
@@ -74,9 +79,10 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
             final exp = widget.experiences[index];
             return Card(
               margin: EdgeInsets.zero,
+              color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white, // Explicit card color for contrast
               child: ListTile(
-                title: Text(exp.jobTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text('${exp.companyName}\n${exp.startDate} - ${exp.endDate ?? "Sekarang"}'),
+                title: Text(exp.jobTitle, style: TextStyle(fontWeight: FontWeight.bold, color: effectiveIsDark ? Colors.white : Colors.black)),
+                subtitle: Text('${exp.companyName}\n${exp.startDate} - ${exp.endDate ?? "Sekarang"}', style: TextStyle(color: effectiveIsDark ? Colors.white70 : Colors.black87)),
                 isThreeLine: true,
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),

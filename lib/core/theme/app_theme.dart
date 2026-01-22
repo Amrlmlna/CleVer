@@ -107,4 +107,134 @@ class AppTheme {
       ),
     );
   }
+  static ThemeData get darkTheme {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      primaryColor: Colors.white,
+      scaffoldBackgroundColor: const Color(0xFF121212), // Extremely dark grey/black
+      canvasColor: const Color(0xFF1E1E1E), // For BottomSheets etc
+      
+      // Color Scheme
+      colorScheme: const ColorScheme.dark(
+        primary: Colors.white,
+        onPrimary: Colors.black,
+        secondary: Color(0xFF1E1E1E),
+        onSecondary: Colors.white,
+        surface: Color(0xFF1E1E1E),
+        onSurface: Colors.white,
+        error: errorColor,
+        onError: Colors.white,
+      ),
+
+      // Typography
+      textTheme: GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme).apply(
+        bodyColor: Colors.white,
+        displayColor: Colors.white,
+      ),
+
+      // AppBar Theme
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color(0xFF121212),
+        foregroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+      ),
+
+      // Button Themes
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          textStyle: GoogleFonts.outfit(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: Colors.white,
+          side: const BorderSide(color: Colors.white54),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+
+      // Input Decoration
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: const Color(0xFF2C2C2C), // Lighter than card for visibility
+        hintStyle: TextStyle(color: Colors.grey[600]),
+        labelStyle: const TextStyle(color: Colors.white70),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.white, width: 1.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: errorColor, width: 1.0),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      ),
+      
+      // Bottom Navigation Bar
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Color(0xFF1E1E1E),
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white38,
+        type: BottomNavigationBarType.fixed,
+        elevation: 0,
+      ),
+
+      // Card Theme
+      cardTheme: CardThemeData(
+        color: const Color(0xFF1E1E1E),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+      
+      // Divider Theme
+      dividerTheme: DividerThemeData(
+        color: Colors.grey[800],
+        thickness: 1,
+      ),
+
+      // Chip Theme
+      chipTheme: ChipThemeData(
+        backgroundColor: Colors.white.withOpacity(0.1),
+        labelStyle: const TextStyle(color: Colors.white),
+        secondarySelectedColor: Colors.white,
+        secondaryLabelStyle: const TextStyle(color: Colors.black),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        shape: StadiumBorder(
+          side: BorderSide(color: Colors.white.withOpacity(0.2)),
+        ),
+      ),
+    );
+  }
 }

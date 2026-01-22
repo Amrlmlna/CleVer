@@ -98,17 +98,37 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-            const Center(
-               child: CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.black,
-                child: Icon(Icons.person, size: 40, color: Colors.white),
+            Center(
+               child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).primaryColor, // White in dark mode
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.2), 
+                    width: 4
+                  ),
+                  boxShadow: [
+                    BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 20, offset: const Offset(0, 10))
+                  ],
+                ),
+                child: Icon(Icons.person, size: 50, color: Theme.of(context).scaffoldBackgroundColor), // Inverse Icon color
               ),
             ),
-            const SizedBox(height: 8),
-            const Text(
-              'Isi sekali, pake berkali-kali.',
-               style: TextStyle(color: Colors.grey, fontSize: 12),
+            const SizedBox(height: 16),
+            Text(
+              'MASTER PROFILE',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w900,
+                letterSpacing: 2.0,
+                color: Theme.of(context).colorScheme.onBackground, // White in dark
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Isi sekali, generate berkali-kali.',
+               style: TextStyle(color: Colors.grey[400], fontSize: 14),
             ),
             const SizedBox(height: 32),
 
@@ -223,15 +243,39 @@ class _SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // "Gen Z" Card: Dark surface, no heavy borders, maybe subtle gradient or simple generic dark card
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardTheme.color ?? (isDark ? const Color(0xFF1E1E1E) : Colors.white),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
+        // Remove border or make it very subtle for dark mode
+        border: isDark 
+            ? Border.all(color: Colors.white.withOpacity(0.05))
+            : Border.all(color: Colors.grey.shade200),
+        boxShadow: isDark ? [] : [
+           BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))
+        ],
       ),
       child: ExpansionTile(
-        leading: Icon(icon, color: Colors.black),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        leading: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(icon, color: isDark ? Colors.white : Colors.black, size: 20),
+        ),
+        title: Text(
+          title, 
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: isDark ? Colors.white : Colors.black,
+            fontFamily: 'Outfit', // Ensure font is applied
+            fontSize: 16,
+          )
+        ),
         shape: const Border(), // Remove default border
         childrenPadding: const EdgeInsets.all(16),
         children: [child],

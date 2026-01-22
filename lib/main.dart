@@ -51,6 +51,8 @@ class MyApp extends ConsumerWidget {
       title: 'CV Master',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.dark, // Force Dark Mode for Gen Z aesthetic
       routerConfig: router,
     );
   }
