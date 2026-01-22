@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 
 class OnboardingFinalStep extends StatelessWidget {
-  final VoidCallback onFinish;
-
-  const OnboardingFinalStep({
-    super.key,
-    required this.onFinish,
-  });
+  const OnboardingFinalStep({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.all(32.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -23,7 +18,7 @@ class OnboardingFinalStep extends StatelessWidget {
             ),
             child: const Icon(Icons.check_circle_outline, size: 80, color: Colors.green),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 48),
           const Text(
             'Selesai!',
             textAlign: TextAlign.center,
@@ -38,29 +33,13 @@ class OnboardingFinalStep extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
-              color: Colors.black54,
+              color: Colors.grey,
               height: 1.5,
             ),
           ),
-          const SizedBox(height: 40),
-          ElevatedButton(
-            onPressed: onFinish,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-            ),
-            child: const Text(
-              'Mulai Sekarang',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ),
-          const SizedBox(height: 16),
-           const Text(
-            'Dengan melanjutkan, kamu setuju dengan Syarat & Ketentuan kami.',
+          const SizedBox(height: 32),
+          const Text(
+            'Dengan menekan "Mulai Sekarang", kamu setuju dengan Syarat & Ketentuan kami.',
              textAlign: TextAlign.center,
              style: TextStyle(fontSize: 12, color: Colors.grey),
           ),
