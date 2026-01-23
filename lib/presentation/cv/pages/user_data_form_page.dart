@@ -178,7 +178,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
                 title: 'Informasi Personal',
                 icon: Icons.person_outline,
                 isExpanded: _isPersonalExpanded,
-                onExpansionChanged: (val) => setState(() => _isPersonalExpanded = val),
+                onExpansionChanged: (val) {}, // No setState to prevent jank
                  child: PersonalInfoForm(
                     nameController: _nameController,
                     emailController: _emailController,
@@ -193,7 +193,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
                 title: 'Pengalaman Kerja',
                 icon: Icons.work_outline,
                 isExpanded: _isExperienceExpanded,
-                onExpansionChanged: (val) => setState(() => _isExperienceExpanded = val),
+                onExpansionChanged: (val) {},
                 child: ExperienceListForm(
                     experiences: _experience,
                     onChanged: (val) => setState(() => _experience = val),
@@ -206,7 +206,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
                 title: 'Riwayat Pendidikan',
                 icon: Icons.school_outlined,
                 isExpanded: _isEducationExpanded,
-                onExpansionChanged: (val) => setState(() => _isEducationExpanded = val),
+                onExpansionChanged: (val) {},
                    child: EducationListForm(
                     education: _education,
                     onChanged: (val) => setState(() => _education = val),
@@ -219,7 +219,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
                 title: 'Keahlian (Skills)',
                 icon: Icons.lightbulb_outline,
                 isExpanded: _isSkillsExpanded,
-                onExpansionChanged: (val) => setState(() => _isSkillsExpanded = val),
+                onExpansionChanged: (val) {},
                 child: Column(
                     children: [
                       SkillsInputForm(

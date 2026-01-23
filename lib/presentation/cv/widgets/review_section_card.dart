@@ -21,24 +21,21 @@ class ReviewSectionCard extends StatelessWidget {
     // Theme Aware Colors
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardTheme.color ?? (isDark ? const Color(0xFF1E1E1E) : Colors.white),
+    return Card(
+      elevation: isDark ? 0 : 4,
+      shadowColor: Colors.black.withOpacity(0.2), // Softer shadow
+      color: Theme.of(context).cardTheme.color ?? (isDark ? const Color(0xFF1E1E1E) : Colors.white),
+      margin: EdgeInsets.zero, // Default card has margin, we handle layout in parent
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
-        border: isDark 
-            ? Border.all(color: Colors.white.withOpacity(0.05))
-            : null,
-        boxShadow: isDark ? [] : [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        side: isDark ? BorderSide(color: Colors.white.withOpacity(0.05)) : BorderSide.none,
       ),
+      clipBehavior: Clip.antiAlias, // Ensures content stays inside rounded corners
       child: ExpansionTile(
           initiallyExpanded: isExpanded,
           onExpansionChanged: onExpansionChanged,
+          backgroundColor: Colors.transparent, // Critical: Prevent white background
+          collapsedBackgroundColor: Colors.transparent, // Critical: Prevent white background
           leading: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -60,8 +57,8 @@ class ReviewSectionCard extends StatelessWidget {
               fontFamily: 'Outfit',
             ),
           ),
-          shape: const Border(), // Remove expanded border
-          collapsedShape: const Border(), // Remove collapsed border
+          shape: const Border(), 
+          collapsedShape: const Border(), 
           childrenPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
           children: [
             Divider(height: 1, color: isDark ? Colors.white12 : Colors.grey[200]),
