@@ -13,33 +13,45 @@ class FAQItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: ExpansionTile(
-        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        title: Text(
-          question,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-            color: Colors.black87,
-          ),
-        ),
-        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-        children: [
-          Text(
-            answer,
-            style: TextStyle(
-              color: Colors.grey[700],
-              height: 1.5,
-              fontSize: 14,
-            ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            offset: const Offset(0, 4),
+            blurRadius: 10,
           ),
         ],
+      ),
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          tilePadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          iconColor: Colors.black,
+          collapsedIconColor: Colors.grey,
+          title: Text(
+            question,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+              color: Colors.black87,
+              fontFamily: 'Outfit',
+            ),
+          ),
+          childrenPadding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+          children: [
+            Text(
+              answer,
+              style: TextStyle(
+                color: Colors.grey[700],
+                height: 1.6,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

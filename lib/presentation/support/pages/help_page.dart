@@ -45,16 +45,14 @@ class _HelpPageState extends State<HelpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bantuan & Dukungan'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
+        centerTitle: true,
       ),
-      backgroundColor: Colors.grey[50],
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -65,7 +63,7 @@ class _HelpPageState extends State<HelpPage> {
                   child: _SupportCard(
                     icon: Icons.email_outlined,
                     title: 'Email',
-                    subtitle: 'Hubungi kami',
+                    subtitle: 'Hubungi Support',
                     onTap: _contactSupport,
                   ),
                 ),
@@ -74,19 +72,24 @@ class _HelpPageState extends State<HelpPage> {
                   child: _SupportCard(
                     icon: Icons.feedback_outlined,
                     title: 'Masukan',
-                    subtitle: 'Lapor bug/saran',
+                    subtitle: 'Saran & Bug',
                     onTap: () => context.push('/support/feedback'),
                   ),
                 ),
               ],
             ),
             
-            const SizedBox(height: 32),
-            const Text(
-              'Pertanyaan Umum (FAQ)',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            const SizedBox(height: 48),
+            Text(
+              'Pertanyaan Umum',
+              style: TextStyle(
+                fontSize: 20, 
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Outfit',
+                color: isDark ? Colors.white : Colors.black,
+              ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
             const FAQItem(
               question: 'Apakah CV Master gratis?',
@@ -109,24 +112,27 @@ class _HelpPageState extends State<HelpPage> {
             Center(
               child: Column(
                 children: [
-                  Image.asset('assets/icon/icon.png', width: 48, height: 48, errorBuilder: (context, error, stackTrace) => const Icon(Icons.description, size: 48, color: Colors.grey)),
-                  const SizedBox(height: 8),
+                  Opacity(
+                    opacity: 0.5,
+                    child: Image.asset('assets/icon/icon.png', width: 48, height: 48, errorBuilder: (context, error, stackTrace) => const Icon(Icons.description, size: 48, color: Colors.grey))
+                  ),
+                  const SizedBox(height: 12),
                   Text(
                     'CV Master $_appVersion',
-                    style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                    style: TextStyle(color: Colors.grey[600], fontSize: 13),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextButton(
                         onPressed: () => context.push('/legal/privacy'),
-                        child: Text('Privacy Policy', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                        child: Text('Privacy Policy', style: TextStyle(color: Colors.grey[500], fontSize: 12)),
                       ),
-                      Text('|', style: TextStyle(color: Colors.grey[400], fontSize: 12)),
+                      Text('|', style: TextStyle(color: Colors.grey[700], fontSize: 12)),
                       TextButton(
                         onPressed: () => context.push('/legal/terms'),
-                        child: Text('Terms of Service', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                        child: Text('Terms of Service', style: TextStyle(color: Colors.grey[500], fontSize: 12)),
                       ),
                     ],
                   )
@@ -151,31 +157,43 @@ class _SupportCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-           border: Border.all(color: Colors.grey.shade200),
-        ),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.05),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: Colors.black),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+             color: Colors.black.withOpacity(0.1),
+             offset: const Offset(0, 4),
+             blurRadius: 10,
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(24),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: const BoxDecoration(
+                    color: Colors.black, // Dark Icon bg
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(icon, color: Colors.white, size: 20),
+                ),
+                const SizedBox(height: 16),
+                Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black)),
+                const SizedBox(height: 4),
+                Text(subtitle, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+              ],
             ),
-            const SizedBox(height: 12),
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            const SizedBox(height: 4),
-            Text(subtitle, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-          ],
+          ),
         ),
       ),
     );

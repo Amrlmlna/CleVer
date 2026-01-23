@@ -88,86 +88,110 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kirim Masukan'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
+        centerTitle: true,
       ),
-      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Apa yang bisa kami bantu?',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Ceritakan pengalamanmu atau laporkan masalah yang kamu temui.',
-                style: TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(height: 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Apa yang bisa kami bantu?',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black, fontFamily: 'Outfit'),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Ceritakan pengalamanmu atau laporkan masalah yang kamu temui.',
+              style: TextStyle(color: Colors.grey[500], fontSize: 16),
+            ),
+            const SizedBox(height: 32),
 
-              // Type Dropdown
-              const Text('Kategori', style: TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                   border: Border.all(color: Colors.grey.shade300),
-                   borderRadius: BorderRadius.circular(12),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    value: _feedbackType,
-                    isExpanded: true,
-                    items: _types.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-                    onChanged: (val) => setState(() => _feedbackType = val!),
+            // White Card Form
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(32),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Theme(
+                data: Theme.of(context).copyWith(brightness: Brightness.light), // Force Light inputs
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Type Dropdown
+                      const Text('Kategori', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                      const SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                           border: Border.all(color: Colors.grey.shade300),
+                           borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: _feedbackType,
+                            isExpanded: true,
+                            dropdownColor: Colors.white,
+                            style: const TextStyle(color: Colors.black, fontSize: 16),
+                            items: _types.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                            onChanged: (val) => setState(() => _feedbackType = val!),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+    
+                      // Message
+                      CustomTextFormField(
+                        controller: _msgController,
+                        labelText: 'Pesan / Detail',
+                        maxLines: 5,
+                        validator: (v) => v!.isEmpty ? 'Tulis sesuatu dong' : null,
+                      ),
+                      const SizedBox(height: 24),
+    
+                      // Contact (Optional)
+                      CustomTextFormField(
+                        controller: _contactController,
+                        labelText: 'Email / WhatsApp (Opsional)',
+                        hintText: 'Biar kami bisa bales...',
+                      ),
+    
+                      const SizedBox(height: 32),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _isLoading ? null : _submit,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black, // Contrast on White Card
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 18),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                            elevation: 0,
+                          ),
+                          child: _isLoading 
+                            ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                            : const Text('Kirim Masukan', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
-
-              // Message
-              CustomTextFormField(
-                controller: _msgController,
-                labelText: 'Pesaan / Detail',
-                maxLines: 5,
-                validator: (v) => v!.isEmpty ? 'Tulis sesuatu dong' : null,
-              ),
-              const SizedBox(height: 24),
-
-              // Contact (Optional)
-              CustomTextFormField(
-                controller: _contactController,
-                labelText: 'Email / WhatsApp (Opsional)',
-                hintText: 'Biar kami bisa bales...',
-              ),
-
-              const SizedBox(height: 48),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _submit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
-                  child: _isLoading 
-                    ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                    : const Text('Kirim Masukan'),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

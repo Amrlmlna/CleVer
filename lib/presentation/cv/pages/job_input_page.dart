@@ -147,12 +147,15 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+    // Determine theme brightness
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Target Posisi'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        centerTitle: true,
+        backgroundColor: Colors.transparent, // Clean look
+        foregroundColor: isDark ? Colors.white : Colors.black, // Explicit Contrast
         elevation: 0,
       ),
       body: SafeArea(
@@ -163,7 +166,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // 1. Black Card (Hero Style)
+                // 1. White Hero Card
                 JobInputHeroCard(
                   controller: _titleController,
                   hintText: _hintText,
@@ -172,34 +175,28 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
 
                 const SizedBox(height: 32),
 
-                // 2. Standard Description Field (Outside Card)
+                // 2. Description Field (Adaptive/Dark)
                 JobDescriptionField(controller: _descController),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 48),
                 
-                // Bottom Button (Alternative Submit)
+                // Bottom Button (White CTA)
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: _submit,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: Colors.white, // White Btn
+                      foregroundColor: Colors.black, // Black Text
+                      padding: const EdgeInsets.symmetric(vertical: 18),
+                      elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(30),
                       ),
                     ),
                     child: _isLoading 
-                      ? const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)),
-                            SizedBox(width: 12),
-                            Text('Sedang Menganalisis...'),
-                          ],
-                        )
-                      : const Text('Lanjut: Review Data'),
+                      ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+                      : const Text('Lanjut: Review Data', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   ),
                 ),
               ],
