@@ -19,6 +19,7 @@ import '../../presentation/onboarding/providers/onboarding_provider.dart';
 import '../../presentation/support/pages/help_page.dart';
 import '../../presentation/support/pages/feedback_page.dart';
 import '../../presentation/legal/pages/legal_page.dart';
+import '../../presentation/common/pages/error_page.dart';
 import '../../domain/entities/user_profile.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -57,6 +58,18 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/splash',
         builder: (context, state) => const SplashPage(),
+      ),
+      GoRoute(
+        path: '/error',
+        builder: (context, state) {
+          final args = state.extra as ErrorPageArgs?;
+          return ErrorPage(
+            args: args ?? const ErrorPageArgs(
+              title: 'Unknown Error',
+              message: 'Something went wrong, but we aren\'t sure what.',
+            ),
+          );
+        },
       ),
       GoRoute(
         path: '/onboarding',

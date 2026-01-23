@@ -32,6 +32,26 @@ class CVPreviewPage extends ConsumerWidget {
     final cvAsyncValue = ref.watch(generatedCVProvider);
     final hasUnsavedChanges = ref.watch(unsavedChangesProvider);
 
+    // Auto-Save Effect
+    ref.listen(generatedCVProvider, (previous, next) {
+      if (next is AsyncData && next.value != null) {
+        // Only auto-save if it's the *first* load (previous was loading/null) OR explicitly requested?
+        // Actually, "auto-save generated CV" usually means "save the initial result".
+        // But we must be careful not to save endlessly on every keystroke if we were treating this as a true "auto-save" for edits.
+        // For now, let's save when we transition from loading -> data (Generation Complete).
+        
+        final isGenerationComplete = (previous is AsyncLoading) && (next is AsyncData);
+        if (isGenerationComplete) {
+           // We use a microtask or post-frame callback to avoid build-phase side effects,
+           // but reading notifier in listen is generally safe.
+           // However, saveDraft is async and modifies state.
+           Future(() {
+             ref.read(draftsProvider.notifier).saveDraft(next.value!);
+           });
+        }
+      }
+    });
+
     return PopScope(
       canPop: !hasUnsavedChanges,
       onPopInvokedWithResult: (didPop, result) async {

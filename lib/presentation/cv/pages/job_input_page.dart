@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entities/job_input.dart';
@@ -26,6 +27,10 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
   int _charIndex = 0;
   bool _isDeleting = false;
   Timer? _typingTimer;
+  Timer? _debounceTimer;
+
+  static const String _kDraftTitleKey = 'draft_job_title';
+  static const String _kDraftDescKey = 'draft_job_desc';
 
   final List<String> _jobExamples = [
     'Barista',
@@ -39,7 +44,37 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
   @override
   void initState() {
     super.initState();
+    _loadDrafts();
     _startTypingAnimation();
+    _titleController.addListener(_onTextChanged);
+    _descController.addListener(_onTextChanged);
+  }
+
+  Future<void> _loadDrafts() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (mounted) {
+       final savedTitle = prefs.getString(_kDraftTitleKey);
+       final savedDesc = prefs.getString(_kDraftDescKey);
+       
+       if (savedTitle != null && _titleController.text.isEmpty) {
+         _titleController.text = savedTitle;
+       }
+       if (savedDesc != null && _descController.text.isEmpty) {
+         _descController.text = savedDesc;
+       }
+    }
+  }
+
+  void _onTextChanged() {
+    if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 500), _saveDrafts);
+  }
+
+  Future<void> _saveDrafts() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_kDraftTitleKey, _titleController.text);
+    await prefs.setString(_kDraftDescKey, _descController.text);
+    // debugPrint("Draft saved: ${_titleController.text}");
   }
 
   void _startTypingAnimation() {
@@ -90,6 +125,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
     _titleController.dispose();
     _descController.dispose();
     _typingTimer?.cancel();
+    _debounceTimer?.cancel();
     super.dispose();
   }
 
