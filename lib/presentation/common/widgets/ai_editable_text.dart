@@ -109,15 +109,16 @@ class _AIEditableTextState extends State<AIEditableText> {
   @override
   Widget build(BuildContext context) {
     if (_isEditing) {
+      final isDark = Theme.of(context).brightness == Brightness.dark;
       return Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
           border: Border.all(color: Colors.blueAccent),
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Colors.blueAccent.withValues(alpha: 0.1),
+              color: Colors.blueAccent.withOpacity(0.1),
               blurRadius: 8,
               offset: const Offset(0, 4),
             )
@@ -129,21 +130,21 @@ class _AIEditableTextState extends State<AIEditableText> {
             Row(
               children: [
                 IconButton(
-                  icon: const Icon(Icons.format_bold, size: 20),
+                  icon: Icon(Icons.format_bold, size: 20, color: isDark ? Colors.white70 : Colors.black87),
                   onPressed: () => _applyFormatting('**'),
                   tooltip: 'Bold',
                   constraints: const BoxConstraints(),
                   padding: const EdgeInsets.all(8),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.format_italic, size: 20),
+                  icon: Icon(Icons.format_italic, size: 20, color: isDark ? Colors.white70 : Colors.black87),
                   onPressed: () => _applyFormatting('_'),
                   tooltip: 'Italic',
                    constraints: const BoxConstraints(),
                   padding: const EdgeInsets.all(8),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.title, size: 20),
+                  icon: Icon(Icons.title, size: 20, color: isDark ? Colors.white70 : Colors.black87),
                   onPressed: _applyHeader,
                   tooltip: 'Header',
                    constraints: const BoxConstraints(),
@@ -173,13 +174,14 @@ class _AIEditableTextState extends State<AIEditableText> {
               maxLines: widget.maxLines ?? 6,
               minLines: 1,
               autofocus: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
                 hintText: 'Type here...',
+                hintStyle: TextStyle(color: isDark ? Colors.grey[600] : Colors.grey[400]),
               ),
-              style: widget.style, // Base style, overridden by controller spans
+              style: widget.style ?? TextStyle(color: isDark ? Colors.white : Colors.black),
             ),
             const SizedBox(height: 12),
             Row(

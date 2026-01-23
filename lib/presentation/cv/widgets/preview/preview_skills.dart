@@ -15,6 +15,8 @@ class PreviewSkills extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -24,16 +26,23 @@ class PreviewSkills extends StatelessWidget {
           runSpacing: 4.0,
           children: [
             ...skills.map((skill) => Chip(
-              label: Text(skill),
-              backgroundColor: Colors.grey[200],
+              label: Text(
+                skill, 
+                style: TextStyle(color: isDark ? Colors.white : Colors.black),
+              ),
+              backgroundColor: isDark ? Colors.white.withOpacity(0.1) : Colors.grey[200],
+              side: isDark ? BorderSide(color: Colors.white.withOpacity(0.1)) : BorderSide.none,
             )),
             ActionChip(
-              label: const Icon(Icons.add, size: 16),
+              label: Icon(Icons.add, size: 16, color: isDark ? Colors.white : Colors.black),
               padding: EdgeInsets.zero,
-              backgroundColor: Colors.white,
+              backgroundColor: isDark ? Colors.transparent : Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
-                side: BorderSide(color: Colors.grey.shade400, style: BorderStyle.solid),
+                side: BorderSide(
+                  color: isDark ? Colors.white.withOpacity(0.3) : Colors.grey.shade400, 
+                  style: BorderStyle.solid
+                ),
               ),
               onPressed: () async {
                 final newSkill = await showDialog<String>(

@@ -179,15 +179,12 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
                 icon: Icons.person_outline,
                 isExpanded: _isPersonalExpanded,
                 onExpansionChanged: (val) => setState(() => _isPersonalExpanded = val),
-                 child: Theme( 
-                   data: Theme.of(context).copyWith(brightness: Brightness.light), 
-                   child: PersonalInfoForm(
+                 child: PersonalInfoForm(
                     nameController: _nameController,
                     emailController: _emailController,
                     phoneController: _phoneController,
                     locationController: _locationController,
                   ),
-                 ),
               ),
               const SizedBox(height: 16),
 
@@ -197,13 +194,10 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
                 icon: Icons.work_outline,
                 isExpanded: _isExperienceExpanded,
                 onExpansionChanged: (val) => setState(() => _isExperienceExpanded = val),
-                child: Theme(
-                  data: Theme.of(context).copyWith(brightness: Brightness.light),
-                  child: ExperienceListForm(
+                child: ExperienceListForm(
                     experiences: _experience,
                     onChanged: (val) => setState(() => _experience = val),
                   ),
-                ),
               ),
               const SizedBox(height: 16),
 
@@ -213,13 +207,10 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
                 icon: Icons.school_outlined,
                 isExpanded: _isEducationExpanded,
                 onExpansionChanged: (val) => setState(() => _isEducationExpanded = val),
-                child: Theme(
-                  data: Theme.of(context).copyWith(brightness: Brightness.light),
                    child: EducationListForm(
                     education: _education,
                     onChanged: (val) => setState(() => _education = val),
                   ),
-                ),
               ),
               const SizedBox(height: 16),
 
@@ -229,9 +220,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
                 icon: Icons.lightbulb_outline,
                 isExpanded: _isSkillsExpanded,
                 onExpansionChanged: (val) => setState(() => _isSkillsExpanded = val),
-                child: Theme(
-                  data: Theme.of(context).copyWith(brightness: Brightness.light),
-                  child: Column(
+                child: Column(
                     children: [
                       SkillsInputForm(
                         skills: _skills,
@@ -240,27 +229,26 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
                       const SizedBox(height: 24),
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.grey[100],
+                          color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey[100],
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey[200]!),
+                          border: Border.all(color: isDark ? Colors.white10 : Colors.grey[200]!),
                         ),
                         child: CheckboxListTile(
-                          title: const Text('Update Master Profile', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                          subtitle: const Text('Simpan perubahan ini ke profil utamamu.', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                          title: Text('Update Master Profile', style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black)),
+                          subtitle: Text('Simpan perubahan ini ke profil utamamu.', style: TextStyle(fontSize: 12, color: isDark ? Colors.grey[400] : Colors.grey)),
                           value: _updateMasterProfile, 
-                          activeColor: Colors.black,
-                          checkColor: Colors.white,
+                          activeColor: isDark ? Colors.white : Colors.black,
+                          checkColor: isDark ? Colors.black : Colors.white,
                           onChanged: (val) {
                             setState(() {
                               _updateMasterProfile = val ?? true;
                             });
                           },
-                          secondary: const Icon(Icons.save_as_outlined, color: Colors.black54),
+                          secondary: Icon(Icons.save_as_outlined, color: isDark ? Colors.white70 : Colors.black54),
                         ),
                       ),
                     ],
                   ),
-                ),
               ),
               const SizedBox(height: 32),
             ],
