@@ -72,4 +72,10 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
      final updated = state!.copyWith(skills: skills);
      saveProfile(updated);
   }
+
+  Future<void> clearProfile() async {
+    state = null;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_key);
+  }
 }

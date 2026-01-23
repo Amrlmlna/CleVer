@@ -10,19 +10,20 @@ class TemplateGalleryCard extends StatelessWidget {
       onTap: () => context.push('/templates'),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(24), // More padding
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFF1A237E), Color(0xFF3949AB)], // Deep Indigo
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(16),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(32),
+          // gradient: const LinearGradient(
+          //   colors: [Color(0xFFFFFFFF), Color(0xFFF5F5F5)], 
+          //   begin: Alignment.topLeft,
+          //   end: Alignment.bottomRight,
+          // ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF1A237E).withValues(alpha: 0.3),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
@@ -33,47 +34,58 @@ class TemplateGalleryCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.black, // Dark Badge
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Text(
-                      'BARU',
+                      'PREMIUM',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
+                        letterSpacing: 1.0,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   const Text(
-                    'Pilih Template CV',
+                    'Pilih Template',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
+                      color: Colors.black,
+                      fontSize: 22,
+                      fontFamily: 'Outfit',
                       fontWeight: FontWeight.bold,
+                      height: 1.1,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text(
-                    'Pasti ada desain yang cocok buat karirmu.',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 12,
-                    ),
+                  Row(
+                    children: [
+                       Text(
+                        'Lebih dari 50+ desain.',
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      const Icon(Icons.arrow_forward, size: 16, color: Colors.black),
+                    ],
                   ),
                 ],
               ),
             ),
+            // Placeholder for Template Preview or Icon
             Container(
-              padding: const EdgeInsets.all(12),
+              height: 60,
+              width: 60,
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.2),
+                color: Colors.grey[100],
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.grid_view_rounded, color: Colors.white, size: 28),
+              child: const Icon(Icons.grid_view_rounded, color: Colors.black, size: 28),
             ),
           ],
         ),
