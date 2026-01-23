@@ -10,6 +10,7 @@ import '../widgets/preview/preview_summary.dart';
 import '../widgets/preview/preview_skills.dart';
 import '../widgets/preview/preview_experience.dart';
 import '../widgets/preview/preview_education.dart';
+import '../../common/widgets/cv_loading_screen.dart';
 
 class CVPreviewPage extends ConsumerWidget {
   const CVPreviewPage({super.key});
@@ -185,16 +186,7 @@ class CVPreviewPage extends ConsumerWidget {
             ),
           );
         },
-        loading: () => const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 16),
-              Text('AI lagi meracik CV kamu...'),
-            ],
-          ),
-        ),
+        loading: () => const CVLoadingScreen(),
         error: (err, stack) => Center(
           child: Text('Error: $err'),
         ),

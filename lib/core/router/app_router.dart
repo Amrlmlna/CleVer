@@ -1,7 +1,6 @@
 import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:flutter/material.dart';
 import '../../presentation/onboarding/pages/onboarding_welcome_page.dart';
-import '../../presentation/splash/pages/splash_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../presentation/home/pages/home_page.dart';
@@ -30,11 +29,10 @@ final routerProvider = Provider<GoRouter>((ref) {
   
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: '/splash',
+  return GoRouter(
+    navigatorKey: _rootNavigatorKey,
+    initialLocation: '/', // Handled by redirects
     redirect: (context, state) {
-      final isGoingToSplash = state.uri.toString() == '/splash';
-      if (isGoingToSplash) return null; // Allow Splash to run
-
       // If onboarding is NOT completed, redirect to /onboarding
       // Prevent infinite loop if already on /onboarding
       final isGoingToOnboarding = state.uri.toString().startsWith('/onboarding');
@@ -55,10 +53,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       PosthogObserver(),
     ],
     routes: [
-      GoRoute(
-        path: '/splash',
-        builder: (context, state) => const SplashPage(),
-      ),
       GoRoute(
         path: '/error',
         builder: (context, state) {
