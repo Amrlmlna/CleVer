@@ -18,16 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: title != null ? Text(title!) : null,
       centerTitle: true,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            // Opens the Drawer of the generic scaffold in MainWrapperPage
-            Scaffold.of(context).openDrawer();
-          },
-        ),
-        const SizedBox(width: 8),
-      ],
+
     );
   }
 

@@ -50,34 +50,7 @@ class MainWrapperPage extends StatelessWidget {
           ),
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.black,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
 
-              ListTile(
-              leading: const Icon(Icons.help_outline),
-              title: const Text('Help'),
-              onTap: () {
-                Navigator.pop(context); // Close Drawer
-                context.go('/profile/help');
-              },
-            ),
-          ],
-        ),
-      ),
     );
   }
 

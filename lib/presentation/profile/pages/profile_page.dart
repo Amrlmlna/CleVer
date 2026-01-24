@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/user_profile.dart';
 import '../providers/profile_provider.dart';
@@ -45,8 +46,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   void _loadFromProvider() {
     final masterProfile = ref.read(masterProfileProvider);
-    // Debug print
-    // debugPrint("ProfilePage: Loading from provider. Data: $masterProfile");
     
     if (masterProfile != null) {
       _nameController.text = masterProfile.fullName;
@@ -136,22 +135,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Listen to changes ensures sync even if page is alive in background
     ref.listen(masterProfileProvider, (prev, next) {
-      if (prev != next) { // Equatable ensures this works correctly
+      if (prev != next) {
         _loadFromProvider();
       }
     });
 
     return Scaffold(
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: Column(
             children: [
-              const SizedBox(height: 16), // Extra spacing for top
-              const SizedBox(height: 16), // Extra spacing for top
+              const SizedBox(height: 16),
+              const SizedBox(height: 16),
               ProfileHeader(
                 imagePath: _profileImagePath,
                 onEditImage: _pickImage,
@@ -203,6 +200,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ),
 
             const SizedBox(height: 48),
+            
+            // Save Button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -214,7 +213,22 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 ),
               ),
             ),
-            const SizedBox(height: 48),
+            
+            const SizedBox(height: 24),
+            
+            // Help Button (New Placement)
+            Center(
+              child: TextButton.icon(
+                onPressed: () => context.push('/profile/help'),
+                icon: Icon(Icons.help_outline, color: Theme.of(context).disabledColor),
+                label: Text(
+                  'Bantuan & Dukungan',
+                  style: TextStyle(color: Theme.of(context).disabledColor),
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 100), // Extra bottom padding
           ],
         ),
       ),
