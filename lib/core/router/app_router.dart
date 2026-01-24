@@ -10,16 +10,16 @@ import '../../presentation/drafts/pages/drafts_page.dart';
 import '../../presentation/profile/pages/profile_page.dart';
 import '../../presentation/cv/pages/job_input_page.dart';
 import '../../presentation/cv/pages/user_data_form_page.dart';
-import '../../presentation/cv/pages/cv_preview_page.dart';
+
 import '../../presentation/templates/pages/style_selection_page.dart';
 import '../../presentation/templates/pages/template_gallery_page.dart';
+import '../../domain/entities/tailored_cv_result.dart'; // Import
 import '../../presentation/onboarding/pages/onboarding_page.dart';
 import '../../presentation/onboarding/providers/onboarding_provider.dart';
 import '../../presentation/support/pages/help_page.dart';
 import '../../presentation/support/pages/feedback_page.dart';
 import '../../presentation/legal/pages/legal_page.dart';
 import '../../presentation/common/pages/error_page.dart';
-import '../../domain/entities/user_profile.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -87,7 +87,8 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'preview',
                     parentNavigatorKey: _rootNavigatorKey,
-                    builder: (context, state) => const CVPreviewPage(),
+                    // builder: (context, state) => const CVPreviewPage(), // DEPRECATED
+                    redirect: (context, state) => '/', // Redirect safely or remove
                   ),
                 ],
               ),
@@ -99,11 +100,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: '/drafts',
                 builder: (context, state) => const DraftsPage(),
                 routes: [
-                  GoRoute(
-                    path: 'preview',
-                    parentNavigatorKey: _rootNavigatorKey,
-                    builder: (context, state) => const CVPreviewPage(),
-                  ),
+                  // Removed preview route
                 ],
               ),
             ],
@@ -145,18 +142,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/create/user-data',
         builder: (context, state) {
-          final tailoredProfile = state.extra as UserProfile?;
-          return UserDataFormPage(tailoredProfile: tailoredProfile);
+          final tailoredResult = state.extra as TailoredCVResult?;
+          return UserDataFormPage(tailoredResult: tailoredResult);
         },
       ),
       GoRoute(
         path: '/create/style-selection',
         builder: (context, state) => const StyleSelectionPage(),
       ),
-      GoRoute(
-        path: '/create/preview',
-        builder: (context, state) => const CVPreviewPage(),
-      ),
+      // Removed /create/preview route
 
       GoRoute(
         path: '/templates',

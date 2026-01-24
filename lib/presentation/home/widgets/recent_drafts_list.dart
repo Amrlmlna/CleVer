@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../../domain/entities/cv_data.dart';
+import '../../../domain/entities/job_input.dart';
+import '../../../domain/entities/tailored_cv_result.dart'; // Import
 import '../../drafts/providers/draft_provider.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 
@@ -48,8 +50,24 @@ class RecentDraftsList extends ConsumerWidget {
   Widget _buildDraftCard(BuildContext context, WidgetRef ref, CVData draft) {
     return InkWell(
       onTap: () {
-        ref.read(generatedCVProvider.notifier).loadCV(draft);
-        context.push('/preview');
+        // Load Draft Data into Provider
+        final notifier = ref.read(cvCreationProvider.notifier);
+        
+        notifier.setJobInput(JobInput(
+          jobTitle: draft.jobTitle, 
+          jobDescription: '',
+        ));
+        notifier.setUserProfile(draft.userProfile);
+        notifier.setSummary(draft.generatedSummary);
+        notifier.setStyle(draft.styleId);
+        notifier.setLanguage(draft.language);
+
+        // Navigate to Form for Editing
+        final tailoredResult = TailoredCVResult(
+          profile: draft.userProfile,
+          summary: draft.generatedSummary,
+        );
+        context.push('/create/user-data', extra: tailoredResult);
       },
       child: Container(
         width: 160,

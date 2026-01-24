@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../../domain/entities/cv_data.dart';
+import '../../../domain/entities/job_input.dart';
+import '../../../domain/entities/tailored_cv_result.dart'; // Import
 import '../../cv/providers/cv_generation_provider.dart';
 import '../providers/draft_provider.dart';
 import '../../ads/widgets/draft_banner_carousel.dart';
@@ -264,8 +266,31 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
               ),
               trailing: const Icon(Icons.chevron_right, color: Colors.grey),
               onTap: () {
-                ref.read(generatedCVProvider.notifier).loadCV(draft);
-                context.push('/drafts/preview');
+                // Load Draft Data into Provider
+                final notifier = ref.read(cvCreationProvider.notifier);
+                
+                // 1. Job Input (Dummy desc since we don't save it in CVData yet)
+                notifier.setJobInput(JobInput(
+                  jobTitle: draft.jobTitle, 
+                  jobDescription: '',
+                ));
+
+                // 2. Profile
+                notifier.setUserProfile(draft.userProfile);
+
+                // 3. Summary
+                notifier.setSummary(draft.generatedSummary);
+
+                // 4. Style & Language
+                notifier.setStyle(draft.styleId);
+                notifier.setLanguage(draft.language);
+
+                // Navigate to Form for Editing
+                final tailoredResult = TailoredCVResult(
+                  profile: draft.userProfile,
+                  summary: draft.generatedSummary,
+                );
+                context.push('/create/user-data', extra: tailoredResult);
               },
             ),
           ),

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:uuid/uuid.dart';
 import '../../../../data/repositories/template_repository.dart';
+import '../../../../domain/entities/cv_data.dart';
+import '../../../../core/utils/pdf_generator.dart';
+import '../../../../core/services/mock_ad_service.dart';
 import '../../cv/providers/cv_generation_provider.dart';
+import '../../drafts/providers/draft_provider.dart';
 
 class StyleSelectionPage extends ConsumerStatefulWidget {
   const StyleSelectionPage({super.key});
@@ -14,13 +18,42 @@ class StyleSelectionPage extends ConsumerStatefulWidget {
 class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
   String _selectedStyle = 'Modern';
 
-  // Styles loaded from repository
+  Future<void> _exportPDF() async {
+    final creationState = ref.read(cvCreationProvider);
+    
+    // Validate Data
+    if (creationState.jobInput == null || creationState.userProfile == null || creationState.summary == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Data tidak lengkap. Kembali ke form sebelumnya.')),
+      );
+      return;
+    }
 
-
-  void _generateCV() {
+    // Set Style
     ref.read(cvCreationProvider.notifier).setStyle(_selectedStyle);
-    // TODO: Trigger AI Generation / Navigation to Preview
-    context.push('/create/preview'); // Changed to push to preserve navigation stack
+
+    // Save Draft (optional, but good for history)
+    final cvData = CVData(
+      id: const Uuid().v4(),
+      userProfile: creationState.userProfile!,
+      generatedSummary: creationState.summary!,
+      tailoredSkills: creationState.userProfile!.skills, // Use skills from profile (which are tailored)
+      styleId: _selectedStyle,
+      createdAt: DateTime.now(),
+      jobTitle: creationState.jobInput!.jobTitle,
+      language: creationState.language,
+    );
+    
+    // Auto-save to drafts
+    await ref.read(draftsProvider.notifier).saveDraft(cvData);
+
+    if (mounted) {
+       // Trigger Ad
+       await MockAdService.showInterstitialAd(context);
+       
+       // Generate PDF
+       await PDFGenerator.generateAndPrint(cvData);
+    }
   }
 
   @override
@@ -149,7 +182,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
                                   decoration: BoxDecoration(
                                     color: isSelected ? Colors.amber : Colors.amber[100],
                                     borderRadius: BorderRadius.circular(4),
-                                  ),
+                                    ),
                                   child: Text(
                                     'PREMIUM',
                                     style: TextStyle(
@@ -176,9 +209,13 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
             padding: const EdgeInsets.all(24.0),
             child: SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _generateCV,
-                child: const Text('Buat CV Sekarang'),
+              child: ElevatedButton.icon(
+                onPressed: _exportPDF,
+                icon: const Icon(Icons.picture_as_pdf),
+                label: const Text('Ekspor PDF'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
               ),
             ),
           ),

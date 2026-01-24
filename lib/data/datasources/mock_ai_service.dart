@@ -3,7 +3,8 @@ import 'package:uuid/uuid.dart';
 import '../../domain/entities/cv_data.dart';
 import '../../domain/entities/job_input.dart';
 import '../../domain/entities/user_profile.dart';
-import 'remote_ai_service.dart'; // Import to implement/extend
+import '../../domain/entities/tailored_cv_result.dart';
+import 'remote_ai_service.dart';
 
 class MockAIService implements RemoteAIService {
   
@@ -60,7 +61,7 @@ class MockAIService implements RemoteAIService {
   }
 
   @override
-  Future<UserProfile> tailorProfile({
+  Future<TailoredCVResult> tailorProfile({
     required UserProfile masterProfile,
     required JobInput jobInput,
   }) async {
@@ -71,7 +72,14 @@ class MockAIService implements RemoteAIService {
     final newSkills = List<String>.from(masterProfile.skills);
     if (!newSkills.contains("Adaptability")) newSkills.add("Adaptability");
 
-    return masterProfile.copyWith(skills: newSkills);
+    final dummySummary = "This is a mock summary generated during tailoring for ${jobInput.jobTitle}.";
+
+    final tailoredProfile = masterProfile.copyWith(skills: newSkills);
+
+    return TailoredCVResult(
+      profile: tailoredProfile,
+      summary: dummySummary,
+    );
   }
 
   @override

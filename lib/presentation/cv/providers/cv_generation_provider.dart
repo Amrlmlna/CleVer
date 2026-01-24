@@ -1,11 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/datasources/remote_ai_service.dart';
-import '../../../domain/entities/cv_data.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../../domain/repositories/cv_repository.dart';
 import '../../../data/repositories/cv_repository_impl.dart';
 import '../../../domain/entities/job_input.dart';
-import '../../../core/services/analytics_service.dart';
 
 import '../../../core/config/app_config.dart';
 import '../../../data/datasources/mock_ai_service.dart';
@@ -22,103 +20,18 @@ final cvRepositoryProvider = Provider<CVRepository>((ref) {
   return CVRepositoryImpl(aiService: aiService);
 });
 
-final generatedCVProvider = AsyncNotifierProvider<CVDisplayNotifier, CVData>(() {
-  return CVDisplayNotifier();
-});
-
-final unsavedChangesProvider = StateProvider<bool>((ref) => false);
-
-class CVDisplayNotifier extends AsyncNotifier<CVData> {
-  @override
-  Future<CVData> build() async {
-    // Accessing ref via property
-    final creationState = ref.watch(cvCreationProvider);
-    final repository = ref.watch(cvRepositoryProvider);
-
-    if (creationState.jobInput == null || 
-        creationState.userProfile == null || 
-        creationState.selectedStyle == null) {
-      // Return a partial or throw? Throwing will trigger error state in UI
-      // However, usually we redirect before this if data is missing.
-      // For safety, we can return dummy or throw.
-      throw Exception('Incomplete Data'); 
-    }
-
-    print('DEBUG: Generating CV');
-    print('Profile Experience: ${creationState.userProfile?.experience.length}');
-    
-    final result = await repository.generateCV(
-      profile: creationState.userProfile!,
-      jobInput: creationState.jobInput!,
-      styleId: creationState.selectedStyle!,
-      language: creationState.language,
-    );
-
-    AnalyticsService().trackEvent('cv_generated', properties: {
-      'language': creationState.language,
-      'style': creationState.selectedStyle ?? 'unknown',
-      'job': creationState.jobInput!.jobTitle,
-    });
-
-    return result;
-  }
-
-  Future<void> updateSummary(String newSummary) async {
-    final currentState = state.value;
-    if (currentState != null) {
-      state = AsyncValue.data(currentState.copyWith(generatedSummary: newSummary));
-      ref.read(unsavedChangesProvider.notifier).state = true;
-    }
-  }
-
-  Future<void> updateStyle(String newStyleId) async {
-    final currentState = state.value;
-    if (currentState != null) {
-      state = AsyncValue.data(currentState.copyWith(styleId: newStyleId));
-      ref.read(unsavedChangesProvider.notifier).state = true;
-    }
-  }
-
-  Future<void> updateExperience(Experience oldExp, String newDescription) async {
-    final currentState = state.value;
-    if (currentState != null) {
-      final newExperienceList = currentState.userProfile.experience.map((e) {
-        if (e == oldExp) {
-           return e.copyWith(description: newDescription);
-        }
-        return e;
-      }).toList();
-
-      final updatedProfile = currentState.userProfile.copyWith(experience: newExperienceList);
-      state = AsyncValue.data(currentState.copyWith(userProfile: updatedProfile));
-      ref.read(unsavedChangesProvider.notifier).state = true;
-    }
-  }
-
-  Future<void> addSkill(String newSkill) async {
-    final currentState = state.value;
-    if (currentState != null) {
-      final updatedSkills = List<String>.from(currentState.tailoredSkills)..add(newSkill);
-      state = AsyncValue.data(currentState.copyWith(tailoredSkills: updatedSkills));
-      ref.read(unsavedChangesProvider.notifier).state = true;
-    }
-  }
-
-  void loadCV(CVData cvData) {
-    state = AsyncValue.data(cvData);
-    ref.read(unsavedChangesProvider.notifier).state = false; // Reset on load
-  }
-}
-
 class CVCreationState {
   final JobInput? jobInput;
   final UserProfile? userProfile;
+  final String? summary; // Added summary field
   final String? selectedStyle;
   final String language; // 'id' or 'en'
+
 
   const CVCreationState({
     this.jobInput,
     this.userProfile,
+    this.summary,
     this.selectedStyle,
     this.language = 'id', // Default to Indonesian
   });
@@ -126,12 +39,14 @@ class CVCreationState {
   CVCreationState copyWith({
     JobInput? jobInput,
     UserProfile? userProfile,
+    String? summary,
     String? selectedStyle,
     String? language,
   }) {
     return CVCreationState(
       jobInput: jobInput ?? this.jobInput,
       userProfile: userProfile ?? this.userProfile,
+      summary: summary ?? this.summary,
       selectedStyle: selectedStyle ?? this.selectedStyle,
       language: language ?? this.language,
     );
@@ -150,6 +65,10 @@ class CVCreationNotifier extends Notifier<CVCreationState> {
 
   void setUserProfile(UserProfile profile) {
     state = state.copyWith(userProfile: profile);
+  }
+
+  void setSummary(String summary) {
+    state = state.copyWith(summary: summary);
   }
 
   void setStyle(String style) {

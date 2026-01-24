@@ -11,9 +11,11 @@ import '../../profile/widgets/personal_info_form.dart';
 import '../widgets/tailored_data_header.dart';
 import '../widgets/review_section_card.dart';
 
+import '../../../domain/entities/tailored_cv_result.dart'; // import
+
 class UserDataFormPage extends ConsumerStatefulWidget {
-  final UserProfile? tailoredProfile;
-  const UserDataFormPage({super.key, this.tailoredProfile});
+  final TailoredCVResult? tailoredResult; // Changed from UserProfile
+  const UserDataFormPage({super.key, this.tailoredResult});
 
   @override
   ConsumerState<UserDataFormPage> createState() => _UserDataFormPageState();
@@ -29,13 +31,18 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   final _phoneController = TextEditingController();
   final _locationController = TextEditingController();
   
+  // Summary Controller
+  final _summaryController = TextEditingController();
+  bool _isGeneratingSummary = false;
+  
   // Lists
   List<Experience> _experience = [];
   List<Education> _education = [];
   List<String> _skills = [];
 
   // Accordion State
-  bool _isPersonalExpanded = true;
+  bool _isPersonalExpanded = false;
+  bool _isSummaryExpanded = true; 
   bool _isExperienceExpanded = false;
   bool _isEducationExpanded = false;
   bool _isSkillsExpanded = false;
@@ -46,8 +53,10 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
     // Auto-fill from Master Profile if available
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final masterProfile = ref.read(masterProfileProvider);
-      final profileToUse = widget.tailoredProfile ?? masterProfile;
-      final isTailored = widget.tailoredProfile != null;
+      final creationState = ref.read(cvCreationProvider);
+      
+      final profileToUse = widget.tailoredResult?.profile ?? masterProfile;
+      final isTailored = widget.tailoredResult != null;
       
       if (!mounted) return;
 
@@ -63,10 +72,17 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
           _skills = List<String>.from(profileToUse.skills);
         });
 
+        // Pre-fill summary
+        // Priority: Passed Result > Saved State
+        final initialSummary = widget.tailoredResult?.summary ?? creationState.summary;
+        if (initialSummary != null) {
+          _summaryController.text = initialSummary;
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(isTailored 
-              ? 'Data telah disesuaikan oleh AI untuk pekerjaan ini! ✨' 
+              ? 'Data & Summary telah disesuaikan oleh AI! ✨' 
               : 'Data otomatis diisi dari Master Profile kamu!'),
             behavior: SnackBarBehavior.floating,
             backgroundColor: Theme.of(context).primaryColor,
@@ -82,7 +98,54 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
     _emailController.dispose();
     _phoneController.dispose();
     _locationController.dispose();
+    _summaryController.dispose();
     super.dispose();
+  }
+
+  Future<void> _generateSummary() async {
+    final jobInput = ref.read(cvCreationProvider).jobInput;
+    if (jobInput == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error: Job Input missing')));
+      return;
+    }
+
+    setState(() {
+      _isGeneratingSummary = true;
+    });
+
+    try {
+      // Use existing generateCV to get summary
+      // We pass current form data as temporary profile
+      final currentProfile = UserProfile(
+        fullName: _nameController.text,
+        email: _emailController.text,
+        phoneNumber: _phoneController.text,
+        location: _locationController.text,
+        experience: _experience,
+        education: _education,
+        skills: _skills,
+      );
+
+      final repository = ref.read(cvRepositoryProvider);
+      final cvData = await repository.generateCV(
+        profile: currentProfile,
+        jobInput: jobInput,
+        styleId: 'ATS', // Dummy style
+        language: ref.read(cvCreationProvider).language,
+      );
+
+      if (mounted) {
+        setState(() {
+          _summaryController.text = cvData.generatedSummary;
+          _isGeneratingSummary = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isGeneratingSummary = false);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal generate summary: $e')));
+      }
+    }
   }
 
   void _submit() {
@@ -97,7 +160,11 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         skills: _skills.isNotEmpty ? _skills : ['Leadership', 'Communication'], 
       );
 
+      // Save Profile
       ref.read(cvCreationProvider.notifier).setUserProfile(profile);
+      
+      // Save Summary
+      ref.read(cvCreationProvider.notifier).setSummary(_summaryController.text);
       
       // Smart Save Logic: Only update Master Profile if checking enabled AND data actually changed
       if (_updateMasterProfile) {
@@ -116,9 +183,6 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
             );
-         } else {
-           // Debug: Data identical, skipping save
-           // print("DEBUG: Profile data unchanged, skipping save.");
          }
       }
 
@@ -158,7 +222,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
             elevation: 0,
           ),
           child: const Text(
-            'Generate CV Sekarang',
+            'Lanjut: Pilih Template',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ),
@@ -170,7 +234,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
           child: Column(
             children: [
               // Header Message
-              if (widget.tailoredProfile != null)
+              if (widget.tailoredResult != null)
                 TailoredDataHeader(isDark: isDark),
 
               // 1. Personal Info Section
@@ -188,7 +252,53 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
               ),
               const SizedBox(height: 16),
 
-              // 2. Experience Section
+              // 2. NEW: Professional Summary
+              ReviewSectionCard(
+                title: 'Professional Summary',
+                icon: Icons.description_outlined,
+                isExpanded: _isSummaryExpanded,
+                onExpansionChanged: (val) {},
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextFormField(
+                      controller: _summaryController,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        hintText: 'Tulis ringkasan profesional Anda secara singkat...',
+                        filled: true,
+                        fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      validator: (value) {
+                         if (value == null || value.isEmpty) {
+                           return 'Summary tidak boleh kosong';
+                         }
+                         return null;
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    ElevatedButton.icon(
+                      onPressed: _isGeneratingSummary ? null : _generateSummary,
+                      icon: _isGeneratingSummary 
+                          ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) 
+                          : const Icon(Icons.auto_awesome, size: 18),
+                      label: Text(_isGeneratingSummary ? 'Generating...' : 'Generate with AI'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.purple[50],
+                        foregroundColor: Colors.purple,
+                        elevation: 0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // 3. Experience Section
               ReviewSectionCard(
                 title: 'Pengalaman Kerja',
                 icon: Icons.work_outline,
@@ -201,7 +311,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
               ),
               const SizedBox(height: 16),
 
-              // 3. Education Section
+              // 4. Education Section
               ReviewSectionCard(
                 title: 'Riwayat Pendidikan',
                 icon: Icons.school_outlined,
@@ -214,7 +324,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
               ),
               const SizedBox(height: 16),
 
-              // 4. Skills Section
+              // 5. Skills Section
               ReviewSectionCard(
                 title: 'Keahlian (Skills)',
                 icon: Icons.lightbulb_outline,

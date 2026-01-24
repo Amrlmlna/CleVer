@@ -162,13 +162,13 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
 
         // Call AI to Tailor Profile
         final repository = ref.read(cvRepositoryProvider);
-        final tailoredProfile = await repository.tailorProfile(
+        final tailoredResult = await repository.tailorProfile(
           masterProfile: masterProfile, 
           jobInput: jobInput
         );
         
         if (mounted) {
-           context.push('/create/user-data', extra: tailoredProfile);
+           context.push('/create/user-data', extra: tailoredResult);
         }
       } catch (e) {
         if (mounted) {

@@ -1,6 +1,7 @@
 import '../entities/cv_data.dart';
 import '../entities/job_input.dart';
 import '../entities/user_profile.dart';
+import '../entities/tailored_cv_result.dart';
 
 abstract class CVRepository {
   Future<CVData> generateCV({
@@ -12,7 +13,7 @@ abstract class CVRepository {
 
   Future<String> rewriteContent(String originalText, String language);
   
-  Future<UserProfile> tailorProfile({
+  Future<TailoredCVResult> tailorProfile({
     required UserProfile masterProfile,
     required JobInput jobInput,
   });
