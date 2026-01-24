@@ -26,17 +26,23 @@ class RecentDraftsList extends ConsumerWidget {
           );
         }
 
+        // 1. Sort by Date Descending
+        final sortedDrafts = List<CVData>.from(drafts)..sort((a,b) => b.createdAt.compareTo(a.createdAt));
+        
+        // 2. Take Top 3
+        final recentDrafts = sortedDrafts.take(3).toList();
+
         return SizedBox(
-          height: 140,
+          height: 180,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemCount: drafts.length + 1, // +1 for "Lihat Semua"
+            itemCount: recentDrafts.length + 1, // +1 for "Lihat Semua"
             separatorBuilder: (context, index) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
-              if (index == drafts.length) {
+              if (index == recentDrafts.length) {
                 return _buildSeeAllCard(context);
               }
-              final draft = drafts[index];
+              final draft = recentDrafts[index];
               return _buildDraftCard(context, ref, draft);
             },
           ),
