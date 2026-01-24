@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
-import '../../../../data/repositories/template_repository.dart';
 import '../../../../domain/entities/cv_data.dart';
 import '../../../../core/utils/pdf_generator.dart';
 import '../../../../core/services/mock_ad_service.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../drafts/providers/draft_provider.dart';
+import '../providers/template_provider.dart'; // Import provider
 
 class StyleSelectionPage extends ConsumerStatefulWidget {
   const StyleSelectionPage({super.key});
@@ -57,7 +57,8 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    final templates = TemplateRepository.getAllTemplates();
+    // Get templates from provider
+    final templates = ref.watch(templateRepositoryProvider).getAllTemplates();
     
     return Scaffold(
       appBar: AppBar(

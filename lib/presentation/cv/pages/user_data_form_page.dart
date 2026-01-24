@@ -4,12 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../providers/cv_generation_provider.dart';
 import '../../profile/providers/profile_provider.dart';
-import '../../profile/widgets/education_list_form.dart';
-import '../../profile/widgets/experience_list_form.dart';
-import '../../profile/widgets/skills_input_form.dart';
-import '../../profile/widgets/personal_info_form.dart';
-import '../widgets/tailored_data_header.dart';
-import '../widgets/review_section_card.dart';
+// Widgets
+import '../widgets/form/user_data_form_content.dart';
 
 import '../../../domain/entities/tailored_cv_result.dart'; // import
 
@@ -39,13 +35,6 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   List<Experience> _experience = [];
   List<Education> _education = [];
   List<String> _skills = [];
-
-  // Accordion State
-  bool _isPersonalExpanded = false;
-  bool _isSummaryExpanded = true; 
-  bool _isExperienceExpanded = false;
-  bool _isEducationExpanded = false;
-  bool _isSkillsExpanded = false;
 
   @override
   void initState() {
@@ -193,6 +182,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Review Data'),
@@ -227,143 +217,25 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
           ),
         ),
       ),
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              // Header Message
-              if (widget.tailoredResult != null)
-                TailoredDataHeader(isDark: isDark),
-
-              // 1. Personal Info Section
-              ReviewSectionCard(
-                title: 'Informasi Personal',
-                icon: Icons.person_outline,
-                isExpanded: _isPersonalExpanded,
-                onExpansionChanged: (val) {}, // No setState to prevent jank
-                 child: PersonalInfoForm(
-                    nameController: _nameController,
-                    emailController: _emailController,
-                    phoneController: _phoneController,
-                    locationController: _locationController,
-                  ),
-              ),
-              const SizedBox(height: 16),
-
-              // 2. NEW: Professional Summary
-              ReviewSectionCard(
-                title: 'Professional Summary',
-                icon: Icons.description_outlined,
-                isExpanded: _isSummaryExpanded,
-                onExpansionChanged: (val) {},
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    TextFormField(
-                      controller: _summaryController,
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        hintText: 'Tulis ringkasan profesional Anda secara singkat...',
-                        filled: true,
-                        fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      validator: (value) {
-                         if (value == null || value.isEmpty) {
-                           return 'Summary tidak boleh kosong';
-                         }
-                         return null;
-                      },
-                    ),
-                    const SizedBox(height: 12),
-                    ElevatedButton.icon(
-                      onPressed: _isGeneratingSummary ? null : _generateSummary,
-                      icon: _isGeneratingSummary 
-                          ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) 
-                          : const Icon(Icons.auto_awesome, size: 18),
-                      label: Text(_isGeneratingSummary ? 'Generating...' : 'Generate with AI'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple[50],
-                        foregroundColor: Colors.purple,
-                        elevation: 0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // 3. Experience Section
-              ReviewSectionCard(
-                title: 'Pengalaman Kerja',
-                icon: Icons.work_outline,
-                isExpanded: _isExperienceExpanded,
-                onExpansionChanged: (val) {},
-                child: ExperienceListForm(
-                    experiences: _experience,
-                    onChanged: (val) => setState(() => _experience = val),
-                  ),
-              ),
-              const SizedBox(height: 16),
-
-              // 4. Education Section
-              ReviewSectionCard(
-                title: 'Riwayat Pendidikan',
-                icon: Icons.school_outlined,
-                isExpanded: _isEducationExpanded,
-                onExpansionChanged: (val) {},
-                   child: EducationListForm(
-                    education: _education,
-                    onChanged: (val) => setState(() => _education = val),
-                  ),
-              ),
-              const SizedBox(height: 16),
-
-              // 5. Skills Section
-              ReviewSectionCard(
-                title: 'Keahlian (Skills)',
-                icon: Icons.lightbulb_outline,
-                isExpanded: _isSkillsExpanded,
-                onExpansionChanged: (val) {},
-                child: Column(
-                    children: [
-                      SkillsInputForm(
-                        skills: _skills,
-                        onChanged: (val) => setState(() => _skills = val),
-                      ),
-                      const SizedBox(height: 24),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey[100],
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: isDark ? Colors.white10 : Colors.grey[200]!),
-                        ),
-                        child: CheckboxListTile(
-                          title: Text('Update Master Profile', style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black)),
-                          subtitle: Text('Simpan perubahan ini ke profil utamamu.', style: TextStyle(fontSize: 12, color: isDark ? Colors.grey[400] : Colors.grey)),
-                          value: _updateMasterProfile, 
-                          activeColor: isDark ? Colors.white : Colors.black,
-                          checkColor: isDark ? Colors.black : Colors.white,
-                          onChanged: (val) {
-                            setState(() {
-                              _updateMasterProfile = val ?? true;
-                            });
-                          },
-                          secondary: Icon(Icons.save_as_outlined, color: isDark ? Colors.white70 : Colors.black54),
-                        ),
-                      ),
-                    ],
-                  ),
-              ),
-              const SizedBox(height: 32),
-            ],
-          ),
-        ),
+      body: UserDataFormContent(
+        formKey: _formKey,
+        isDark: isDark,
+        tailoredResult: widget.tailoredResult,
+        nameController: _nameController,
+        emailController: _emailController,
+        phoneController: _phoneController,
+        locationController: _locationController,
+        summaryController: _summaryController,
+        isGeneratingSummary: _isGeneratingSummary,
+        experience: _experience,
+        education: _education,
+        skills: _skills,
+        updateMasterProfile: _updateMasterProfile,
+        onGenerateSummary: _generateSummary,
+        onExperienceChanged: (val) => setState(() => _experience = val),
+        onEducationChanged: (val) => setState(() => _education = val),
+        onSkillsChanged: (val) => setState(() => _skills = val),
+        onUpdateMasterProfileChanged: (val) => setState(() => _updateMasterProfile = val ?? true),
       ),
     );
   }

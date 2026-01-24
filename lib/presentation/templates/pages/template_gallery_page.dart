@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../data/repositories/template_repository.dart';
+import '../providers/template_provider.dart';
 import '../../../../domain/entities/cv_template.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 
@@ -10,7 +10,7 @@ class TemplateGalleryPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final templates = TemplateRepository.getAllTemplates();
+    final templates = ref.watch(templateRepositoryProvider).getAllTemplates();
 
     return Scaffold(
       appBar: AppBar(
