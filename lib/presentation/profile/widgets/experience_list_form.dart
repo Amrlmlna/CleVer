@@ -59,7 +59,7 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
               icon: Icon(Icons.add, color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor),
               label: Text('Tambah', style: TextStyle(color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor)),
               style: TextButton.styleFrom(
-                backgroundColor: effectiveIsDark ? Colors.white.withOpacity(0.1) : Colors.grey[100],
+                backgroundColor: effectiveIsDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey[100],
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               ),
             ),

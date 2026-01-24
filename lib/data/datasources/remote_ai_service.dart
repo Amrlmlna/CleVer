@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 import '../../domain/entities/cv_data.dart';
 import '../../domain/entities/job_input.dart';
 import '../../domain/entities/user_profile.dart';
+import '../../domain/entities/tailored_cv_result.dart'; // Import at top
 
 class RemoteAIService {
   // Use 10.0.2.2 for Android Emulator, 192.168.1.5 for local network
@@ -79,8 +80,7 @@ class RemoteAIService {
         experience: refinedExperience, // Use refined list
         education: profile.education,
       ),
-      generatedSummary: summary,
-      tailoredSkills: tailoredSkills,
+      summary: summary,
       styleId: styleId,
       createdAt: DateTime.now(),
       jobTitle: jobInput.jobTitle,
@@ -140,11 +140,13 @@ class RemoteAIService {
       throw Exception('Network Error: $e');
     }
   }
-  Future<UserProfile> tailorProfile({
+
+
+  Future<TailoredCVResult> tailorProfile({
     required UserProfile masterProfile,
     required JobInput jobInput,
   }) async {
-    final url = Uri.parse('$baseUrl/tailor'); // Make sure backend has this route
+    final url = Uri.parse('$baseUrl/tailor'); 
 
     try {
       final response = await http.post(
@@ -158,7 +160,15 @@ class RemoteAIService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return UserProfile.fromJson(data);
+        
+        // Backend returns: { tailoredProfile: {...}, summary: "..." }
+        final profileJson = data['tailoredProfile'] as Map<String, dynamic>;
+        final summary = data['summary'] as String;
+
+        return TailoredCVResult(
+          profile: UserProfile.fromJson(profileJson),
+          summary: summary,
+        );
       } else {
         throw Exception('Failed to tailor profile: ${response.body}');
       }

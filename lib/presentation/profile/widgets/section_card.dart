@@ -23,17 +23,17 @@ class SectionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         // Remove border or make it very subtle for dark mode
         border: isDark 
-            ? Border.all(color: Colors.white.withOpacity(0.05))
+            ? Border.all(color: Colors.white.withValues(alpha: 0.05))
             : Border.all(color: Colors.grey.shade200),
         boxShadow: isDark ? [] : [
-           BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))
+           BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))
         ],
       ),
       child: ExpansionTile(
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.05),
+            color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(icon, color: isDark ? Colors.white : Colors.black, size: 20),

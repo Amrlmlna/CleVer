@@ -226,13 +226,13 @@ class AppTheme {
 
       // Chip Theme
       chipTheme: ChipThemeData(
-        backgroundColor: Colors.white.withOpacity(0.1),
+        backgroundColor: Colors.white.withValues(alpha: 0.1),
         labelStyle: const TextStyle(color: Colors.white),
         secondarySelectedColor: Colors.white,
         secondaryLabelStyle: const TextStyle(color: Colors.black),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         shape: StadiumBorder(
-          side: BorderSide(color: Colors.white.withOpacity(0.2)),
+          side: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
         ),
       ),
     );

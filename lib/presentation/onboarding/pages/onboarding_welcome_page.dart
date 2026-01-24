@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+
 import '../widgets/image_sequence_animator.dart';
 import 'onboarding_page.dart'; // Contains the form content
 import 'package:flutter/scheduler.dart';

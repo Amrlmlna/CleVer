@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../drafts/providers/draft_provider.dart';
 
-class HeroSection extends StatelessWidget {
+class HeroSection extends ConsumerWidget {
   const HeroSection({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final draftsAsync = ref.watch(draftsProvider);
+    final hasDrafts = draftsAsync.maybeWhen(
+      data: (drafts) => drafts.isNotEmpty,
+      orElse: () => false,
+    );
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -20,7 +28,7 @@ class HeroSection extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -38,7 +46,7 @@ class HeroSection extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
@@ -54,9 +62,9 @@ class HeroSection extends StatelessWidget {
                 const SizedBox(height: 24),
                 
                 // Minimalist Large Typography
-                const Text(
-                  'Buat CV\nPertama Kamu.',
-                  style: TextStyle(
+                Text(
+                  hasDrafts ? 'Buat CV\nProfesional.' : 'Buat CV\nPertama Kamu.',
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 42, // Very Large
                     fontWeight: FontWeight.w600, // Semi Bold, clean

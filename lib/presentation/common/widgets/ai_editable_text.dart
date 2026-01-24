@@ -118,7 +118,7 @@ class _AIEditableTextState extends State<AIEditableText> {
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Colors.blueAccent.withOpacity(0.1),
+              color: Colors.blueAccent.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, 4),
             )

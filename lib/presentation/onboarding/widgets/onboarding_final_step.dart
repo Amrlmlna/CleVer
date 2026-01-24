@@ -28,7 +28,7 @@ class OnboardingFinalStep extends StatelessWidget {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        const Color(0xFF1E1E1E).withOpacity(0.0),
+                        const Color(0xFF1E1E1E).withValues(alpha: 0.0),
                         const Color(0xFF1E1E1E), 
                       ],
                     ),

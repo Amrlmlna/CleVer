@@ -1,7 +1,6 @@
 import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:flutter/material.dart';
 import '../../presentation/onboarding/pages/onboarding_welcome_page.dart';
-import '../../presentation/splash/pages/splash_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../presentation/home/pages/home_page.dart';
@@ -11,16 +10,16 @@ import '../../presentation/drafts/pages/drafts_page.dart';
 import '../../presentation/profile/pages/profile_page.dart';
 import '../../presentation/cv/pages/job_input_page.dart';
 import '../../presentation/cv/pages/user_data_form_page.dart';
-import '../../presentation/cv/pages/cv_preview_page.dart';
+
 import '../../presentation/templates/pages/style_selection_page.dart';
 import '../../presentation/templates/pages/template_gallery_page.dart';
+import '../../domain/entities/tailored_cv_result.dart'; // Import
 import '../../presentation/onboarding/pages/onboarding_page.dart';
 import '../../presentation/onboarding/providers/onboarding_provider.dart';
 import '../../presentation/support/pages/help_page.dart';
 import '../../presentation/support/pages/feedback_page.dart';
 import '../../presentation/legal/pages/legal_page.dart';
 import '../../presentation/common/pages/error_page.dart';
-import '../../domain/entities/user_profile.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -30,11 +29,8 @@ final routerProvider = Provider<GoRouter>((ref) {
   
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: '/splash',
+    initialLocation: '/', // Handled by redirects
     redirect: (context, state) {
-      final isGoingToSplash = state.uri.toString() == '/splash';
-      if (isGoingToSplash) return null; // Allow Splash to run
-
       // If onboarding is NOT completed, redirect to /onboarding
       // Prevent infinite loop if already on /onboarding
       final isGoingToOnboarding = state.uri.toString().startsWith('/onboarding');
@@ -55,10 +51,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       PosthogObserver(),
     ],
     routes: [
-      GoRoute(
-        path: '/splash',
-        builder: (context, state) => const SplashPage(),
-      ),
       GoRoute(
         path: '/error',
         builder: (context, state) {
@@ -95,7 +87,8 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'preview',
                     parentNavigatorKey: _rootNavigatorKey,
-                    builder: (context, state) => const CVPreviewPage(),
+                    // builder: (context, state) => const CVPreviewPage(), // DEPRECATED
+                    redirect: (context, state) => '/', // Redirect safely or remove
                   ),
                 ],
               ),
@@ -107,11 +100,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: '/drafts',
                 builder: (context, state) => const DraftsPage(),
                 routes: [
-                  GoRoute(
-                    path: 'preview',
-                    parentNavigatorKey: _rootNavigatorKey,
-                    builder: (context, state) => const CVPreviewPage(),
-                  ),
+                  // Removed preview route
                 ],
               ),
             ],
@@ -153,18 +142,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/create/user-data',
         builder: (context, state) {
-          final tailoredProfile = state.extra as UserProfile?;
-          return UserDataFormPage(tailoredProfile: tailoredProfile);
+          final tailoredResult = state.extra as TailoredCVResult?;
+          return UserDataFormPage(tailoredResult: tailoredResult);
         },
       ),
       GoRoute(
         path: '/create/style-selection',
         builder: (context, state) => const StyleSelectionPage(),
       ),
-      GoRoute(
-        path: '/create/preview',
-        builder: (context, state) => const CVPreviewPage(),
-      ),
+      // Removed /create/preview route
 
       GoRoute(
         path: '/templates',

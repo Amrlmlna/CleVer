@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../domain/entities/user_profile.dart';
 import '../../common/widgets/custom_text_form_field.dart';
+import '../../cv/providers/cv_generation_provider.dart';
 
-class ExperienceDialog extends StatefulWidget {
+class ExperienceDialog extends ConsumerStatefulWidget {
   final Experience? existing;
 
   const ExperienceDialog({super.key, this.existing});
 
   @override
-  State<ExperienceDialog> createState() => _ExperienceDialogState();
+  ConsumerState<ExperienceDialog> createState() => _ExperienceDialogState();
 }
 
-class _ExperienceDialogState extends State<ExperienceDialog> {
+class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _titleCtrl;
   late TextEditingController _companyCtrl;
   late TextEditingController _startCtrl;
   late TextEditingController _endCtrl;
   late TextEditingController _descCtrl;
+
+  bool _isRewriting = false;
 
   @override
   void initState() {
@@ -66,6 +70,41 @@ class _ExperienceDialogState extends State<ExperienceDialog> {
     }
   }
 
+  Future<void> _rewriteDescription() async {
+    if (_descCtrl.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Isi deskripsi dulu baru bisa di-rewrite AI!')));
+      return;
+    }
+
+    setState(() {
+      _isRewriting = true;
+    });
+
+    try {
+      final repository = ref.read(cvRepositoryProvider);
+      // We assume 'en' for professional rewrite usually, or maybe detect? 
+      // Let's use 'id' if the text looks Indonesian? Or just ask user?
+      // For now, let's default to 'id' since the app UI seems ID-heavy, 
+      // OR utilize the creation provider language if accessible? 
+      // But this dialog is used in Profile Page too, which has no creation state.
+      // Safe bet: 'id'. Or 'en' if you want "More Professional".
+      // Let's default to 'id' for basic usage.
+      final newText = await repository.rewriteContent(_descCtrl.text, 'id');
+      
+      if (mounted) {
+        setState(() {
+          _descCtrl.text = newText;
+          _isRewriting = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isRewriting = false);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal rewrite: $e')));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -105,7 +144,7 @@ class _ExperienceDialogState extends State<ExperienceDialog> {
                 ),
                 const SizedBox(height: 16),
                 
-                // Dates - Full Width for better UX
+                // Dates
                 Row(
                   children: [
                     Expanded(
@@ -136,9 +175,31 @@ class _ExperienceDialogState extends State<ExperienceDialog> {
                 ),
                 
                 const SizedBox(height: 16),
+                
+                // Header for Description with Magic Button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Deskripsi Singkat', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                    TextButton.icon(
+                      onPressed: _isRewriting ? null : _rewriteDescription,
+                      icon: _isRewriting 
+                        ? const SizedBox(width: 12, height: 12, child: CircularProgressIndicator(strokeWidth: 2))
+                        : const Icon(Icons.auto_awesome, size: 12, color: Colors.purpleAccent),
+                      label: Text(_isRewriting ? 'Menulis...' : 'Rewrite AI', style: const TextStyle(color: Colors.purpleAccent, fontSize: 12)),
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero, 
+                        minimumSize: const Size(0,0), 
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                
                 CustomTextFormField(
                   controller: _descCtrl,
-                  labelText: 'Deskripsi Singkat',
+                  labelText: '', // Hide label since header is above
                   hintText: 'Jelaskan tanggung jawab utama dan pencapaianmu...',
                   isDark: true,
                   maxLines: 4,

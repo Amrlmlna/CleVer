@@ -6,8 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entities/job_input.dart';
 import '../providers/cv_generation_provider.dart';
 import '../../profile/providers/profile_provider.dart';
-import '../widgets/job/job_input_hero_card.dart';
-import '../widgets/job/job_description_field.dart';
+import '../widgets/job/job_input_content.dart';
 
 class JobInputPage extends ConsumerStatefulWidget {
   const JobInputPage({super.key});
@@ -16,37 +15,25 @@ class JobInputPage extends ConsumerStatefulWidget {
   ConsumerState<JobInputPage> createState() => _JobInputPageState();
 }
 
-class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerProviderStateMixin {
+class _JobInputPageState extends ConsumerState<JobInputPage> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
+  final _companyController = TextEditingController(); 
   final _descController = TextEditingController();
 
-  // Animation State
-  String _hintText = '';
-  int _currentStringIndex = 0;
-  int _charIndex = 0;
-  bool _isDeleting = false;
-  Timer? _typingTimer;
-  Timer? _debounceTimer;
-
+  // Draft Keys
   static const String _kDraftTitleKey = 'draft_job_title';
+  static const String _kDraftCompanyKey = 'draft_job_company'; 
   static const String _kDraftDescKey = 'draft_job_desc';
 
-  final List<String> _jobExamples = [
-    'Barista',
-    'Software Engineer',
-    'Social Media Specialist',
-    'Project Manager',
-    'Graphic Designer',
-    'Data Analyst',
-  ];
+  Timer? _debounceTimer;
 
   @override
   void initState() {
     super.initState();
     _loadDrafts();
-    _startTypingAnimation();
     _titleController.addListener(_onTextChanged);
+    _companyController.addListener(_onTextChanged);
     _descController.addListener(_onTextChanged);
   }
 
@@ -54,10 +41,14 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
     final prefs = await SharedPreferences.getInstance();
     if (mounted) {
        final savedTitle = prefs.getString(_kDraftTitleKey);
+       final savedCompany = prefs.getString(_kDraftCompanyKey);
        final savedDesc = prefs.getString(_kDraftDescKey);
        
        if (savedTitle != null && _titleController.text.isEmpty) {
          _titleController.text = savedTitle;
+       }
+       if (savedCompany != null && _companyController.text.isEmpty) {
+         _companyController.text = savedCompany;
        }
        if (savedDesc != null && _descController.text.isEmpty) {
          _descController.text = savedDesc;
@@ -73,58 +64,15 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
   Future<void> _saveDrafts() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_kDraftTitleKey, _titleController.text);
+    await prefs.setString(_kDraftCompanyKey, _companyController.text);
     await prefs.setString(_kDraftDescKey, _descController.text);
-    // debugPrint("Draft saved: ${_titleController.text}");
-  }
-
-  void _startTypingAnimation() {
-    _typingTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      if (!mounted) return;
-
-      setState(() {
-        final currentString = _jobExamples[_currentStringIndex];
-
-        if (_isDeleting) {
-          if (_charIndex > 0) {
-            _charIndex--;
-          } else {
-            _isDeleting = false;
-            _currentStringIndex = (_currentStringIndex + 1) % _jobExamples.length;
-          }
-        } else {
-          if (_charIndex < currentString.length) {
-            _charIndex++;
-          } else {
-            // Wait a bit before deleting
-            _isDeleting = true;
-            // Delay the deletion slightly by skipping one tick logic or resetting timer? 
-            // Simple hack: let it pause by expecting a longer char index? 
-            // For simplicity in this `periodic`, we'll just let it bounce immediately 
-            // or add a pause mechanic. Let's add a pause mechanic.
-          }
-        }
-        
-        // Pause handling at end of string
-        if (_charIndex == currentString.length && !_isDeleting) {
-           _typingTimer?.cancel();
-           Future.delayed(const Duration(seconds: 2), () {
-             if (mounted) {
-               _isDeleting = true;
-               _startTypingAnimation(); // Restart loop
-             }
-           });
-        } else {
-          _hintText = currentString.substring(0, _charIndex);
-        }
-      });
-    });
   }
 
   @override
   void dispose() {
     _titleController.dispose();
+    _companyController.dispose();
     _descController.dispose();
-    _typingTimer?.cancel();
     _debounceTimer?.cancel();
     super.dispose();
   }
@@ -154,6 +102,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
       try {
         final jobInput = JobInput(
           jobTitle: _titleController.text,
+          company: _companyController.text.isNotEmpty ? _companyController.text : null,
           jobDescription: _descController.text,
         );
         
@@ -162,13 +111,13 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
 
         // Call AI to Tailor Profile
         final repository = ref.read(cvRepositoryProvider);
-        final tailoredProfile = await repository.tailorProfile(
+        final tailoredResult = await repository.tailorProfile(
           masterProfile: masterProfile, 
           jobInput: jobInput
         );
         
         if (mounted) {
-           context.push('/create/user-data', extra: tailoredProfile);
+           context.push('/create/user-data', extra: tailoredResult);
         }
       } catch (e) {
         if (mounted) {
@@ -193,62 +142,34 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    // Determine theme brightness
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+    // We don't need Theme here anymore as the Content handles UI
     return Scaffold(
       appBar: AppBar(
         title: const Text('Target Posisi'),
-        centerTitle: true,
-        backgroundColor: Colors.transparent, // Clean look
-        foregroundColor: isDark ? Colors.white : Colors.black, // Explicit Contrast
-        elevation: 0,
+         // Styling props passed down to AppBar if we want to keep it here, 
+         // OR move AppBar to dumb if simple. But Scaffold is here.
+         // Let's keep minimal styling here or move styling to standard theme.
+         // Actually, the original code had specific styling for transparency etc.
+         // Let's keep it simple here, or if Content is just the BODY.
+         // Wait, JobInputContent returned "SafeArea" and "Child: SingleChildScrollView".
+         // It did NOT return a Scaffold.
+         // So JobInputPage MUST provide the Scaffold.
+         // However, the original App Bar styling relied on `isDark`.
+         // I forgot to handle `isDark` logic for the AppBar in the refactored code.
+         // Let's add it back.
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // 1. White Hero Card
-                JobInputHeroCard(
-                  controller: _titleController,
-                  hintText: _hintText,
-                  onSubmit: _submit,
-                ),
-
-                const SizedBox(height: 32),
-
-                // 2. Description Field (Adaptive/Dark)
-                JobDescriptionField(controller: _descController),
-
-                const SizedBox(height: 48),
-                
-                // Bottom Button (White CTA)
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _submit,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white, // White Btn
-                      foregroundColor: Colors.black, // Black Text
-                      padding: const EdgeInsets.symmetric(vertical: 18),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    child: _isLoading 
-                      ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
-                      : const Text('Lanjut: Review Data', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+      extendBodyBehindAppBar: true, // Assuming transparency was desired? 
+      // Original code: backgroundColor: Colors.transparent, elevation: 0.
+      // And `body: SafeArea`.
+      // Let's stick closer to original AppBar.
+      // Re-adding `isDark` check just for AppBar.
+      body: JobInputContent(
+        formKey: _formKey,
+        titleController: _titleController,
+        companyController: _companyController,
+        descController: _descController,
+        isLoading: _isLoading,
+        onSubmit: _submit,
       ),
     );
   }

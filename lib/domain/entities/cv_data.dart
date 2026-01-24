@@ -4,8 +4,7 @@ import 'user_profile.dart'; // Import existing entities
 class CVData extends Equatable {
   final String id;
   final UserProfile userProfile;
-  final String generatedSummary;
-  final List<String> tailoredSkills;
+  final String summary;
   final String styleId;
   final DateTime createdAt;
   final String jobTitle;
@@ -14,8 +13,7 @@ class CVData extends Equatable {
   const CVData({
     required this.id,
     required this.userProfile,
-    required this.generatedSummary,
-    required this.tailoredSkills,
+    required this.summary,
     required this.styleId,
     required this.createdAt,
     required this.jobTitle,
@@ -25,8 +23,7 @@ class CVData extends Equatable {
   CVData copyWith({
     String? id,
     UserProfile? userProfile,
-    String? generatedSummary,
-    List<String>? tailoredSkills,
+    String? summary,
     String? styleId,
     DateTime? createdAt,
     String? jobTitle,
@@ -35,8 +32,7 @@ class CVData extends Equatable {
     return CVData(
       id: id ?? this.id,
       userProfile: userProfile ?? this.userProfile,
-      generatedSummary: generatedSummary ?? this.generatedSummary,
-      tailoredSkills: tailoredSkills ?? this.tailoredSkills,
+      summary: summary ?? this.summary,
       styleId: styleId ?? this.styleId,
       createdAt: createdAt ?? this.createdAt,
       jobTitle: jobTitle ?? this.jobTitle,
@@ -48,8 +44,7 @@ class CVData extends Equatable {
     return {
       'id': id,
       'userProfile': userProfile.toJson(),
-      'generatedSummary': generatedSummary,
-      'tailoredSkills': tailoredSkills,
+      'generatedSummary': summary,
       'styleId': styleId,
       'createdAt': createdAt.toIso8601String(),
       'jobTitle': jobTitle,
@@ -61,8 +56,8 @@ class CVData extends Equatable {
     return CVData(
       id: json['id'] as String,
       userProfile: UserProfile.fromJson(json['userProfile'] as Map<String, dynamic>),
-      generatedSummary: json['generatedSummary'] as String,
-      tailoredSkills: (json['tailoredSkills'] as List<dynamic>).map((e) => e as String).toList(),
+      // Map JSON 'generatedSummary' to Dart 'summary' field
+      summary: json['generatedSummary'] as String,
       styleId: json['styleId'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       jobTitle: json['jobTitle'] as String? ?? 'Untitled Job', // Fallback for old data
@@ -71,5 +66,5 @@ class CVData extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, userProfile, generatedSummary, tailoredSkills, styleId, createdAt, jobTitle, language];
+  List<Object?> get props => [id, userProfile, summary, styleId, createdAt, jobTitle, language];
 }

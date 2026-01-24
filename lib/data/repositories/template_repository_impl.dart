@@ -1,9 +1,9 @@
 import '../../domain/entities/cv_template.dart';
+import '../../domain/repositories/template_repository.dart';
 
-class TemplateRepository {
+class TemplateRepositoryImpl implements TemplateRepository {
   /// The central registry of all available templates.
-  /// To add a new template, simply add a new [CVTemplate] object to this list.
-  static final List<CVTemplate> _allTemplates = [
+  final List<CVTemplate> _allTemplates = [
     const CVTemplate(
       id: 'ATS',
       name: 'ATS-Friendly',
@@ -36,14 +36,17 @@ class TemplateRepository {
     ),
   ];
 
-  static List<CVTemplate> getAllTemplates() {
+  @override
+  List<CVTemplate> getAllTemplates() {
     return _allTemplates;
   }
 
-  static CVTemplate getTemplateById(String id) {
+  @override
+  CVTemplate getTemplateById(String id) {
     return _allTemplates.firstWhere(
       (t) => t.id == id,
       orElse: () => _allTemplates.first,
     );
   }
 }
+

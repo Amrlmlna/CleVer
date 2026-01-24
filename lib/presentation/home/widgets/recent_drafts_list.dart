@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../../domain/entities/cv_data.dart';
+import '../../../domain/entities/job_input.dart';
+import '../../../domain/entities/tailored_cv_result.dart'; // Import
 import '../../drafts/providers/draft_provider.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 
@@ -24,17 +26,23 @@ class RecentDraftsList extends ConsumerWidget {
           );
         }
 
+        // 1. Sort by Date Descending
+        final sortedDrafts = List<CVData>.from(drafts)..sort((a,b) => b.createdAt.compareTo(a.createdAt));
+        
+        // 2. Take Top 3
+        final recentDrafts = sortedDrafts.take(3).toList();
+
         return SizedBox(
-          height: 140,
+          height: 180,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemCount: drafts.length + 1, // +1 for "Lihat Semua"
+            itemCount: recentDrafts.length + 1, // +1 for "Lihat Semua"
             separatorBuilder: (context, index) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
-              if (index == drafts.length) {
+              if (index == recentDrafts.length) {
                 return _buildSeeAllCard(context);
               }
-              final draft = drafts[index];
+              final draft = recentDrafts[index];
               return _buildDraftCard(context, ref, draft);
             },
           ),
@@ -48,8 +56,24 @@ class RecentDraftsList extends ConsumerWidget {
   Widget _buildDraftCard(BuildContext context, WidgetRef ref, CVData draft) {
     return InkWell(
       onTap: () {
-        ref.read(generatedCVProvider.notifier).loadCV(draft);
-        context.push('/preview');
+        // Load Draft Data into Provider
+        final notifier = ref.read(cvCreationProvider.notifier);
+        
+        notifier.setJobInput(JobInput(
+          jobTitle: draft.jobTitle, 
+          jobDescription: '',
+        ));
+        notifier.setUserProfile(draft.userProfile);
+        notifier.setSummary(draft.summary);
+        notifier.setStyle(draft.styleId);
+        notifier.setLanguage(draft.language);
+
+        // Navigate to Form for Editing
+        final tailoredResult = TailoredCVResult(
+          profile: draft.userProfile,
+          summary: draft.summary,
+        );
+        context.push('/create/user-data', extra: tailoredResult);
       },
       child: Container(
         width: 160,
@@ -59,7 +83,7 @@ class RecentDraftsList extends ConsumerWidget {
           borderRadius: BorderRadius.circular(24), // High rounded corners
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1), // Subtle shadow
+              color: Colors.black.withValues(alpha: 0.1), // Subtle shadow
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -71,14 +95,14 @@ class RecentDraftsList extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.05), // Light grey icon bg
+                color: Colors.black.withValues(alpha: 0.05), // Light grey icon bg
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Icon(Icons.edit_document, size: 20, color: Colors.black), // Black icon
             ),
             const Spacer(),
             Text(
-              draft.userProfile.fullName.isNotEmpty ? draft.userProfile.fullName : 'Tanpa Judul',
+              draft.jobTitle.isNotEmpty ? draft.jobTitle : 'Tanpa Judul',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16, fontFamily: 'Outfit'),
@@ -98,9 +122,9 @@ class RecentDraftsList extends ConsumerWidget {
     return Container(
       width: 100,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05), // Very subtle fill
+        color: Colors.white.withValues(alpha: 0.05), // Very subtle fill
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5), // Thicker white border
+        border: Border.all(color: Colors.white.withValues(alpha: 0.2), width: 1.5), // Thicker white border
       ),
       child: InkWell(
         onTap: () {

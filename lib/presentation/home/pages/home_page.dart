@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/hero_section.dart';
 import '../widgets/recent_drafts_list.dart';
 import '../../templates/widgets/template_gallery_card.dart';
+import '../../drafts/providers/draft_provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Watch drafts to conditionally render the section
+    final draftsAsync = ref.watch(draftsProvider);
+    final hasDrafts = draftsAsync.when(
+      data: (drafts) => drafts.isNotEmpty,
+      loading: () => false, // Don't show while loading initial
+      error: (_, __) => false,
+    );
+
     // Gen Z Modern Layout
     return Scaffold(
       body: SafeArea(
@@ -21,7 +31,7 @@ class HomePage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                   Text(
                     'Halo,',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: Colors.grey[400],
@@ -45,11 +55,13 @@ class HomePage extends StatelessWidget {
               const HeroSection(),
               const SizedBox(height: 32),
 
-              // Recent Drafts
-              _buildSectionHeader(context, 'Draft Terakhir'),
-              const SizedBox(height: 16),
-              const RecentDraftsList(),
-              const SizedBox(height: 32),
+              // Recent Drafts - Only Show if Drafts Exist
+              if (hasDrafts) ...[
+                _buildSectionHeader(context, 'Draft Terakhir'),
+                const SizedBox(height: 16),
+                const RecentDraftsList(),
+                const SizedBox(height: 32),
+              ],
 
               // Template Gallery (Sneak Peek)
               _buildSectionHeader(context, 'Template Gallery'),

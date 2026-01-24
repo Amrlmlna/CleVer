@@ -8,6 +8,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.transparent,
+      forceMaterialTransparency: true, // Removes scroll shadow for cleaner look
       leading: IconButton(
         icon: const Icon(Icons.notifications_outlined),
         onPressed: () {

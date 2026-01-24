@@ -120,21 +120,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Master Profil'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: _saveProfile,
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          children: [
-            const ProfileHeader(),
-            const SizedBox(height: 32),
+
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 16), // Extra spacing for top
+              const ProfileHeader(),
+              const SizedBox(height: 32),
 
             SectionCard(
               title: 'Info Personal',
@@ -195,6 +189,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             const SizedBox(height: 48),
           ],
         ),
+      ),
       ),
     );
   }

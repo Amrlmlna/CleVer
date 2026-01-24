@@ -1,6 +1,7 @@
 import '../../domain/entities/cv_data.dart';
 import '../../domain/entities/job_input.dart';
 import '../../domain/entities/user_profile.dart';
+import '../../domain/entities/tailored_cv_result.dart'; // Import
 import '../../domain/repositories/cv_repository.dart';
 import '../datasources/remote_ai_service.dart';
 
@@ -29,7 +30,7 @@ class CVRepositoryImpl implements CVRepository {
   }
 
   @override
-  Future<UserProfile> tailorProfile({
+  Future<TailoredCVResult> tailorProfile({
     required UserProfile masterProfile,
     required JobInput jobInput,
   }) {

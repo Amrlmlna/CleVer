@@ -15,11 +15,11 @@ class ProfileHeader extends StatelessWidget {
               shape: BoxShape.circle,
               color: Theme.of(context).primaryColor, 
               border: Border.all(
-                color: Colors.white.withOpacity(0.2), 
+                color: Colors.white.withValues(alpha: 0.2), 
                 width: 4
               ),
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 20, offset: const Offset(0, 10))
+                BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 20, offset: const Offset(0, 10))
               ],
             ),
             child: Icon(Icons.person, size: 50, color: Theme.of(context).scaffoldBackgroundColor),
@@ -31,7 +31,7 @@ class ProfileHeader extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.w900,
             letterSpacing: 2.0,
-            color: Theme.of(context).colorScheme.onBackground,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 4),
