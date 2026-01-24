@@ -80,8 +80,7 @@ class RemoteAIService {
         experience: refinedExperience, // Use refined list
         education: profile.education,
       ),
-      generatedSummary: summary,
-      tailoredSkills: tailoredSkills,
+      summary: summary,
       styleId: styleId,
       createdAt: DateTime.now(),
       jobTitle: jobInput.jobTitle,

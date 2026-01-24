@@ -1,4 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'experience.dart';
+import 'education.dart';
+
+export 'experience.dart';
+export 'education.dart';
 
 class UserProfile extends Equatable {
   final String fullName;
@@ -72,108 +77,4 @@ class UserProfile extends Equatable {
 
   @override
   List<Object?> get props => [fullName, email, phoneNumber, location, experience, education, skills];
-}
-
-class Experience extends Equatable {
-  final String jobTitle;
-  final String companyName;
-  final String startDate; // Simplified for now
-  final String? endDate;
-  final String description;
-
-  const Experience({
-    required this.jobTitle,
-    required this.companyName,
-    required this.startDate,
-    this.endDate,
-    required this.description,
-  });
-
-  Experience copyWith({
-    String? jobTitle,
-    String? companyName,
-    String? startDate,
-    String? endDate,
-    String? description,
-  }) {
-    return Experience(
-      jobTitle: jobTitle ?? this.jobTitle,
-      companyName: companyName ?? this.companyName,
-      startDate: startDate ?? this.startDate,
-      endDate: endDate ?? this.endDate,
-      description: description ?? this.description,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'jobTitle': jobTitle,
-      'companyName': companyName,
-      'startDate': startDate,
-      'endDate': endDate,
-      'description': description,
-    };
-  }
-
-  factory Experience.fromJson(Map<String, dynamic> json) {
-    return Experience(
-      jobTitle: json['jobTitle'] as String,
-      companyName: json['companyName'] as String,
-      startDate: json['startDate'] as String,
-      endDate: json['endDate'] as String?,
-      description: json['description'] as String,
-    );
-  }
-
-  @override
-  List<Object?> get props => [jobTitle, companyName, startDate, endDate, description];
-}
-
-class Education extends Equatable {
-  final String degree;
-  final String schoolName;
-  final String startDate;
-  final String? endDate;
-
-  const Education({
-    required this.degree,
-    required this.schoolName,
-    required this.startDate,
-    this.endDate,
-  });
-
-  Education copyWith({
-    String? degree,
-    String? schoolName,
-    String? startDate,
-    String? endDate,
-  }) {
-    return Education(
-      degree: degree ?? this.degree,
-      schoolName: schoolName ?? this.schoolName,
-      startDate: startDate ?? this.startDate,
-      endDate: endDate ?? this.endDate,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'degree': degree,
-      'schoolName': schoolName,
-      'startDate': startDate,
-      'endDate': endDate,
-    };
-  }
-
-  factory Education.fromJson(Map<String, dynamic> json) {
-    return Education(
-      degree: json['degree'] as String,
-      schoolName: json['schoolName'] as String,
-      startDate: json['startDate'] as String,
-      endDate: json['endDate'] as String?,
-    );
-  }
-
-  @override
-  List<Object?> get props => [degree, schoolName, startDate, endDate];
 }

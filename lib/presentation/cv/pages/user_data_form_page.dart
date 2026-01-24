@@ -136,7 +136,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
 
       if (mounted) {
         setState(() {
-          _summaryController.text = cvData.generatedSummary;
+          _summaryController.text = cvData.summary;
           _isGeneratingSummary = false;
         });
       }

@@ -58,14 +58,14 @@ class RecentDraftsList extends ConsumerWidget {
           jobDescription: '',
         ));
         notifier.setUserProfile(draft.userProfile);
-        notifier.setSummary(draft.generatedSummary);
+        notifier.setSummary(draft.summary);
         notifier.setStyle(draft.styleId);
         notifier.setLanguage(draft.language);
 
         // Navigate to Form for Editing
         final tailoredResult = TailoredCVResult(
           profile: draft.userProfile,
-          summary: draft.generatedSummary,
+          summary: draft.summary,
         );
         context.push('/create/user-data', extra: tailoredResult);
       },

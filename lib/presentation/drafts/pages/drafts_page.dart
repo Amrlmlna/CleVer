@@ -279,7 +279,7 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
                 notifier.setUserProfile(draft.userProfile);
 
                 // 3. Summary
-                notifier.setSummary(draft.generatedSummary);
+                notifier.setSummary(draft.summary);
 
                 // 4. Style & Language
                 notifier.setStyle(draft.styleId);
@@ -288,7 +288,7 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
                 // Navigate to Form for Editing
                 final tailoredResult = TailoredCVResult(
                   profile: draft.userProfile,
-                  summary: draft.generatedSummary,
+                  summary: draft.summary,
                 );
                 context.push('/create/user-data', extra: tailoredResult);
               },

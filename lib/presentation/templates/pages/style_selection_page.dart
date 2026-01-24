@@ -36,8 +36,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
     final cvData = CVData(
       id: const Uuid().v4(),
       userProfile: creationState.userProfile!,
-      generatedSummary: creationState.summary!,
-      tailoredSkills: creationState.userProfile!.skills, // Use skills from profile (which are tailored)
+      summary: creationState.summary!,
       styleId: _selectedStyle,
       createdAt: DateTime.now(),
       jobTitle: creationState.jobInput!.jobTitle,

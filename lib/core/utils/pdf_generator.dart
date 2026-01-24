@@ -64,22 +64,22 @@ class PDFGenerator {
         // Summary
         _buildSectionHeader(title: 'PROFESSIONAL SUMMARY', styleId: 'ATS'),
         pw.Text(
-          cvData.generatedSummary,
+          cvData.summary,
           style: const pw.TextStyle(fontSize: 11),
           textAlign: pw.TextAlign.justify,
         ),
         pw.SizedBox(height: 16),
 
-        // Skills
-        _buildSectionHeader(title: 'SKILLS', styleId: 'ATS'),
-        pw.Wrap(
-          spacing: 8,
-          runSpacing: 4,
-          children: cvData.tailoredSkills.map((skill) => pw.Text(
-            '• $skill', 
-            style: const pw.TextStyle(fontSize: 11),
-          )).toList(),
-        ),
+      // Skills
+      _buildSectionHeader(title: 'SKILLS', styleId: 'ATS'),
+      pw.Wrap(
+        spacing: 8,
+        runSpacing: 4,
+        children: cvData.userProfile.skills.map((skill) => pw.Text(
+          '• $skill', 
+          style: const pw.TextStyle(fontSize: 11),
+        )).toList(),
+      ),
         pw.SizedBox(height: 16),
 
         // Experience
@@ -132,7 +132,7 @@ class PDFGenerator {
               _buildSectionHeader(title: 'SKILLS', styleId: 'Modern', color: accentColor),
               pw.Wrap(
                 runSpacing: 6,
-                children: cvData.tailoredSkills.map((skill) => pw.Container(
+                children: cvData.userProfile.skills.map((skill) => pw.Container(
                   padding: const pw.EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   margin: const pw.EdgeInsets.only(right: 4),
                   decoration: pw.BoxDecoration(
@@ -182,7 +182,7 @@ class PDFGenerator {
                   pw.SizedBox(height: 24),
 
                   _buildSectionHeader(title: 'PROFILE', styleId: 'Modern', color: accentColor),
-                  pw.Text(cvData.generatedSummary, style: const pw.TextStyle(fontSize: 10)),
+                  pw.Text(cvData.summary, style: const pw.TextStyle(fontSize: 10)),
                   pw.SizedBox(height: 24),
 
                   _buildSectionHeader(title: 'WORK EXPERIENCE', styleId: 'Modern', color: accentColor),
@@ -244,7 +244,7 @@ class PDFGenerator {
                    borderRadius: pw.BorderRadius.circular(8),
                  ),
                  child: pw.Text(
-                   cvData.generatedSummary,
+                   cvData.summary,
                    style: pw.TextStyle(fontSize: 11, fontStyle: pw.FontStyle.italic),
                  ),
                ),
@@ -277,7 +277,7 @@ class PDFGenerator {
                    pw.Expanded(child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
                       pw.Text('SKILLS', style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold, color: headerColor)),
                       pw.Divider(color: accentColor),
-                      pw.Wrap(spacing: 4, runSpacing: 4, children: cvData.tailoredSkills.map((s) => 
+                      pw.Wrap(spacing: 4, runSpacing: 4, children: cvData.userProfile.skills.map((s) => 
                         pw.Container(
                           padding: const pw.EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: pw.BoxDecoration(borderRadius: pw.BorderRadius.circular(10), border: pw.Border.all(color: accentColor)),
@@ -339,7 +339,7 @@ class PDFGenerator {
         // Summary
         pw.Text('PROFESSIONAL PROFILE', style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
         pw.SizedBox(height: 4),
-        pw.Text(cvData.generatedSummary, style: const pw.TextStyle(fontSize: 11, lineSpacing: 2)),
+        pw.Text(cvData.summary, style: const pw.TextStyle(fontSize: 11, lineSpacing: 2)),
         pw.SizedBox(height: 16),
         pw.Divider(thickness: 0.5),
         pw.SizedBox(height: 16),
@@ -391,7 +391,7 @@ class PDFGenerator {
                child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children:[
                  pw.Text('CORE COMPETENCIES', style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
                  pw.SizedBox(height: 8),
-                 pw.Text(cvData.tailoredSkills.join(' • '), style: const pw.TextStyle(fontSize: 11))
+                 pw.Text(cvData.userProfile.skills.join(' • '), style: const pw.TextStyle(fontSize: 11))
                ])
             ),
           ]

@@ -19,6 +19,7 @@ class JobInputPage extends ConsumerStatefulWidget {
 class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
+  final _companyController = TextEditingController(); // New
   final _descController = TextEditingController();
 
   // Animation State
@@ -30,6 +31,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
   Timer? _debounceTimer;
 
   static const String _kDraftTitleKey = 'draft_job_title';
+  static const String _kDraftCompanyKey = 'draft_job_company'; // New
   static const String _kDraftDescKey = 'draft_job_desc';
 
   final List<String> _jobExamples = [
@@ -47,6 +49,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
     _loadDrafts();
     _startTypingAnimation();
     _titleController.addListener(_onTextChanged);
+    _companyController.addListener(_onTextChanged);
     _descController.addListener(_onTextChanged);
   }
 
@@ -54,10 +57,14 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
     final prefs = await SharedPreferences.getInstance();
     if (mounted) {
        final savedTitle = prefs.getString(_kDraftTitleKey);
+       final savedCompany = prefs.getString(_kDraftCompanyKey);
        final savedDesc = prefs.getString(_kDraftDescKey);
        
        if (savedTitle != null && _titleController.text.isEmpty) {
          _titleController.text = savedTitle;
+       }
+       if (savedCompany != null && _companyController.text.isEmpty) {
+         _companyController.text = savedCompany;
        }
        if (savedDesc != null && _descController.text.isEmpty) {
          _descController.text = savedDesc;
@@ -73,6 +80,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
   Future<void> _saveDrafts() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_kDraftTitleKey, _titleController.text);
+    await prefs.setString(_kDraftCompanyKey, _companyController.text);
     await prefs.setString(_kDraftDescKey, _descController.text);
     // debugPrint("Draft saved: ${_titleController.text}");
   }
@@ -123,6 +131,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
   @override
   void dispose() {
     _titleController.dispose();
+    _companyController.dispose();
     _descController.dispose();
     _typingTimer?.cancel();
     _debounceTimer?.cancel();
@@ -154,6 +163,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
       try {
         final jobInput = JobInput(
           jobTitle: _titleController.text,
+          company: _companyController.text.isNotEmpty ? _companyController.text : null,
           jobDescription: _descController.text,
         );
         
@@ -215,6 +225,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
                 // 1. White Hero Card
                 JobInputHeroCard(
                   controller: _titleController,
+                  companyController: _companyController,
                   hintText: _hintText,
                   onSubmit: _submit,
                 ),
