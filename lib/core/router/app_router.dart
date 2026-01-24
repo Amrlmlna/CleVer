@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../presentation/home/pages/home_page.dart';
 import '../../presentation/dashboard/pages/main_wrapper_page.dart';
+import '../../presentation/notifications/pages/notifications_page.dart';
 import '../../presentation/drafts/pages/drafts_page.dart';
 
 import '../../presentation/profile/pages/profile_page.dart';
@@ -51,6 +52,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       PosthogObserver(),
     ],
     routes: [
+      GoRoute(
+        path: '/notifications',
+        builder: (context, state) => const NotificationsPage(),
+      ),
       GoRoute(
         path: '/error',
         builder: (context, state) {
