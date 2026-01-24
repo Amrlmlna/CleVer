@@ -38,28 +38,30 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
 
   /// Merges new profile data into the existing Master Profile.
   /// 
-  /// Logic:
-  /// 1. Updates Personal Info (Name, Email, Phone, Location)
-  /// 2. Adds NEW Experience/Education/Skills that don't exist in Master.
-  /// 3. Does NOT remove existing data from Master (Non-destructive).
-  Future<void> mergeProfile(UserProfile newProfile) async {
+  /// Returns `true` if any data was actually updated/added, `false` otherwise.
+  Future<bool> mergeProfile(UserProfile newProfile) async {
     if (state == null) {
       await saveProfile(newProfile);
-      return;
+      return true;
     }
 
     final current = state!;
+    bool hasChanges = false;
     
-    // 1. Personal Info - Always update to latest (User might have fixed a typo)
+    // 1. Personal Info - Check for changes
     final updatedInfo = current.copyWith(
       fullName: newProfile.fullName.isNotEmpty ? newProfile.fullName : current.fullName,
       email: newProfile.email.isNotEmpty ? newProfile.email : current.email,
       phoneNumber: newProfile.phoneNumber?.isNotEmpty == true ? newProfile.phoneNumber : current.phoneNumber,
       location: newProfile.location?.isNotEmpty == true ? newProfile.location : current.location,
     );
+    
+    // Basic equality check involves checking individual fields because copyWith might technically create a new object even if values are same
+    if (updatedInfo != current) {
+      hasChanges = true;
+    }
 
     // 2. Experience - Add only NEW items
-    // unique check based on: Title + Company + StartDate
     final List<Experience> mergedExperience = List.from(current.experience);
     for (final newExp in newProfile.experience) {
        final exists = mergedExperience.any((oldExp) => 
@@ -70,6 +72,7 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
        
        if (!exists) {
          mergedExperience.add(newExp);
+         hasChanges = true;
        }
     }
 
@@ -83,20 +86,29 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
        
        if (!exists) {
          mergedEducation.add(newEdu);
+         hasChanges = true;
        }
     }
 
     // 4. Skills - Union
     final Set<String> uniqueSkills = Set.from(current.skills);
+    final initialSkillCount = uniqueSkills.length;
     uniqueSkills.addAll(newProfile.skills);
     
-    final finalProfile = updatedInfo.copyWith(
-      experience: mergedExperience,
-      education: mergedEducation,
-      skills: uniqueSkills.toList(),
-    );
-
-    await saveProfile(finalProfile);
+    if (uniqueSkills.length != initialSkillCount) {
+      hasChanges = true;
+    }
+    
+    if (hasChanges) {
+      final finalProfile = updatedInfo.copyWith(
+        experience: mergedExperience,
+        education: mergedEducation,
+        skills: uniqueSkills.toList(),
+      );
+      await saveProfile(finalProfile);
+    }
+    
+    return hasChanges;
   }
 
   void updatePersonalInfo({

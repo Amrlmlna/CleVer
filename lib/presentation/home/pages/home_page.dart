@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/hero_section.dart';
 import '../widgets/recent_drafts_list.dart';
-import '../../templates/widgets/template_gallery_card.dart';
+
 import '../../drafts/providers/draft_provider.dart';
 
 class HomePage extends ConsumerWidget {
@@ -63,11 +63,7 @@ class HomePage extends ConsumerWidget {
                 const SizedBox(height: 32),
               ],
 
-              // Template Gallery (Sneak Peek)
-              _buildSectionHeader(context, 'Template Gallery'),
-              const SizedBox(height: 16),
-              const TemplateGalleryCard(),
-              const SizedBox(height: 32),
+
             ],
           ),
         ),
