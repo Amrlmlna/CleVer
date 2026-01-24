@@ -8,7 +8,7 @@ import '../../../profile/widgets/personal_info_form.dart';
 import 'tailored_data_header.dart';
 import 'review_section_card.dart';
 import 'summary_section.dart';
-import 'master_profile_checkbox.dart';
+
 
 import '../../../../domain/entities/tailored_cv_result.dart';
 
@@ -29,14 +29,13 @@ class UserDataFormContent extends StatefulWidget {
   final List<Experience> experience;
   final List<Education> education;
   final List<String> skills;
-  final bool updateMasterProfile;
 
   // Callbacks
   final VoidCallback onGenerateSummary;
   final ValueChanged<List<Experience>> onExperienceChanged;
   final ValueChanged<List<Education>> onEducationChanged;
   final ValueChanged<List<String>> onSkillsChanged;
-  final ValueChanged<bool?> onUpdateMasterProfileChanged;
+
 
   const UserDataFormContent({
     super.key,
@@ -52,12 +51,10 @@ class UserDataFormContent extends StatefulWidget {
     required this.experience,
     required this.education,
     required this.skills,
-    required this.updateMasterProfile,
     required this.onGenerateSummary,
     required this.onExperienceChanged,
     required this.onEducationChanged,
     required this.onSkillsChanged,
-    required this.onUpdateMasterProfileChanged,
   });
 
   @override
@@ -153,11 +150,6 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
                       onChanged: widget.onSkillsChanged,
                     ),
                     const SizedBox(height: 24),
-                    MasterProfileCheckbox(
-                      value: widget.updateMasterProfile,
-                      onChanged: widget.onUpdateMasterProfileChanged,
-                      isDark: widget.isDark,
-                    ),
                   ],
                 ),
             ),

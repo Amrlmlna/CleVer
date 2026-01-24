@@ -19,7 +19,6 @@ class UserDataFormPage extends ConsumerStatefulWidget {
 
 class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   final _formKey = GlobalKey<FormState>();
-  bool _updateMasterProfile = true;
 
   // Personal Info Controllers
   final _nameController = TextEditingController();
@@ -137,7 +136,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
     }
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       final profile = UserProfile(
         fullName: _nameController.text,
@@ -155,27 +154,24 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
       // Save Summary
       ref.read(cvCreationProvider.notifier).setSummary(_summaryController.text);
       
-      // Smart Save Logic: Only update Master Profile if checking enabled AND data actually changed
-      if (_updateMasterProfile) {
-         final currentMaster = ref.read(masterProfileProvider);
-         
-         // Equatable makes this comparison easy and deep
-         if (currentMaster != profile) {
-            ref.read(masterProfileProvider.notifier).saveProfile(profile);
-            
-            // UI Fix: Floating SnackBar with margin to avoid button overlap
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text('Master Profile berhasil diupdate!'),
-                behavior: SnackBarBehavior.floating,
-                margin: const EdgeInsets.only(bottom: 100, left: 24, right: 24), // Float high above button
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-            );
-         }
+      // Smart Save Logic: Try to merge (non-destructive)
+      final hasChanges = await ref.read(masterProfileProvider.notifier).mergeProfile(profile);
+      
+      if (hasChanges && mounted) {
+        // UI Fix: Floating SnackBar with margin to avoid button overlap
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Master Profile berhasil diupdate (Data Baru Ditambahkan)!'),
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.only(bottom: 100, left: 24, right: 24), // Float high above button
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        );
       }
 
-      context.push('/create/style-selection');
+      if (mounted) {
+        context.push('/create/style-selection');
+      }
     }
   }
 
@@ -230,12 +226,10 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         experience: _experience,
         education: _education,
         skills: _skills,
-        updateMasterProfile: _updateMasterProfile,
         onGenerateSummary: _generateSummary,
         onExperienceChanged: (val) => setState(() => _experience = val),
         onEducationChanged: (val) => setState(() => _education = val),
         onSkillsChanged: (val) => setState(() => _skills = val),
-        onUpdateMasterProfileChanged: (val) => setState(() => _updateMasterProfile = val ?? true),
       ),
     );
   }

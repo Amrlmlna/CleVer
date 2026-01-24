@@ -12,7 +12,7 @@ import '../../presentation/cv/pages/job_input_page.dart';
 import '../../presentation/cv/pages/user_data_form_page.dart';
 
 import '../../presentation/templates/pages/style_selection_page.dart';
-import '../../presentation/templates/pages/template_gallery_page.dart';
+
 import '../../domain/entities/tailored_cv_result.dart'; // Import
 import '../../presentation/onboarding/pages/onboarding_page.dart';
 import '../../presentation/onboarding/providers/onboarding_provider.dart';
@@ -152,10 +152,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       // Removed /create/preview route
 
-      GoRoute(
-        path: '/templates',
-        builder: (context, state) => const TemplateGalleryPage(),
-      ),
+
     ],
   );
 });
