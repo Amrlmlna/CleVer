@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../../domain/entities/user_profile.dart';
 import '../../common/widgets/custom_text_form_field.dart';
+import '../../common/widgets/university_picker.dart';
 
 class EducationListForm extends StatefulWidget {
   final List<Education> education;
@@ -186,12 +187,9 @@ class _EducationDialogState extends State<_EducationDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CustomTextFormField(
+                UniversityPicker(
                   controller: _schoolCtrl,
-                  labelText: 'Sekolah / Universitas',
-                  hintText: 'Universitas Indonesia',
                   isDark: true,
-                  validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
                 ),
                 const SizedBox(height: 16),
                 CustomTextFormField(
