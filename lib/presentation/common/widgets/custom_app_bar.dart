@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -13,21 +14,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: const Icon(Icons.notifications_outlined),
         onPressed: () {
-          // TODO: Implement Notifications
+          context.push('/notifications');
         },
       ),
       title: title != null ? Text(title!) : null,
       centerTitle: true,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            // Opens the Drawer of the generic scaffold in MainWrapperPage
-            Scaffold.of(context).openDrawer();
-          },
-        ),
-        const SizedBox(width: 8),
-      ],
+
     );
   }
 

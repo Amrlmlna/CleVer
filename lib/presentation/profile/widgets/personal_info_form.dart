@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../common/widgets/custom_text_form_field.dart';
+import '../../common/widgets/location_picker.dart';
 
 class PersonalInfoForm extends StatelessWidget {
   final TextEditingController nameController;
@@ -47,12 +48,10 @@ class PersonalInfoForm extends StatelessWidget {
           isDark: true,
         ),
         const SizedBox(height: 16),
-        CustomTextFormField(
+        const SizedBox(height: 16),
+        LocationPicker(
           controller: locationController,
-          labelText: 'Lokasi / Domisili',
-          prefixIcon: Icons.location_on_outlined,
-          textInputAction: TextInputAction.done,
-          isDark: true,
+          isDark: true, // Personal info form in this context is usually on dark/light based on form but here we hardcode or pass prop
         ),
       ],
     );

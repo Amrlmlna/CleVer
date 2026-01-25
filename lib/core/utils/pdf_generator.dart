@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -8,6 +9,17 @@ class PDFGenerator {
   static Future<void> generateAndPrint(CVData cvData) async {
     final pdf = pw.Document();
 
+    pw.ImageProvider? profileImage;
+    if (cvData.userProfile.profilePicturePath != null) {
+      try {
+        final imageBytes = await File(cvData.userProfile.profilePicturePath!).readAsBytes();
+        profileImage = pw.MemoryImage(imageBytes);
+      } catch (e) {
+        // Fallback or log error
+        // print('Error loading profile image: $e');
+      }
+    }
+
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -16,9 +28,9 @@ class PDFGenerator {
           // Dispatch to specific layout based on styleId
           switch (cvData.styleId) {
             case 'Modern':
-              return _buildModernLayout(cvData);
+              return _buildModernLayout(cvData, profileImage);
             case 'Creative':
-              return _buildCreativeLayout(cvData);
+              return _buildCreativeLayout(cvData, profileImage);
             case 'Executive':
               return _buildExecutiveLayout(cvData);
             case 'ATS':
@@ -102,9 +114,8 @@ class PDFGenerator {
   }
 
   // --- 2. Modern Layout (Two Columns, Sidebar, Blue Accents) ---
-  static pw.Widget _buildModernLayout(CVData cvData) {
+  static pw.Widget _buildModernLayout(CVData cvData, pw.ImageProvider? profileImage) {
     const accentColor = PdfColor.fromInt(0xFF1E88E5); // Blue 600
-
 
     return pw.Row(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -119,6 +130,19 @@ class PDFGenerator {
           child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
+              // Profile Image
+              if (profileImage != null) ...[
+                 pw.Container(
+                   height: 100,
+                   width: 100,
+                   decoration: pw.BoxDecoration(
+                     shape: pw.BoxShape.circle,
+                     image: pw.DecorationImage(image: profileImage, fit: pw.BoxFit.cover),
+                   ),
+                 ),
+                 pw.SizedBox(height: 24),
+              ],
+
               // Contact
               _buildSectionHeader(title: 'CONTACT', styleId: 'Modern', color: accentColor),
               pw.Text(cvData.userProfile.email, style: const pw.TextStyle(fontSize: 9)),
@@ -196,7 +220,7 @@ class PDFGenerator {
   }
 
   // --- 3. Creative Layout (Bold Header, Distinct Sections) ---
-  static pw.Widget _buildCreativeLayout(CVData cvData) {
+  static pw.Widget _buildCreativeLayout(CVData cvData, pw.ImageProvider? profileImage) {
     const headerColor = PdfColor.fromInt(0xFF2E004B); // Dark Purple
     const accentColor = PdfColor.fromInt(0xFF9C27B0); // Purple
 
@@ -213,16 +237,35 @@ class PDFGenerator {
                bottomRight: pw.Radius.circular(20)
              ),
           ),
-          child: pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
+          child: pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
             children: [
-              pw.Text(
-                cvData.userProfile.fullName,
-                style: pw.TextStyle(fontSize: 32, fontWeight: pw.FontWeight.bold, color: PdfColors.white),
-              ),
-              pw.Text(
-                 '${cvData.userProfile.email}  •  ${cvData.userProfile.phoneNumber ?? ""}',
-                 style: const pw.TextStyle(fontSize: 12, color: PdfColors.grey300),
+              if (profileImage != null) ...[
+                 pw.Container(
+                   height: 80,
+                   width: 80,
+                   decoration: pw.BoxDecoration(
+                     shape: pw.BoxShape.circle,
+                     border: pw.Border.all(color: PdfColors.white, width: 2),
+                     image: pw.DecorationImage(image: profileImage, fit: pw.BoxFit.cover),
+                   ),
+                 ),
+                 pw.SizedBox(width: 20),
+              ],
+              pw.Expanded(
+                child: pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text(
+                      cvData.userProfile.fullName,
+                      style: pw.TextStyle(fontSize: 32, fontWeight: pw.FontWeight.bold, color: PdfColors.white),
+                    ),
+                    pw.Text(
+                       '${cvData.userProfile.email}  •  ${cvData.userProfile.phoneNumber ?? ""}',
+                       style: const pw.TextStyle(fontSize: 12, color: PdfColors.grey300),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

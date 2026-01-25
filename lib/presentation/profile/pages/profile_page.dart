@@ -1,5 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
+import 'package:go_router/go_router.dart';
+
 import '../../../domain/entities/user_profile.dart';
 import '../providers/profile_provider.dart';
 import '../widgets/personal_info_form.dart';
@@ -25,6 +31,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   List<Experience> _experience = [];
   List<Education> _education = [];
   List<String> _skills = [];
+  String? _profileImagePath;
   
   bool _isInit = true;
 
@@ -39,8 +46,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   void _loadFromProvider() {
     final masterProfile = ref.read(masterProfileProvider);
-    // Debug print
-    // debugPrint("ProfilePage: Loading from provider. Data: $masterProfile");
     
     if (masterProfile != null) {
       _nameController.text = masterProfile.fullName;
@@ -49,6 +54,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       _locationController.text = masterProfile.location ?? '';
       
       setState(() {
+        _profileImagePath = masterProfile.profilePicturePath;
         _experience = List.from(masterProfile.experience);
         _education = List.from(masterProfile.education);
         _skills = List.from(masterProfile.skills);
@@ -59,9 +65,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
        _phoneController.clear();
        _locationController.clear();
        setState(() {
-         _experience = [];
+          _experience = [];
          _education = [];
          _skills = [];
+         _profileImagePath = null;
        });
     }
   }
@@ -73,6 +80,21 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     _phoneController.dispose();
     _locationController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      final appDir = await getApplicationDocumentsDirectory();
+      final fileName = path.basename(pickedFile.path);
+      final savedImage = await File(pickedFile.path).copy('${appDir.path}/$fileName');
+
+      setState(() {
+        _profileImagePath = savedImage.path;
+      });
+    }
   }
 
   void _saveProfile() {
@@ -96,6 +118,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       experience: _experience,
       education: _education,
       skills: _skills,
+      profilePicturePath: _profileImagePath,
     );
 
     ref.read(masterProfileProvider.notifier).saveProfile(newProfile);
@@ -112,22 +135,24 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Listen to changes ensures sync even if page is alive in background
     ref.listen(masterProfileProvider, (prev, next) {
-      if (prev != next) { // Equatable ensures this works correctly
+      if (prev != next) {
         _loadFromProvider();
       }
     });
 
     return Scaffold(
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: Column(
             children: [
-              const SizedBox(height: 16), // Extra spacing for top
-              const ProfileHeader(),
+              const SizedBox(height: 16),
+              const SizedBox(height: 16),
+              ProfileHeader(
+                imagePath: _profileImagePath,
+                onEditImage: _pickImage,
+              ),
               const SizedBox(height: 32),
 
             SectionCard(
@@ -175,6 +200,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ),
 
             const SizedBox(height: 48),
+            
+            // Save Button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -186,7 +213,22 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 ),
               ),
             ),
-            const SizedBox(height: 48),
+            
+            const SizedBox(height: 24),
+            
+            // Help Button (New Placement)
+            Center(
+              child: TextButton.icon(
+                onPressed: () => context.push('/profile/help'),
+                icon: Icon(Icons.help_outline, color: Theme.of(context).disabledColor),
+                label: Text(
+                  'Bantuan & Dukungan',
+                  style: TextStyle(color: Theme.of(context).disabledColor),
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 100), // Extra bottom padding
           ],
         ),
       ),

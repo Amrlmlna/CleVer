@@ -10,6 +10,7 @@ class UserProfile extends Equatable {
   final String email;
   final String? phoneNumber;
   final String? location;
+  final String? profilePicturePath;
   final List<Experience> experience;
   final List<Education> education;
   final List<String> skills;
@@ -19,6 +20,7 @@ class UserProfile extends Equatable {
     required this.email,
     this.phoneNumber,
     this.location,
+    this.profilePicturePath,
     this.experience = const [],
     this.education = const [],
     this.skills = const [],
@@ -29,6 +31,7 @@ class UserProfile extends Equatable {
     String? email,
     String? phoneNumber,
     String? location,
+    String? profilePicturePath,
     List<Experience>? experience,
     List<Education>? education,
     List<String>? skills,
@@ -38,6 +41,7 @@ class UserProfile extends Equatable {
       email: email ?? this.email,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       location: location ?? this.location,
+      profilePicturePath: profilePicturePath ?? this.profilePicturePath,
       experience: experience ?? this.experience,
       education: education ?? this.education,
       skills: skills ?? this.skills,
@@ -50,6 +54,7 @@ class UserProfile extends Equatable {
       'email': email,
       'phoneNumber': phoneNumber,
       'location': location,
+      'profilePicturePath': profilePicturePath,
       'experience': experience.map((e) => e.toJson()).toList(),
       'education': education.map((e) => e.toJson()).toList(),
       'skills': skills,
@@ -62,6 +67,7 @@ class UserProfile extends Equatable {
       email: json['email'] as String,
       phoneNumber: json['phoneNumber'] as String?,
       location: json['location'] as String?,
+      profilePicturePath: json['profilePicturePath'] as String?,
       experience: (json['experience'] as List<dynamic>?)
               ?.map((e) => Experience.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -76,5 +82,5 @@ class UserProfile extends Equatable {
   }
 
   @override
-  List<Object?> get props => [fullName, email, phoneNumber, location, experience, education, skills];
+  List<Object?> get props => [fullName, email, phoneNumber, location, profilePicturePath, experience, education, skills];
 }

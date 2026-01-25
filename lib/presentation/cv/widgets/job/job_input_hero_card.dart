@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class JobInputHeroCard extends StatelessWidget {
   final TextEditingController controller;
@@ -23,7 +24,7 @@ class JobInputHeroCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15), // Slightly stronger shadow
+            color: Colors.black.withValues(alpha: 0.1), // Softer shadow
             blurRadius: 24,
             offset: const Offset(0, 8),
           ),
@@ -32,48 +33,41 @@ class JobInputHeroCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-             padding: const EdgeInsets.all(12),
-             decoration: BoxDecoration(
-               color: Colors.black,
-               borderRadius: BorderRadius.circular(12),
-             ),
-             child: const Icon(Icons.auto_awesome, color: Colors.white, size: 24),
-          ),
-          const SizedBox(height: 20),
-          const Text(
+          // Removed Pointless Star Icon
+          
+          Text(
             'Mau lamar kerja apa?',
-            style: TextStyle(
+            style: GoogleFonts.outfit(
               color: Colors.black,
-              fontSize: 24,
-              fontFamily: 'Outfit',
+              fontSize: 28, // Sligthly larger
               fontWeight: FontWeight.w800,
               height: 1.2,
+              letterSpacing: -0.5,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'AI bakal bantuin bikin CV yang pas banget buat tujuan ini.',
-            style: TextStyle(color: Colors.grey[600], height: 1.5, fontSize: 14),
+            style: GoogleFonts.outfit(
+                color: Colors.grey[600], height: 1.5, fontSize: 15),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
           
           // Job Title Input
-          _buildInputPill(
+          _buildMinimalInput(
             controller: controller, 
             hint: hintText.isEmpty && controller.text.isEmpty ? 'Posisi (Misal: UI Designer)' : hintText,
             icon: Icons.work_outline,
-            isValidatorRequired: true,
+            autoFocus: true,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
 
           // Company Input
-          _buildInputPill(
+          _buildMinimalInput(
             controller: companyController, 
             hint: 'Nama Perusahaan (Opsional)',
             icon: Icons.business,
-            isValidatorRequired: false,
-            showSubmit: true, // Show submit button here
+            isLast: true,
             onSubmit: onSubmit,
           ),
         ],
@@ -81,69 +75,56 @@ class JobInputHeroCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInputPill({
+  Widget _buildMinimalInput({
     required TextEditingController controller,
     required String hint,
     required IconData icon,
-    bool isValidatorRequired = false,
-    bool showSubmit = false,
+    bool autoFocus = false,
+    bool isLast = false,
     VoidCallback? onSubmit,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E), // Black/Dark Pill
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: Colors.grey[800]!),
+        color: Colors.grey[100], // Standard light grey for better visibility
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.grey[500], size: 20),
+          Icon(icon, color: Colors.grey[600], size: 20),
           const SizedBox(width: 12),
           Expanded(
             child: TextFormField(
               controller: controller,
-              style: const TextStyle(
-                color: Colors.white, // White Text
+              autofocus: autoFocus,
+              style: GoogleFonts.outfit(
+                color: Colors.black87, // Dark text on light bg
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
               decoration: InputDecoration(
                 hintText: hint,
-                hintStyle: TextStyle(
+                hintStyle: GoogleFonts.outfit(
                   color: Colors.grey[500],
+                  fontWeight: FontWeight.normal,
                 ),
                 border: InputBorder.none,
                 isDense: true,
+                filled: false, // Prevent global theme from filling it
+                fillColor: Colors.transparent, // Ensure transparency
+                contentPadding: const EdgeInsets.symmetric(vertical: 14),
               ),
-              validator: isValidatorRequired ? (value) {
-                if (value == null || value.isEmpty) {
+              validator: (value) {
+                if (!isLast && (value == null || value.isEmpty)) { // Only validate title
                   return 'Wajib diisi ya';
                 }
                 return null;
-              } : null,
-              textInputAction: showSubmit ? TextInputAction.done : TextInputAction.next,
-              onFieldSubmitted: showSubmit ? (_) => onSubmit?.call() : null,
+              },
+              textInputAction: isLast ? TextInputAction.done : TextInputAction.next,
+              onFieldSubmitted: isLast ? (_) => onSubmit?.call() : null,
             ),
           ),
-          if (showSubmit) ...[
-            const SizedBox(width: 8),
-            InkWell(
-              onTap: onSubmit,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                  color: Colors.white, // White Btn
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.arrow_forward,
-                  color: Colors.black, // Black Icon
-                  size: 20,
-                ),
-              ),
-            ),
-          ],
+          // Removed Pointless Arrow Icon
         ],
       ),
     );

@@ -20,51 +20,7 @@ class MainWrapperPage extends StatelessWidget {
         children: [
           navigationShell,
           
-          // Top Fade Gradient
-          Positioned(
-             top: 0,
-             left: 0,
-             right: 0,
-             height: 180, // Taller fade for smoother depth
-             child: IgnorePointer(
-               child: Container(
-                 decoration: BoxDecoration(
-                   gradient: LinearGradient(
-                     begin: Alignment.topCenter,
-                     end: Alignment.bottomCenter,
-                     colors: [
-                       Theme.of(context).scaffoldBackgroundColor,
-                       Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.0),
-                     ],
-                     stops: const [0.2, 1.0], // Solid for top 20%, then fade
-                   ),
-                 ),
-               ),
-             ),
-          ),
 
-          // Bottom Fade Gradient
-          Positioned(
-             bottom: 0,
-             left: 0,
-             right: 0,
-             height: 250, // Much taller to be visible above the Floating Pill
-             child: IgnorePointer(
-               child: Container(
-                 decoration: BoxDecoration(
-                   gradient: LinearGradient(
-                     begin: Alignment.bottomCenter,
-                     end: Alignment.topCenter,
-                     colors: [
-                       Theme.of(context).scaffoldBackgroundColor,
-                       Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.0),
-                     ],
-                     stops: const [0.3, 1.0], // Keep bottom 30% solid (behind the nav bar)
-                   ),
-                 ),
-               ),
-             ),
-          ),
         ],
       ),
       bottomNavigationBar: Container(
@@ -94,34 +50,7 @@ class MainWrapperPage extends StatelessWidget {
           ),
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.black,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
 
-              ListTile(
-              leading: const Icon(Icons.help_outline),
-              title: const Text('Help'),
-              onTap: () {
-                Navigator.pop(context); // Close Drawer
-                context.go('/profile/help');
-              },
-            ),
-          ],
-        ),
-      ),
     );
   }
 

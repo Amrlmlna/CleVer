@@ -44,3 +44,20 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Sensitive Files (DO NOT COMMIT)
+.env
+.env.*
+*.env
+**/secrets/
+**/*.keystore
+**/*.jks
+**/google-services.json
+**/GoogleService-Info.plist
+**/key.properties
+**/.secret/
+
+# Backend (Proprietary - Not Open Source)
+/backend/
+../backend/
+
