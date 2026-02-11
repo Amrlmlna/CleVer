@@ -91,9 +91,8 @@ final routerProvider = Provider<GoRouter>((ref) {
                 routes: [
                   GoRoute(
                     path: 'preview',
-                    parentNavigatorKey: _rootNavigatorKey,
-                    // builder: (context, state) => const CVPreviewPage(), // DEPRECATED
-                    redirect: (context, state) => '/', // Redirect safely or remove
+                    parentNavigatorKey: _rootNavigatorKey,\
+                    redirect: (context, state) => '/',
                   ),
                 ],
               ),
@@ -155,7 +154,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/create/style-selection',
         builder: (context, state) => const StyleSelectionPage(),
       ),
-      // Removed /create/preview route
 
 
     ],

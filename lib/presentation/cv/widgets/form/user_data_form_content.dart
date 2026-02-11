@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../../domain/entities/education.dart';
 import '../../../../domain/entities/experience.dart';
+import '../../../../domain/entities/certification.dart'; // Import
 import '../../../profile/widgets/education_list_form.dart';
 import '../../../profile/widgets/experience_list_form.dart';
+import '../../../profile/widgets/certification_list_form.dart'; // Import
 import '../../../profile/widgets/skills_input_form.dart';
 import '../../../profile/widgets/personal_info_form.dart';
 import 'tailored_data_header.dart';
@@ -29,12 +31,14 @@ class UserDataFormContent extends StatefulWidget {
   final List<Experience> experience;
   final List<Education> education;
   final List<String> skills;
+  final List<Certification> certifications; // Add
 
   // Callbacks
   final VoidCallback onGenerateSummary;
   final ValueChanged<List<Experience>> onExperienceChanged;
   final ValueChanged<List<Education>> onEducationChanged;
   final ValueChanged<List<String>> onSkillsChanged;
+  final ValueChanged<List<Certification>> onCertificationsChanged; // Add
 
 
   const UserDataFormContent({
@@ -51,10 +55,12 @@ class UserDataFormContent extends StatefulWidget {
     required this.experience,
     required this.education,
     required this.skills,
+    required this.certifications, // Add
     required this.onGenerateSummary,
     required this.onExperienceChanged,
     required this.onEducationChanged,
     required this.onSkillsChanged,
+    required this.onCertificationsChanged, // Add
   });
 
   @override
@@ -68,6 +74,7 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
   bool _isExperienceExpanded = false;
   bool _isEducationExpanded = false;
   bool _isSkillsExpanded = false;
+  bool _isCertificationsExpanded = false; // Add
 
   @override
   Widget build(BuildContext context) {
@@ -136,8 +143,21 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
                 ),
             ),
             const SizedBox(height: 16),
+            
+            // 5. Certifications Section (New)
+            ReviewSectionCard(
+              title: 'Sertifikasi',
+              icon: Icons.card_membership,
+              isExpanded: _isCertificationsExpanded,
+              onExpansionChanged: (val) => setState(() => _isCertificationsExpanded = val),
+              child: CertificationListForm(
+                certifications: widget.certifications,
+                onChanged: widget.onCertificationsChanged,
+              ),
+            ),
+            const SizedBox(height: 16),
 
-            // 5. Skills Section
+            // 6. Skills Section
             ReviewSectionCard(
               title: 'Keahlian (Skills)',
               icon: Icons.lightbulb_outline,

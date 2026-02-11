@@ -12,6 +12,7 @@ import '../widgets/personal_info_form.dart';
 import '../widgets/experience_list_form.dart';
 import '../widgets/education_list_form.dart';
 import '../widgets/skills_input_form.dart';
+import '../widgets/certification_list_form.dart'; // Import
 import '../widgets/section_card.dart';
 import '../widgets/profile_header.dart';
 
@@ -31,6 +32,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   List<Experience> _experience = [];
   List<Education> _education = [];
   List<String> _skills = [];
+  List<Certification> _certifications = []; // Add state
   String? _profileImagePath;
   
   bool _isInit = true;
@@ -58,6 +60,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         _experience = List.from(masterProfile.experience);
         _education = List.from(masterProfile.education);
         _skills = List.from(masterProfile.skills);
+        _certifications = List.from(masterProfile.certifications); // Load
       });
     } else {
        _nameController.clear();
@@ -68,6 +71,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           _experience = [];
          _education = [];
          _skills = [];
+         _certifications = [];
          _profileImagePath = null;
        });
     }
@@ -118,6 +122,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       experience: _experience,
       education: _education,
       skills: _skills,
+      certifications: _certifications, // Save
       profilePicturePath: _profileImagePath,
     );
 
@@ -185,6 +190,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               child: EducationListForm(
                 education: _education,
                 onChanged: (val) => setState(() => _education = val),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            SectionCard(
+              title: 'Sertifikasi', // New Section
+              icon: Icons.card_membership,
+              child: CertificationListForm(
+                certifications: _certifications,
+                onChanged: (val) => setState(() => _certifications = val),
               ),
             ),
 

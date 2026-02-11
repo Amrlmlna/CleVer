@@ -34,6 +34,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   List<Experience> _experience = [];
   List<Education> _education = [];
   List<String> _skills = [];
+  List<Certification> _certifications = []; // Add
 
   @override
   void initState() {
@@ -58,6 +59,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
           _experience = List<Experience>.from(profileToUse.experience);
           _education = List<Education>.from(profileToUse.education);
           _skills = List<String>.from(profileToUse.skills);
+          _certifications = List<Certification>.from(profileToUse.certifications); // Load
         });
 
         // Pre-fill summary
@@ -112,6 +114,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         experience: _experience,
         education: _education,
         skills: _skills,
+        certifications: _certifications, // Pass
       );
 
       final repository = ref.read(cvRepositoryProvider);
@@ -146,6 +149,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         experience: _experience,
         education: _education,
         skills: _skills.isNotEmpty ? _skills : ['Leadership', 'Communication'], 
+        certifications: _certifications, // Save
       );
 
       // Save Profile
@@ -226,10 +230,12 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         experience: _experience,
         education: _education,
         skills: _skills,
+        certifications: _certifications, // Pass
         onGenerateSummary: _generateSummary,
         onExperienceChanged: (val) => setState(() => _experience = val),
         onEducationChanged: (val) => setState(() => _education = val),
         onSkillsChanged: (val) => setState(() => _skills = val),
+        onCertificationsChanged: (val) => setState(() => _certifications = val), // Pass
       ),
     );
   }
