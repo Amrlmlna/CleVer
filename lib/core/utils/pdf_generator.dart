@@ -4,7 +4,6 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import '../../domain/entities/cv_data.dart';
 import '../../domain/entities/user_profile.dart';
-import '../../domain/entities/certification.dart'; // Import
 
 class PDFGenerator {
   static Future<void> generateAndPrint(CVData cvData) async {
@@ -363,13 +362,13 @@ class PDFGenerator {
                         child: pw.Text('${edu.schoolName}\n${edu.degree}', style: const pw.TextStyle(fontSize: 10))
                       )),
                       // Certifications
-                      if (cvData.userProfile.certifications.isNotEmpty) ...[
-                         pw.SizedBox(height: 8),
-                         ...cvData.userProfile.certifications.map((cert) => pw.Padding(
-                            padding: const pw.EdgeInsets.only(bottom: 4),
-                            child: pw.Text('${cert.name}\n${cert.issuer} (${cert.date.year})', style: const pw.TextStyle(fontSize: 9, fontStyle: pw.FontStyle.italic)),
-                         )),
-                      ]
+                       if (cvData.userProfile.certifications.isNotEmpty) ...[
+                          pw.SizedBox(height: 8),
+                          ...cvData.userProfile.certifications.map((cert) => pw.Padding(
+                             padding: pw.EdgeInsets.only(bottom: 4),
+                             child: pw.Text('${cert.name}\n${cert.issuer} (${cert.date.year})', style: pw.TextStyle(fontSize: 9, fontStyle: pw.FontStyle.italic)),
+                          )),
+                       ]
                    ])),
                  ]
                )

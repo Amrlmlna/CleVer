@@ -91,7 +91,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                 routes: [
                   GoRoute(
                     path: 'preview',
-                    parentNavigatorKey: _rootNavigatorKey,\
+                    parentNavigatorKey: _rootNavigatorKey,
                     redirect: (context, state) => '/',
                   ),
                 ],
