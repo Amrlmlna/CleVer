@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../domain/entities/user_profile.dart';
-import '../../../domain/entities/certification.dart'; // Import
 import '../providers/onboarding_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 
