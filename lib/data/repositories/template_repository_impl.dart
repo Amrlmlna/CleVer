@@ -1,52 +1,42 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../../domain/entities/cv_template.dart';
 import '../../domain/repositories/template_repository.dart';
 
 class TemplateRepositoryImpl implements TemplateRepository {
-  /// The central registry of all available templates.
-  final List<CVTemplate> _allTemplates = [
-    const CVTemplate(
-      id: 'ATS',
-      name: 'ATS-Friendly',
-      description: 'Dioptimalkan buat sistem ATS. Simpel dan bersih.',
-      thumbnailPath: 'assets/templates/ats_preview.png', // Placeholder path
-      tags: ['Simple', 'Professional'],
-    ),
-    const CVTemplate(
-      id: 'Modern',
-      name: 'Modern Tech',
-      description: 'Desain kekinian dengan aksen halus. Pas buat startup.',
-      thumbnailPath: 'assets/templates/modern_preview.png',
-      tags: ['Tech', 'Sleek'],
-    ),
-    const CVTemplate(
-      id: 'Creative',
-      name: 'Creative Bold',
-      description: 'Tampil beda dengan tipografi tebal dan layout unik.',
-      thumbnailPath: 'assets/templates/creative_preview.png',
-      isPremium: true,
-      tags: ['Design', 'Bold'],
-    ),
-     const CVTemplate(
-      id: 'Executive',
-      name: 'Executive Suite',
-      description: 'Profesional dan berwibawa. Cocok buat level pimpinan.',
-      thumbnailPath: 'assets/templates/executive_preview.png',
-      isPremium: true,
-      tags: ['Leadership', 'Formal'],
-    ),
-  ];
+  // TODO: Move base URL to configuration/env
+  final String baseUrl = 'http://10.0.2.2:3000/api'; // Android Emulator localhost
 
   @override
-  List<CVTemplate> getAllTemplates() {
-    return _allTemplates;
+  Future<List<CVTemplate>> getAllTemplates() async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/templates'));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonList = json.decode(response.body);
+        return jsonList.map((json) => CVTemplate.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load templates');
+      }
+    } catch (e) {
+      // Fallback or rethrow
+      print('Error fetching templates: $e');
+      return []; 
+    }
   }
 
   @override
-  CVTemplate getTemplateById(String id) {
-    return _allTemplates.firstWhere(
-      (t) => t.id == id,
-      orElse: () => _allTemplates.first,
-    );
+  Future<CVTemplate?> getTemplateById(String id) async {
+    try {
+      // Option A: Fetch all and find (efficient for small lists)
+      final templates = await getAllTemplates();
+      return templates.firstWhere((t) => t.id == id);
+      
+      // Option B: Dedicated endpoint (if available)
+      // final response = await http.get(Uri.parse('$baseUrl/templates/$id'));
+    } catch (e) {
+      return null;
+    }
   }
 }
 
