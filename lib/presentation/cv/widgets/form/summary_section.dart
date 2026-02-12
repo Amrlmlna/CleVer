@@ -54,7 +54,17 @@ class SummarySection extends StatelessWidget {
                   child: SpinningTextLoader(
                     texts: const ['Thinking...', 'Writing...', 'Polishing...'],
                     style: GoogleFonts.outfit(
-                      color: isDark ? Colors.black : Colors.white, 
+                      color: isDark ? Colors.black : Colors.white, // Keep text color logic? User said "button will turn into dark color". If button is dark, text is white. 
+                      // Wait, if isDark is TRUE (Dark Mode), button is White. 
+                      // If isDark is FALSE (Light Mode), button is Black.
+                      // If button is Black, text is White.
+                      // If button is White, text is Black.
+                      // User said "white shimmering".
+                      // I'll stick to default shimmer (Grey/White/Grey) which works on Dark backgrounds.
+                      // But if the background is WHITE, White shimmer is invisible.
+                      // User said "button will turn into dark color when its on the loading state". 
+                      // implies the background is DARK always during loading?
+                      // I will remove the custom shimmerColors so it defaults to Grey/White/Grey.
                       fontWeight: FontWeight.bold,
                     ),
                     interval: const Duration(milliseconds: 1000),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // Import
-import 'shimmer_text.dart';
 import 'spinning_text_loader.dart';
 
 class ModernLoadingScreen extends StatelessWidget {
@@ -64,17 +63,7 @@ class ModernLoadingScreen extends StatelessWidget {
               ),
             ),
             
-            const SizedBox(height: 16),
-
-            // Shimmering Status text
-            ShimmerText(
-              text: "Generating your perfect CV...",
-              style: GoogleFonts.outfit(
-                fontSize: 16,
-                color: Colors.grey, 
-                fontWeight: FontWeight.normal,
-              ),
-            ),
+            // ShimmerText removed as it is now integrated into SpinningTextLoader
           ],
         ),
       ),
