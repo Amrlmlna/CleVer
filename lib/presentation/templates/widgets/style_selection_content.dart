@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../domain/entities/cv_template.dart';
 
 class StyleSelectionContent extends StatelessWidget {
@@ -22,161 +23,203 @@ class StyleSelectionContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Pilih Gaya CV'),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          'SELECT TEMPLATE',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.5,
+            fontSize: 16,
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Pilih template yang paling cocok buat kamu',
-              style: Theme.of(context).textTheme.headlineSmall,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          
-          // Language Selection
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          // Language Selection (Minimalist)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Bahasa CV:', style: TextStyle(fontWeight: FontWeight.bold)),
-                const SizedBox(width: 12),
-                SegmentedButton<String>(
-                  segments: const [
-                     ButtonSegment(value: 'id', label: Text('Indonesia'), icon: Icon(Icons.flag)),
-                     ButtonSegment(value: 'en', label: Text('Inggris'), icon: Icon(Icons.language)),
-                  ],
-                  selected: {selectedLanguage},
-                  onSelectionChanged: (Set<String> newSelection) {
-                    onLanguageChanged(newSelection.first);
-                  },
+                _LanguageButton(
+                  label: 'ID',
+                  isSelected: selectedLanguage == 'id',
+                  onTap: () => onLanguageChanged('id'),
+                ),
+                const SizedBox(width: 16),
+                _LanguageButton(
+                  label: 'EN',
+                  isSelected: selectedLanguage == 'en',
+                  onTap: () => onLanguageChanged('en'),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
-
+          
           Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.all(16),
+            child: GridView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.7, // Aspect ratio for A4-ish preview + text
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 24,
+              ),
               itemCount: templates.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 16),
               itemBuilder: (context, index) {
                 final template = templates[index];
                 final isSelected = template.id == selectedStyleId;
                 
-                 // Determine icon based on tag/id just for visual variety
-                IconData icon;
-                if (template.id == 'ATS') {
-                   icon = Icons.text_snippet_outlined;
-                } else if (template.id == 'Modern') {
-                   icon = Icons.design_services_outlined;
-                } else if (template.id == 'Creative') {
-                   icon = Icons.brush_outlined;
-                } else {
-                   icon = Icons.article_outlined; // Default
-                }
-
                 return GestureDetector(
                   onTap: () => onStyleSelected(template.id),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: isSelected ? Colors.white : const Color(0xFF1E1E1E), 
-                      border: Border.all(
-                        color: isSelected ? Colors.black : Colors.transparent,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: isSelected
-                          ? [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
-                                blurRadius: 10,
-                                offset: const Offset(0, 4),
-                              )
-                            ]
-                          : [],
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          icon,
-                          size: 32,
-                          color: isSelected ? Colors.black : Colors.white,
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                template.name,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: isSelected ? Colors.black : Colors.white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF5F5F5),
+                            border: Border.all(
+                              color: isSelected ? Colors.black : Colors.transparent,
+                              width: 3,
+                            ),
+                            borderRadius: BorderRadius.circular(0), // Sharp corners for modern look
+                            boxShadow: isSelected
+                                ? [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 10),
+                                    )
+                                  ]
+                                : [],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(0),
+                            child: CachedNetworkImage(
+                              imageUrl: template.thumbnailUrl,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
+                              ),
+                              errorWidget: (context, url, error) => const Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.description_outlined, color: Colors.grey, size: 32),
+                                    SizedBox(height: 4),
+                                    Text("Preview", style: TextStyle(color: Colors.grey, fontSize: 10)),
+                                  ],
                                 ),
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                template.description,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: isSelected
-                                      ? Colors.grey[600]
-                                      : Colors.grey[400],
-                                ),
-                              ),
-                              if (template.isPremium) ...[
-                                const SizedBox(height: 8),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    color: isSelected ? Colors.amber : Colors.amber[100],
-                                    borderRadius: BorderRadius.circular(4),
-                                    ),
-                                  child: Text(
-                                    'PREMIUM',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                      color: isSelected ? Colors.black : Colors.amber[900],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ],
+                            ),
                           ),
                         ),
-                        if (isSelected)
-                          const Icon(Icons.check_circle, color: Colors.black),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        template.name.toUpperCase(),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: isSelected ? FontWeight.w900 : FontWeight.w600,
+                          color: isSelected ? Colors.black : Colors.grey[600],
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                       if (template.isPremium) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          'PREMIUM',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 8,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.amber[900],
+                            letterSpacing: 1,
+                          ),
+                        ),
                       ],
-                    ),
+                    ],
                   ),
                 );
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: onExport,
-                icon: const Icon(Icons.picture_as_pdf),
-                label: const Text('Ekspor PDF'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+          
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: onExport,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero, // Sharp button
+                    ),
+                  ),
+                  child: const Text(
+                    'EXPORT PDF',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _LanguageButton extends StatelessWidget {
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _LanguageButton({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.black : Colors.transparent,
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
+        ),
       ),
     );
   }

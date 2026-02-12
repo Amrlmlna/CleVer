@@ -44,7 +44,7 @@ class CVData extends Equatable {
     return {
       'id': id,
       'userProfile': userProfile.toJson(),
-      'generatedSummary': summary,
+      'summary': summary, // Matches backend template variable 'summary'
       'styleId': styleId,
       'createdAt': createdAt.toIso8601String(),
       'jobTitle': jobTitle,
@@ -56,8 +56,8 @@ class CVData extends Equatable {
     return CVData(
       id: json['id'] as String,
       userProfile: UserProfile.fromJson(json['userProfile'] as Map<String, dynamic>),
-      // Map JSON 'generatedSummary' to Dart 'summary' field
-      summary: json['generatedSummary'] as String,
+      // Map JSON 'summary' (new) or 'generatedSummary' (legacy)
+      summary: (json['summary'] ?? json['generatedSummary']) as String? ?? 'Summary not available',
       styleId: json['styleId'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       jobTitle: json['jobTitle'] as String? ?? 'Untitled Job', // Fallback for old data

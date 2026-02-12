@@ -10,6 +10,7 @@ import '../../cv/providers/cv_generation_provider.dart';
 import '../../drafts/providers/draft_provider.dart';
 import '../providers/template_provider.dart';
 import '../widgets/style_selection_content.dart';
+import '../../common/widgets/modern_loading_screen.dart';
 
 class StyleSelectionPage extends ConsumerStatefulWidget {
   const StyleSelectionPage({super.key});
@@ -131,23 +132,26 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
               onExport: _exportPDF,
             ),
             if (_isGenerating)
-              Container(
-                color: Colors.black54,
-                child: const Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CircularProgressIndicator(),
-                      SizedBox(height: 16),
-                      Text("Generating PDF...", style: TextStyle(color: Colors.white)),
-                    ],
-                  ),
-                ),
-              ),
+               const ModernLoadingScreen(
+                 badgeText: "GENERATING PDF",
+                 loadingTexts: [
+                   "Memproses Data...",
+                   "Menerapkan Desain...",
+                   "Membuat Halaman...",
+                   "Finalisasi PDF...",
+                 ],
+               ),
           ],
         );
       },
-      loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
+      loading: () => const ModernLoadingScreen(
+        badgeText: "LOADING TEMPLATES",
+        loadingTexts: [
+          "Mengambil Template...",
+          "Menyiapkan Galeri...",
+          "Memuat Preview...",
+        ],
+      ),
       error: (err, stack) => Scaffold(
         body: Center(
           child: Column(

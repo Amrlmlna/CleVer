@@ -42,7 +42,7 @@ class CVRepositoryImpl implements CVRepository {
   @override
   Future<List<int>> downloadPDF({required CVData cvData, required String templateId}) async {
     // TODO: Use env variable for URL
-    final String baseUrl = 'http://10.0.2.2:3000/api'; 
+    final String baseUrl = 'https://cvmaster-chi.vercel.app/api'; 
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/cv/generate'),

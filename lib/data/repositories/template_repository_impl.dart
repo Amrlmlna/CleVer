@@ -5,7 +5,7 @@ import '../../domain/repositories/template_repository.dart';
 
 class TemplateRepositoryImpl implements TemplateRepository {
   // TODO: Move base URL to configuration/env
-  final String baseUrl = 'http://10.0.2.2:3000/api'; // Android Emulator localhost
+  final String baseUrl = 'https://cvmaster-chi.vercel.app/api'; // Production URL
 
   @override
   Future<List<CVTemplate>> getAllTemplates() async {
