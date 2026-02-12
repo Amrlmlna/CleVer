@@ -91,7 +91,7 @@ class OnboardingNavigationBar extends StatelessWidget {
                      child: SpinningTextLoader(
                       texts: const ['Finalizing...', 'Saving Profile...', 'Ready!'],
                       style: GoogleFonts.outfit(
-                         color: Colors.black, 
+                         color: Colors.white, // User implies button turns dark, so text should be white? User said "white shimmering... button will turn into dark color". If button is dark, text should be white.
                          fontWeight: FontWeight.w900,
                          fontSize: 16,
                          letterSpacing: 1.0,

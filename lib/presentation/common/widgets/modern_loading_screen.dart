@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // Import
-import 'shimmer_text.dart';
 import 'spinning_text_loader.dart';
 
 class ModernLoadingScreen extends StatelessWidget {
-  const ModernLoadingScreen({super.key});
+  final List<String>? loadingTexts;
+  final String? badgeText;
+
+  const ModernLoadingScreen({
+    super.key,
+    this.loadingTexts,
+    this.badgeText,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +37,7 @@ class ModernLoadingScreen extends StatelessWidget {
                   Icon(Icons.auto_awesome, size: 16, color: isDark ? Colors.white70 : Colors.black54),
                   const SizedBox(width: 8),
                   Text(
-                    "AI PROCESSING",
+                    badgeText ?? "AI PROCESSING",
                     style: GoogleFonts.outfit(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -48,7 +54,7 @@ class ModernLoadingScreen extends StatelessWidget {
             SizedBox(
               height: 40, // Fixed height to prevent layout jumps
               child: SpinningTextLoader(
-                texts: const [
+                texts: loadingTexts ?? const [
                   "Menganalisa Profil...",
                   "Menyusun Struktur...",
                   "Menulis Summary...",
@@ -64,17 +70,7 @@ class ModernLoadingScreen extends StatelessWidget {
               ),
             ),
             
-            const SizedBox(height: 16),
-
-            // Shimmering Status text
-            ShimmerText(
-              text: "Generating your perfect CV...",
-              style: GoogleFonts.outfit(
-                fontSize: 16,
-                color: Colors.grey, 
-                fontWeight: FontWeight.normal,
-              ),
-            ),
+            // ShimmerText removed as it is now integrated into SpinningTextLoader
           ],
         ),
       ),

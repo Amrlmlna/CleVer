@@ -17,4 +17,9 @@ abstract class CVRepository {
     required UserProfile masterProfile,
     required JobInput jobInput,
   });
+
+  Future<List<int>> downloadPDF({
+    required CVData cvData,
+    required String templateId,
+  });
 }
