@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart'; // Import
+import '../../../common/widgets/spinning_text_loader.dart'; // Import corrected
 
 class SummarySection extends StatelessWidget {
   final TextEditingController controller;
@@ -41,14 +43,32 @@ class SummarySection extends StatelessWidget {
         const SizedBox(height: 12),
         ElevatedButton.icon(
           onPressed: isGenerating ? null : onGenerate,
+          // Premium Loading State
           icon: isGenerating 
-              ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) 
-              : const Icon(Icons.auto_awesome, size: 18),
-          label: Text(isGenerating ? 'Generating...' : 'Generate with AI'),
+              ? const SizedBox.shrink() // Hide icon when loading
+              : Icon(Icons.auto_awesome, size: 18, color: isDark ? Colors.black : Colors.white),
+          label: isGenerating 
+              ? SizedBox(
+                  height: 20,
+                  width: 150, // Fixed width to prevent jitter
+                  child: SpinningTextLoader(
+                    texts: const ['Thinking...', 'Writing...', 'Polishing...'],
+                    style: GoogleFonts.outfit(
+                      color: isDark ? Colors.black : Colors.white, 
+                      fontWeight: FontWeight.bold,
+                    ),
+                    interval: const Duration(milliseconds: 1000),
+                  ),
+                )
+              : Text('Generate with AI', style: GoogleFonts.outfit(fontWeight: FontWeight.bold)),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.purple[50],
-            foregroundColor: Colors.purple,
+            backgroundColor: isDark ? Colors.white : Colors.black,
+            foregroundColor: isDark ? Colors.black : Colors.white,
             elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 16),
           ),
         ),
       ],

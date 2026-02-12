@@ -7,6 +7,7 @@ import '../../../domain/entities/job_input.dart';
 import '../providers/cv_generation_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../widgets/job/job_input_content.dart';
+import '../../common/widgets/modern_loading_screen.dart'; // Import
 
 class JobInputPage extends ConsumerStatefulWidget {
   const JobInputPage({super.key});
@@ -95,9 +96,16 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
         return;
       }
 
-      setState(() {
-        _isLoading = true;
-      });
+      // Show Premium Loading Screen
+      // We push it as a route so we can pop it later
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => const ModernLoadingScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        ),
+      );
 
       try {
         final jobInput = JobInput(
@@ -117,10 +125,17 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
         );
         
         if (mounted) {
+           // Pop Loading Screen
+           Navigator.of(context).pop();
+           
+           // Navigate to Next Page
            context.push('/create/user-data', extra: tailoredResult);
         }
       } catch (e) {
         if (mounted) {
+          // Pop Loading Screen first
+          Navigator.of(context).pop();
+          
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Gagal menganalisis profil: $e'),
@@ -130,13 +145,8 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
             ),
           );
         }
-      } finally {
-        if (mounted) {
-          setState(() {
-            _isLoading = false;
-          });
-        }
-      }
+      } 
+      // Finally block removed as popping is handled in try/catch
     }
   }
 

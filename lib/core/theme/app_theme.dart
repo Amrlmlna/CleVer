@@ -235,6 +235,16 @@ class AppTheme {
           side: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
         ),
       ),
+      
+      // Premium Global Transitions
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: ZoomPageTransitionsBuilder(
+            allowEnterRouteSnapshotting: false,  
+          ),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        },
+      ),
     );
   }
 }

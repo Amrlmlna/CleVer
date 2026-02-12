@@ -1,13 +1,16 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart'; // Import
 import '../../legal/pages/legal_page.dart';
 import 'onboarding_legal_modal.dart';
+import '../../common/widgets/spinning_text_loader.dart'; // Import
 
 class OnboardingNavigationBar extends StatelessWidget {
   final int currentPage;
   final VoidCallback onNext;
   final VoidCallback onBack;
   final bool isLastPage;
+  final bool isLoading; // New
 
   const OnboardingNavigationBar({
     super.key,
@@ -15,6 +18,7 @@ class OnboardingNavigationBar extends StatelessWidget {
     required this.onNext,
     required this.onBack,
     this.isLastPage = false,
+    this.isLoading = false, // Default false
   });
 
   @override
@@ -81,14 +85,28 @@ class OnboardingNavigationBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16), // Softer corners
                 ),
               ),
-              child: Text(
-                isLastPage ? 'MULAI SEKARANG' : 'NEXT STEP',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16,
-                  letterSpacing: 1.0,
+              child: isLoading 
+                ? SizedBox(
+                    height: 20,
+                     child: SpinningTextLoader(
+                      texts: const ['Finalizing...', 'Saving Profile...', 'Ready!'],
+                      style: GoogleFonts.outfit(
+                         color: Colors.black, 
+                         fontWeight: FontWeight.w900,
+                         fontSize: 16,
+                         letterSpacing: 1.0,
+                      ),
+                      interval: const Duration(milliseconds: 800),
+                    ),
+                  ) 
+                : Text(
+                  isLastPage ? 'MULAI SEKARANG' : 'NEXT STEP',
+                  style: GoogleFonts.outfit(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16,
+                    letterSpacing: 1.0,
+                  ),
                 ),
-              ),
             ),
           ),
 

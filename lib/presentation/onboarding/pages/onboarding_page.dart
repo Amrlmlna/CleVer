@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../domain/entities/user_profile.dart';
-import '../../../domain/entities/certification.dart'; // Import
+import '../../../domain/entities/user_profile.dart'; // Includes Certification
 import '../providers/onboarding_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 
@@ -83,7 +82,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     }
   }
 
+  bool _isSaving = false;
+
   Future<void> _finishOnboarding() async {
+    setState(() {
+      _isSaving = true;
+    });
+
+    // Artificial delay to show off the premium animation
+    await Future.delayed(const Duration(seconds: 2));
+
     // 1. Save to Master Profile
     final masterProfile = UserProfile(
       fullName: _nameController.text,
@@ -152,6 +160,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           OnboardingNavigationBar(
             currentPage: _currentPage,
             isLastPage: _currentPage == 5, // Update Last Page Index
+            isLoading: _isSaving, // Pass Loading State
             onNext: _nextPage,
             onBack: _prevPage,
           ),

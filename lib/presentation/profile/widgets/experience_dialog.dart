@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import '../../../../domain/entities/user_profile.dart';
 import '../../common/widgets/custom_text_form_field.dart';
 import '../../cv/providers/cv_generation_provider.dart';
+import '../../common/widgets/spinning_text_loader.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ExperienceDialog extends ConsumerStatefulWidget {
   final Experience? existing;
@@ -177,20 +179,42 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                 const SizedBox(height: 16),
                 
                 // Header for Description with Magic Button
+                // Header for Description with Magic Button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('Deskripsi Singkat', style: TextStyle(color: Colors.white70, fontSize: 12)),
-                    TextButton.icon(
-                      onPressed: _isRewriting ? null : _rewriteDescription,
-                      icon: _isRewriting 
-                        ? const SizedBox(width: 12, height: 12, child: CircularProgressIndicator(strokeWidth: 2))
-                        : const Icon(Icons.auto_awesome, size: 12, color: Colors.purpleAccent),
-                      label: Text(_isRewriting ? 'Menulis...' : 'Rewrite AI', style: const TextStyle(color: Colors.purpleAccent, fontSize: 12)),
+                    // Premium Monochrome Rewrite Button
+                    _isRewriting 
+                    ? SizedBox(
+                        height: 16,
+                        width: 100,
+                        child: SpinningTextLoader(
+                          texts: const ['Improving...', 'Rephrasing...', 'Polishing...'],
+                          style: GoogleFonts.outfit(
+                            color: Colors.white, 
+                            fontSize: 12, 
+                            fontWeight: FontWeight.bold
+                          ),
+                          interval: const Duration(milliseconds: 800),
+                        ),
+                      )
+                    : TextButton.icon(
+                      onPressed: _rewriteDescription,
+                      icon: const Icon(Icons.auto_awesome, size: 12, color: Colors.white),
+                      label: Text(
+                        'Rewrite AI', 
+                        style: GoogleFonts.outfit(
+                          color: Colors.white, 
+                          fontSize: 12, 
+                          fontWeight: FontWeight.bold
+                        )
+                      ),
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero, 
                         minimumSize: const Size(0,0), 
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        overlayColor: Colors.white.withValues(alpha: 0.1),
                       ),
                     ),
                   ],
