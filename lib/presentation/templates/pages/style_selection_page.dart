@@ -10,7 +10,7 @@ import '../../cv/providers/cv_generation_provider.dart';
 import '../../drafts/providers/draft_provider.dart';
 import '../providers/template_provider.dart';
 import '../widgets/style_selection_content.dart';
-import '../../common/widgets/modern_loading_screen.dart';
+import '../../common/widgets/app_loading_screen.dart';
 
 class StyleSelectionPage extends ConsumerStatefulWidget {
   const StyleSelectionPage({super.key});
@@ -132,9 +132,9 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
               onExport: _exportPDF,
             ),
             if (_isGenerating)
-               const ModernLoadingScreen(
-                 badgeText: "GENERATING PDF",
-                 loadingTexts: [
+               const AppLoadingScreen(
+                 badge: "GENERATING PDF",
+                 messages: [
                    "Memproses Data...",
                    "Menerapkan Desain...",
                    "Membuat Halaman...",
@@ -144,9 +144,9 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
           ],
         );
       },
-      loading: () => const ModernLoadingScreen(
-        badgeText: "LOADING TEMPLATES",
-        loadingTexts: [
+      loading: () => const AppLoadingScreen(
+        badge: "LOADING TEMPLATES",
+        messages: [
           "Mengambil Template...",
           "Menyiapkan Galeri...",
           "Memuat Preview...",

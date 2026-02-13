@@ -24,6 +24,10 @@
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
+		<key>NSCameraUsageDescription</key>
+		<string>We need camera access to scan job postings from images</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>We need photo library access to select job posting images</string>
 		<key>com.posthog.posthog.API_KEY</key>
 		<string>phc_A9UtLCSpCu6NQTmfEK35OXBfVUd7ZoJEqHHslWoAaEz</string>
 		<key>com.posthog.posthog.POSTHOG_HOST</key>
