@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../data/services/ocr_service.dart';
@@ -29,6 +30,35 @@ class OCRState {
   }
 }
 
+/// OCR Result
+enum OCRStatus { success, cancelled, noText, error }
+
+class OCRResult {
+  final OCRStatus status;
+  final JobInput? jobInput;
+  final String? errorMessage;
+
+  const OCRResult({
+    required this.status,
+    this.jobInput,
+    this.errorMessage,
+  });
+
+  factory OCRResult.success(JobInput jobInput) => OCRResult(
+    status: OCRStatus.success,
+    jobInput: jobInput,
+  );
+
+  factory OCRResult.cancelled() => const OCRResult(status: OCRStatus.cancelled);
+
+  factory OCRResult.noText() => const OCRResult(status: OCRStatus.noText);
+
+  factory OCRResult.error(String message) => OCRResult(
+    status: OCRStatus.error,
+    errorMessage: message,
+  );
+}
+
 /// OCR Notifier
 class OCRNotifier extends Notifier<OCRState> {
   late final OCRService _ocrService;
@@ -41,35 +71,56 @@ class OCRNotifier extends Notifier<OCRState> {
     return const OCRState();
   }
 
-  /// Scan job posting from image source
-  Future<JobInput?> scanJobPosting(ImageSource source) async {
+  /// Complete OCR flow: pick image -> extract text -> parse with backend
+  /// Returns OCRResult with status and data
+  /// onProcessingStart: callback fired when backend processing begins (after image is picked)
+  Future<OCRResult> scanJobPosting(
+    ImageSource source, {
+    VoidCallback? onProcessingStart,
+  }) async {
+    // Step 1: Pick image and extract text (no loading state yet)
+    final extractedText = await _pickAndExtractText(source);
+    
+    if (extractedText == null) {
+      return OCRResult.cancelled();
+    }
+    
+    if (extractedText.isEmpty) {
+      return OCRResult.noText();
+    }
+
+    // Step 2: Notify UI that processing is starting (show loading screen)
+    onProcessingStart?.call();
+
+    // Step 3: Process text with backend (with loading state)
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // Step 1: Extract text from image using OCR (on-device)
-      final text = await _ocrService.extractTextFromImage(source);
+      final jobInput = await _repository.extractFromText(extractedText);
 
-      if (text == null || text.isEmpty) {
-        throw Exception('No text found in image');
-      }
-
-      // Step 2: Send text to backend for parsing
-      final jobInput = await _repository.extractFromText(text);
-
-      // Update state with success
       state = state.copyWith(
         isLoading: false,
         extractedData: jobInput,
         error: null,
       );
 
-      return jobInput;
+      return OCRResult.success(jobInput);
     } catch (e) {
-      // Update state with error
+      final errorMsg = e.toString();
       state = state.copyWith(
         isLoading: false,
-        error: e.toString(),
+        error: errorMsg,
       );
+      return OCRResult.error(errorMsg);
+    }
+  }
+
+  /// Private: Pick image and extract text
+  Future<String?> _pickAndExtractText(ImageSource source) async {
+    try {
+      final text = await _ocrService.extractTextFromImage(source);
+      return text;
+    } catch (e) {
       return null;
     }
   }

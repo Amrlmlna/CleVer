@@ -4,7 +4,7 @@ import '../../domain/entities/job_input.dart';
 
 class JobExtractionRepository {
   // TODO: Get this from environment or config
-  static const String baseUrl = 'http://localhost:3000'; // Update this to your backend URL
+  static const String baseUrl = 'https://cvmaster-chi.vercel.app'; // Update this to your backend URL
 
   /// Extract job posting from raw text using Groq API via backend
   Future<JobInput> extractFromText(String text) async {

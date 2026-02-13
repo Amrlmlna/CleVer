@@ -199,60 +199,79 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
   }
 
   Future<void> _scanJobPosting(ImageSource source) async {
-    // Show modern loading screen
-    Navigator.of(context).push(
-      PageRouteBuilder(
-        opaque: false,
-        barrierDismissible: false,
-        pageBuilder: (context, animation, secondaryAnimation) => const AppLoadingScreen(
-          badge: "OCR SCANNING",
-          messages: [
-            "Membaca gambar...",
-            "Mengekstrak teks...",
-            "Menganalisis lowongan...",
-            "Menyusun data...",
-            "Finalisasi...",
-          ],
-        ),
-      ),
-    );
-
-    // Use the OCR provider for business logic
     final ocrNotifier = ref.read(ocrProvider.notifier);
-    final jobInput = await ocrNotifier.scanJobPosting(source);
-
-    // Close loading screen
-    if (mounted) {
+    bool loadingShown = false;
+    
+    // Call provider's scan method with callback
+    final result = await ocrNotifier.scanJobPosting(
+      source,
+      onProcessingStart: () {
+        // Show loading screen when processing starts (after image is picked)
+        if (!loadingShown && mounted) {
+          loadingShown = true;
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              opaque: false,
+              barrierDismissible: false,
+              pageBuilder: (context, animation, secondaryAnimation) => const AppLoadingScreen(
+                badge: "OCR SCANNING",
+                messages: [
+                  "Menganalisis teks...",
+                  "Mengidentifikasi lowongan...",
+                  "Menyusun data...",
+                  "Finalisasi...",
+                ],
+              ),
+            ),
+          );
+        }
+      },
+    );
+    
+    // Close loading if shown
+    if (mounted && loadingShown) {
       Navigator.of(context).pop();
     }
-
-    // Handle result
+    
     if (!mounted) return;
 
-    if (jobInput != null) {
-      // Auto-fill form fields
-      _titleController.text = jobInput.jobTitle;
-      _companyController.text = jobInput.company ?? '';
-      _descController.text = jobInput.jobDescription ?? '';
+    // Handle result with clean switch statement
+    switch (result.status) {
+      case OCRStatus.success:
+        _titleController.text = result.jobInput!.jobTitle;
+        _companyController.text = result.jobInput!.company ?? '';
+        _descController.text = result.jobInput!.jobDescription ?? '';
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('✅ Job posting extracted successfully!'),
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.only(bottom: 100, left: 20, right: 20),
-        ),
-      );
-    } else {
-      // Show error from provider state
-      final errorMessage = ref.read(ocrProvider).error ?? 'Failed to extract job posting';
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(errorMessage),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20),
-        ),
-      );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('✅ Job posting extracted successfully!'),
+            behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.only(bottom: 100, left: 20, right: 20),
+          ),
+        );
+
+      case OCRStatus.cancelled:
+        // Silent - user cancelled
+
+      case OCRStatus.noText:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Tidak ada teks ditemukan dalam gambar'),
+            backgroundColor: Colors.orange,
+            behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.only(bottom: 100, left: 20, right: 20),
+          ),
+        );
+
+      case OCRStatus.error:
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result.errorMessage ?? 'Failed to extract job posting'),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20),
+          ),
+        );
     }
   }
 
