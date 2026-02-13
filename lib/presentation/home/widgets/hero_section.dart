@@ -17,7 +17,7 @@ class HeroSection extends ConsumerWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(32), // High rounded corners
+        borderRadius: BorderRadius.circular(12),
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -47,7 +47,7 @@ class HeroSection extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.05),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     'AI POWERED',
@@ -86,7 +86,7 @@ class HeroSection extends ConsumerWidget {
                       foregroundColor: Colors.white,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100), // Pill shape
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 0),
                     ),

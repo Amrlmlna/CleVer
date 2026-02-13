@@ -152,27 +152,11 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
 
   @override
   Widget build(BuildContext context) {
-    // We don't need Theme here anymore as the Content handles UI
     return Scaffold(
       appBar: AppBar(
         title: const Text('Target Posisi'),
-         // Styling props passed down to AppBar if we want to keep it here, 
-         // OR move AppBar to dumb if simple. But Scaffold is here.
-         // Let's keep minimal styling here or move styling to standard theme.
-         // Actually, the original code had specific styling for transparency etc.
-         // Let's keep it simple here, or if Content is just the BODY.
-         // Wait, JobInputContent returned "SafeArea" and "Child: SingleChildScrollView".
-         // It did NOT return a Scaffold.
-         // So JobInputPage MUST provide the Scaffold.
-         // However, the original App Bar styling relied on `isDark`.
-         // I forgot to handle `isDark` logic for the AppBar in the refactored code.
-         // Let's add it back.
       ),
-      extendBodyBehindAppBar: true, // Assuming transparency was desired? 
-      // Original code: backgroundColor: Colors.transparent, elevation: 0.
-      // And `body: SafeArea`.
-      // Let's stick closer to original AppBar.
-      // Re-adding `isDark` check just for AppBar.
+      extendBodyBehindAppBar: true,
       body: JobInputContent(
         formKey: _formKey,
         titleController: _titleController,

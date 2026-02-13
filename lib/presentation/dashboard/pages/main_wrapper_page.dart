@@ -29,7 +29,7 @@ class MainWrapperPage extends StatelessWidget {
           color: Theme.of(context).brightness == Brightness.dark 
               ? const Color(0xFF1E1E1E) 
               : Colors.black, // Dark Mode: Grey Card, Light Mode: Black Pill
-          borderRadius: BorderRadius.circular(32),
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.3),
@@ -78,7 +78,7 @@ class MainWrapperPage extends StatelessWidget {
             color: isSelected 
                 ? (isDark ? Colors.white.withValues(alpha: 0.1) : Colors.white.withValues(alpha: 0.2)) 
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
             icon,

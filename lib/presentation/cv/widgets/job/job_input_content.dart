@@ -116,7 +116,7 @@ class _JobInputContentState extends State<JobInputContent> {
               // 2. Description Field (Adaptive/Dark)
               JobDescriptionField(controller: widget.descController),
 
-              const SizedBox(height: 48),
+              const SizedBox(height: 32),
               
               // Bottom Button (White CTA)
               SizedBox(
@@ -124,12 +124,12 @@ class _JobInputContentState extends State<JobInputContent> {
                 child: ElevatedButton(
                   onPressed: widget.onSubmit,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white, // White Btn
-                    foregroundColor: Colors.black, // Black Text
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
                     padding: const EdgeInsets.symmetric(vertical: 18),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                   child: widget.isLoading 

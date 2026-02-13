@@ -79,8 +79,8 @@ class RecentDraftsList extends ConsumerWidget {
         width: 160,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white, // White Card
-          borderRadius: BorderRadius.circular(24), // High rounded corners
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.1), // Subtle shadow
@@ -122,15 +122,15 @@ class RecentDraftsList extends ConsumerWidget {
     return Container(
       width: 100,
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05), // Very subtle fill
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.2), width: 1.5), // Thicker white border
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.2), width: 1.5),
       ),
       child: InkWell(
         onTap: () {
            context.go('/drafts');
         },
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(12),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

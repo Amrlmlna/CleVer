@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class JobDescriptionField extends StatelessWidget {
   final TextEditingController controller;
@@ -13,35 +14,36 @@ class JobDescriptionField extends StatelessWidget {
       children: [
         Text(
           'Detail / Kualifikasi (Opsional)',
-          style: TextStyle(
+          style: GoogleFonts.outfit(
             fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : Colors.black87,
+            fontWeight: FontWeight.w600,
+            color: isDark ? Colors.white : Colors.black,
           ),
         ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          maxLines: 5,
-          style: TextStyle(color: isDark ? Colors.white : Colors.black),
-          decoration: InputDecoration(
-            hintText: 'Paste deskripsi posisi, persyaratan, atau kualiifikasi di sini...',
-            hintStyle: TextStyle(color: isDark ? Colors.grey[600] : Colors.grey[500]),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide.none,
+        const SizedBox(height: 12),
+        Container(
+          decoration: BoxDecoration(
+            color: isDark ? Colors.grey[900] : Colors.grey[100],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: TextFormField(
+            controller: controller,
+            maxLines: 5,
+            style: GoogleFonts.outfit(
+              color: isDark ? Colors.white : Colors.black,
+              fontSize: 16,
             ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey[300]!),
+            decoration: InputDecoration(
+              hintText: 'Paste deskripsi posisi, persyaratan, atau kualifikasi di sini...',
+              hintStyle: GoogleFonts.outfit(
+                color: isDark ? Colors.grey[600] : Colors.grey[400],
+                fontSize: 16,
+              ),
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              contentPadding: const EdgeInsets.all(16),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: isDark ? Colors.white : Colors.black, width: 2),
-            ),
-            filled: true,
-            fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey[50],
-            contentPadding: const EdgeInsets.all(16), 
           ),
         ),
       ],
