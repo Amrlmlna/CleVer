@@ -73,8 +73,8 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         CustomSnackBar.showSuccess(
           context,
           isTailored 
-            ? 'Data & Summary telah disesuaikan oleh AI! ✨' 
-            : 'Data otomatis diisi dari Master Profile kamu!',
+            ? 'Data & Summary telah disesuaikan oleh AI' 
+            : 'Data otomatis diisi dari Master Profile kamu',
         );
       }
     });
