@@ -30,16 +30,23 @@ class DraftSyncManager {
   void init() {
     print("[DraftSyncManager] Initializing...");
     
-    // 1. Listen for Auth changes to trigger initial fetch
+    // 1. Initial startup check: if user is already logged in, fetch cloud drafts
+    final initialUser = _ref.read(authStateProvider).value;
+    if (initialUser != null) {
+      print("[DraftSyncManager] User already logged in at startup: ${initialUser.uid}. Triggering fetch...");
+      initialCloudFetch(initialUser.uid);
+    }
+
+    // 2. Listen for Auth changes for login/logout events
     _ref.listen(authStateProvider, (prev, next) {
       final user = next.value;
       if (user != null && (prev == null || prev.value == null)) {
-        print("[DraftSyncManager] User logged in: ${user.uid}. Triggering initial drafts fetch...");
+        print("[DraftSyncManager] Login detected: ${user.uid}. Triggering initial cloud fetch...");
         initialCloudFetch(user.uid);
       }
     });
 
-    // 2. Start Periodic Heartbeat (every 30s)
+    // 3. Start Periodic Heartbeat (every 30s)
     _heartbeatTimer?.cancel();
     _heartbeatTimer = Timer.periodic(const Duration(seconds: 30), (_) => _heartbeat());
     
@@ -70,37 +77,57 @@ class DraftSyncManager {
   /// Initial fetch from Cloud to Local on login/startup
   Future<void> initialCloudFetch(String uid) async {
     try {
+      print("[DraftSyncManager] Fetching drafts from Firestore for $uid...");
       final cloudDrafts = await _firestoreRepo.getDrafts(uid);
-      if (cloudDrafts.isNotEmpty) {
-        print("[DraftSyncManager] ${cloudDrafts.length} drafts found in cloud. Merging...");
-        
-        final localDrafts = await _ref.read(draftRepositoryProvider).getDrafts();
-        
-        // Merge strategy: Union by ID (Cloud wins on collision)
-        final Map<String, CVData> mergedMap = {
-          for (var d in localDrafts) d.id: d,
-          for (var d in cloudDrafts) d.id: d,
-        };
-        
-        final mergedList = mergedMap.values.toList()
-          ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-
-        // Save back to local repository
-        // Note: DraftRepositoryImpl._persistDrafts is private, so we use notifier if possible 
-        // or just update local storage directly from manager (risky but okay for now)
-        // Better: Add a bulk save to DraftRepository interface if needed.
-        // For now, let's just save them one by one via notifier to trigger UI updates.
-        
-        for (final draft in mergedList) {
-           await _ref.read(draftsProvider.notifier).saveDraft(draft);
-        }
-
-        await _updateLastSyncedCache(mergedList);
-      } else {
-        print("[DraftSyncManager] Cloud drafts are empty for this user.");
+      final localDrafts = await _ref.read(draftRepositoryProvider).getDrafts();
+      
+      if (cloudDrafts.isEmpty && localDrafts.isEmpty) {
+        print("[DraftSyncManager] No drafts found anywhere.");
+        return;
       }
+
+      print("[DraftSyncManager] merging: ${cloudDrafts.length} from cloud, ${localDrafts.length} from local.");
+      
+      // BIDIRECTIONAL MERGE STRATEGY:
+      // 1. Map all drafts by ID
+      // 2. If ID exists in both, compare 'createdAt' (latest wins)
+      final Map<String, CVData> mergedMap = {};
+
+      // Load local first
+      for (var d in localDrafts) {
+        mergedMap[d.id] = d;
+      }
+
+      // Merge Cloud (Conflict resolution: Latest wins)
+      for (var cloudDraft in cloudDrafts) {
+        final existing = mergedMap[cloudDraft.id];
+        if (existing != null) {
+          // Compare dates
+          if (cloudDraft.createdAt.isAfter(existing.createdAt)) {
+            print("[DraftSyncManager] Conflict on ${cloudDraft.id}: Cloud is newer. Overwriting local.");
+            mergedMap[cloudDraft.id] = cloudDraft;
+          } else {
+            print("[DraftSyncManager] Conflict on ${cloudDraft.id}: Local is newer or same. Keeping local.");
+          }
+        } else {
+          print("[DraftSyncManager] New draft from cloud: ${cloudDraft.id}");
+          mergedMap[cloudDraft.id] = cloudDraft;
+        }
+      }
+      
+      final mergedList = mergedMap.values.toList()
+        ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+      // BULK SAVE to local repo and refresh UI state
+      print("[DraftSyncManager] Final merged list contains ${mergedList.length} drafts. Persisting...");
+      await _ref.read(draftsProvider.notifier).saveAllDrafts(mergedList);
+
+      // Ensure cache is updated so heartbeat doesn't immediately push back
+      await _updateLastSyncedCache(mergedList);
+      
+      print("[DraftSyncManager] Initial merge SUCCESSFUL.");
     } catch (e) {
-      print("[DraftSyncManager] Initial fetch error: $e");
+      print("[DraftSyncManager] Initial fetch/merge error: $e");
     }
   }
 
@@ -118,26 +145,27 @@ class DraftSyncManager {
     // Compare with last synced version using Deep Equality
     final Function eq = const DeepCollectionEquality().equals;
     if (!eq(currentDrafts, _lastSyncedDrafts)) {
-      print("[DraftSyncManager] Changes detected in drafts! Syncing with Cloud for ${user.uid}...");
+      print("[DraftSyncManager] Local changes detected! Syncing with Cloud for ${user.uid}...");
       try {
         // 1. Handle Deletions: Find IDs in lastSynced that aren't in current
         if (_lastSyncedDrafts != null) {
           final currentIds = currentDrafts.map((d) => d.id).toSet();
           for (final oldDraft in _lastSyncedDrafts!) {
             if (!currentIds.contains(oldDraft.id)) {
-              print("[DraftSyncManager] Deleting draft ${oldDraft.id} from cloud...");
-              await _firestoreRepo.deleteDraft(user.uid, oldDraft.id);
+                print("[DraftSyncManager] Deleting draft ${oldDraft.id} from cloud...");
+                await _firestoreRepo.deleteDraft(user.uid, oldDraft.id);
             }
           }
         }
 
-        // 2. Handle Saves/Updates: Push everything to cloud (Firestore handles updates via set)
+        // 2. Handle Saves/Updates: Push everything to cloud
+        // Firestore 'set' merges/updates automatically if we use the same doc ID.
         for (final draft in currentDrafts) {
            await _firestoreRepo.saveDraft(user.uid, draft);
         }
 
         await _updateLastSyncedCache(currentDrafts);
-        print("[DraftSyncManager] Drafts sync SUCCESSFUL.");
+        print("[DraftSyncManager] Heartbeat sync SUCCESSFUL.");
       } catch (e) {
         print("[DraftSyncManager] Heartbeat sync error: $e");
       }

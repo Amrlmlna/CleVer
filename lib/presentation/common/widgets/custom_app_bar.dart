@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../auth/providers/auth_state_provider.dart';
-import '../../profile/providers/profile_provider.dart';
 import '../../profile/providers/profile_sync_provider.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {

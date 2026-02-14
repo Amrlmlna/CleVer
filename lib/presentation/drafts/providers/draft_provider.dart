@@ -28,6 +28,14 @@ class DraftsNotifier extends AsyncNotifier<List<CVData>> {
     });
   }
 
+  Future<void> saveAllDrafts(List<CVData> drafts) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      await _repository.saveAllDrafts(drafts);
+      return _repository.getDrafts();
+    });
+  }
+
   Future<void> deleteDraft(String id) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -52,7 +60,7 @@ class DraftsNotifier extends AsyncNotifier<List<CVData>> {
       id: id,
       userProfile: creationState.userProfile!,
       summary: creationState.summary ?? '',
-      styleId: creationState.selectedStyle ?? 'ATS',
+      styleId: creationState.selectedStyle,
       createdAt: DateTime.now(),
       jobTitle: creationState.jobInput!.jobTitle,
       jobDescription: creationState.jobInput!.jobDescription ?? '',

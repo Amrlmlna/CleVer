@@ -22,6 +22,11 @@ class DraftRepositoryImpl implements DraftRepository {
   }
 
   @override
+  Future<void> saveAllDrafts(List<CVData> drafts) async {
+    await _persistDrafts(drafts);
+  }
+
+  @override
   Future<List<CVData>> getDrafts() async {
     final prefs = await SharedPreferences.getInstance();
     final String? data = prefs.getString(_storageKey);
