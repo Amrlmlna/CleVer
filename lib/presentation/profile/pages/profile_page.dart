@@ -15,6 +15,8 @@ import '../widgets/skills_input_form.dart';
 import '../widgets/certification_list_form.dart'; // Import
 import '../widgets/section_card.dart';
 import '../widgets/profile_header.dart';
+import '../providers/cv_import_provider.dart';
+import '../../common/widgets/app_loading_screen.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -101,6 +103,177 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
   }
 
+  void _showImportCVDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Import CV'),
+        content: const Text('Pilih cara import CV kamu:'),
+        actions: [
+          TextButton.icon(
+            onPressed: () {
+              Navigator.pop(context);
+              _importFromImage(ImageSource.camera);
+            },
+            icon: const Icon(Icons.camera_alt),
+            label: const Text('Kamera'),
+          ),
+          TextButton.icon(
+            onPressed: () {
+              Navigator.pop(context);
+              _importFromImage(ImageSource.gallery);
+            },
+            icon: const Icon(Icons.photo_library),
+            label: const Text('Galeri'),
+          ),
+          TextButton.icon(
+            onPressed: () {
+              Navigator.pop(context);
+              _importFromPDF();
+            },
+            icon: const Icon(Icons.picture_as_pdf),
+            label: const Text('File PDF'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _importFromImage(ImageSource source) async {
+    bool loadingShown = false;
+
+    final result = await ref.read(cvImportProvider.notifier).importFromImage(
+      source,
+      onProcessingStart: () {
+        if (!loadingShown && mounted) {
+          loadingShown = true;
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              opaque: false,
+              barrierDismissible: false,
+              pageBuilder: (context, _, __) => const AppLoadingScreen(
+                badge: "IMPORTING CV",
+                messages: [
+                  "Membaca CV...",
+                  "Mengekstrak data...",
+                  "Menyusun profil...",
+                ],
+              ),
+            ),
+          );
+        }
+      },
+    );
+
+    if (mounted && loadingShown) {
+      Navigator.pop(context);
+    }
+
+    _handleImportResult(result.status, result.extractedProfile);
+  }
+
+  Future<void> _importFromPDF() async {
+    bool loadingShown = false;
+
+    final result = await ref.read(cvImportProvider.notifier).importFromPDF(
+      onProcessingStart: () {
+        if (!loadingShown && mounted) {
+          loadingShown = true;
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              opaque: false,
+              barrierDismissible: false,
+              pageBuilder: (context, _, __) => const AppLoadingScreen(
+                badge: "IMPORTING CV",
+                messages: [
+                  "Membaca PDF...",
+                  "Mengekstrak data...",
+                  "Menyusun profil...",
+                ],
+              ),
+            ),
+          );
+        }
+      },
+    );
+
+    if (mounted && loadingShown) {
+      Navigator.pop(context);
+    }
+
+    _handleImportResult(result.status, result.extractedProfile);
+  }
+
+  void _handleImportResult(CVImportStatus status, UserProfile? profile) {
+    switch (status) {
+      case CVImportStatus.success:
+        if (profile != null) {
+          // MERGE imported data with existing data (don't replace!)
+          
+          // Update text fields only if they're currently empty
+          if (_nameController.text.isEmpty) {
+            _nameController.text = profile.fullName;
+          }
+          if (_emailController.text.isEmpty) {
+            _emailController.text = profile.email;
+          }
+          if (_phoneController.text.isEmpty && profile.phoneNumber != null) {
+            _phoneController.text = profile.phoneNumber!;
+          }
+          if (_locationController.text.isEmpty && profile.location != null) {
+            _locationController.text = profile.location!;
+          }
+          
+          setState(() {
+            // ADD imported items to existing lists (merge, don't replace!)
+            _experience = [..._experience, ...profile.experience];
+            _education = [..._education, ...profile.education];
+            
+            // For skills, merge and remove duplicates
+            final allSkills = {..._skills, ...profile.skills}.toList();
+            _skills = allSkills;
+            
+            // Add certifications
+            _certifications = [..._certifications, ...profile.certifications];
+          });
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                '✅ CV berhasil diimport!\n'
+                'Ditambahkan: ${profile.experience.length} pengalaman, '
+                '${profile.education.length} pendidikan, '
+                '${profile.skills.length} skill'
+              ),
+              duration: const Duration(seconds: 4),
+            ),
+          );
+        }
+        break;
+      case CVImportStatus.cancelled:
+        // User cancelled, do nothing
+        break;
+      case CVImportStatus.noText:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('❌ Tidak ada teks yang ditemukan di CV'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+        break;
+      case CVImportStatus.error:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('❌ Gagal mengimport CV. Coba lagi ya!'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
   void _saveProfile() {
     if (_nameController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -158,6 +331,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 imagePath: _profileImagePath,
                 onEditImage: _pickImage,
               ),
+              const SizedBox(height: 24),
+
+              // Import CV Button
+              ElevatedButton.icon(
+                onPressed: _showImportCVDialog,
+                icon: const Icon(Icons.upload_file),
+                label: const Text('Import dari CV yang udah ada'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                  backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                  foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
+                ),
+              ),
+
               const SizedBox(height: 32),
 
             SectionCard(

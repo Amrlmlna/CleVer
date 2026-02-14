@@ -1,5 +1,8 @@
+import 'dart:io';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:pdf_text/pdf_text.dart';
 
 class OCRService {
   final _textRecognizer = TextRecognizer();
@@ -34,6 +37,43 @@ class OCRService {
       return recognizedText.text.trim();
     } catch (e) {
       print('[OCRService] Error extracting text: $e');
+      return null;
+    }
+  }
+
+  /// Extract text from PDF file
+  Future<String?> extractTextFromPDF() async {
+    try {
+      print('[OCRService] Starting PDF picker...');
+      
+      // Pick PDF file
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+      
+      if (result == null || result.files.single.path == null) {
+        print('[OCRService] User cancelled PDF selection');
+        return null; // User cancelled
+      }
+      
+      final file = File(result.files.single.path!);
+      print('[OCRService] Processing PDF: ${file.path}');
+      
+      // Try extracting text from PDF
+      PDFDoc doc = await PDFDoc.fromFile(file);
+      String text = await doc.text;
+      
+      if (text.trim().isNotEmpty) {
+        print('[OCRService] PDF text extracted successfully. Length: ${text.length}');
+        return text.trim(); // ✅ PDF has selectable text
+      }
+      
+      print('[OCRService] No text found in PDF (might be scanned)');
+      return null; // Scanned PDF - would need image conversion
+      
+    } catch (e) {
+      print('[OCRService] PDF extraction error: $e');
       return null;
     }
   }
