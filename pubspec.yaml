@@ -53,7 +53,7 @@ dependencies:
   path_provider: ^2.1.5
   open_filex: ^4.7.0
   file_picker: ^8.0.0
-  pdf_text: ^0.2.1
+  syncfusion_flutter_pdf: ^27.2.5
   cached_network_image: ^3.4.1
  
 dev_dependencies:

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:pdf_text/pdf_text.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class OCRService {
   final _textRecognizer = TextRecognizer();
@@ -60,13 +60,18 @@ class OCRService {
       final file = File(result.files.single.path!);
       print('[OCRService] Processing PDF: ${file.path}');
       
-      // Try extracting text from PDF
-      PDFDoc doc = await PDFDoc.fromFile(file);
-      String text = await doc.text;
+      // Extract text using Syncfusion
+      final PdfDocument document = PdfDocument(inputBytes: file.readAsBytesSync());
       
-      if (text.trim().isNotEmpty) {
-        print('[OCRService] PDF text extracted successfully. Length: ${text.length}');
-        return text.trim(); // ✅ PDF has selectable text
+      // Extract text from all pages
+      String extractedText = PdfTextExtractor(document).extractText();
+      
+      // Close the document
+      document.dispose();
+      
+      if (extractedText.trim().isNotEmpty) {
+        print('[OCRService] PDF text extracted successfully. Length: ${extractedText.length}');
+        return extractedText.trim(); // ✅ PDF has selectable text
       }
       
       print('[OCRService] No text found in PDF (might be scanned)');

@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../domain/entities/user_profile.dart';
-import '../../services/ocr_service.dart';
-import '../../repositories/cv_import_repository.dart';
+import '../../../data/services/ocr_service.dart';
+import '../../../data/repositories/cv_import_repository.dart';
 
 enum CVImportStatus { idle, processing, success, cancelled, noText, error }
 
