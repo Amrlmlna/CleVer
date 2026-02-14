@@ -13,17 +13,12 @@ class MockAIService implements RemoteAIService {
     required UserProfile profile,
     required JobInput jobInput,
     required String styleId,
-    required String language,
   }) async {
     // Simulate Network Delay
     await Future.delayed(const Duration(seconds: 2));
 
-    final isIndo = language == 'id';
-
     // Dummy AI-Enhanced Description
-    final String summary = isIndo 
-        ? "Profesional ${jobInput.jobTitle} yang berdedikasi dengan pengalaman mendalam dalam industri. Terbukti mampu meningkatkan efisiensi operasional dan memimpin tim lintas fungsi menuju kesuksesan proyek. Ahli dalam memecahkan masalah kompleks dengan solusi inovatif."
-        : "Dedicated ${jobInput.jobTitle} professional with extensive industry experience. Proven track record of improving operational efficiency and leading cross-functional teams to project success. Expert in solving complex problems with innovative solutions.";
+    const String summary = "Profesional yang berdedikasi dengan pengalaman mendalam dalam industri. Terbukti mampu meningkatkan efisiensi operasional dan memimpin tim lintas fungsi menuju kesuksesan proyek. Ahli dalam memecahkan masalah kompleks dengan solusi inovatif.";
 
     // Dummy Tailored Skills
     final List<String> tailoredSkills = [
@@ -37,11 +32,10 @@ class MockAIService implements RemoteAIService {
     ];
 
     // Dummy Enhanced Experience
-    final refinedExperience = profile.experience.map((e) {
+    // Dummy Enhanced Experience
+    final refinedExperience = profile.experience.map<Experience>((e) {
       return e.copyWith(
-        description: isIndo
-            ? "Meningkatkan produktivitas tim sebesar 20% melalui implementasi metodologi Agile. Memimpin pengembangan fitur utama yang berdampak pada 10.000+ pengguna aktif bulanan."
-            : "Increased team productivity by 20% through Agile methodology implementation. Led the development of key features impacting 10,000+ monthly active users.",
+        description: "Meningkatkan produktivitas tim sebesar 20% melalui implementasi metodologi Agile. Memimpin pengembangan fitur utama yang berdampak pada 10.000+ pengguna aktif bulanan.",
       );
     }).toList();
 
@@ -55,7 +49,6 @@ class MockAIService implements RemoteAIService {
       styleId: styleId,
       createdAt: DateTime.now(),
       jobTitle: jobInput.jobTitle,
-      language: language,
     );
   }
 
@@ -82,12 +75,10 @@ class MockAIService implements RemoteAIService {
   }
 
   @override
-  Future<String> rewriteContent(String originalText, String language) async {
+  Future<String> rewriteContent(String originalText) async {
     // Simulate Network Delay
     await Future.delayed(const Duration(milliseconds: 800));
 
-    return language == 'id'
-        ? "[AI Rewritten] $originalText (Versi Lebih Profesional)"
-        : "[AI Rewritten] $originalText (More Professional Version)";
+    return "[AI Rewritten] $originalText (Versi Lebih Profesional)";
   }
 }

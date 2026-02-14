@@ -35,9 +35,8 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
     // 3. Summary
     notifier.setSummary(draft.summary);
 
-    // 4. Style & Language
+    // 4. Style
     notifier.setStyle(draft.styleId);
-    notifier.setLanguage(draft.language);
     
     // 5. Set Draft ID for future updates
     notifier.setCurrentDraftId(draft.id);

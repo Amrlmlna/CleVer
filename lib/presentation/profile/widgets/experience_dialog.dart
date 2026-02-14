@@ -85,7 +85,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
 
     try {
       final repository = ref.read(cvRepositoryProvider);
-      final newText = await repository.rewriteContent(_descCtrl.text, 'id');
+      final newText = await repository.rewriteContent(_descCtrl.text);
       
       if (mounted) {
         setState(() {

@@ -205,7 +205,7 @@ class DraftsContent extends StatelessWidget {
             : 'Tanpa Judul #$version';
             
         final templateName = _getTemplateName(draft.styleId);
-        final lang = draft.language == 'id' ? 'IN' : 'EN';
+
 
         return Dismissible(
           key: Key(draft.id),
@@ -252,8 +252,8 @@ class DraftsContent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                    const SizedBox(height: 4),
-                   Text(
-                    'Template: $templateName • $lang',
+                    Text(
+                    'Template: $templateName',
                     style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                   ),
                    const SizedBox(height: 2),

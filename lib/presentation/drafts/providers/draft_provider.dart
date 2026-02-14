@@ -64,7 +64,6 @@ class DraftsNotifier extends AsyncNotifier<List<CVData>> {
       createdAt: DateTime.now(),
       jobTitle: creationState.jobInput!.jobTitle,
       jobDescription: creationState.jobInput!.jobDescription ?? '',
-      language: creationState.language,
     );
 
     await saveDraft(cvData);

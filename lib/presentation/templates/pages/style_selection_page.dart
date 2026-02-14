@@ -53,7 +53,6 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
             createdAt: DateTime.now(),
             jobTitle: creationState.jobInput!.jobTitle,
             jobDescription: creationState.jobInput!.jobDescription ?? '',
-            language: creationState.language,
          );
          // Trigger Ad
          await MockAdService.showInterstitialAd(context);
@@ -107,7 +106,6 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
       data: (templates) {
         final creationState = ref.watch(cvCreationProvider);
         final selectedStyle = creationState.selectedStyle;
-        final currentLanguage = creationState.language;
         
         // Ensure selected style exists in fetched templates
         if (templates.isNotEmpty && !templates.any((t) => t.id == selectedStyle)) {
@@ -122,11 +120,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
             StyleSelectionContent(
               templates: templates,
               selectedStyleId: selectedStyle,
-              selectedLanguage: currentLanguage,
               onStyleSelected: _handleStyleSelection,
-              onLanguageChanged: (lang) {
-                ref.read(cvCreationProvider.notifier).setLanguage(lang);
-              },
               onExport: _exportPDF,
             ),
             if (_isGenerating)

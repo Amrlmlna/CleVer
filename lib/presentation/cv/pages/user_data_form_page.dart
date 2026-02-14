@@ -120,7 +120,6 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         profile: currentProfile,
         jobInput: jobInput,
         styleId: 'ATS', // Dummy style
-        language: ref.read(cvCreationProvider).language,
       );
 
       if (mounted) {

@@ -5,18 +5,14 @@ import '../../../../domain/entities/cv_template.dart';
 class StyleSelectionContent extends StatelessWidget {
   final List<CVTemplate> templates;
   final String selectedStyleId;
-  final String selectedLanguage;
   final ValueChanged<String> onStyleSelected;
-  final ValueChanged<String> onLanguageChanged;
   final VoidCallback onExport;
 
   const StyleSelectionContent({
     super.key,
     required this.templates,
     required this.selectedStyleId,
-    required this.selectedLanguage,
     required this.onStyleSelected,
-    required this.onLanguageChanged,
     required this.onExport,
   });
 
@@ -41,27 +37,7 @@ class StyleSelectionContent extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Language Selection (Minimalist)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _LanguageButton(
-                  label: 'ID',
-                  isSelected: selectedLanguage == 'id',
-                  onTap: () => onLanguageChanged('id'),
-                ),
-                const SizedBox(width: 16),
-                _LanguageButton(
-                  label: 'EN',
-                  isSelected: selectedLanguage == 'en',
-                  onTap: () => onLanguageChanged('en'),
-                ),
-              ],
-            ),
-          ),
-          
+
           Expanded(
             child: GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -199,38 +175,4 @@ class StyleSelectionContent extends StatelessWidget {
   }
 }
 
-class _LanguageButton extends StatelessWidget {
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
 
-  const _LanguageButton({
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.black : Colors.transparent,
-          border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 12,
-          ),
-        ),
-      ),
-    );
-  }
-}

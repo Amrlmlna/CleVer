@@ -17,18 +17,16 @@ class CVRepositoryImpl implements CVRepository {
     required UserProfile profile,
     required JobInput jobInput,
     required String styleId,
-    required String language,
   }) {
     return aiService.generateCV(
       profile: profile,
       jobInput: jobInput,
       styleId: styleId,
-      language: language,
     );
   }
   @override
-  Future<String> rewriteContent(String originalText, String language) {
-    return aiService.rewriteContent(originalText, language);
+  Future<String> rewriteContent(String originalText) {
+    return aiService.rewriteContent(originalText);
   }
 
   @override

@@ -25,7 +25,6 @@ class CVCreationState {
   final UserProfile? userProfile;
   final String? summary; // Added summary field
   final String selectedStyle; // Default to ATS
-  final String language; // 'id' or 'en'
   final String? currentDraftId; // Track current draft for updates
 
 
@@ -34,7 +33,6 @@ class CVCreationState {
     this.userProfile,
     this.summary,
     this.selectedStyle = 'ATS',
-    this.language = 'id', // Default to Indonesian
     this.currentDraftId,
   });
 
@@ -43,7 +41,6 @@ class CVCreationState {
     UserProfile? userProfile,
     String? summary,
     String? selectedStyle,
-    String? language,
     String? currentDraftId,
   }) {
     return CVCreationState(
@@ -51,7 +48,6 @@ class CVCreationState {
       userProfile: userProfile ?? this.userProfile,
       summary: summary ?? this.summary,
       selectedStyle: selectedStyle ?? this.selectedStyle,
-      language: language ?? this.language,
       currentDraftId: currentDraftId ?? this.currentDraftId,
     );
   }
@@ -79,9 +75,6 @@ class CVCreationNotifier extends Notifier<CVCreationState> {
     state = state.copyWith(selectedStyle: style);
   }
 
-  void setLanguage(String lang) {
-    state = state.copyWith(language: lang);
-  }
 
   void setCurrentDraftId(String id) {
     state = state.copyWith(currentDraftId: id);
