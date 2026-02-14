@@ -84,13 +84,6 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
 
     try {
       final repository = ref.read(cvRepositoryProvider);
-      // We assume 'en' for professional rewrite usually, or maybe detect? 
-      // Let's use 'id' if the text looks Indonesian? Or just ask user?
-      // For now, let's default to 'id' since the app UI seems ID-heavy, 
-      // OR utilize the creation provider language if accessible? 
-      // But this dialog is used in Profile Page too, which has no creation state.
-      // Safe bet: 'id'. Or 'en' if you want "More Professional".
-      // Let's default to 'id' for basic usage.
       final newText = await repository.rewriteContent(_descCtrl.text, 'id');
       
       if (mounted) {

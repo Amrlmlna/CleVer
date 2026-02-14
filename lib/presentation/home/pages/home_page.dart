@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/hero_section.dart';
 import '../widgets/recent_drafts_list.dart';
+import '../widgets/quick_actions.dart';
 
 import '../../drafts/providers/draft_provider.dart';
 
@@ -55,8 +56,12 @@ class HomePage extends ConsumerWidget {
               const HeroSection(),
               const SizedBox(height: 32),
 
+              // Quick Actions
+              const QuickActions(),
+              const SizedBox(height: 32),
+
               // Recent Drafts - Only Show if Drafts Exist
-              if (hasDrafts) ...[
+              if (hasDrafts) ...[ 
                 _buildSectionHeader(context, 'Draft Terakhir'),
                 const SizedBox(height: 16),
                 const RecentDraftsList(),
