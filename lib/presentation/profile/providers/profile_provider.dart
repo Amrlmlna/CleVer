@@ -1,5 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../domain/entities/user_profile.dart';
 
@@ -150,6 +154,20 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
      if (state == null) return;
      final updated = state!.copyWith(skills: skills);
      saveProfile(updated);
+  }
+
+  /// Pick and save profile image
+  Future<String?> pickProfileImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      final appDir = await getApplicationDocumentsDirectory();
+      final fileName = path.basename(pickedFile.path);
+      final savedImage = await File(pickedFile.path).copy('${appDir.path}/$fileName');
+      return savedImage.path;
+    }
+    return null;
   }
 
   Future<void> clearProfile() async {

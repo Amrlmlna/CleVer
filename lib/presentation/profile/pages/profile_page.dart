@@ -1,10 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
-import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/user_profile.dart';
 import '../providers/profile_provider.dart';
@@ -12,11 +7,11 @@ import '../widgets/personal_info_form.dart';
 import '../widgets/experience_list_form.dart';
 import '../widgets/education_list_form.dart';
 import '../widgets/skills_input_form.dart';
-import '../widgets/certification_list_form.dart'; // Import
+import '../widgets/certification_list_form.dart';
 import '../widgets/section_card.dart';
 import '../widgets/profile_header.dart';
-import '../providers/cv_import_provider.dart';
-import '../../common/widgets/app_loading_screen.dart';
+import '../widgets/import_cv_button.dart';
+import '../widgets/profile_action_buttons.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -34,7 +29,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   List<Experience> _experience = [];
   List<Education> _education = [];
   List<String> _skills = [];
-  List<Certification> _certifications = []; // Add state
+  List<Certification> _certifications = [];
   String? _profileImagePath;
   
   bool _isInit = true;
@@ -62,7 +57,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         _experience = List.from(masterProfile.experience);
         _education = List.from(masterProfile.education);
         _skills = List.from(masterProfile.skills);
-        _certifications = List.from(masterProfile.certifications); // Load
+        _certifications = List.from(masterProfile.certifications);
       });
     } else {
        _nameController.clear();
@@ -89,189 +84,55 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      final appDir = await getApplicationDocumentsDirectory();
-      final fileName = path.basename(pickedFile.path);
-      final savedImage = await File(pickedFile.path).copy('${appDir.path}/$fileName');
-
+    final imagePath = await ref.read(masterProfileProvider.notifier).pickProfileImage();
+    if (imagePath != null) {
       setState(() {
-        _profileImagePath = savedImage.path;
+        _profileImagePath = imagePath;
       });
     }
   }
 
-  void _showImportCVDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Import CV'),
-        content: const Text('Pilih cara import CV kamu:'),
-        actions: [
-          TextButton.icon(
-            onPressed: () {
-              Navigator.pop(context);
-              _importFromImage(ImageSource.camera);
-            },
-            icon: const Icon(Icons.camera_alt),
-            label: const Text('Kamera'),
-          ),
-          TextButton.icon(
-            onPressed: () {
-              Navigator.pop(context);
-              _importFromImage(ImageSource.gallery);
-            },
-            icon: const Icon(Icons.photo_library),
-            label: const Text('Galeri'),
-          ),
-          TextButton.icon(
-            onPressed: () {
-              Navigator.pop(context);
-              _importFromPDF();
-            },
-            icon: const Icon(Icons.picture_as_pdf),
-            label: const Text('File PDF'),
-          ),
-        ],
+  void _handleImportSuccess(UserProfile importedProfile) {
+    // MERGE imported data with existing data (don't replace!)
+    
+    // Update text fields only if they're currently empty
+    if (_nameController.text.isEmpty) {
+      _nameController.text = importedProfile.fullName;
+    }
+    if (_emailController.text.isEmpty) {
+      _emailController.text = importedProfile.email;
+    }
+    if (_phoneController.text.isEmpty && importedProfile.phoneNumber != null) {
+      _phoneController.text = importedProfile.phoneNumber!;
+    }
+    if (_locationController.text.isEmpty && importedProfile.location != null) {
+      _locationController.text = importedProfile.location!;
+    }
+    
+    setState(() {
+      // ADD imported items to existing lists (merge, don't replace!)
+      _experience = [..._experience, ...importedProfile.experience];
+      _education = [..._education, ...importedProfile.education];
+      
+      // For skills, merge and remove duplicates
+      final allSkills = {..._skills, ...importedProfile.skills}.toList();
+      _skills = allSkills;
+      
+      // Add certifications
+      _certifications = [..._certifications, ...importedProfile.certifications];
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '✅ CV berhasil diimport!\n'
+          'Ditambahkan: ${importedProfile.experience.length} pengalaman, '
+          '${importedProfile.education.length} pendidikan, '
+          '${importedProfile.skills.length} skill'
+        ),
+        duration: const Duration(seconds: 4),
       ),
     );
-  }
-
-  Future<void> _importFromImage(ImageSource source) async {
-    bool loadingShown = false;
-
-    final result = await ref.read(cvImportProvider.notifier).importFromImage(
-      source,
-      onProcessingStart: () {
-        if (!loadingShown && mounted) {
-          loadingShown = true;
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              opaque: false,
-              barrierDismissible: false,
-              pageBuilder: (context, _, __) => const AppLoadingScreen(
-                badge: "IMPORTING CV",
-                messages: [
-                  "Membaca CV...",
-                  "Mengekstrak data...",
-                  "Menyusun profil...",
-                ],
-              ),
-            ),
-          );
-        }
-      },
-    );
-
-    if (mounted && loadingShown) {
-      Navigator.pop(context);
-    }
-
-    _handleImportResult(result.status, result.extractedProfile);
-  }
-
-  Future<void> _importFromPDF() async {
-    bool loadingShown = false;
-
-    final result = await ref.read(cvImportProvider.notifier).importFromPDF(
-      onProcessingStart: () {
-        if (!loadingShown && mounted) {
-          loadingShown = true;
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              opaque: false,
-              barrierDismissible: false,
-              pageBuilder: (context, _, __) => const AppLoadingScreen(
-                badge: "IMPORTING CV",
-                messages: [
-                  "Membaca PDF...",
-                  "Mengekstrak data...",
-                  "Menyusun profil...",
-                ],
-              ),
-            ),
-          );
-        }
-      },
-    );
-
-    if (mounted && loadingShown) {
-      Navigator.pop(context);
-    }
-
-    _handleImportResult(result.status, result.extractedProfile);
-  }
-
-  void _handleImportResult(CVImportStatus status, UserProfile? profile) {
-    switch (status) {
-      case CVImportStatus.success:
-        if (profile != null) {
-          // MERGE imported data with existing data (don't replace!)
-          
-          // Update text fields only if they're currently empty
-          if (_nameController.text.isEmpty) {
-            _nameController.text = profile.fullName;
-          }
-          if (_emailController.text.isEmpty) {
-            _emailController.text = profile.email;
-          }
-          if (_phoneController.text.isEmpty && profile.phoneNumber != null) {
-            _phoneController.text = profile.phoneNumber!;
-          }
-          if (_locationController.text.isEmpty && profile.location != null) {
-            _locationController.text = profile.location!;
-          }
-          
-          setState(() {
-            // ADD imported items to existing lists (merge, don't replace!)
-            _experience = [..._experience, ...profile.experience];
-            _education = [..._education, ...profile.education];
-            
-            // For skills, merge and remove duplicates
-            final allSkills = {..._skills, ...profile.skills}.toList();
-            _skills = allSkills;
-            
-            // Add certifications
-            _certifications = [..._certifications, ...profile.certifications];
-          });
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                '✅ CV berhasil diimport!\n'
-                'Ditambahkan: ${profile.experience.length} pengalaman, '
-                '${profile.education.length} pendidikan, '
-                '${profile.skills.length} skill'
-              ),
-              duration: const Duration(seconds: 4),
-            ),
-          );
-        }
-        break;
-      case CVImportStatus.cancelled:
-        // User cancelled, do nothing
-        break;
-      case CVImportStatus.noText:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('❌ Tidak ada teks yang ditemukan di CV'),
-            backgroundColor: Colors.orange,
-          ),
-        );
-        break;
-      case CVImportStatus.error:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('❌ Gagal mengimport CV. Coba lagi ya!'),
-            backgroundColor: Colors.red,
-          ),
-        );
-        break;
-      default:
-        break;
-    }
   }
 
   void _saveProfile() {
@@ -295,7 +156,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       experience: _experience,
       education: _education,
       skills: _skills,
-      certifications: _certifications, // Save
+      certifications: _certifications,
       profilePicturePath: _profileImagePath,
     );
 
@@ -305,7 +166,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       SnackBar(
         content: const Text('Profil Disimpan! Bakal dipake buat CV-mu selanjutnya.'),
         behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20), // Avoid Floating Button
+        margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
@@ -333,16 +194,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ),
               const SizedBox(height: 24),
 
-              // Import CV Button
-              ElevatedButton.icon(
-                onPressed: _showImportCVDialog,
-                icon: const Icon(Icons.upload_file),
-                label: const Text('Import dari CV yang udah ada'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                  backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-                  foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                ),
+              // Import CV Button (Extracted Widget)
+              ImportCVButton(
+                onImportSuccess: _handleImportSuccess,
               ),
 
               const SizedBox(height: 32),
@@ -383,7 +237,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             const SizedBox(height: 24),
 
             SectionCard(
-              title: 'Sertifikasi', // New Section
+              title: 'Sertifikasi',
               icon: Icons.card_membership,
               child: CertificationListForm(
                 certifications: _certifications,
@@ -402,36 +256,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ),
             ),
 
-            const SizedBox(height: 48),
-            
-            // Save Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: _saveProfile,
-                icon: const Icon(Icons.check),
-                label: const Text('Simpan Profil'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                ),
-              ),
+            // Action Buttons (Extracted Widget)
+            ProfileActionButtons(
+              onSave: _saveProfile,
             ),
-            
-            const SizedBox(height: 24),
-            
-            // Help Button (New Placement)
-            Center(
-              child: TextButton.icon(
-                onPressed: () => context.push('/profile/help'),
-                icon: Icon(Icons.help_outline, color: Theme.of(context).disabledColor),
-                label: Text(
-                  'Bantuan & Dukungan',
-                  style: TextStyle(color: Theme.of(context).disabledColor),
-                ),
-              ),
-            ),
-            
-            const SizedBox(height: 100), // Extra bottom padding
           ],
         ),
       ),
