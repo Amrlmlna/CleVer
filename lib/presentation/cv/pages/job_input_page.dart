@@ -62,7 +62,14 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
 
   void _onTextChanged() {
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
-    _debounceTimer = Timer(const Duration(milliseconds: 500), _saveDrafts);
+    _debounceTimer = Timer(const Duration(milliseconds: 1000), _saveDrafts);
+  }
+
+  Future<void> _clearDrafts() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_kDraftTitleKey);
+    await prefs.remove(_kDraftCompanyKey);
+    await prefs.remove(_kDraftDescKey);
   }
 
   Future<void> _saveDrafts() async {
@@ -129,6 +136,9 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
         if (mounted) {
            // Pop Loading Screen
            Navigator.of(context).pop();
+
+           // Clear drafts after successful processing
+           await _clearDrafts();
            
            // Navigate to Next Page
            context.push('/create/user-data', extra: tailoredResult);
