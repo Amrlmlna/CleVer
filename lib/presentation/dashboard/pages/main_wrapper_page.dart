@@ -89,7 +89,7 @@ class MainWrapperPage extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // Glass blur
           child: Container(
             color: (isDark ? const Color(0xFF1E1E1E) : Colors.black).withValues(alpha: 0.8), // Inner background color
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20), // Increased height (was 12)
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6), // Increased height (was 12)
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

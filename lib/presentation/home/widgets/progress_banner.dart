@@ -57,44 +57,8 @@ class ProgressBanner extends ConsumerWidget {
           const SizedBox(height: 16),
           
           // Profile completion or completion badge
-          if (isComplete)
-            // Show completion badge
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.green.withValues(alpha: 0.5),
-                      width: 1.5,
-                    ),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.check_circle,
-                        color: Colors.green,
-                        size: 24,
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        'Profil Lengkap!',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.green,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )
-          else
-            // Show percentage
+          // Show percentage only if not complete
+          if (!isComplete)
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [

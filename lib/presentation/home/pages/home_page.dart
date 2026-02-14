@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/welcome_header.dart';
 import '../widgets/progress_banner.dart';
 import '../widgets/home_quick_actions.dart';
-import '../widgets/activity_feed.dart';
 import '../widgets/login_cta_card.dart';
 import '../widgets/premium_banner.dart';
 
@@ -32,10 +31,6 @@ class HomePage extends ConsumerWidget {
               // Quick Actions (3 items)
               const HomeQuickActions(),
               const SizedBox(height: 32),
-              
-              // Recent Activity
-              const ActivityFeed(),
-              const SizedBox(height: 24),
               
               // Login CTA (conditional)
               const LoginCTACard(),

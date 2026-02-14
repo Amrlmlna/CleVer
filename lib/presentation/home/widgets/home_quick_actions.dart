@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../../../domain/entities/user_profile.dart';
+import '../../profile/providers/profile_provider.dart';
+import '../../profile/utils/cv_import_handler.dart';
 
-class HomeQuickActions extends StatelessWidget {
+class HomeQuickActions extends ConsumerWidget {
   const HomeQuickActions({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -14,8 +18,32 @@ class HomeQuickActions extends StatelessWidget {
           icon: Icons.upload_file,
           label: 'Import CV',
           onTap: () {
-            // Navigate to profile which has import button
-            context.push('/profile');
+            CVImportHandler.showImportDialog(
+              context: context,
+              ref: ref,
+              onImportSuccess: (UserProfile importedProfile) async {
+                // Merge imported data with master profile
+                final hasChanges = await ref
+                    .read(masterProfileProvider.notifier)
+                    .mergeProfile(importedProfile);
+                
+                if (context.mounted) {
+                  if (hasChanges) {
+                    CustomSnackBar.showSuccess(
+                      context,
+                      'CV berhasil diimport! Mari lengkapi profilmu.',
+                    );
+                  } else {
+                    CustomSnackBar.showInfo(
+                      context,
+                      'Data CV sudah ada di profilmu.',
+                    );
+                  }
+                  // Navigate to profile for review
+                  context.push('/profile');
+                }
+              },
+            );
           },
         ),
         _QuickActionCircle(
@@ -35,48 +63,13 @@ class HomeQuickActions extends StatelessWidget {
           },
         ),
         _QuickActionCircle(
-          icon: Icons.more_horiz,
-          label: 'Lainnya',
+          icon: Icons.add_circle_outline,
+          label: 'Buat CV',
           onTap: () {
-            // TODO: Show more options menu
-            _showMoreMenu(context);
+            context.push('/create/job-input');
           },
         ),
       ],
-    );
-  }
-
-  void _showMoreMenu(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.grey.shade900,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.settings, color: Colors.white),
-              title: const Text('Settings', style: TextStyle(color: Colors.white)),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to settings
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.help_outline, color: Colors.white),
-              title: const Text('Help & Support', style: TextStyle(color: Colors.white)),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/profile/help');
-              },
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
