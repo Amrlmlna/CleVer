@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../providers/cv_import_provider.dart';
 import '../../common/widgets/app_loading_screen.dart';
+import '../../../../core/utils/custom_snackbar.dart';
 
 /// Reusable CV Import Button
 /// Shows dialog with Camera/Gallery/PDF options and handles import flow
@@ -143,20 +144,10 @@ class ImportCVButton extends ConsumerWidget {
         // User cancelled, do nothing
         break;
       case CVImportStatus.noText:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('❌ Tidak ada teks yang ditemukan di CV'),
-            backgroundColor: Colors.orange,
-          ),
-        );
+        CustomSnackBar.showWarning(context, 'Tidak ada teks yang ditemukan di CV');
         break;
       case CVImportStatus.error:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('❌ Gagal mengimport CV. Coba lagi ya!'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        CustomSnackBar.showError(context, 'Gagal mengimport CV. Coba lagi ya!');
         break;
       default:
         break;

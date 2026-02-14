@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../domain/entities/job_input.dart';
+import '../../../core/utils/custom_snackbar.dart'; // Added this import
 import '../providers/cv_generation_provider.dart';
 import '../providers/ocr_provider.dart';
 import '../../profile/providers/profile_provider.dart';
@@ -87,14 +88,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
       final masterProfile = ref.read(masterProfileProvider);
       
       if (masterProfile == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Silakan lengkapi Master Profile Anda terlebih dahulu di menu Profile.'),
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        );
+        CustomSnackBar.showWarning(context, 'Lengkapi profil dulu untuk hasil terbaik');
         return;
       }
 
@@ -144,17 +138,12 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
           // Pop Loading Screen first
           Navigator.of(context).pop();
           
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Gagal menganalisis profil: $e'),
-              behavior: SnackBarBehavior.floating,
-              margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-          );
+          CustomSnackBar.showError(context, 'Gagal menganalisis profil: $e');
         }
       } 
       // Finally block removed as popping is handled in try/catch
+    } else {
+      CustomSnackBar.showError(context, 'Isi job title dulu!');
     }
   }
 
@@ -241,37 +230,16 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
         _titleController.text = result.jobInput!.jobTitle;
         _companyController.text = result.jobInput!.company ?? '';
         _descController.text = result.jobInput!.jobDescription ?? '';
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('✅ Job posting extracted successfully!'),
-            behavior: SnackBarBehavior.floating,
-            margin: EdgeInsets.only(bottom: 100, left: 20, right: 20),
-          ),
-        );
+        CustomSnackBar.showSuccess(context, 'Job posting extracted successfully!');
 
       case OCRStatus.cancelled:
         // Silent - user cancelled
 
       case OCRStatus.noText:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Tidak ada teks ditemukan dalam gambar'),
-            backgroundColor: Colors.orange,
-            behavior: SnackBarBehavior.floating,
-            margin: EdgeInsets.only(bottom: 100, left: 20, right: 20),
-          ),
-        );
+        CustomSnackBar.showWarning(context, 'Tidak ada teks ditemukan dalam gambar');
 
       case OCRStatus.error:
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(result.errorMessage ?? 'Failed to extract job posting'),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20),
-          ),
-        );
+        CustomSnackBar.showError(context, result.errorMessage ?? 'Failed to extract job posting');
     }
   }
 

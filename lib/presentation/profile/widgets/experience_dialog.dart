@@ -6,6 +6,7 @@ import '../../common/widgets/custom_text_form_field.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../common/widgets/spinning_text_loader.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../core/utils/custom_snackbar.dart';
 
 class ExperienceDialog extends ConsumerStatefulWidget {
   final Experience? existing;
@@ -74,7 +75,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
 
   Future<void> _rewriteDescription() async {
     if (_descCtrl.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Isi deskripsi dulu baru bisa di-rewrite AI!')));
+      CustomSnackBar.showWarning(context, 'Isi deskripsi dulu baru bisa di-rewrite AI!');
       return;
     }
 
@@ -95,7 +96,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
     } catch (e) {
       if (mounted) {
         setState(() => _isRewriting = false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal rewrite: $e')));
+        CustomSnackBar.showError(context, 'Gagal rewrite: $e');
       }
     }
   }

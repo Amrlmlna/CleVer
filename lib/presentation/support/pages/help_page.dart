@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/faq_item.dart';
+import '../../../../core/utils/custom_snackbar.dart';
 
 class HelpPage extends StatefulWidget {
   const HelpPage({super.key});
@@ -36,14 +37,7 @@ class _HelpPageState extends State<HelpPage> {
 
     if (!await launchUrl(emailLaunchUri)) {
       if (mounted) {
-         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(
-             content: const Text('Tidak bisa membuka aplikasi email.'),
-             behavior: SnackBarBehavior.floating,
-             margin: const EdgeInsets.all(20),
-             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-           ),
-         );
+         CustomSnackBar.showError(context, 'Tidak bisa membuka aplikasi email.');
       }
     }
   }

@@ -101,17 +101,6 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/drafts',
-                builder: (context, state) => const DraftsPage(),
-                routes: [
-                  // Removed preview route
-                ],
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
                 path: '/profile',
                 builder: (context, state) => const ProfilePage(),
                 routes: [
@@ -139,8 +128,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const LegalPage(title: 'Terms of Service', content: kTermsOfService),
       ),
       GoRoute(
+        path: '/drafts',
+        builder: (context, state) => const DraftsPage(),
+      ),
+      GoRoute(
         path: '/create/job-input',
-
         builder: (context, state) => const JobInputPage(),
       ),
       GoRoute(

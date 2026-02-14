@@ -11,6 +11,7 @@ import '../../drafts/providers/draft_provider.dart';
 import '../providers/template_provider.dart';
 import '../widgets/style_selection_content.dart';
 import '../../common/widgets/app_loading_screen.dart';
+import '../../../../core/utils/custom_snackbar.dart';
 
 class StyleSelectionPage extends ConsumerStatefulWidget {
   const StyleSelectionPage({super.key});
@@ -28,9 +29,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
     
     // Validate Data
     if (creationState.jobInput == null || creationState.userProfile == null || creationState.summary == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Data tidak lengkap. Kembali ke form sebelumnya.')),
-      );
+      CustomSnackBar.showWarning(context, 'Data tidak lengkap. Kembali ke form sebelumnya.');
       return;
     }
 
@@ -74,17 +73,13 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
          final result = await OpenFilex.open(file.path);
          if (result.type != ResultType.done) {
             if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Gagal membuka PDF: ${result.message}')),
-              );
+              CustomSnackBar.showError(context, 'Gagal membuka PDF: ${result.message}');
             }
          }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal membuat PDF: $e')),
-        );
+        CustomSnackBar.showError(context, 'Gagal membuat PDF: $e');
       }
     } finally {
       if (mounted) {

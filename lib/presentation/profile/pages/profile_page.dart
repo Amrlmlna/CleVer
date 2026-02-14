@@ -12,6 +12,7 @@ import '../widgets/section_card.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/import_cv_button.dart';
 import '../widgets/profile_action_buttons.dart';
+import '../../../core/utils/custom_snackbar.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -122,29 +123,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       _certifications = [..._certifications, ...importedProfile.certifications];
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          '✅ CV berhasil diimport!\n'
-          'Ditambahkan: ${importedProfile.experience.length} pengalaman, '
-          '${importedProfile.education.length} pendidikan, '
-          '${importedProfile.skills.length} skill'
-        ),
-        duration: const Duration(seconds: 4),
-      ),
+    CustomSnackBar.showSuccess(
+      context,
+      'CV berhasil diimport!\n'
+      'Ditambahkan: ${importedProfile.experience.length} pengalaman, '
+      '${importedProfile.education.length} pendidikan, '
+      '${importedProfile.skills.length} skill',
     );
   }
 
   void _saveProfile() {
     if (_nameController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Isi nama dulu dong'),
-          behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.all(20),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-      );
+      CustomSnackBar.showWarning(context, 'Isi nama dulu dong');
       return;
     }
 
@@ -162,14 +152,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
     ref.read(masterProfileProvider.notifier).saveProfile(newProfile);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Profil Disimpan! Bakal dipake buat CV-mu selanjutnya.'),
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    );
+    CustomSnackBar.showSuccess(context, 'Profil Disimpan! Bakal dipake buat CV-mu selanjutnya.');
   }
 
   @override
