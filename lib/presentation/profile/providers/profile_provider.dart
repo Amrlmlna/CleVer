@@ -8,17 +8,33 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/repositories/firestore_profile_repository.dart';
 import '../../../domain/entities/user_profile.dart';
 
+import '../../auth/providers/auth_state_provider.dart';
+
 // Provides the "Master" profile data (persisted across sessions)
 final masterProfileProvider = StateNotifierProvider<MasterProfileNotifier, UserProfile?>((ref) {
-  return MasterProfileNotifier();
+  return MasterProfileNotifier(ref: ref);
 });
 
 class MasterProfileNotifier extends StateNotifier<UserProfile?> {
   late Future<void> _initFuture;
   final FirestoreProfileRepository _firestoreRepo = FirestoreProfileRepository();
+  final Ref? _ref;
 
-  MasterProfileNotifier({UserProfile? initialState}) : super(initialState) {
+  MasterProfileNotifier({UserProfile? initialState, Ref? ref}) 
+      : _ref = ref, 
+        super(initialState) {
     _initFuture = loadProfile();
+    
+    // Listen for auth changes to trigger sync automatically
+    if (_ref != null) {
+      _ref!.listen(authStateProvider, (previous, next) {
+        final user = next.value;
+        if (user != null && (previous == null || previous.value == null)) {
+          print("[DEBUG] Auth change detected: User logged in (${user.uid}). Triggering internal sync...");
+          syncWithCloud(user.uid);
+        }
+      });
+    }
   }
 
   static const String _key = 'master_profile_data';
@@ -29,6 +45,25 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     state = profile;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_key, jsonEncode(profile.toJson()));
+    
+    // Auto-sync to cloud if logged in
+    if (_ref != null) {
+      final authValue = _ref!.read(authStateProvider);
+      final user = authValue.value;
+      
+      print("[DEBUG] saveProfile: user is ${user?.uid ?? 'NULL'} (Auth State: $authValue)");
+      
+      if (user != null) {
+        try {
+          print("[DEBUG] Attempting cloud save for ${user.uid}...");
+          await _firestoreRepo.saveProfile(user.uid, profile);
+          print("[DEBUG] Cloud save SUCCESSFUL for ${user.uid}");
+        } catch (e) {
+          print("[Cloud Save Error] $e");
+          // Fail silently to not block local persistence
+        }
+      }
+    }
   }
 
   // Method to manually re-load if needed (e.g. after clear)
@@ -59,11 +94,13 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     final newEmail = newProfile.email.isNotEmpty ? newProfile.email : current.email;
     final newPhone = newProfile.phoneNumber?.isNotEmpty == true ? newProfile.phoneNumber : current.phoneNumber;
     final newLocation = newProfile.location?.isNotEmpty == true ? newProfile.location : current.location;
+    final newProfilePic = newProfile.profilePicturePath?.isNotEmpty == true ? newProfile.profilePicturePath : current.profilePicturePath;
     
     if (newName != current.fullName || 
         newEmail != current.email || 
         newPhone != current.phoneNumber || 
-        newLocation != current.location) {
+        newLocation != current.location ||
+        newProfilePic != current.profilePicturePath) {
       print("[DEBUG] Personal Info Changed!");
       hasChanges = true;
     }
@@ -73,6 +110,7 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
       email: newEmail,
       phoneNumber: newPhone,
       location: newLocation,
+      profilePicturePath: newProfilePic,
     );
 
     // 2. Experience - Add only NEW items
@@ -203,8 +241,10 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
 
   /// Syncs local profile with Firestore for the given [uid].
   Future<void> syncWithCloud(String uid) async {
+    print("[DEBUG] syncWithCloud started for $uid");
     try {
       final cloudProfile = await _firestoreRepo.getProfile(uid);
+      print("[DEBUG] cloudProfile fetched: ${cloudProfile != null ? 'DATA FOUND' : 'EMPTY'}");
       
       if (cloudProfile != null) {
         // Cloud has data. Merge into local.
