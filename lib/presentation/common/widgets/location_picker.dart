@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cv_master/core/constants/regions_data.dart';
+import 'package:clever/core/constants/regions_data.dart';
 
 class LocationPicker extends StatefulWidget {
   final TextEditingController controller;

@@ -1,25 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../widgets/hero_section.dart';
-import '../widgets/recent_drafts_list.dart';
-import '../widgets/quick_actions.dart';
-
-import '../../drafts/providers/draft_provider.dart';
+import '../widgets/welcome_header.dart';
+import '../widgets/progress_banner.dart';
+import '../widgets/home_quick_actions.dart';
+import '../widgets/login_cta_card.dart';
+import '../widgets/premium_banner.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch drafts to conditionally render the section
-    final draftsAsync = ref.watch(draftsProvider);
-    final hasDrafts = draftsAsync.when(
-      data: (drafts) => drafts.isNotEmpty,
-      loading: () => false, // Don't show while loading initial
-      error: (_, __) => false,
-    );
-
-    // Gen Z Modern Layout
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -28,68 +19,31 @@ class HomePage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              // Modern Header
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                   Text(
-                    'Halo,',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.grey[400],
-                          fontSize: 18,
-                        ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Siap gapai tujuan profesionalmu?',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                  ),
-                ],
-              ),
+              
+              // Welcome Header
+              const WelcomeHeader(),
+              const SizedBox(height: 24),
+              
+              // Progress Banner
+              const ProgressBanner(),
+              const SizedBox(height: 24),
+              
+              // Quick Actions (3 items)
+              const HomeQuickActions(),
               const SizedBox(height: 32),
-
-              // Hero Section (New CV)
-              const HeroSection(),
-              const SizedBox(height: 32),
-
-              // Quick Actions
-              const QuickActions(),
-              const SizedBox(height: 32),
-
-              // Recent Drafts - Only Show if Drafts Exist
-              if (hasDrafts) ...[ 
-                _buildSectionHeader(context, 'Draft Terakhir'),
-                const SizedBox(height: 16),
-                const RecentDraftsList(),
-                const SizedBox(height: 32),
-              ],
-
-
+              
+              // Login CTA (conditional)
+              const LoginCTACard(),
+              const SizedBox(height: 16),
+              
+              // Premium Banner (conditional)
+              const PremiumBanner(),
+              
+              const SizedBox(height: 100), // Bottom padding for nav
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildSectionHeader(BuildContext context, String title) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w900,
-                letterSpacing: 1.2,
-                color: Colors.white,
-              ),
-        ),
-        const Icon(Icons.arrow_forward, color: Colors.white54, size: 20),
-      ],
     );
   }
 }

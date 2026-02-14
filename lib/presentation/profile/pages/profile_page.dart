@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/user_profile.dart';
 import '../providers/profile_provider.dart';
@@ -9,9 +10,9 @@ import '../widgets/education_list_form.dart';
 import '../widgets/skills_input_form.dart';
 import '../widgets/certification_list_form.dart';
 import '../widgets/section_card.dart';
-import '../widgets/profile_header.dart';
 import '../widgets/import_cv_button.dart';
 import '../widgets/profile_action_buttons.dart';
+import '../../../core/utils/custom_snackbar.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -30,11 +31,22 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   List<Education> _education = [];
   List<String> _skills = [];
   List<Certification> _certifications = [];
-  String? _profileImagePath;
   
   bool _isInit = true;
+  bool _isSaving = false;
 
   @override
+  void initState() {
+    super.initState();
+    _nameController.addListener(_onFieldChanged);
+    _emailController.addListener(_onFieldChanged);
+    _phoneController.addListener(_onFieldChanged);
+    _locationController.addListener(_onFieldChanged);
+  }
+
+  void _onFieldChanged() {
+    if (mounted) setState(() {});
+  }
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_isInit) {
@@ -53,7 +65,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       _locationController.text = masterProfile.location ?? '';
       
       setState(() {
-        _profileImagePath = masterProfile.profilePicturePath;
         _experience = List.from(masterProfile.experience);
         _education = List.from(masterProfile.education);
         _skills = List.from(masterProfile.skills);
@@ -69,7 +80,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
          _education = [];
          _skills = [];
          _certifications = [];
-         _profileImagePath = null;
        });
     }
   }
@@ -83,13 +93,55 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     super.dispose();
   }
 
-  Future<void> _pickImage() async {
-    final imagePath = await ref.read(masterProfileProvider.notifier).pickProfileImage();
-    if (imagePath != null) {
-      setState(() {
-        _profileImagePath = imagePath;
-      });
+
+
+  bool _hasChanges() {
+    final masterProfile = ref.read(masterProfileProvider);
+    if (masterProfile == null) {
+      // If no profile, we have changes if any field is not empty
+      return _nameController.text.isNotEmpty ||
+          _emailController.text.isNotEmpty ||
+          _phoneController.text.isNotEmpty ||
+          _locationController.text.isNotEmpty ||
+          _experience.isNotEmpty ||
+          _education.isNotEmpty ||
+          _skills.isNotEmpty ||
+          _certifications.isNotEmpty;
     }
+
+    final currentLocal = UserProfile(
+      fullName: _nameController.text,
+      email: _emailController.text,
+      phoneNumber: _phoneController.text,
+      location: _locationController.text,
+      experience: _experience,
+      education: _education,
+      skills: _skills,
+      certifications: _certifications,
+    );
+
+    return currentLocal != masterProfile;
+  }
+
+  Future<bool> _showExitWarning() async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Simpan Perubahan?'),
+        content: const Text('Kamu punya perubahan yang belum disimpan. Yakin mau keluar?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, true), // Leave anyway
+            child: const Text('Keluar Tanpa Simpan', style: TextStyle(color: Colors.red)),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, false), // Stay
+            child: const Text('Tetap di Sini'),
+          ),
+        ],
+      ),
+    );
+    return result ?? false;
   }
 
   void _handleImportSuccess(UserProfile importedProfile) {
@@ -122,29 +174,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       _certifications = [..._certifications, ...importedProfile.certifications];
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          '✅ CV berhasil diimport!\n'
-          'Ditambahkan: ${importedProfile.experience.length} pengalaman, '
-          '${importedProfile.education.length} pendidikan, '
-          '${importedProfile.skills.length} skill'
-        ),
-        duration: const Duration(seconds: 4),
-      ),
+    CustomSnackBar.showSuccess(
+      context,
+      'CV berhasil diimport!\n'
+      'Ditambahkan: ${importedProfile.experience.length} pengalaman, '
+      '${importedProfile.education.length} pendidikan, '
+      '${importedProfile.skills.length} skill',
     );
   }
 
   void _saveProfile() {
     if (_nameController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Isi nama dulu dong'),
-          behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.all(20),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-      );
+      CustomSnackBar.showWarning(context, 'Isi nama dulu dong');
       return;
     }
 
@@ -157,19 +198,25 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       education: _education,
       skills: _skills,
       certifications: _certifications,
-      profilePicturePath: _profileImagePath,
     );
 
-    ref.read(masterProfileProvider.notifier).saveProfile(newProfile);
+    setState(() => _isSaving = true);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Profil Disimpan! Bakal dipake buat CV-mu selanjutnya.'),
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    );
+    try {
+      ref.read(masterProfileProvider.notifier).saveProfile(newProfile);
+      
+      if (mounted) {
+        CustomSnackBar.showSuccess(context, 'Profil Disimpan! Bakal dipake buat CV-mu selanjutnya.');
+      }
+    } catch (e) {
+      if (mounted) {
+        CustomSnackBar.showError(context, 'Gagal simpan profil: $e');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
+    }
   }
 
   @override
@@ -181,18 +228,23 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     });
 
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-          child: Column(
-            children: [
+      body: PopScope(
+        canPop: !_hasChanges() || _isSaving,
+        onPopInvokedWithResult: (didPop, result) async {
+          if (didPop) return;
+          final shouldPop = await _showExitWarning();
+          if (shouldPop && mounted) {
+            Navigator.of(context).pop();
+          }
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            child: Column(
+              children: [
               const SizedBox(height: 16),
               const SizedBox(height: 16),
-              ProfileHeader(
-                imagePath: _profileImagePath,
-                onEditImage: _pickImage,
-              ),
-              const SizedBox(height: 24),
+
 
               // Import CV Button (Extracted Widget)
               ImportCVButton(
@@ -259,9 +311,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             // Action Buttons (Extracted Widget)
             ProfileActionButtons(
               onSave: _saveProfile,
+              canSave: _hasChanges() && !_isSaving,
             ),
           ],
         ),
+      ),
       ),
       ),
     );

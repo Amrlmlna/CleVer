@@ -105,6 +105,16 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),
+
+      // SnackBar Theme - Top positioned with rounded corners
+      snackBarTheme: const SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Color(0xFF1E1E1E),
+        contentTextStyle: TextStyle(color: Colors.white),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+      ),
     );
   }
   static ThemeData get darkTheme {
@@ -244,6 +254,16 @@ class AppTheme {
           ),
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         },
+      ),
+
+      // SnackBar Theme - Top positioned with rounded corners
+      snackBarTheme: const SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Color(0xFF1E1E1E),
+        contentTextStyle: TextStyle(color: Colors.white),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
       ),
     );
   }

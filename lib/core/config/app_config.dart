@@ -3,5 +3,5 @@ class AppConfig {
   static const bool useMockAI = false;
   
   // You can add other global configs here
-  static const String appName = 'CV Master';
+  static const String appName = 'CleVer';
 }

@@ -1,9 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../domain/entities/user_profile.dart';
 
@@ -15,7 +11,8 @@ final masterProfileProvider = StateNotifierProvider<MasterProfileNotifier, UserP
 class MasterProfileNotifier extends StateNotifier<UserProfile?> {
   late Future<void> _initFuture;
 
-  MasterProfileNotifier({UserProfile? initialState}) : super(initialState) {
+  MasterProfileNotifier({UserProfile? initialState}) 
+      : super(initialState) {
     _initFuture = loadProfile();
   }
 
@@ -52,18 +49,26 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     final current = state!;
     bool hasChanges = false;
     
-    // 1. Personal Info - Check for changes
-    final updatedInfo = current.copyWith(
-      fullName: newProfile.fullName.isNotEmpty ? newProfile.fullName : current.fullName,
-      email: newProfile.email.isNotEmpty ? newProfile.email : current.email,
-      phoneNumber: newProfile.phoneNumber?.isNotEmpty == true ? newProfile.phoneNumber : current.phoneNumber,
-      location: newProfile.location?.isNotEmpty == true ? newProfile.location : current.location,
-    );
+    // 1. Personal Info - Explicit Check
+    final newName = newProfile.fullName.isNotEmpty ? newProfile.fullName : current.fullName;
+    final newEmail = newProfile.email.isNotEmpty ? newProfile.email : current.email;
+    final newPhone = newProfile.phoneNumber?.isNotEmpty == true ? newProfile.phoneNumber : current.phoneNumber;
+    final newLocation = newProfile.location?.isNotEmpty == true ? newProfile.location : current.location;
     
-    // Basic equality check involves checking individual fields because copyWith might technically create a new object even if values are same
-    if (updatedInfo != current) {
+    if (newName != current.fullName || 
+        newEmail != current.email || 
+        newPhone != current.phoneNumber || 
+        newLocation != current.location) {
+      print("[DEBUG] Personal Info Changed!");
       hasChanges = true;
     }
+
+    final updatedInfo = current.copyWith(
+      fullName: newName,
+      email: newEmail,
+      phoneNumber: newPhone,
+      location: newLocation,
+    );
 
     // 2. Experience - Add only NEW items
     final List<Experience> mergedExperience = List.from(current.experience);
@@ -102,12 +107,27 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     if (uniqueSkills.length != initialSkillCount) {
       hasChanges = true;
     }
+
+    // 5. Certifications - Add only NEW items
+    final List<Certification> mergedCertifications = List.from(current.certifications);
+    for (final newCert in newProfile.certifications) {
+       final exists = mergedCertifications.any((oldCert) => 
+          oldCert.name.toLowerCase() == newCert.name.toLowerCase() &&
+          oldCert.issuer.toLowerCase() == newCert.issuer.toLowerCase()
+       );
+       
+       if (!exists) {
+         mergedCertifications.add(newCert);
+         hasChanges = true;
+       }
+    }
     
     if (hasChanges) {
       final finalProfile = updatedInfo.copyWith(
         experience: mergedExperience,
         education: mergedEducation,
         skills: uniqueSkills.toList(),
+        certifications: mergedCertifications,
       );
       await saveProfile(finalProfile);
     }
@@ -156,19 +176,6 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
      saveProfile(updated);
   }
 
-  /// Pick and save profile image
-  Future<String?> pickProfileImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      final appDir = await getApplicationDocumentsDirectory();
-      final fileName = path.basename(pickedFile.path);
-      final savedImage = await File(pickedFile.path).copy('${appDir.path}/$fileName');
-      return savedImage.path;
-    }
-    return null;
-  }
 
   Future<void> clearProfile() async {
     state = null;

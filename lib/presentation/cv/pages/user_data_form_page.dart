@@ -6,6 +6,7 @@ import '../providers/cv_generation_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 // Widgets
 import '../widgets/form/user_data_form_content.dart';
+import '../../../core/utils/custom_snackbar.dart'; // Add this import
 
 import '../../../domain/entities/tailored_cv_result.dart'; // import
 
@@ -69,14 +70,11 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
           _summaryController.text = initialSummary;
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(isTailored 
-              ? 'Data & Summary telah disesuaikan oleh AI! ✨' 
-              : 'Data otomatis diisi dari Master Profile kamu!'),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
+        CustomSnackBar.showSuccess(
+          context,
+          isTailored 
+            ? 'Data & Summary telah disesuaikan oleh AI' 
+            : 'Data otomatis diisi dari Master Profile kamu',
         );
       }
     });
@@ -95,7 +93,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   Future<void> _generateSummary() async {
     final jobInput = ref.read(cvCreationProvider).jobInput;
     if (jobInput == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error: Job Input missing')));
+      CustomSnackBar.showError(context, 'Error: Job Input missing');
       return;
     }
 
@@ -134,7 +132,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
     } catch (e) {
       if (mounted) {
         setState(() => _isGeneratingSummary = false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal generate summary: $e')));
+        CustomSnackBar.showError(context, 'Gagal generate summary: $e');
       }
     }
   }
@@ -162,15 +160,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
       final hasChanges = await ref.read(masterProfileProvider.notifier).mergeProfile(profile);
       
       if (hasChanges && mounted) {
-        // UI Fix: Floating SnackBar with margin to avoid button overlap
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Master Profile berhasil diupdate (Data Baru Ditambahkan)!'),
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.only(bottom: 100, left: 24, right: 24), // Float high above button
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-        );
+        CustomSnackBar.showSuccess(context, 'Master Profile berhasil diupdate');
       }
 
       if (mounted) {

@@ -11,6 +11,7 @@ import '../../presentation/drafts/pages/drafts_page.dart';
 import '../../presentation/profile/pages/profile_page.dart';
 import '../../presentation/cv/pages/job_input_page.dart';
 import '../../presentation/cv/pages/user_data_form_page.dart';
+import '../../presentation/stats/pages/stats_page.dart'; // Import StatsPage
 
 import '../../presentation/templates/pages/style_selection_page.dart';
 
@@ -21,6 +22,8 @@ import '../../presentation/support/pages/help_page.dart';
 import '../../presentation/support/pages/feedback_page.dart';
 import '../../presentation/legal/pages/legal_page.dart';
 import '../../presentation/common/pages/error_page.dart';
+import '../../presentation/auth/pages/login_page.dart';
+import '../../presentation/auth/pages/signup_page.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -52,6 +55,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       PosthogObserver(),
     ],
     routes: [
+      GoRoute(
+        path: '/login',
+        builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: '/signup',
+        builder: (context, state) => const SignupPage(),
+      ),
       GoRoute(
         path: '/notifications',
         builder: (context, state) => const NotificationsPage(),
@@ -101,17 +112,6 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/drafts',
-                builder: (context, state) => const DraftsPage(),
-                routes: [
-                  // Removed preview route
-                ],
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
                 path: '/profile',
                 builder: (context, state) => const ProfilePage(),
                 routes: [
@@ -139,8 +139,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const LegalPage(title: 'Terms of Service', content: kTermsOfService),
       ),
       GoRoute(
+        path: '/drafts',
+        builder: (context, state) => const DraftsPage(),
+      ),
+      GoRoute(
         path: '/create/job-input',
-
         builder: (context, state) => const JobInputPage(),
       ),
       GoRoute(
@@ -153,6 +156,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/create/style-selection',
         builder: (context, state) => const StyleSelectionPage(),
+      ),
+      GoRoute(
+        path: '/stats',
+        builder: (context, state) => const StatsPage(),
       ),
 
 

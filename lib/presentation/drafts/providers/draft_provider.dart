@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entities/cv_data.dart';
 import '../../../domain/repositories/draft_repository.dart';
 import '../../../data/repositories/draft_repository_impl.dart';
+import '../../cv/providers/cv_generation_provider.dart';
+import 'package:uuid/uuid.dart';
 
 final draftRepositoryProvider = Provider<DraftRepository>((ref) {
   return DraftRepositoryImpl();
@@ -34,6 +36,32 @@ class DraftsNotifier extends AsyncNotifier<List<CVData>> {
     });
   }
   
+  Future<void> saveFromState(CVCreationState creationState) async {
+    if (creationState.jobInput == null || creationState.userProfile == null) {
+      return;
+    }
+
+    final id = creationState.currentDraftId ?? const Uuid().v4();
+    
+    // Update state with ID if it was new
+    if (creationState.currentDraftId == null) {
+      ref.read(cvCreationProvider.notifier).setCurrentDraftId(id);
+    }
+
+    final cvData = CVData(
+      id: id,
+      userProfile: creationState.userProfile!,
+      summary: creationState.summary ?? '',
+      styleId: creationState.selectedStyle ?? 'ATS',
+      createdAt: DateTime.now(),
+      jobTitle: creationState.jobInput!.jobTitle,
+      jobDescription: creationState.jobInput!.jobDescription ?? '',
+      language: creationState.language,
+    );
+
+    await saveDraft(cvData);
+  }
+
   Future<void> refresh() async {
      state = const AsyncValue.loading();
      state = await AsyncValue.guard(() => _repository.getDrafts());

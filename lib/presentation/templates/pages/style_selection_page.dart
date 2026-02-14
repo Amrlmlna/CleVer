@@ -11,6 +11,7 @@ import '../../drafts/providers/draft_provider.dart';
 import '../providers/template_provider.dart';
 import '../widgets/style_selection_content.dart';
 import '../../common/widgets/app_loading_screen.dart';
+import '../../../../core/utils/custom_snackbar.dart';
 
 class StyleSelectionPage extends ConsumerStatefulWidget {
   const StyleSelectionPage({super.key});
@@ -20,7 +21,6 @@ class StyleSelectionPage extends ConsumerStatefulWidget {
 }
 
 class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
-  String _selectedStyle = 'ATS'; // Default to ATS as it matches the first template usually
   bool _isGenerating = false;
 
   Future<void> _exportPDF() async {
@@ -28,9 +28,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
     
     // Validate Data
     if (creationState.jobInput == null || creationState.userProfile == null || creationState.summary == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Data tidak lengkap. Kembali ke form sebelumnya.')),
-      );
+      CustomSnackBar.showWarning(context, 'Data tidak lengkap. Kembali ke form sebelumnya.');
       return;
     }
 
@@ -39,52 +37,49 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
     });
 
     try {
-      // Set Style
-      ref.read(cvCreationProvider.notifier).setStyle(_selectedStyle);
+      final selectedStyle = ref.read(cvCreationProvider).selectedStyle;
 
-      // Save Draft
-      final cvData = CVData(
-        id: const Uuid().v4(),
-        userProfile: creationState.userProfile!,
-        summary: creationState.summary!,
-        styleId: _selectedStyle,
-        createdAt: DateTime.now(),
-        jobTitle: creationState.jobInput!.jobTitle,
-        language: creationState.language,
-      );
+      // Save Draft using provider logic
+      await ref.read(draftsProvider.notifier).saveFromState(ref.read(cvCreationProvider));
       
-      await ref.read(draftsProvider.notifier).saveDraft(cvData);
-
       if (mounted) {
+         // Get the draft's data (or construct it for the PDF call)
+         final creationState = ref.read(cvCreationProvider);
+         final cvData = CVData(
+            id: const Uuid().v4(), // PDF needs an ID, but we already saved to repository
+            userProfile: creationState.userProfile!,
+            summary: creationState.summary!,
+            styleId: selectedStyle,
+            createdAt: DateTime.now(),
+            jobTitle: creationState.jobInput!.jobTitle,
+            jobDescription: creationState.jobInput!.jobDescription ?? '',
+            language: creationState.language,
+         );
          // Trigger Ad
          await MockAdService.showInterstitialAd(context);
          
          // Generate PDF from Backend
          final pdfBytes = await ref.read(cvRepositoryProvider).downloadPDF(
            cvData: cvData,
-           templateId: _selectedStyle,
+           templateId: selectedStyle,
          );
 
          // Save to Temp File
          final output = await getTemporaryDirectory();
-         final file = File('${output.path}/cv_${_selectedStyle.toLowerCase()}.pdf');
+         final file = File('${output.path}/cv_${selectedStyle.toLowerCase()}.pdf');
          await file.writeAsBytes(pdfBytes);
 
          // Open File
          final result = await OpenFilex.open(file.path);
          if (result.type != ResultType.done) {
             if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Gagal membuka PDF: ${result.message}')),
-              );
+              CustomSnackBar.showError(context, 'Gagal membuka PDF: ${result.message}');
             }
          }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal membuat PDF: $e')),
-        );
+        CustomSnackBar.showError(context, 'Gagal membuat PDF: $e');
       }
     } finally {
       if (mounted) {
@@ -95,23 +90,30 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
     }
   }
 
+  Future<void> _handleStyleSelection(String styleId) async {
+    // 1. Update State in Provider
+    ref.read(cvCreationProvider.notifier).setStyle(styleId);
+
+    // 2. Implicitly Save Draft to sync choice to cloud/local
+    await ref.read(draftsProvider.notifier).saveFromState(ref.read(cvCreationProvider));
+  }
+
   @override
   Widget build(BuildContext context) {
     // Get templates asynchronously
     final templatesAsync = ref.watch(templatesProvider);
-    final currentLanguage = ref.watch(cvCreationProvider).language;
     
     return templatesAsync.when(
       data: (templates) {
+        final creationState = ref.watch(cvCreationProvider);
+        final selectedStyle = creationState.selectedStyle;
+        final currentLanguage = creationState.language;
+        
         // Ensure selected style exists in fetched templates
-        if (templates.isNotEmpty && !templates.any((t) => t.id == _selectedStyle)) {
+        if (templates.isNotEmpty && !templates.any((t) => t.id == selectedStyle)) {
              // Defer state update to next frame to avoid build error
              WidgetsBinding.instance.addPostFrameCallback((_) {
-               if (mounted) {
-                 setState(() {
-                   _selectedStyle = templates.first.id;
-                 });
-               }
+                 ref.read(cvCreationProvider.notifier).setStyle(templates.first.id);
              });
         }
 
@@ -119,13 +121,9 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
           children: [
             StyleSelectionContent(
               templates: templates,
-              selectedStyleId: _selectedStyle,
+              selectedStyleId: selectedStyle,
               selectedLanguage: currentLanguage,
-              onStyleSelected: (styleId) {
-                setState(() {
-                  _selectedStyle = styleId;
-                });
-              },
+              onStyleSelected: _handleStyleSelection,
               onLanguageChanged: (lang) {
                 ref.read(cvCreationProvider.notifier).setLanguage(lang);
               },

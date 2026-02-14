@@ -8,6 +8,7 @@ class CVData extends Equatable {
   final String styleId;
   final DateTime createdAt;
   final String jobTitle;
+  final String jobDescription;
   final String language;
 
   const CVData({
@@ -17,6 +18,7 @@ class CVData extends Equatable {
     required this.styleId,
     required this.createdAt,
     required this.jobTitle,
+    this.jobDescription = '',
     this.language = 'id',
   });
 
@@ -27,6 +29,7 @@ class CVData extends Equatable {
     String? styleId,
     DateTime? createdAt,
     String? jobTitle,
+    String? jobDescription,
     String? language,
   }) {
     return CVData(
@@ -36,6 +39,7 @@ class CVData extends Equatable {
       styleId: styleId ?? this.styleId,
       createdAt: createdAt ?? this.createdAt,
       jobTitle: jobTitle ?? this.jobTitle,
+      jobDescription: jobDescription ?? this.jobDescription,
       language: language ?? this.language,
     );
   }
@@ -48,6 +52,7 @@ class CVData extends Equatable {
       'styleId': styleId,
       'createdAt': createdAt.toIso8601String(),
       'jobTitle': jobTitle,
+      'jobDescription': jobDescription,
       'language': language,
     };
   }
@@ -61,10 +66,11 @@ class CVData extends Equatable {
       styleId: json['styleId'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       jobTitle: json['jobTitle'] as String? ?? 'Untitled Job', // Fallback for old data
+      jobDescription: json['jobDescription'] as String? ?? '',
       language: json['language'] as String? ?? 'id', // Fallback
     );
   }
 
   @override
-  List<Object?> get props => [id, userProfile, summary, styleId, createdAt, jobTitle, language];
+  List<Object?> get props => [id, userProfile, summary, styleId, createdAt, jobTitle, jobDescription, language];
 }

@@ -24,16 +24,18 @@ class CVCreationState {
   final JobInput? jobInput;
   final UserProfile? userProfile;
   final String? summary; // Added summary field
-  final String? selectedStyle;
+  final String selectedStyle; // Default to ATS
   final String language; // 'id' or 'en'
+  final String? currentDraftId; // Track current draft for updates
 
 
   const CVCreationState({
     this.jobInput,
     this.userProfile,
     this.summary,
-    this.selectedStyle,
+    this.selectedStyle = 'ATS',
     this.language = 'id', // Default to Indonesian
+    this.currentDraftId,
   });
 
   CVCreationState copyWith({
@@ -42,6 +44,7 @@ class CVCreationState {
     String? summary,
     String? selectedStyle,
     String? language,
+    String? currentDraftId,
   }) {
     return CVCreationState(
       jobInput: jobInput ?? this.jobInput,
@@ -49,6 +52,7 @@ class CVCreationState {
       summary: summary ?? this.summary,
       selectedStyle: selectedStyle ?? this.selectedStyle,
       language: language ?? this.language,
+      currentDraftId: currentDraftId ?? this.currentDraftId,
     );
   }
 }
@@ -77,6 +81,10 @@ class CVCreationNotifier extends Notifier<CVCreationState> {
 
   void setLanguage(String lang) {
     state = state.copyWith(language: lang);
+  }
+
+  void setCurrentDraftId(String id) {
+    state = state.copyWith(currentDraftId: id);
   }
 }
 

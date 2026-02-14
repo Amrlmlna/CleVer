@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SectionCard extends StatelessWidget {
   final String title;
@@ -40,12 +41,11 @@ class SectionCard extends StatelessWidget {
         ),
         title: Text(
           title, 
-          style: TextStyle(
+          style: GoogleFonts.outfit(
             fontWeight: FontWeight.bold,
             color: isDark ? Colors.white : Colors.black,
-            fontFamily: 'Outfit',
             fontSize: 16,
-          )
+          ),
         ),
         shape: const Border(), // Remove default border
         childrenPadding: const EdgeInsets.all(16),

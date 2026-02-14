@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/utils/custom_snackbar.dart';
 
 class ErrorPageArgs {
   final String title;
@@ -27,14 +28,7 @@ class ErrorPage extends StatelessWidget {
   void _copyToClipboard(BuildContext context) {
     if (args.technicalDetails != null) {
       Clipboard.setData(ClipboardData(text: args.technicalDetails!));
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Error details copied to clipboard'),
-          behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.all(20),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-      );
+      CustomSnackBar.showSuccess(context, 'Error details copied to clipboard');
     }
   }
 
