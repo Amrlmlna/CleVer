@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../../../../domain/entities/certification.dart';
 
@@ -15,7 +14,6 @@ class _CertificationDialogState extends State<CertificationDialog> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _issuerController;
-  late TextEditingController _credentialUrlController;
   DateTime _selectedDate = DateTime.now();
 
   @override
@@ -23,7 +21,6 @@ class _CertificationDialogState extends State<CertificationDialog> {
     super.initState();
     _nameController = TextEditingController(text: widget.existing?.name ?? '');
     _issuerController = TextEditingController(text: widget.existing?.issuer ?? '');
-    _credentialUrlController = TextEditingController(text: widget.existing?.credentialUrl ?? '');
     if (widget.existing != null) {
       _selectedDate = widget.existing!.date;
     }
@@ -33,18 +30,7 @@ class _CertificationDialogState extends State<CertificationDialog> {
   void dispose() {
     _nameController.dispose();
     _issuerController.dispose();
-    _credentialUrlController.dispose();
     super.dispose();
-  }
-
-  Future<void> _pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-    if (result != null && result.files.single.path != null) {
-      setState(() {
-        _credentialUrlController.text = result.files.single.path!;
-      });
-    }
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -68,7 +54,6 @@ class _CertificationDialogState extends State<CertificationDialog> {
         name: _nameController.text,
         issuer: _issuerController.text,
         date: _selectedDate,
-        credentialUrl: _credentialUrlController.text.isNotEmpty ? _credentialUrlController.text : null,
       );
       Navigator.of(context).pop(cert);
     }
@@ -105,23 +90,6 @@ class _CertificationDialogState extends State<CertificationDialog> {
                   TextButton(
                     onPressed: () => _selectDate(context),
                     child: const Text('Pilih Tanggal'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _credentialUrlController,
-                      decoration: const InputDecoration(labelText: 'File / URL Bukti'),
-                      readOnly: false, // Allow manual paste if needed
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.attach_file),
-                    onPressed: _pickFile,
-                    tooltip: 'Upload File',
                   ),
                 ],
               ),

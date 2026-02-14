@@ -5,7 +5,6 @@ class Certification extends Equatable {
   final String name;
   final String issuer;
   final DateTime date;
-  final String? credentialUrl; // Local file path or URL
   final String? description;
 
   const Certification({
@@ -13,7 +12,6 @@ class Certification extends Equatable {
     required this.name,
     required this.issuer,
     required this.date,
-    this.credentialUrl,
     this.description,
   });
 
@@ -23,7 +21,6 @@ class Certification extends Equatable {
       name: json['name'] as String,
       issuer: json['issuer'] as String,
       date: DateTime.tryParse(json['date'] as String? ?? '') ?? DateTime.now(),
-      credentialUrl: json['credentialUrl'] as String?,
       description: json['description'] as String?,
     );
   }
@@ -34,7 +31,6 @@ class Certification extends Equatable {
       'name': name,
       'issuer': issuer,
       'date': date.toIso8601String(),
-      'credentialUrl': credentialUrl,
       'description': description,
     };
   }
@@ -44,7 +40,6 @@ class Certification extends Equatable {
     String? name,
     String? issuer,
     DateTime? date,
-    String? credentialUrl,
     String? description,
   }) {
     return Certification(
@@ -52,11 +47,10 @@ class Certification extends Equatable {
       name: name ?? this.name,
       issuer: issuer ?? this.issuer,
       date: date ?? this.date,
-      credentialUrl: credentialUrl ?? this.credentialUrl,
       description: description ?? this.description,
     );
   }
 
   @override
-  List<Object?> get props => [id, name, issuer, date, credentialUrl, description];
+  List<Object?> get props => [id, name, issuer, date, description];
 }
