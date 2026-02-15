@@ -31,7 +31,5 @@ workflows:
       email:
         recipients:
           - user_email@example.com # Update this on Codemagic dashboard
-      github_releases:
-        draft: false
-        prerelease: false
-        # Note: You must link your GitHub account in Codemagic project settings for this to work
+      # github_releases disabled due to validation error
+      # artifacts will be available in Codemagic dashboard/email
