@@ -217,8 +217,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ## Roadmap
 
-- [ ] English localization improvements
-- [ ] More CV templates (Minimalist, Bold, etc.)
 - [ ] Cover letter generation
 - [ ] LinkedIn profile import
 - [ ] Web version
