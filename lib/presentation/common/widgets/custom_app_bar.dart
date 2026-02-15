@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import '../../profile/providers/profile_sync_provider.dart';
+import '../../common/widgets/language_selector.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String? title;
@@ -25,6 +26,11 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
       title: title != null ? Text(title!) : null,
       centerTitle: true,
       actions: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0),
+          child: const LanguageSelector(),
+        ),
+        const SizedBox(width: 8),
         if (user != null)
           Padding(
             padding: const EdgeInsets.only(right: 8.0),

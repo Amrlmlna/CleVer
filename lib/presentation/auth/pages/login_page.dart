@@ -114,7 +114,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(height: 16),
                 // Logo or Header
                 Center(
                   child: Container(
