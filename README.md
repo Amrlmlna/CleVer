@@ -209,8 +209,8 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ## Support
 
-- Email: support@cvmaster.id (example)
-- Issues: [GitHub Issues](https://github.com/YOUR_USERNAME/cv-master/issues)
+- Email: cvfast.contact@gmail.com
+- Issues: [GitHub Issues](https://github.com/Amrlmlna/CleVer/issues)
 - Docs: [Developer Guide](DEVELOPER_GUIDE.md)
 
 ---
