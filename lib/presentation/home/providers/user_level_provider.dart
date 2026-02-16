@@ -12,19 +12,29 @@ String calculateUserLevel(UserProfile? profile, List<dynamic> drafts) {
     return "Rookie Job Seeker";
   }
   
-  // Profile completion (0-40 points)
+  // 1. Profile Completion (Max 400 points)
+  // Base completion % (0-100) * 4 = 0-400 points
   final completion = calculateProfileCompletion(profile);
-  score += (completion / 100 * 40).round();
+  score += (completion * 4).round();
   
-  // CV count (0-30 points) - 10 points per CV, max 30
-  score += min(drafts.length * 10, 30);
+  // 2. CV Creation Activity (Max 300 points)
+  // 10 points per CV, max 30 CVs = 300 points
+  // Allows consistent users to gain points over time
+  score += min(drafts.length * 10, 300);
   
-  // Experience weight (0-30 points) - 5 points per experience, max 30
-  score += min(profile.experience.length * 5, 30);
+  // 3. Experience Depth (Max 300 points)
+  // 20 points per experience entry, max 15 entries = 300 points
+  // Rewards users with rich work history
+  score += min(profile.experience.length * 20, 300);
   
-  // Determine level
-  if (score < 30) return "Rookie Job Seeker";
-  if (score < 70) return "Mid-Level Professional";
+  // Determine Level (Total Max: 1000 points)
+  // Thresholds:
+  // < 350: Rookie (Need ~85% profile completion OR mix of profile + activity)
+  // 350 - 749: Mid-Level (Need full profile + significant activity)
+  // 750+: Expert (Need high profile + high activity + high experience)
+  
+  if (score < 350) return "Rookie Job Seeker";
+  if (score < 750) return "Mid-Level Professional";
   return "Expert Career Builder";
 }
 
