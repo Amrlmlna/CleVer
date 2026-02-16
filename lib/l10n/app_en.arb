@@ -276,5 +276,8 @@
   "failed": "Failed",
   "unknownError": "Unknown Error",
   "unknownErrorDesc": "Something went wrong, but we aren't sure what.",
-  "readyToAchieve": "Ready to achieve your career goals?"
+  "readyToAchieve": "Ready to achieve your career goals?",
+  "delete": "Delete",
+  "confirmDelete": "Confirm Deletion",
+  "deleteConfirmation": "Are you sure you want to delete this item?"
 }

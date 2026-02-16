@@ -1721,6 +1721,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ready to achieve your career goals?'**
   String get readyToAchieve;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @confirmDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Deletion'**
+  String get confirmDelete;
+
+  /// No description provided for @deleteConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this item?'**
+  String get deleteConfirmation;
 }
 
 class _AppLocalizationsDelegate

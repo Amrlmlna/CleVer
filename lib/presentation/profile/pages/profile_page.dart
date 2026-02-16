@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../domain/entities/user_profile.dart';
 import '../providers/profile_provider.dart';
+import '../providers/profile_unsaved_changes_provider.dart';
 import '../widgets/personal_info_form.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../widgets/experience_list_form.dart';
@@ -97,9 +98,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   bool _hasChanges() {
     final masterProfile = ref.read(masterProfileProvider);
+    bool changed = false;
+
     if (masterProfile == null) {
       // If no profile, we have changes if any field is not empty
-      return _nameController.text.isNotEmpty ||
+      changed = _nameController.text.isNotEmpty ||
           _emailController.text.isNotEmpty ||
           _phoneController.text.isNotEmpty ||
           _locationController.text.isNotEmpty ||
@@ -107,20 +110,29 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           _education.isNotEmpty ||
           _skills.isNotEmpty ||
           _certifications.isNotEmpty;
+    } else {
+      final currentLocal = UserProfile(
+        fullName: _nameController.text,
+        email: _emailController.text,
+        phoneNumber: _phoneController.text,
+        location: _locationController.text,
+        experience: _experience,
+        education: _education,
+        skills: _skills,
+        certifications: _certifications,
+      );
+      changed = currentLocal != masterProfile;
     }
+    
+    // Sync with Provider for Navigation Guard
+    // We delay this to avoid "setState during build" errors if called during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        ref.read(profileUnsavedChangesProvider.notifier).state = changed;
+      }
+    });
 
-    final currentLocal = UserProfile(
-      fullName: _nameController.text,
-      email: _emailController.text,
-      phoneNumber: _phoneController.text,
-      location: _locationController.text,
-      experience: _experience,
-      education: _education,
-      skills: _skills,
-      certifications: _certifications,
-    );
-
-    return currentLocal != masterProfile;
+    return changed;
   }
 
   Future<bool> _showExitWarning() async {

@@ -866,4 +866,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get readyToAchieve => 'Ready to achieve your career goals?';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get confirmDelete => 'Confirm Deletion';
+
+  @override
+  String get deleteConfirmation => 'Are you sure you want to delete this item?';
 }

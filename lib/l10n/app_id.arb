@@ -276,5 +276,8 @@
   "failed": "Gagal",
   "unknownError": "Kesalahan Tidak Diketahui",
   "unknownErrorDesc": "Terjadi kesalahan, tapi kami tidak yakin apa penyebabnya.",
-  "readyToAchieve": "Siap mencapai tujuan karirmu?"
+  "readyToAchieve": "Siap mencapai tujuan karirmu?",
+  "delete": "Hapus",
+  "confirmDelete": "Konfirmasi Penghapusan",
+  "deleteConfirmation": "Apakah Anda yakin ingin menghapus item ini?"
 }

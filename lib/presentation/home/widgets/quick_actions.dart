@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../profile/widgets/import_cv_button.dart';
 import '../../../core/utils/custom_snackbar.dart';
@@ -23,8 +22,6 @@ class QuickActions extends ConsumerWidget {
             profile.education.length,
           ),
         );
-        // Navigate to profile to review/complete
-        context.push('/profile');
       },
     );
   }

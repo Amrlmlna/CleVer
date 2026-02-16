@@ -872,4 +872,14 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get readyToAchieve => 'Siap mencapai tujuan karirmu?';
+
+  @override
+  String get delete => 'Hapus';
+
+  @override
+  String get confirmDelete => 'Konfirmasi Penghapusan';
+
+  @override
+  String get deleteConfirmation =>
+      'Apakah Anda yakin ingin menghapus item ini?';
 }

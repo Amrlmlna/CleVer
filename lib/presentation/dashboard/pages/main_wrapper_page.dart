@@ -1,9 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/widgets/custom_app_bar.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../profile/providers/profile_unsaved_changes_provider.dart';
 
-class MainWrapperPage extends StatelessWidget {
+class MainWrapperPage extends ConsumerWidget {
   final StatefulNavigationShell navigationShell;
 
   const MainWrapperPage({
@@ -12,7 +15,7 @@ class MainWrapperPage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: const CustomAppBar(),
       extendBody: true,
@@ -24,7 +27,7 @@ class MainWrapperPage extends StatelessWidget {
       ),
       floatingActionButton: _buildCenterFAB(context),
       floatingActionButtonLocation: const _CenterDockedFabLocation(),
-      bottomNavigationBar: _buildBottomNav(context),
+      bottomNavigationBar: _buildBottomNav(context, ref),
     );
   }
 
@@ -67,7 +70,7 @@ class MainWrapperPage extends StatelessWidget {
   }
 
   /// Bottom navigation with 2 items and glass effect
-  Widget _buildBottomNav(BuildContext context) {
+  Widget _buildBottomNav(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Container(
@@ -94,13 +97,13 @@ class MainWrapperPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // Home
-                _buildNavItem(context, 0, Icons.home_rounded, 'Home'),
+                _buildNavItem(context, ref, 0, Icons.home_rounded, 'Home'),
                 
                 // Spacer for center FAB
                 const SizedBox(width: 60), 
                 
                 // Profile
-                _buildNavItem(context, 1, Icons.person_rounded, 'Profile'),
+                _buildNavItem(context, ref, 1, Icons.person_rounded, 'Profile'),
               ],
             ),
           ),
@@ -109,7 +112,7 @@ class MainWrapperPage extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(BuildContext context, int index, IconData icon, String label) {
+  Widget _buildNavItem(BuildContext context, WidgetRef ref, int index, IconData icon, String label) {
     final isSelected = navigationShell.currentIndex == index;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -120,10 +123,48 @@ class MainWrapperPage extends StatelessWidget {
     return Tooltip(
       message: label,
       child: InkWell(
-        onTap: () => navigationShell.goBranch(
-          index,
-          initialLocation: index == navigationShell.currentIndex,
-        ),
+        onTap: () async {
+          // Navigation Guard Logic
+          if (index != navigationShell.currentIndex) {
+            // If trying to leave Profile (index 1 is Profile)
+            if (navigationShell.currentIndex == 1) {
+              final hasUnsavedChanges = ref.read(profileUnsavedChangesProvider);
+              
+              if (hasUnsavedChanges) {
+                final shouldLeave = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(AppLocalizations.of(context)!.saveChangesTitle),
+                    content: Text(AppLocalizations.of(context)!.saveChangesMessage),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, false), // Stay
+                        child: Text(AppLocalizations.of(context)!.stayHere),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          // Clean up provider before leaving? 
+                          // Actually, we should probably reset it if they choose to exit without saving
+                          ref.read(profileUnsavedChangesProvider.notifier).state = false;
+                          Navigator.pop(context, true); // Leave
+                        },
+                        style: TextButton.styleFrom(foregroundColor: Colors.red),
+                        child: Text(AppLocalizations.of(context)!.exitWithoutSaving),
+                      ),
+                    ],
+                  ),
+                );
+
+                if (shouldLeave != true) return; // Cancel navigation
+              }
+            }
+          }
+          
+          navigationShell.goBranch(
+            index,
+            initialLocation: index == navigationShell.currentIndex,
+          );
+        },
         borderRadius: BorderRadius.circular(16),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),

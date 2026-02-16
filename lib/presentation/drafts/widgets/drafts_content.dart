@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../domain/entities/cv_data.dart';
-import '../../ads/widgets/draft_banner_carousel.dart';
 
 class DraftsContent extends StatelessWidget {
   final Map<String, List<CVData>> folders;
@@ -73,8 +72,6 @@ class DraftsContent extends StatelessWidget {
                   onChanged: onSearchChanged,
                 ),
                 const SizedBox(height: 24),
-                // Ad Banner
-                const DraftsBannerCarousel(),
               ] else ...[
                 Row(
                   children: [

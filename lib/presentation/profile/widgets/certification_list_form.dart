@@ -37,10 +37,33 @@ class _CertificationListFormState extends State<CertificationListForm> {
     }
   }
 
-  void _removeCertification(int index) {
-    final newList = List<Certification>.from(widget.certifications);
-    newList.removeAt(index);
-    widget.onChanged(newList);
+  void _removeCertification(int index) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)!.confirmDelete),
+        content: Text(AppLocalizations.of(context)!.deleteConfirmation),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(AppLocalizations.of(context)!.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(
+              AppLocalizations.of(context)!.delete,
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      final newList = List<Certification>.from(widget.certifications);
+      newList.removeAt(index);
+      widget.onChanged(newList);
+    }
   }
 
   @override
