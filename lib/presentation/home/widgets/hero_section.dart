@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../auth/utils/auth_guard.dart';
 import '../../drafts/providers/draft_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -61,8 +62,6 @@ class HeroSection extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                
-                // Minimalist Large Typography
                 Text(
                   hasDrafts 
                     ? AppLocalizations.of(context)!.createProfessionalCV 
@@ -77,13 +76,11 @@ class HeroSection extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
-                
-                // Full Width Button
                 SizedBox(
                   width: double.infinity,
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: () => context.push('/create/job-input'),
+                    onPressed: AuthGuard.protected(context, () => context.push('/create/job-input')),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       foregroundColor: Colors.white,

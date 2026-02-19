@@ -813,6 +813,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.11.1"
+  purchases_flutter:
+    dependency: "direct main"
+    description:
+      name: purchases_flutter
+      sha256: b619973958e9173dad76a28707d4254fb29a087e324b303560e7f6f0af27fba5
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.12.0"
+  purchases_ui_flutter:
+    dependency: "direct main"
+    description:
+      name: purchases_ui_flutter
+      sha256: "02d013ff8ec578450ff822050822ddf02b6ce5edd779561dbcad72b2d58ab2ae"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.12.0"
   riverpod:
     dependency: transitive
     description:

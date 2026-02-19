@@ -10,7 +10,10 @@ class TemplateRepositoryImpl implements TemplateRepository {
   @override
   Future<List<CVTemplate>> getAllTemplates() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/templates'));
+      final response = await http.get(
+        Uri.parse('$baseUrl/templates'),
+        headers: await ApiConfig.getAuthHeaders(),
+      );
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = json.decode(response.body);

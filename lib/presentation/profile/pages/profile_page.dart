@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/user_profile.dart';
 import '../providers/profile_provider.dart';
@@ -320,6 +321,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 onChanged: (val) => setState(() => _skills = val),
               ),
             ),
+
+            ListTile(
+              leading: const Icon(Icons.description_outlined),
+              title: const Text('Legal Information'),
+              subtitle: const Text('Privacy Policy and Terms'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.push('/legal'),
+            ),
+
+            const SizedBox(height: 24),
 
             // Action Buttons (Extracted Widget)
             ProfileActionButtons(
