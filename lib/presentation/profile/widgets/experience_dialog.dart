@@ -244,6 +244,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final exp = Experience(
+                id: widget.existing?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
                 jobTitle: _titleCtrl.text,
                 companyName: _companyCtrl.text,
                 startDate: _startCtrl.text,

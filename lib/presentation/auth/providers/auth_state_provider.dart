@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/repositories/firebase_auth_repository.dart';
 import '../../../domain/repositories/auth_repository.dart';
 import '../../../data/datasources/remote_user_datasource.dart';
+import '../../../domain/entities/app_user.dart';
 
 final remoteUserDataSourceProvider = Provider<RemoteUserDataSource>((ref) {
   return RemoteUserDataSource();
@@ -15,7 +15,7 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 });
 
 /// Stream of auth state changes
-final authStateProvider = StreamProvider<User?>((ref) {
+final authStateProvider = StreamProvider<AppUser?>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return authRepository.authStateChanges;
 });
@@ -35,7 +35,7 @@ final userDisplayNameProvider = Provider<String?>((ref) {
 /// User photo URL (if logged in via Google)
 final userPhotoUrlProvider = Provider<String?>((ref) {
   final authState = ref.watch(authStateProvider);
-  return authState.value?.photoURL;
+  return authState.value?.photoUrl;
 });
 
 /// Whether user has premium subscription (Still Mocked)

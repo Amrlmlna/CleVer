@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Certification extends Equatable {
-  final String id; // UUID or meaningful ID
+  final String id;
   final String name;
   final String issuer;
   final DateTime date;

@@ -1,6 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
+import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../domain/repositories/auth_repository.dart';
+import '../../domain/entities/app_user.dart';
 import '../datasources/remote_user_datasource.dart';
 import '../utils/data_error_mapper.dart';
 
@@ -16,27 +18,38 @@ class FirebaseAuthRepository implements AuthRepository {
   })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.instance;
 
-  @override
-  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+  AppUser? _mapFirebaseUser(fb.User? user) {
+    if (user == null) return null;
+    return AppUser(
+      uid: user.uid,
+      email: user.email ?? '',
+      displayName: user.displayName,
+      photoUrl: user.photoURL,
+    );
+  }
 
   @override
-  User? get currentUser => _firebaseAuth.currentUser;
+  Stream<AppUser?> get authStateChanges => 
+      _firebaseAuth.authStateChanges().map(_mapFirebaseUser);
 
   @override
-  Future<User?> signInWithEmailAndPassword(String email, String password) async {
+  AppUser? get currentUser => _mapFirebaseUser(_firebaseAuth.currentUser);
+
+  @override
+  Future<AppUser?> signInWithEmailAndPassword(String email, String password) async {
     try {
       final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return userCredential.user;
+      return _mapFirebaseUser(userCredential.user);
     } catch (e) {
       throw DataErrorMapper.map(e);
     }
   }
 
   @override
-  Future<User?> signUpWithEmailAndPassword(String email, String password, String name) async {
+  Future<AppUser?> signUpWithEmailAndPassword(String email, String password, String name) async {
     try {
       final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
@@ -48,7 +61,7 @@ class FirebaseAuthRepository implements AuthRepository {
         await userCredential.user!.reload();
       }
       
-      return _firebaseAuth.currentUser;
+      return _mapFirebaseUser(_firebaseAuth.currentUser);
     } catch (e) {
       throw DataErrorMapper.map(e);
     }
@@ -63,7 +76,7 @@ class FirebaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<User?> signInWithGoogle() async {
+  Future<AppUser?> signInWithGoogle() async {
     try {
       await _googleSignIn.initialize();
       final GoogleSignInAccount? googleUser = await _googleSignIn.attemptLightweightAuthentication() 
@@ -80,7 +93,7 @@ class FirebaseAuthRepository implements AuthRepository {
       );
 
       final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
-      return userCredential.user;
+      return _mapFirebaseUser(userCredential.user);
     } catch (e) {
       throw DataErrorMapper.map(e);
     }

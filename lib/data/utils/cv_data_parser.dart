@@ -50,13 +50,7 @@ class CVDataParser {
     return originalExperience.map((exp) {
       final refinedDesc = refinedMap[exp.jobTitle.toLowerCase()];
       if (refinedDesc != null) {
-        return Experience(
-          jobTitle: exp.jobTitle,
-          companyName: exp.companyName,
-          startDate: exp.startDate,
-          endDate: exp.endDate,
-          description: refinedDesc,
-        );
+        return exp.copyWith(description: refinedDesc);
       }
       return exp;
     }).toList();

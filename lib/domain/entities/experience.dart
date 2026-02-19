@@ -1,13 +1,15 @@
 import 'package:equatable/equatable.dart';
 
 class Experience extends Equatable {
+  final String id;
   final String jobTitle;
   final String companyName;
-  final String startDate; // Simplified for now
+  final String startDate;
   final String? endDate;
   final String description;
 
   const Experience({
+    required this.id,
     required this.jobTitle,
     required this.companyName,
     required this.startDate,
@@ -16,6 +18,7 @@ class Experience extends Equatable {
   });
 
   Experience copyWith({
+    String? id,
     String? jobTitle,
     String? companyName,
     String? startDate,
@@ -23,6 +26,7 @@ class Experience extends Equatable {
     String? description,
   }) {
     return Experience(
+      id: id ?? this.id,
       jobTitle: jobTitle ?? this.jobTitle,
       companyName: companyName ?? this.companyName,
       startDate: startDate ?? this.startDate,
@@ -33,6 +37,7 @@ class Experience extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'jobTitle': jobTitle,
       'companyName': companyName,
       'startDate': startDate,
@@ -43,6 +48,7 @@ class Experience extends Equatable {
 
   factory Experience.fromJson(Map<String, dynamic> json) {
     return Experience(
+      id: json['id'] as String? ?? DateTime.now().millisecondsSinceEpoch.toString(),
       jobTitle: json['jobTitle'] as String,
       companyName: json['companyName'] as String,
       startDate: json['startDate'] as String,
@@ -52,5 +58,5 @@ class Experience extends Equatable {
   }
 
   @override
-  List<Object?> get props => [jobTitle, companyName, startDate, endDate, description];
+  List<Object?> get props => [id, jobTitle, companyName, startDate, endDate, description];
 }

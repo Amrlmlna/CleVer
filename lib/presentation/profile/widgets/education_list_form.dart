@@ -269,6 +269,7 @@ class _EducationDialogState extends State<_EducationDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final edu = Education(
+                id: widget.existing?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
                 schoolName: _schoolCtrl.text,
                 degree: _degreeCtrl.text,
                 startDate: _startCtrl.text,

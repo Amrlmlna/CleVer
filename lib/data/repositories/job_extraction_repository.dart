@@ -13,7 +13,7 @@ class JobExtractionRepository {
       return JobInput(
         jobTitle: data['jobTitle'] ?? '',
         company: data['company'],
-        jobDescription: data['description'] ?? '',
+        jobDescription: data['jobDescription'] ?? data['description'] ?? '',
       );
     } catch (e) {
       throw DataErrorMapper.map(e);
