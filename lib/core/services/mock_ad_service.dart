@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 
 class MockAdService {
-  /// Simulates showing a full-screen interstitial ad.
-  /// Shows a dialog for 3 seconds then auto-closes.
   static Future<void> showInterstitialAd(BuildContext context) async {
-    // 1. Show the Ad Overlay
     await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        // Auto-close after 3 seconds
         Future.delayed(const Duration(seconds: 3), () {
           if (context.mounted) {
             Navigator.of(context).pop();

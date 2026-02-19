@@ -76,7 +76,7 @@ class _TopSnackBarState extends State<_TopSnackBar>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 600), // Smooth 600ms
+      duration: const Duration(milliseconds: 600),
       reverseDuration: const Duration(milliseconds: 400),
       vsync: this,
     );
@@ -86,7 +86,7 @@ class _TopSnackBarState extends State<_TopSnackBar>
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: Curves.easeOutCubic, // Smooth entry
+      curve: Curves.easeOutCubic,
       reverseCurve: Curves.easeInCubic,
     ));
     
@@ -95,10 +95,8 @@ class _TopSnackBarState extends State<_TopSnackBar>
       curve: Curves.easeOut,
     );
 
-    // Start animation
     _controller.forward();
 
-    // Auto dismiss
     Future.delayed(const Duration(seconds: 4), () {
       if (mounted) {
         _dismiss();
@@ -122,7 +120,7 @@ class _TopSnackBarState extends State<_TopSnackBar>
     final topPadding = MediaQuery.of(context).padding.top;
 
     return Positioned(
-      top: topPadding + 1, // Reduced top spacing
+      top: topPadding + 1,
       left: 16,
       right: 16,
       child: Material(
@@ -140,10 +138,10 @@ class _TopSnackBarState extends State<_TopSnackBar>
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Colors.black, // Pure black
+                  color: Colors.black,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.2), // Subtle white border
+                    color: Colors.white.withValues(alpha: 0.2),
                     width: 1,
                   ),
                   boxShadow: [

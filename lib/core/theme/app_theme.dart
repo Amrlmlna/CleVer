@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Minimalist Color Palette
   static const Color primaryColor = Colors.black;
   static const Color secondaryColor = Colors.black87;
   static const Color backgroundColor = Colors.white;
   static const Color surfaceColor = Colors.white;
-  static const Color errorColor = Color(0xFFE53935);
+  static const Color errorColor = Color(0xFFE53935);  
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -16,7 +15,6 @@ class AppTheme {
       primaryColor: primaryColor,
       scaffoldBackgroundColor: backgroundColor,
       
-      // Color Scheme
       colorScheme: const ColorScheme.light(
         primary: primaryColor,
         onPrimary: Colors.white,
@@ -28,14 +26,11 @@ class AppTheme {
         onError: Colors.white,
       ),
 
-      // Typography
-      // Using Outfit as requested
       textTheme: GoogleFonts.outfitTextTheme().apply(
         bodyColor: primaryColor,
         displayColor: primaryColor,
       ),
 
-      // AppBar Theme
       appBarTheme: const AppBarTheme(
         backgroundColor: backgroundColor,
         foregroundColor: primaryColor,
@@ -43,7 +38,6 @@ class AppTheme {
         centerTitle: true,
       ),
 
-      // Button Themes
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor,
@@ -74,7 +68,6 @@ class AppTheme {
         ),
       ),
 
-      // Input Decoration
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: const Color(0xFFF5F5F5),
@@ -97,7 +90,6 @@ class AppTheme {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
       
-      // Bottom Navigation Bar
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: backgroundColor,
         selectedItemColor: primaryColor,
@@ -106,7 +98,6 @@ class AppTheme {
         elevation: 8,
       ),
 
-      // SnackBar Theme - Top positioned with rounded corners
       snackBarTheme: const SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         backgroundColor: Color(0xFF1E1E1E),
@@ -122,10 +113,9 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       primaryColor: Colors.white,
-      scaffoldBackgroundColor: const Color(0xFF121212), // Extremely dark grey/black
-      canvasColor: const Color(0xFF1E1E1E), // For BottomSheets etc
+      scaffoldBackgroundColor: const Color(0xFF121212),
+      canvasColor: const Color(0xFF1E1E1E),
       
-      // Color Scheme
       colorScheme: const ColorScheme.dark(
         primary: Colors.white,
         onPrimary: Colors.black,
@@ -137,13 +127,10 @@ class AppTheme {
         onError: Colors.white,
       ),
 
-      // Typography
       textTheme: GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme).apply(
         bodyColor: Colors.white,
         displayColor: Colors.white,
       ),
-
-      // AppBar Theme
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xFF121212),
         foregroundColor: Colors.white,
@@ -151,7 +138,6 @@ class AppTheme {
         centerTitle: true,
       ),
 
-      // Button Themes
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
@@ -185,10 +171,9 @@ class AppTheme {
         ),
       ),
 
-      // Input Decoration
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: const Color(0xFF2C2C2C), // Lighter than card for visibility
+        fillColor: const Color(0xFF2C2C2C),
         hintStyle: TextStyle(color: Colors.grey[600]),
         labelStyle: const TextStyle(color: Colors.white70),
         border: OutlineInputBorder(
@@ -210,7 +195,6 @@ class AppTheme {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
       
-      // Bottom Navigation Bar
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: Color(0xFF1E1E1E),
         selectedItemColor: Colors.white,
@@ -219,7 +203,6 @@ class AppTheme {
         elevation: 0,
       ),
 
-      // Card Theme
       cardTheme: CardThemeData(
         color: const Color(0xFF1E1E1E),
         elevation: 0,
@@ -228,13 +211,10 @@ class AppTheme {
         ),
       ),
       
-      // Divider Theme
       dividerTheme: DividerThemeData(
         color: Colors.grey[800],
         thickness: 1,
       ),
-
-      // Chip Theme
       chipTheme: ChipThemeData(
         backgroundColor: Colors.white.withValues(alpha: 0.1),
         labelStyle: const TextStyle(color: Colors.white),
@@ -246,7 +226,6 @@ class AppTheme {
         ),
       ),
       
-      // Premium Global Transitions
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {
           TargetPlatform.android: ZoomPageTransitionsBuilder(
@@ -256,7 +235,6 @@ class AppTheme {
         },
       ),
 
-      // SnackBar Theme - Top positioned with rounded corners
       snackBarTheme: const SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         backgroundColor: Color(0xFF1E1E1E),

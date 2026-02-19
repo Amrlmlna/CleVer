@@ -9,9 +9,7 @@ class AnalyticsService {
 
   AnalyticsService._internal();
 
-  /// Tracks a custom event.
-  /// [eventName] is the name of the event.
-  /// [properties] is a map of additional data to send with the event.
+
   Future<void> trackEvent(String eventName, {Map<String, Object>? properties}) async {
     await Posthog().capture(
       eventName: eventName,
@@ -19,9 +17,6 @@ class AnalyticsService {
     );
   }
 
-  /// Identifies the user.
-  /// [userId] is the unique identifier for the user.
-  /// [userProperties] is a map of user traits.
   Future<void> identifyUser(String userId, {Map<String, Object>? userProperties}) async {
     await Posthog().identify(
       userId: userId,
@@ -29,7 +24,6 @@ class AnalyticsService {
     );
   }
 
-  /// Resets the user session.
   Future<void> reset() async {
     await Posthog().reset();
   }
