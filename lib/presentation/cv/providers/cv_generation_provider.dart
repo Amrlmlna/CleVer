@@ -5,13 +5,7 @@ import '../../../domain/repositories/cv_repository.dart';
 import '../../../data/repositories/cv_repository_impl.dart';
 import '../../../domain/entities/job_input.dart';
 
-import '../../../core/config/app_config.dart';
-import '../../../data/datasources/mock_ai_service.dart';
-
 final remoteAIServiceProvider = Provider<RemoteAIService>((ref) {
-  if (AppConfig.useMockAI) {
-    return MockAIService();
-  }
   return RemoteAIService();
 });
 

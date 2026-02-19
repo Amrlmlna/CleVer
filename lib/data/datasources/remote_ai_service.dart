@@ -5,14 +5,10 @@ import '../../domain/entities/cv_data.dart';
 import '../../domain/entities/job_input.dart';
 import '../../domain/entities/user_profile.dart';
 import '../../domain/entities/tailored_cv_result.dart'; // Import at top
+import '../../core/config/api_config.dart';
 
 class RemoteAIService {
-  // Use 10.0.2.2 for Android Emulator, 192.168.1.5 for local network
-  // Production (Vercel)
-  static const String baseUrl = 'https://cvmaster-chi.vercel.app/api/cv';
-  
-  // Dev (Emulator): 'http://10.0.2.2:3000/api/cv'
-  // Dev (Physical Device): 'http://192.168.x.x:3000/api/cv'
+  static String get baseUrl => '${ApiConfig.baseUrl}/cv';
 
   Future<CVData> generateCV({
     required UserProfile profile,
@@ -24,7 +20,7 @@ class RemoteAIService {
     try {
       final response = await http.post(
         url,
-        headers: {'Content-Type': 'application/json'},
+        headers: await ApiConfig.getAuthHeaders(),
         body: jsonEncode({
           'profile': profile.toJson(),
           'jobInput': jobInput.toJson(),
@@ -54,27 +50,23 @@ class RemoteAIService {
       throw Exception('AI response is not a JSON object');
     }
     
-    // Use dynamic to avoid Map<String, dynamic> casting issues
     final data = decoded;
     
-    // 1. Safe Summary
     final String summary = data['generatedSummary']?.toString() ?? 'Summary not available.';
     
-    // 2. Safe Skills
     final List<String> tailoredSkills = [];
     final dynamic rawSkills = data['tailoredSkills'] ?? data['skills'];
     if (rawSkills is List) {
       tailoredSkills.addAll(rawSkills.map((e) => e.toString()));
     }
     
-    // 3. Safe Experience Analysis
     final refinedExperience = _refineExperience(profile.experience, data['analyzedExperience']);
 
     return CVData(
       id: const Uuid().v4(),
       userProfile: profile.copyWith(
         skills: tailoredSkills, 
-        experience: refinedExperience, // Use refined list
+        experience: refinedExperience,
         education: profile.education,
       ),
       summary: summary,
@@ -119,7 +111,7 @@ class RemoteAIService {
     try {
       final response = await http.post(
         url,
-        headers: {'Content-Type': 'application/json'},
+        headers: await ApiConfig.getAuthHeaders(),
         body: jsonEncode({
           'originalText': originalText,
         }),
@@ -146,7 +138,7 @@ class RemoteAIService {
     try {
       final response = await http.post(
         url,
-        headers: {'Content-Type': 'application/json'},
+        headers: await ApiConfig.getAuthHeaders(),
         body: jsonEncode({
           'masterProfile': masterProfile.toJson(),
           'jobInput': jobInput.toJson(),

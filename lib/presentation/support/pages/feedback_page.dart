@@ -7,6 +7,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 // For this MVP, we will use a simple inline HTTP call or just mock it.
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../../../core/config/api_config.dart';
 
 class FeedbackPage extends StatefulWidget {
   const FeedbackPage({super.key});
@@ -51,7 +52,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     // Replace IP with your backend URL
     try {
       final response = await http.post(
-        Uri.parse('https://cvmaster-chi.vercel.app/api/feedback'), // Production URL
+        Uri.parse('${ApiConfig.baseUrl}/feedback'), // Dynamic URL
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'type': _feedbackType,

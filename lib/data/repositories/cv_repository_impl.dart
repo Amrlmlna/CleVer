@@ -6,6 +6,7 @@ import '../../domain/repositories/cv_repository.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../datasources/remote_ai_service.dart';
+import '../../core/config/api_config.dart';
 
 class CVRepositoryImpl implements CVRepository {
   final RemoteAIService aiService;
@@ -39,12 +40,11 @@ class CVRepositoryImpl implements CVRepository {
 
   @override
   Future<List<int>> downloadPDF({required CVData cvData, required String templateId}) async {
-    // TODO: Use env variable for URL
-    final String baseUrl = 'https://cvmaster-chi.vercel.app/api'; 
+    final String baseUrl = ApiConfig.baseUrl; 
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/cv/generate'),
-        headers: {'Content-Type': 'application/json'},
+        headers: await ApiConfig.getAuthHeaders(),
         body: jsonEncode({
           'cvData': cvData.toJson(),
           'templateId': templateId,

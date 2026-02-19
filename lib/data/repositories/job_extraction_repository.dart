@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../domain/entities/job_input.dart';
+import '../../core/config/api_config.dart';
 
 class JobExtractionRepository {
-  // TODO: Get this from environment or config
-  static const String baseUrl = 'https://cvmaster-chi.vercel.app'; // Update this to your backend URL
+  static String get baseUrl => ApiConfig.baseUrl;
 
   /// Extract job posting from raw text using Groq API via backend
   Future<JobInput> extractFromText(String text) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/api/job/extract-from-text'),
+        Uri.parse('$baseUrl/job/extract'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'text': text}),
       );

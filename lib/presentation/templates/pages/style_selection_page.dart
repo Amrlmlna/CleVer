@@ -11,6 +11,7 @@ import '../../drafts/providers/draft_provider.dart';
 import '../providers/template_provider.dart';
 import '../widgets/style_selection_content.dart';
 import '../../common/widgets/app_loading_screen.dart';
+import '../../../../core/services/payment_service.dart';
 import '../../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -71,6 +72,10 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
 
          // Open File
          final result = await OpenFilex.open(file.path);
+         
+         // Invalidate templates to refresh usage count/locked status
+         ref.invalidate(templatesProvider);
+         
          if (result.type != ResultType.done) {
             if (mounted) {
               CustomSnackBar.showError(context, AppLocalizations.of(context)!.pdfOpenError(result.message));
@@ -91,6 +96,19 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
   }
 
   Future<void> _handleStyleSelection(String styleId) async {
+    final templates = ref.read(templatesProvider).value ?? [];
+    final template = templates.firstWhere((t) => t.id == styleId);
+
+    if (template.isLocked) {
+      if (mounted) {
+        final purchased = await PaymentService.presentPaywall();
+        if (purchased) {
+          ref.invalidate(templatesProvider);
+        }
+      }
+      return;
+    }
+
     // 1. Update State in Provider
     ref.read(cvCreationProvider.notifier).setStyle(styleId);
 

@@ -132,12 +132,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const FeedbackPage(),
       ),
       GoRoute(
-        path: '/legal/privacy',
-        builder: (context, state) => LegalPage(title: AppLocalizations.of(context)!.privacyPolicy, content: kPrivacyPolicy),
-      ),
-      GoRoute(
-        path: '/legal/terms',
-        builder: (context, state) => LegalPage(title: AppLocalizations.of(context)!.termsOfService, content: kTermsOfService),
+        path: '/legal',
+        builder: (context, state) => const LegalPage(),
       ),
       GoRoute(
         path: '/drafts',

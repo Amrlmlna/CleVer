@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../auth/providers/auth_state_provider.dart';
-import '../../../core/utils/custom_snackbar.dart';
+import '../../../core/services/payment_service.dart';
+import '../../templates/providers/template_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class PremiumBanner extends ConsumerWidget {
@@ -9,10 +9,11 @@ class PremiumBanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isPremium = ref.watch(isPremiumProvider);
+    // final isPremium = ref.watch(isPremiumProvider);
     
-    // Don't show if user already has premium
-    if (isPremium) return const SizedBox.shrink();
+    // For now, we always show the banner unless they've actually bought credits.
+    // We'll rely on the paywall to handle the state.
+    // if (isPremium) return const SizedBox.shrink();
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -81,9 +82,11 @@ class PremiumBanner extends ConsumerWidget {
           SizedBox(
             width: double.infinity,
             child: OutlinedButton(
-              onPressed: () {
-                // TODO: Navigate to premium page
-                  CustomSnackBar.showInfo(context, AppLocalizations.of(context)!.premiumComingSoon);
+              onPressed: () async {
+                final purchased = await PaymentService.presentPaywall();
+                if (purchased) {
+                  ref.invalidate(templatesProvider);
+                }
               },
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.white,

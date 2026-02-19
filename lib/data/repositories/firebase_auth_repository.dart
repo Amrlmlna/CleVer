@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../domain/repositories/auth_repository.dart';
+import 'package:http/http.dart' as http;
+import '../../core/config/api_config.dart';
 
 class FirebaseAuthRepository implements AuthRepository {
   final FirebaseAuth _firebaseAuth;
@@ -77,6 +79,26 @@ class FirebaseAuthRepository implements AuthRepository {
       final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
       return userCredential.user;
     } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    final String baseUrl = ApiConfig.baseUrl;
+    try {
+      final response = await http.delete(
+        Uri.parse('$baseUrl/user/account'),
+        headers: await ApiConfig.getAuthHeaders(),
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to delete account from server: ${response.body}');
+      }
+
+      await signOut();
+    } catch (e) {
+      print('[FirebaseAuthRepository] Error deleting account: $e');
       rethrow;
     }
   }

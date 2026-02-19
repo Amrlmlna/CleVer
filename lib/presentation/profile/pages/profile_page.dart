@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/user_profile.dart';
 import '../providers/profile_provider.dart';
@@ -14,6 +15,7 @@ import '../widgets/section_card.dart';
 import '../widgets/import_cv_button.dart';
 import '../widgets/profile_action_buttons.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../../auth/providers/auth_state_provider.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -232,6 +234,82 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
   }
 
+  Future<void> _confirmAccountDeletion() async {
+    final confirmationController = TextEditingController();
+    bool canDelete = false;
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: const Text('Delete Account?', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('This is irreversible. You will lose:'),
+              const SizedBox(height: 8),
+              const Text('• All your generated CVs'),
+              const Text('• Your profile information'),
+              const Text('• All remaining credits'),
+              const SizedBox(height: 16),
+              const Text('Type "DELETE" to confirm:', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+              const SizedBox(height: 8),
+              TextField(
+                controller: confirmationController,
+                decoration: const InputDecoration(
+                  hintText: 'DELETE',
+                  border: OutlineInputBorder(),
+                  isDense: true,
+                ),
+                onChanged: (val) {
+                  setDialogState(() => canDelete = val.toUpperCase() == 'DELETE');
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: canDelete ? () => Navigator.pop(context, true) : null,
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: const Text('Delete My Data'),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (result == true) {
+      _performDeletion();
+    }
+  }
+
+  Future<void> _performDeletion() async {
+    setState(() => _isSaving = true);
+    try {
+      await ref.read(authRepositoryProvider).deleteAccount();
+      // Clear local state
+      await ref.read(masterProfileProvider.notifier).clearProfile();
+      
+      if (mounted) {
+        CustomSnackBar.showSuccess(context, 'Account successfully deleted. Goodbye!');
+        context.go('/'); // Back to home/auth
+      }
+    } catch (e) {
+      if (mounted) {
+        CustomSnackBar.showError(context, 'Failed to delete account: $e');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen(masterProfileProvider, (prev, next) {
@@ -320,6 +398,47 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 onChanged: (val) => setState(() => _skills = val),
               ),
             ),
+
+            ListTile(
+              leading: const Icon(Icons.description_outlined),
+              title: const Text('Legal Information'),
+              subtitle: const Text('Privacy Policy and Terms'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.push('/legal'),
+            ),
+
+            const SizedBox(height: 24),
+
+            const Divider(),
+            const SizedBox(height: 24),
+            
+            // Danger Zone
+            SectionCard(
+              title: 'Danger Zone',
+              icon: Icons.warning_amber_rounded,
+              child: Column(
+                children: [
+                  const Text(
+                    'Deleting your account will remove all your data from our servers. This action cannot be undone.',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: _isSaving ? null : _confirmAccountDeletion,
+                      icon: const Icon(Icons.delete_forever, color: Colors.red),
+                      label: const Text('Delete Account', style: TextStyle(color: Colors.red)),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.red),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 32),
 
             // Action Buttons (Extracted Widget)
             ProfileActionButtons(

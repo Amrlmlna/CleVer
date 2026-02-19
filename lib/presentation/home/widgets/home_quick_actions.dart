@@ -5,6 +5,7 @@ import '../../../core/utils/custom_snackbar.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../profile/utils/cv_import_handler.dart';
+import '../../auth/utils/auth_guard.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class HomeQuickActions extends ConsumerWidget {
@@ -51,7 +52,6 @@ class HomeQuickActions extends ConsumerWidget {
           icon: Icons.folder_open_rounded,
           label: AppLocalizations.of(context)!.viewDrafts,
           onTap: () {
-            // TODO: Navigate to drafts page or show bottom sheet
             context.push('/drafts');
           },
         ),
@@ -65,9 +65,9 @@ class HomeQuickActions extends ConsumerWidget {
         _QuickActionCircle(
           icon: Icons.add_circle_outline,
           label: AppLocalizations.of(context)!.createCV,
-          onTap: () {
+          onTap: AuthGuard.protected(context, () {
             context.push('/create/job-input');
-          },
+          }),
         ),
       ],
     );
