@@ -14,8 +14,10 @@ import '../widgets/certification_list_form.dart';
 import '../widgets/section_card.dart';
 import '../widgets/import_cv_button.dart';
 import '../widgets/profile_action_buttons.dart';
+import '../widgets/danger_zone.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../../auth/providers/auth_state_provider.dart';
+import '../providers/profile_form_provider.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -36,7 +38,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   List<Certification> _certifications = [];
   
   bool _isInit = true;
-  bool _isSaving = false;
+// isSaving is now managed by profileFormStateProvider
 
   @override
   void initState() {
@@ -215,7 +217,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       certifications: _certifications,
     );
 
-    setState(() => _isSaving = true);
+    ref.read(profileFormStateProvider.notifier).setSaving(true);
 
     try {
       ref.read(masterProfileProvider.notifier).saveProfile(newProfile);
@@ -229,7 +231,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       }
     } finally {
       if (mounted) {
-        setState(() => _isSaving = false);
+        ref.read(profileFormStateProvider.notifier).setSaving(false);
       }
     }
   }
@@ -289,7 +291,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   Future<void> _performDeletion() async {
-    setState(() => _isSaving = true);
+    ref.read(profileFormStateProvider.notifier).setSaving(true);
     try {
       await ref.read(authRepositoryProvider).deleteAccount();
       // Clear local state
@@ -305,13 +307,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       }
     } finally {
       if (mounted) {
-        setState(() => _isSaving = false);
+        ref.read(profileFormStateProvider.notifier).setSaving(false);
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isSaving = ref.watch(profileFormStateProvider).isSaving;
+
     ref.listen(masterProfileProvider, (prev, next) {
       if (prev != next) {
         _loadFromProvider();
@@ -320,7 +324,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
     return Scaffold(
       body: PopScope(
-        canPop: !_hasChanges() || _isSaving,
+        canPop: !_hasChanges() || isSaving,
         onPopInvokedWithResult: (didPop, result) async {
           if (didPop) return;
           final shouldPop = await _showExitWarning();
@@ -412,30 +416,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             const Divider(),
             const SizedBox(height: 24),
             
-            // Danger Zone
-            SectionCard(
-              title: 'Danger Zone',
-              icon: Icons.warning_amber_rounded,
-              child: Column(
-                children: [
-                  const Text(
-                    'Deleting your account will remove all your data from our servers. This action cannot be undone.',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      onPressed: _isSaving ? null : _confirmAccountDeletion,
-                      icon: const Icon(Icons.delete_forever, color: Colors.red),
-                      label: const Text('Delete Account', style: TextStyle(color: Colors.red)),
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Colors.red),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            // Danger Zone (Extracted)
+            DangerZone(
+              isSaving: ref.watch(profileFormStateProvider).isSaving,
+              onConfirmDeletion: _confirmAccountDeletion,
             ),
 
             const SizedBox(height: 32),
@@ -443,7 +427,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             // Action Buttons (Extracted Widget)
             ProfileActionButtons(
               onSave: _saveProfile,
-              canSave: _hasChanges() && !_isSaving,
+              canSave: _hasChanges() && !ref.watch(profileFormStateProvider).isSaving,
             ),
           ],
         ),

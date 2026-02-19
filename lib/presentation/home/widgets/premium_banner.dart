@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/services/payment_service.dart';
 import '../../templates/providers/template_provider.dart';
+import '../providers/home_state_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class PremiumBanner extends ConsumerWidget {
@@ -9,11 +10,9 @@ class PremiumBanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final isPremium = ref.watch(isPremiumProvider);
+    final isPremium = ref.watch(isPremiumUserProvider);
     
-    // For now, we always show the banner unless they've actually bought credits.
-    // We'll rely on the paywall to handle the state.
-    // if (isPremium) return const SizedBox.shrink();
+    if (isPremium) return const SizedBox.shrink();
 
     return Container(
       padding: const EdgeInsets.all(20),
