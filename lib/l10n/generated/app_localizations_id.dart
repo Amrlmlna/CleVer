@@ -471,10 +471,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get helpSupport => 'Bantuan & Dukungan';
 
   @override
-  String get premiumBadge => 'PREMIUM';
+  String get premiumBadge => 'BELI KREDIT';
 
   @override
-  String get unlockFeatures => 'Buka Fitur Canggih';
+  String get unlockFeatures => 'Isi ulang kredit CV kamu';
 
   @override
   String get premiumFeaturesDesc =>
@@ -516,6 +516,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get notificationsTitle => 'Notifikasi';
+
+  @override
+  String get notifications => 'Notifikasi';
 
   @override
   String get noNotifications => 'Belum ada notifikasi';
@@ -882,4 +885,31 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get deleteConfirmation =>
       'Apakah Anda yakin ingin menghapus item ini?';
+
+  @override
+  String get verifyYourEmail => 'Verifikasi Email Anda';
+
+  @override
+  String verificationSentTo(String email) {
+    return 'Link verifikasi telah dikirim ke $email. Silakan cek kotak masuk dan folder spam Anda.';
+  }
+
+  @override
+  String get iHaveVerified => 'SAYA SUDAH VERIFIKASI';
+
+  @override
+  String get resendEmail => 'Kirim Ulang Email Verifikasi';
+
+  @override
+  String get backToLogin => 'Kembali ke Login';
+
+  @override
+  String get sending => 'Mengirim...';
+
+  @override
+  String get verificationEmailSent => 'Email verifikasi terkirim!';
+
+  @override
+  String get emailNotVerifiedYet =>
+      'Email belum diverifikasi. Silakan cek kotak masuk Anda.';
 }

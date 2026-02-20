@@ -25,7 +25,7 @@ class HeroSection extends ConsumerWidget {
           end: Alignment.bottomRight,
           colors: [
             Color(0xFFFFFFFF),
-            Color(0xFFE0E0E0), // Subtle silver gradient
+            Color(0xFFE0E0E0),
           ],
         ),
         boxShadow: [
@@ -38,13 +38,11 @@ class HeroSection extends ConsumerWidget {
       ),
       child: Stack(
         children: [
-           // Optional: Subtle grain or noise if we could, but clean is better
            Padding(
             padding: const EdgeInsets.all(32),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Top Badge / Icon
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
@@ -68,8 +66,8 @@ class HeroSection extends ConsumerWidget {
                     : AppLocalizations.of(context)!.createFirstCV,
                   style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 42, // Very Large
-                    fontWeight: FontWeight.w600, // Semi Bold, clean
+                    fontSize: 42,
+                    fontWeight: FontWeight.w600,
                     fontFamily: 'Outfit',
                     height: 1.0, 
                     letterSpacing: -1.5,

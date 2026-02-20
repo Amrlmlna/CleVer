@@ -27,7 +27,6 @@ class JobInputContent extends StatefulWidget {
 }
 
 class _JobInputContentState extends State<JobInputContent> {
-  // Animation State
   String _hintText = '';
   int _currentStringIndex = 0;
   int _charIndex = 0;
@@ -73,18 +72,16 @@ class _JobInputContentState extends State<JobInputContent> {
           if (_charIndex < currentString.length) {
             _charIndex++;
           } else {
-            // Wait a bit before deleting
             _isDeleting = true;
           }
         }
         
-        // Pause handling at end of string
         if (_charIndex == currentString.length && !_isDeleting) {
            _typingTimer?.cancel();
            Future.delayed(const Duration(seconds: 2), () {
              if (mounted) {
                _isDeleting = true;
-               _startTypingAnimation(); // Restart loop
+               _startTypingAnimation(); 
              }
            });
         } else {
@@ -104,7 +101,6 @@ class _JobInputContentState extends State<JobInputContent> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // 1. White Hero Card
               JobInputHeroCard(
                 controller: widget.titleController,
                 companyController: widget.companyController,
@@ -114,12 +110,10 @@ class _JobInputContentState extends State<JobInputContent> {
 
               const SizedBox(height: 32),
 
-              // 2. Description Field (Adaptive/Dark)
               JobDescriptionField(controller: widget.descController),
 
               const SizedBox(height: 32),
               
-              // Bottom Button (White CTA)
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

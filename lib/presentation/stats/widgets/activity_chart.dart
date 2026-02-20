@@ -14,7 +14,6 @@ class ActivityChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Determine max Y value for dynamic scaling, with a minimum of 5
     final maxY = (weeklyActivity.isNotEmpty 
         ? weeklyActivity.reduce((curr, next) => curr > next ? curr : next) 
         : 5).toDouble();
@@ -31,7 +30,7 @@ class ActivityChart extends StatelessWidget {
         ),
       ),
       child: LineChart(
-        duration: const Duration(milliseconds: 500), // Animate data changes
+        duration: const Duration(milliseconds: 500), 
         curve: Curves.easeInOutCubic,
         LineChartData(
           gridData: FlGridData(

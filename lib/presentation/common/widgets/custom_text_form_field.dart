@@ -13,7 +13,7 @@ class CustomTextFormField extends StatelessWidget {
   final VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
 
-  final bool isDark; // NEW: Dark Mode Flag
+  final bool isDark;
 
   const CustomTextFormField({
     super.key,
@@ -28,12 +28,11 @@ class CustomTextFormField extends StatelessWidget {
     this.readOnly = false,
     this.onTap,
     this.onChanged,
-    this.isDark = false, // Default to light
+    this.isDark = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    // Styles based on mode (Explicit flag OR System Theme)
     final effectiveIsDark = isDark || Theme.of(context).brightness == Brightness.dark;
 
     final fillColor = effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white;
@@ -50,8 +49,8 @@ class CustomTextFormField extends StatelessWidget {
       readOnly: readOnly,
       onTap: onTap,
       onChanged: onChanged,
-      style: TextStyle(color: textColor), // Input text color
-      cursorColor: effectiveIsDark ? Colors.white : Colors.black, // Cursor color
+      style: TextStyle(color: textColor),
+      cursorColor: effectiveIsDark ? Colors.white : Colors.black,
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(color: labelColor),

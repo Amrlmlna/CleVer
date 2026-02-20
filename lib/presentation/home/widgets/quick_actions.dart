@@ -5,8 +5,6 @@ import '../../profile/widgets/import_cv_button.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
-/// Quick actions section for home page 
-/// Only shows Import CV for users without profile
 class QuickActions extends ConsumerWidget {
   const QuickActions({super.key});
 
@@ -14,7 +12,6 @@ class QuickActions extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ImportCVButton(
       onImportSuccess: (UserProfile profile) {
-        // Show success message
         CustomSnackBar.showSuccess(
           context,
           AppLocalizations.of(context)!.cvImportSuccessWithCount(

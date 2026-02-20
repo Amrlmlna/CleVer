@@ -68,7 +68,6 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
 
   @override
   Widget build(BuildContext context) {
-    // Check both explicit flag and system theme
     final effectiveIsDark = widget.isDark || Theme.of(context).brightness == Brightness.dark;
 
     return Column(
@@ -103,7 +102,7 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
             final exp = widget.experiences[index];
             return Card(
               margin: EdgeInsets.zero,
-              color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white, // Explicit card color for contrast
+              color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white, 
               child: ListTile(
                 title: Text(exp.jobTitle, style: TextStyle(fontWeight: FontWeight.bold, color: effectiveIsDark ? Colors.white : Colors.black)),
                 subtitle: Text('${exp.companyName}\n${exp.startDate} - ${exp.endDate ?? AppLocalizations.of(context)!.present}', style: TextStyle(color: effectiveIsDark ? Colors.white70 : Colors.black87)),

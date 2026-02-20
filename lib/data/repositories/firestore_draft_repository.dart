@@ -1,50 +1,40 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entities/cv_data.dart';
+import '../datasources/firestore_datasource.dart';
+import '../utils/data_error_mapper.dart';
 
 class FirestoreDraftRepository {
-  final FirebaseFirestore _firestore;
+  final FirestoreDataSource dataSource;
 
-  FirestoreDraftRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+  FirestoreDraftRepository({required this.dataSource});
 
   Future<void> saveDraft(String uid, CVData draft) async {
     try {
-      await _firestore
-          .collection('users')
-          .doc(uid)
-          .collection('drafts')
-          .doc(draft.id)
-          .set(draft.toJson());
+      await dataSource.setData(
+        'users/$uid/drafts/${draft.id}',
+        draft.toJson(),
+      );
     } catch (e) {
-      throw Exception('Failed to save draft to cloud: $e');
+      throw DataErrorMapper.map(e);
     }
   }
 
   Future<void> deleteDraft(String uid, String draftId) async {
     try {
-      await _firestore
-          .collection('users')
-          .doc(uid)
-          .collection('drafts')
-          .doc(draftId)
-          .delete();
+      await dataSource.deleteData('users/$uid/drafts/$draftId');
     } catch (e) {
-      throw Exception('Failed to delete draft from cloud: $e');
+      throw DataErrorMapper.map(e);
     }
   }
 
   Future<List<CVData>> getDrafts(String uid) async {
     try {
-      final snapshot = await _firestore
-          .collection('users')
-          .doc(uid)
-          .collection('drafts')
+      final snapshot = await dataSource.collection('users/$uid/drafts')
           .orderBy('createdAt', descending: true)
           .get();
 
-      return snapshot.docs.map((doc) => CVData.fromJson(doc.data())).toList();
+      return snapshot.docs.map((doc) => CVData.fromJson(doc.data() as Map<String, dynamic>)).toList();
     } catch (e) {
-      throw Exception('Failed to fetch drafts from cloud: $e');
+      throw DataErrorMapper.map(e);
     }
   }
 }

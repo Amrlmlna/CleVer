@@ -1,25 +1,25 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../data/datasources/remote_ai_service.dart';
+import '../../../data/datasources/remote_cv_datasource.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../../domain/repositories/cv_repository.dart';
 import '../../../data/repositories/cv_repository_impl.dart';
 import '../../../domain/entities/job_input.dart';
 
-final remoteAIServiceProvider = Provider<RemoteAIService>((ref) {
-  return RemoteAIService();
+final remoteCVDataSourceProvider = Provider<RemoteCVDataSource>((ref) {
+  return RemoteCVDataSource();
 });
 
 final cvRepositoryProvider = Provider<CVRepository>((ref) {
-  final aiService = ref.watch(remoteAIServiceProvider);
-  return CVRepositoryImpl(aiService: aiService);
+  final dataSource = ref.watch(remoteCVDataSourceProvider);
+  return CVRepositoryImpl(remoteDataSource: dataSource);
 });
 
 class CVCreationState {
   final JobInput? jobInput;
   final UserProfile? userProfile;
-  final String? summary; // Added summary field
-  final String selectedStyle; // Default to ATS
-  final String? currentDraftId; // Track current draft for updates
+  final String? summary;
+  final String selectedStyle;
+  final String? currentDraftId;
 
 
   const CVCreationState({

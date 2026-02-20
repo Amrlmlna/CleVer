@@ -56,7 +56,6 @@ class _HelpPageState extends State<HelpPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Contact Cards
             Row(
               children: [
                 Expanded(
@@ -183,7 +182,7 @@ class _SupportCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: const BoxDecoration(
-                    color: Colors.black, // Dark Icon bg
+                    color: Colors.black,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(icon, color: Colors.white, size: 20),

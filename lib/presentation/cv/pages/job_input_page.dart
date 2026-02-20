@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../domain/entities/job_input.dart';
-import '../../../core/utils/custom_snackbar.dart'; // Added this import
+import '../../../core/utils/custom_snackbar.dart';
 import '../providers/cv_generation_provider.dart';
 import '../providers/ocr_provider.dart';
 import '../../profile/providers/profile_provider.dart';
@@ -26,7 +26,6 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
   final _companyController = TextEditingController(); 
   final _descController = TextEditingController();
 
-  // Draft Keys
   static const String _kDraftTitleKey = 'draft_job_title';
   static const String _kDraftCompanyKey = 'draft_job_company'; 
   static const String _kDraftDescKey = 'draft_job_desc';
@@ -100,8 +99,6 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
         return;
       }
 
-      // Show Premium Loading Screen
-      // We push it as a route so we can pop it later
       Navigator.of(context).push(
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => AppLoadingScreen(
@@ -124,10 +121,8 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
           jobDescription: _descController.text,
         );
         
-        // Save Job Input to state
         ref.read(cvCreationProvider.notifier).setJobInput(jobInput);
 
-        // Call AI to Tailor Profile
         final repository = ref.read(cvRepositoryProvider);
         final tailoredResult = await repository.tailorProfile(
           masterProfile: masterProfile, 
@@ -135,30 +130,24 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
         );
         
         if (mounted) {
-           // Pop Loading Screen
            Navigator.of(context).pop();
 
-           // Clear drafts after successful processing
            await _clearDrafts();
            
-           // Navigate to Next Page
            context.push('/create/user-data', extra: tailoredResult);
         }
       } catch (e) {
         if (mounted) {
-          // Pop Loading Screen first
           Navigator.of(context).pop();
           
           CustomSnackBar.showError(context, AppLocalizations.of(context)!.analyzeProfileError(e.toString()));
         }
       } 
-      // Finally block removed as popping is handled in try/catch
     } else {
       CustomSnackBar.showError(context, AppLocalizations.of(context)!.fillJobTitle);
     }
   }
 
-  // OCR Methods
   Future<void> _showImageSourceDialog() async {
     showModalBottomSheet(
       context: context,
@@ -202,11 +191,9 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
     final ocrNotifier = ref.read(ocrProvider.notifier);
     bool loadingShown = false;
     
-    // Call provider's scan method with callback
     final result = await ocrNotifier.scanJobPosting(
       source,
       onProcessingStart: () {
-        // Show loading screen when processing starts (after image is picked)
         if (!loadingShown && mounted) {
           loadingShown = true;
           Navigator.of(context).push(
@@ -228,14 +215,12 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
       },
     );
     
-    // Close loading if shown
     if (mounted && loadingShown) {
       Navigator.of(context).pop();
     }
     
     if (!mounted) return;
 
-    // Handle result with clean switch statement
     switch (result.status) {
       case OCRStatus.success:
         _titleController.text = result.jobInput!.jobTitle;
@@ -244,7 +229,6 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
         CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.jobExtractionSuccess);
 
       case OCRStatus.cancelled:
-        // Silent - user cancelled
 
       case OCRStatus.noText:
         CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.noTextFound);

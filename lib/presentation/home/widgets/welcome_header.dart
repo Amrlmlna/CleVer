@@ -12,7 +12,6 @@ class WelcomeHeader extends ConsumerWidget {
     final profile = ref.watch(masterProfileProvider);
     final displayName = ref.watch(userDisplayNameProvider);
     
-    // Use profile name, or display name, or default
     final name = profile?.fullName.split(' ').first ?? 
                  displayName?.split(' ').first ?? 
                  'there';

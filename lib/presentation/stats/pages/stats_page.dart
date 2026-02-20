@@ -18,7 +18,6 @@ class StatsPage extends ConsumerWidget {
     final weeklyActivity = ref.watch(weeklyActivityProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
-    // Helper to get localized user level
     String getLocalizedLevel(String key) {
       final l10n = AppLocalizations.of(context)!;
       switch (key) {
@@ -41,7 +40,6 @@ class StatsPage extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 1. User Level Card
             UserLevelCard(level: getLocalizedLevel(userLevelKey), isDark: isDark)
                 .animate()
                 .fadeIn(duration: 600.ms, curve: Curves.easeOutQuad)
@@ -49,7 +47,6 @@ class StatsPage extends ConsumerWidget {
 
             const SizedBox(height: 24),
 
-            // 2. Activity Chart
             Text(
               AppLocalizations.of(context)!.activityOverview,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -65,7 +62,6 @@ class StatsPage extends ConsumerWidget {
                 .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1), curve: Curves.easeOutBack),
             const SizedBox(height: 24),
 
-            // 3. Stats Grid
             Text(
               AppLocalizations.of(context)!.keyMetrics,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

@@ -69,7 +69,6 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
       },
     );
     if (picked != null) {
-      // Format: MMM yyyy (e.g. Jan 2024)
       controller.text = DateFormat('MMM yyyy').format(picked);
     }
   }
@@ -105,7 +104,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: const Color(0xFF1E1E1E), // Dark Card
+      backgroundColor: const Color(0xFF1E1E1E), 
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
         widget.existing == null ? AppLocalizations.of(context)!.addExperience : AppLocalizations.of(context)!.editExperienceTitle,
@@ -141,7 +140,6 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                 ),
                 const SizedBox(height: 16),
                 
-                // Dates
                 Row(
                   children: [
                     Expanded(
@@ -173,13 +171,10 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                 
                 const SizedBox(height: 16),
                 
-                // Header for Description with Magic Button
-                // Header for Description with Magic Button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(AppLocalizations.of(context)!.shortDescription, style: const TextStyle(color: Colors.white70, fontSize: 12)),
-                    // Premium Monochrome Rewrite Button
                     _isRewriting 
                     ? SizedBox(
                         height: 16,
@@ -222,7 +217,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                 
                 CustomTextFormField(
                   controller: _descCtrl,
-                  labelText: '', // Hide label since header is above
+                  labelText: '', 
                   hintText: AppLocalizations.of(context)!.descriptionHint,
                   isDark: true,
                   maxLines: 4,
@@ -244,6 +239,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final exp = Experience(
+                id: widget.existing?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
                 jobTitle: _titleCtrl.text,
                 companyName: _companyCtrl.text,
                 startDate: _startCtrl.text,

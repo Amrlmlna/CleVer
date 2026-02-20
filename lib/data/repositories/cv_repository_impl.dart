@@ -1,64 +1,84 @@
 import '../../domain/entities/cv_data.dart';
 import '../../domain/entities/job_input.dart';
 import '../../domain/entities/user_profile.dart';
-import '../../domain/entities/tailored_cv_result.dart'; // Import
+import '../../domain/entities/tailored_cv_result.dart';
 import '../../domain/repositories/cv_repository.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import '../datasources/remote_ai_service.dart';
-import '../../core/config/api_config.dart';
+import '../datasources/remote_cv_datasource.dart';
+import '../utils/cv_data_parser.dart';
+import '../utils/data_error_mapper.dart';
 
 class CVRepositoryImpl implements CVRepository {
-  final RemoteAIService aiService;
+  final RemoteCVDataSource remoteDataSource;
 
-  CVRepositoryImpl({required this.aiService});
+  CVRepositoryImpl({required this.remoteDataSource});
 
   @override
   Future<CVData> generateCV({
     required UserProfile profile,
     required JobInput jobInput,
     required String styleId,
-  }) {
-    return aiService.generateCV(
-      profile: profile,
-      jobInput: jobInput,
-      styleId: styleId,
-    );
+  }) async {
+    try {
+      final responseData = await remoteDataSource.generateCV(
+        profileJson: profile.toJson(),
+        jobInputJson: jobInput.toJson(),
+      );
+
+      return CVDataParser.parseGenerateResponse(
+        data: responseData,
+        profile: profile,
+        jobInput: jobInput,
+        styleId: styleId,
+      );
+    } catch (e) {
+      throw DataErrorMapper.map(e);
+    }
   }
+
   @override
-  Future<String> rewriteContent(String originalText) {
-    return aiService.rewriteContent(originalText);
+  Future<String> rewriteContent(String originalText) async {
+    try {
+      return await remoteDataSource.rewriteContent(originalText);
+    } catch (e) {
+      throw DataErrorMapper.map(e);
+    }
   }
 
   @override
   Future<TailoredCVResult> tailorProfile({
     required UserProfile masterProfile,
     required JobInput jobInput,
-  }) {
-    return aiService.tailorProfile(masterProfile: masterProfile, jobInput: jobInput);
+  }) async {
+    try {
+      final responseData = await remoteDataSource.tailorProfile(
+        masterProfileJson: masterProfile.toJson(),
+        jobInputJson: jobInput.toJson(),
+      );
+
+      final profileJson = responseData['tailoredProfile'] as Map<String, dynamic>;
+      final summary = responseData['summary'] as String;
+
+      return TailoredCVResult(
+        profile: UserProfile.fromJson(profileJson),
+        summary: summary,
+      );
+    } catch (e) {
+      throw DataErrorMapper.map(e);
+    }
   }
 
   @override
-  Future<List<int>> downloadPDF({required CVData cvData, required String templateId}) async {
-    final String baseUrl = ApiConfig.baseUrl; 
+  Future<List<int>> downloadPDF({
+    required CVData cvData,
+    required String templateId,
+  }) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/cv/generate'),
-        headers: await ApiConfig.getAuthHeaders(),
-        body: jsonEncode({
-          'cvData': cvData.toJson(),
-          'templateId': templateId,
-        }),
+      return await remoteDataSource.downloadPDF(
+        cvDataJson: cvData.toJson(),
+        templateId: templateId,
       );
-
-      if (response.statusCode == 200) {
-        return response.bodyBytes;
-      } else {
-        throw Exception('Failed to generate PDF: ${response.body}');
-      }
     } catch (e) {
-      print('Error downloading PDF: $e');
-      rethrow;
+      throw DataErrorMapper.map(e);
     }
   }
 }

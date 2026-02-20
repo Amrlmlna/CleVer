@@ -68,7 +68,6 @@ class _CertificationListFormState extends State<CertificationListForm> {
 
   @override
   Widget build(BuildContext context) {
-    // Check both explicit flag and system theme
     final effectiveIsDark = widget.isDark || Theme.of(context).brightness == Brightness.dark;
 
     return Column(

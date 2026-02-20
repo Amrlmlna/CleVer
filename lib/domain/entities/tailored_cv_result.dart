@@ -10,6 +10,16 @@ class TailoredCVResult extends Equatable {
     required this.summary,
   });
 
+  TailoredCVResult copyWith({
+    UserProfile? profile,
+    String? summary,
+  }) {
+    return TailoredCVResult(
+      profile: profile ?? this.profile,
+      summary: summary ?? this.summary,
+    );
+  }
+
   @override
   List<Object?> get props => [profile, summary];
 }

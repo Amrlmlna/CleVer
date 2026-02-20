@@ -1,11 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import '../entities/app_user.dart';
 
 abstract class AuthRepository {
-  Stream<User?> get authStateChanges;
-  User? get currentUser;
-  Future<User?> signInWithEmailAndPassword(String email, String password);
-  Future<User?> signUpWithEmailAndPassword(String email, String password, String name);
+  Stream<AppUser?> get authStateChanges;
+  AppUser? get currentUser;
+  Future<AppUser?> signInWithEmailAndPassword(String email, String password);
+  Future<AppUser?> signUpWithEmailAndPassword(String email, String password, String name);
   Future<void> signOut();
-  Future<User?> signInWithGoogle();
+  Future<AppUser?> signInWithGoogle();
+  Future<void> sendEmailVerification();
+  Future<void> reloadUser();
   Future<void> deleteAccount();
 }

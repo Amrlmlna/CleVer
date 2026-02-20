@@ -93,5 +93,4 @@ You acknowledge that AI is used to deliver functionalities and process data.
 We reserve the right to cease providing the application at any time.
 ''';
 
-// Alias for compatibility
 const String kTermsOfService = kTermsConditions;

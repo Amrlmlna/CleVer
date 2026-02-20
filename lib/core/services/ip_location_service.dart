@@ -13,10 +13,16 @@ class IpLocationService {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        if (data['status'] == 'fail') {
+          debugPrint('[IpLocationService] API failed: ${data['message']}');
+          return null;
+        }
         return data['countryCode'] as String?;
+      } else {
+        debugPrint('[IpLocationService] HTTP Error: ${response.statusCode}');
       }
     } catch (e) {
-      debugPrint('Error fetching IP location: $e');
+      debugPrint('[IpLocationService] Exception: $e');
     }
     return null;
   }

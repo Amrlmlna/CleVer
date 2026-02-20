@@ -5,8 +5,6 @@ import '../../../domain/entities/user_profile.dart';
 import '../utils/cv_import_handler.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
-/// Reusable CV Import Button
-/// Shows dialog with Camera/Gallery/PDF options and handles import flow
 class ImportCVButton extends ConsumerWidget {
   final Function(UserProfile) onImportSuccess;
 

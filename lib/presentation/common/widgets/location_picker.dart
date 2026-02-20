@@ -13,14 +13,11 @@ class LocationPicker extends StatefulWidget {
 }
 
 class _LocationPickerState extends State<LocationPicker> {
-  // We use local data now: kIndonesianRegions
-
   @override
   Widget build(BuildContext context) {
     final effectiveIsDark = widget.isDark || Theme.of(context).brightness == Brightness.dark;
     final fillColor = effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white;
     final textColor = effectiveIsDark ? Colors.white : Colors.black87;
-    // ensure labelColor is not null for older flutter versions
     final Color labelColor = effectiveIsDark ? Colors.grey[400]! : Colors.grey[600]!; 
     final borderColor = effectiveIsDark ? Colors.transparent : Colors.grey.shade300;
 
@@ -43,9 +40,7 @@ class _LocationPickerState extends State<LocationPicker> {
                 widget.controller.text = selection['label']!;
               },
               
-              // Custom Input Field
               fieldViewBuilder: (context, fieldTextEditingController, focusNode, onFieldSubmitted) {
-                // Initial sync if controller has value and field is empty
                 if (widget.controller.text.isNotEmpty && fieldTextEditingController.text.isEmpty) {
                    fieldTextEditingController.text = widget.controller.text;
                 }
@@ -78,13 +73,11 @@ class _LocationPickerState extends State<LocationPicker> {
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   ),
                   onChanged: (val) {
-                    // Update controller on raw input to allow manual overrides or partials
                     widget.controller.text = val;
                   },
                 );
               },
               
-              // Custom Options List
               optionsViewBuilder: (context, onSelected, options) {
                 return Align(
                   alignment: Alignment.topLeft,

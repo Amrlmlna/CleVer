@@ -35,6 +35,37 @@ class StyleSelectionContent extends StatelessWidget {
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.black),
+        actions: [
+          if (templates.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(right: 24),
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.black.withValues(alpha: 0.1)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.stars_rounded, size: 14, color: Colors.black),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${templates.first.userCredits}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
       body: Column(
         children: [
@@ -44,7 +75,7 @@ class StyleSelectionContent extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 0.7, // Aspect ratio for A4-ish preview + text
+                childAspectRatio: 0.7,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 24,
               ),
@@ -67,7 +98,7 @@ class StyleSelectionContent extends StatelessWidget {
                               color: isSelected ? Colors.black : Colors.transparent,
                               width: 3,
                             ),
-                            borderRadius: BorderRadius.circular(0), // Sharp corners for modern look
+                            borderRadius: BorderRadius.circular(0),
                             boxShadow: isSelected
                                 ? [
                                     BoxShadow(
@@ -167,7 +198,7 @@ class StyleSelectionContent extends StatelessWidget {
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero, // Sharp button
+                      borderRadius: BorderRadius.zero,
                     ),
                   ),
                   child: Text(

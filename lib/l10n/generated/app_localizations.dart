@@ -995,13 +995,13 @@ abstract class AppLocalizations {
   /// No description provided for @premiumBadge.
   ///
   /// In en, this message translates to:
-  /// **'PREMIUM'**
+  /// **'GET CREDITS'**
   String get premiumBadge;
 
   /// No description provided for @unlockFeatures.
   ///
   /// In en, this message translates to:
-  /// **'Unlock Advanced Features'**
+  /// **'Refill generation credits'**
   String get unlockFeatures;
 
   /// No description provided for @premiumFeaturesDesc.
@@ -1075,6 +1075,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications'**
   String get notificationsTitle;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
 
   /// No description provided for @noNotifications.
   ///
@@ -1739,6 +1745,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to delete this item?'**
   String get deleteConfirmation;
+
+  /// No description provided for @verifyYourEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Your Email'**
+  String get verifyYourEmail;
+
+  /// No description provided for @verificationSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'A verification link has been sent to {email}. Please check your inbox and spam folder.'**
+  String verificationSentTo(String email);
+
+  /// No description provided for @iHaveVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'I HAVE VERIFIED'**
+  String get iHaveVerified;
+
+  /// No description provided for @resendEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Verification Email'**
+  String get resendEmail;
+
+  /// No description provided for @backToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Login'**
+  String get backToLogin;
+
+  /// No description provided for @sending.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending...'**
+  String get sending;
+
+  /// No description provided for @verificationEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email sent!'**
+  String get verificationEmailSent;
+
+  /// No description provided for @emailNotVerifiedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Email not verified yet. Please check your inbox.'**
+  String get emailNotVerifiedYet;
 }
 
 class _AppLocalizationsDelegate

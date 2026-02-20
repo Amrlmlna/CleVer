@@ -11,7 +11,6 @@ class LoginCTACard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoggedIn = ref.watch(isLoggedInProvider);
     
-    // Don't show if user is logged in
     if (isLoggedIn) return const SizedBox.shrink();
 
     return GestureDetector(
@@ -34,7 +33,6 @@ class LoginCTACard extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            // Icon
             Container(
               width: 48,
               height: 48,
@@ -51,7 +49,6 @@ class LoginCTACard extends ConsumerWidget {
             
             const SizedBox(width: 16),
             
-            // Content
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +75,6 @@ class LoginCTACard extends ConsumerWidget {
             
             const SizedBox(width: 12),
             
-            // Button
             Icon(
               Icons.arrow_forward_ios,
               color: Colors.grey.shade400,

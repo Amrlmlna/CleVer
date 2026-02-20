@@ -24,7 +24,6 @@ class HomeQuickActions extends ConsumerWidget {
               context: context,
               ref: ref,
               onImportSuccess: (UserProfile importedProfile) async {
-                // Merge imported data with master profile
                 final hasChanges = await ref
                     .read(masterProfileProvider.notifier)
                     .mergeProfile(importedProfile);
@@ -41,8 +40,7 @@ class HomeQuickActions extends ConsumerWidget {
                       AppLocalizations.of(context)!.cvDataExists,
                     );
                   }
-                  // Navigate to profile for review
-                  context.push('/profile');
+                  context.go('/profile');
                 }
               },
             );

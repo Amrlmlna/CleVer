@@ -52,7 +52,7 @@ class PersonalInfoForm extends StatelessWidget {
         const SizedBox(height: 16),
         LocationPicker(
           controller: locationController,
-          isDark: true, // Personal info form in this context is usually on dark/light based on form but here we hardcode or pass prop
+          isDark: true, 
         ),
       ],
     );

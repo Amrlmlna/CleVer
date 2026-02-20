@@ -2,19 +2,32 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../data/datasources/remote_template_datasource.dart';
 import '../../../data/repositories/firestore_profile_repository.dart';
+import '../../../data/repositories/template_repository_impl.dart';
 import '../../../domain/entities/user_profile.dart';
+import '../../../domain/repositories/template_repository.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import 'profile_provider.dart';
+import '../../drafts/providers/draft_sync_provider.dart';
 
-/// Periodic Sync Manager for Profile Data
-/// 
-/// Runs a heartbeat every 30s to check for local changes and push to Cloud.
-/// Also handles the initial cloud-to-local sync on login.
+final firestoreProfileRepositoryProvider = Provider<FirestoreProfileRepository>((ref) {
+  
+  final dataSource = ref.watch(firestoreDataSourceProvider); 
+  return FirestoreProfileRepository(dataSource: dataSource);
+});
+
+final remoteTemplateDataSourceProvider = Provider<RemoteTemplateDataSource>((ref) {
+  return RemoteTemplateDataSource();
+});
+
+final templateRepositoryProvider = Provider<TemplateRepository>((ref) {
+  final dataSource = ref.watch(remoteTemplateDataSourceProvider);
+  return TemplateRepositoryImpl(remoteDataSource: dataSource);
+});
+
 final profileSyncProvider = Provider<ProfileSyncManager>((ref) {
-  final manager = ProfileSyncManager(ref);
-  // No auto-start here, we'll initialize in main or a top-level widget
-  return manager;
+  return ProfileSyncManager(ref);
 });
 
 class ProfileSyncManager {
@@ -23,14 +36,15 @@ class ProfileSyncManager {
   UserProfile? _lastSyncedProfile;
   static const String _syncKey = 'last_synced_profile_json';
   
-  final FirestoreProfileRepository _firestoreRepo = FirestoreProfileRepository();
+  late final FirestoreProfileRepository _firestoreRepo;
 
-  ProfileSyncManager(this._ref);
+  ProfileSyncManager(this._ref) {
+    _firestoreRepo = _ref.read(firestoreProfileRepositoryProvider);
+  }
 
   void init() {
     print("[SyncManager] Initializing...");
     
-    // 1. Listen for Auth changes to trigger initial fetch
     _ref.listen(authStateProvider, (prev, next) {
       final user = next.value;
       if (user != null && (prev == null || prev.value == null)) {
@@ -39,11 +53,9 @@ class ProfileSyncManager {
       }
     });
 
-    // 2. Start Periodic Heartbeat (every 30s)
     _heartbeatTimer?.cancel();
     _heartbeatTimer = Timer.periodic(const Duration(seconds: 30), (_) => _heartbeat());
     
-    // Load last synced from local cache to avoid redundant pushes
     _loadLastSyncedCache();
   }
 
@@ -65,7 +77,6 @@ class ProfileSyncManager {
     await prefs.setString(_syncKey, jsonEncode(profile.toJson()));
   }
 
-  /// Initial fetch from Cloud to Local on login/startup
   Future<void> initialCloudFetch(String uid) async {
     try {
       final cloudProfile = await _firestoreRepo.getProfile(uid);
@@ -81,14 +92,12 @@ class ProfileSyncManager {
     }
   }
 
-  /// The "Heartbeat" - periodically check for changes
   Future<void> _heartbeat() async {
     final currentProfile = _ref.read(masterProfileProvider);
     final user = _ref.read(authStateProvider).value;
 
     if (currentProfile == null || user == null) return;
 
-    // Compare with last synced version
     if (currentProfile != _lastSyncedProfile) {
       print("[SyncManager] Changes detected! Pushing to Cloud for ${user.uid}...");
       try {
@@ -98,8 +107,6 @@ class ProfileSyncManager {
       } catch (e) {
         print("[SyncManager] Heartbeat sync error: $e");
       }
-    } else {
-      // print("[SyncManager] No changes since last sync.");
     }
   }
 

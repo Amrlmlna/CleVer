@@ -18,24 +18,23 @@ class ReviewSectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Theme Aware Colors
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Card(
       elevation: isDark ? 0 : 4,
-      shadowColor: Colors.black.withValues(alpha: 0.2), // Softer shadow
+      shadowColor: Colors.black.withValues(alpha: 0.2), 
       color: Theme.of(context).cardTheme.color ?? (isDark ? const Color(0xFF1E1E1E) : Colors.white),
-      margin: EdgeInsets.zero, // Default card has margin, we handle layout in parent
+      margin: EdgeInsets.zero, 
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
         side: isDark ? BorderSide(color: Colors.white.withValues(alpha: 0.05)) : BorderSide.none,
       ),
-      clipBehavior: Clip.antiAlias, // Ensures content stays inside rounded corners
+      clipBehavior: Clip.antiAlias, 
       child: ExpansionTile(
           initiallyExpanded: isExpanded,
           onExpansionChanged: onExpansionChanged,
-          backgroundColor: Colors.transparent, // Critical: Prevent white background
-          collapsedBackgroundColor: Colors.transparent, // Critical: Prevent white background
+          backgroundColor: Colors.transparent, 
+          collapsedBackgroundColor: Colors.transparent, 
           leading: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(

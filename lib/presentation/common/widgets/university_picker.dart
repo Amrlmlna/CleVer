@@ -19,9 +19,8 @@ class UniversityPicker extends StatefulWidget {
 class _UniversityPickerState extends State<UniversityPicker> {
   @override
   Widget build(BuildContext context) {
-    // Determine colors based on explicit flag or system theme
     final effectiveIsDark = widget.isDark || Theme.of(context).brightness == Brightness.dark;
-    final fillColor = effectiveIsDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey[100]; // Match CustomTextFormField
+    final fillColor = effectiveIsDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey[100];
     final textColor = effectiveIsDark ? Colors.white : Colors.black87;
     final labelColor = effectiveIsDark ? Colors.white70 : Colors.black54;
     final borderColor = effectiveIsDark ? Colors.white24 : Colors.transparent;
@@ -42,9 +41,7 @@ class _UniversityPickerState extends State<UniversityPicker> {
                 widget.controller.text = selection;
               },
               
-              // Custom Input Field to match app style
               fieldViewBuilder: (context, fieldTextEditingController, focusNode, onFieldSubmitted) {
-                // Sync with parent controller if needed
                 if (widget.controller.text.isNotEmpty && fieldTextEditingController.text.isEmpty) {
                    fieldTextEditingController.text = widget.controller.text;
                 }
@@ -78,13 +75,11 @@ class _UniversityPickerState extends State<UniversityPicker> {
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   ),
                   onChanged: (val) {
-                    // Allow free text input too
                     widget.controller.text = val;
                   },
                 );
               },
               
-              // Custom Options List
               optionsViewBuilder: (context, onSelected, options) {
                 return Align(
                   alignment: Alignment.topLeft,

@@ -1,12 +1,14 @@
 import 'package:equatable/equatable.dart';
 
 class Education extends Equatable {
+  final String id;
   final String degree;
   final String schoolName;
   final String startDate;
   final String? endDate;
 
   const Education({
+    required this.id,
     required this.degree,
     required this.schoolName,
     required this.startDate,
@@ -14,12 +16,14 @@ class Education extends Equatable {
   });
 
   Education copyWith({
+    String? id,
     String? degree,
     String? schoolName,
     String? startDate,
     String? endDate,
   }) {
     return Education(
+      id: id ?? this.id,
       degree: degree ?? this.degree,
       schoolName: schoolName ?? this.schoolName,
       startDate: startDate ?? this.startDate,
@@ -29,6 +33,7 @@ class Education extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'degree': degree,
       'schoolName': schoolName,
       'startDate': startDate,
@@ -38,6 +43,7 @@ class Education extends Equatable {
 
   factory Education.fromJson(Map<String, dynamic> json) {
     return Education(
+      id: json['id'] as String? ?? DateTime.now().millisecondsSinceEpoch.toString(),
       degree: json['degree'] as String,
       schoolName: json['schoolName'] as String,
       startDate: json['startDate'] as String,
@@ -46,5 +52,5 @@ class Education extends Equatable {
   }
 
   @override
-  List<Object?> get props => [degree, schoolName, startDate, endDate];
+  List<Object?> get props => [id, degree, schoolName, startDate, endDate];
 }

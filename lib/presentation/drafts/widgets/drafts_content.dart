@@ -5,13 +5,12 @@ import '../../../domain/entities/cv_data.dart';
 
 class DraftsContent extends StatelessWidget {
   final Map<String, List<CVData>> folders;
-  final List<CVData> currentDrafts; // Drafts to show when a folder is selected
+  final List<CVData> currentDrafts;
   final String? selectedFolderName;
   final String searchQuery;
   final bool isLoading;
   final String? errorMessage;
   
-  // Callbacks
   final ValueChanged<String> onSearchChanged;
   final ValueChanged<String?> onFolderSelected;
   final ValueChanged<CVData> onDraftSelected;
@@ -55,7 +54,6 @@ class DraftsContent extends StatelessWidget {
                       ),
                 ),
                 const SizedBox(height: 16),
-                // Search Bar
                 TextField(
                   controller: TextEditingController(text: searchQuery)
                     ..selection = TextSelection.fromPosition(TextPosition(offset: searchQuery.length)),
@@ -123,7 +121,6 @@ class DraftsContent extends StatelessWidget {
   }
 
   Widget _buildFolderGrid(BuildContext context, Map<String, List<CVData>> folders) {
-    // Sort keys alphabetically
     final keys = folders.keys.toList()..sort();
 
     if (keys.isEmpty) {
@@ -147,7 +144,7 @@ class DraftsContent extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).cardTheme.color, // Adaptive Card Color
+              color: Theme.of(context).cardTheme.color,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: Theme.of(context).brightness == Brightness.dark 
@@ -186,16 +183,12 @@ class DraftsContent extends StatelessWidget {
   Widget _buildDraftList(BuildContext context, List<CVData> drafts) {
     if (drafts.isEmpty) return Center(child: Text(AppLocalizations.of(context)!.folderEmpty));
     
-    // Drafts are already sorted by the Smart Component
-
     return ListView.separated(
       itemCount: drafts.length,
       separatorBuilder: (context, index) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
         final draft = drafts[index];
 
-        // Version Logic: Newest gets the highest number
-        // e.g. 3 items. Index 0 (Newest) -> #3. Index 2 (Oldest) -> #1.
         final version = drafts.length - index;
         
         final title = draft.jobTitle.isNotEmpty 
@@ -222,7 +215,7 @@ class DraftsContent extends StatelessWidget {
           },
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).cardTheme.color, // Adaptive Card Color
+              color: Theme.of(context).cardTheme.color,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: Theme.of(context).brightness == Brightness.dark 

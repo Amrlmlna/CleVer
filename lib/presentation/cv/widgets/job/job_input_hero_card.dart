@@ -23,7 +23,6 @@ class JobInputHeroCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Title
         Text(
           AppLocalizations.of(context)!.whatJobApply,
           style: GoogleFonts.outfit(
@@ -36,7 +35,6 @@ class JobInputHeroCard extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         
-        // Subtitle
         Text(
           AppLocalizations.of(context)!.aiHelpCreateCV,
           style: GoogleFonts.outfit(
@@ -49,7 +47,6 @@ class JobInputHeroCard extends StatelessWidget {
         
         const SizedBox(height: 32),
         
-        // Grouped Input Container
         Container(
           decoration: BoxDecoration(
             color: isDark ? Colors.grey[900] : Colors.grey[100],
@@ -57,7 +54,6 @@ class JobInputHeroCard extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // Job Title Input
               _buildMinimalInput(
                 context: context,
                 controller: controller,
@@ -65,7 +61,6 @@ class JobInputHeroCard extends StatelessWidget {
                 autoFocus: true,
               ),
               
-              // Divider
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Divider(
@@ -75,7 +70,6 @@ class JobInputHeroCard extends StatelessWidget {
                 ),
               ),
 
-              // Company Input
               _buildMinimalInput(
                 context: context,
                 controller: companyController,

@@ -30,7 +30,6 @@ class OnboardingLegalModal extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // Handle bar
           Center(
             child: Container(
               margin: const EdgeInsets.only(top: 12, bottom: 12),
@@ -42,7 +41,6 @@ class OnboardingLegalModal extends StatelessWidget {
               ),
             ),
           ),
-          // Title
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             child: Text(
@@ -56,7 +54,6 @@ class OnboardingLegalModal extends StatelessWidget {
             ),
           ),
           const Divider(),
-          // Content
           Expanded(
             child: Markdown(
               data: content,

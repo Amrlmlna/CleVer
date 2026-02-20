@@ -17,9 +17,8 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> with Sing
   final ScrollController _scrollController = ScrollController();
   late Ticker _ticker;
   
-  // State for Scroll-Driven Animation
-  double _currentFrame = 1.0;     // The visual frame (float)
-  double _targetFrame = 1.0;      // The target frame based on scroll
+  double _currentFrame = 1.0;     
+  double _targetFrame = 1.0;      
   
   final int _startFrame = 1;
   final int _frameCount = 192;
@@ -29,7 +28,6 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> with Sing
     super.initState();
     _scrollController.addListener(_onScroll);
     
-    // Ticker ensures we update the animation frame smoothly even if scroll stops
     _ticker = createTicker(_tick);
     _ticker.start();
   }
@@ -43,14 +41,11 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> with Sing
   }
 
   void _tick(Duration elapsed) {
-    // Linear Interpolation (Lerp) for Inertia / Decay Stop
-    // Moves currentFrame towards targetFrame by 10% each tick (approx 60fps)
     if ((_targetFrame - _currentFrame).abs() > 0.05) {
       setState(() {
         _currentFrame += (_targetFrame - _currentFrame) * 0.1;
       });
     } else if (_currentFrame != _targetFrame) {
-      // Snap to exact target if very close
       setState(() {
         _currentFrame = _targetFrame;
       });
@@ -62,30 +57,24 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> with Sing
 
     final offset = _scrollController.offset;
     final screenHeight = MediaQuery.of(context).size.height;
-    // Animation finishes when we've scrolled 60% of the screen
     final maxAnimDist = screenHeight * 0.6; 
 
-    // Normalize progress 0.0 to 1.0
     double progress = (offset / maxAnimDist).clamp(0.0, 1.0);
     
-    // Set TARGET frame, let the Ticker handle the movement
     _targetFrame = (_startFrame + (progress * (_frameCount - 1))).toDouble();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Images are now pre-cached in Splash Screen, so we assume they are ready.
     
     final height = MediaQuery.of(context).size.height;
     
-    // Round for display
     final int displayFrame = _currentFrame.round();
     
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-           // 1. Initial Frame Placeholder
           Positioned.fill(
             child: Image.asset(
               'assets/sequence/ezgif-frame-001.jpg',
@@ -94,7 +83,6 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> with Sing
             ),
           ),
 
-          // 2. Scroll-Driven Image Sequence
           Positioned.fill(
              child: ImageSequenceAnimator(
               folderPath: 'assets/sequence', 
@@ -103,11 +91,10 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> with Sing
               startFrame: _startFrame,
               frameCount: _frameCount,
               fps: 24,
-              explicitFrame: displayFrame, // DRIVEN BY LERP TICKER
+              explicitFrame: displayFrame,
             ),
           ),
 
-          // 3. Gradient Overlay
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -124,19 +111,17 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> with Sing
             ),
           ),
 
-          // 4. Scrollable Foreground Content
           SingleChildScrollView(
             controller: _scrollController,
-            physics: const ClampingScrollPhysics(), // Solid feel
+            physics: const ClampingScrollPhysics(),
             child: Column(
               children: [
-                // Transparent Spacer = 70% of Screen
                 SizedBox(height: height * 0.7),
 
                   Container(
-                    height: height * 0.85, // Fixed height to allow Spacer() to work
+                    height: height * 0.85,
                     decoration: const BoxDecoration(
-                      color: Color(0xFF1E1E1E), // Dark Grey "Black Card"
+                      color: Color(0xFF1E1E1E),
                     borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                      boxShadow: [
                       BoxShadow(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../../domain/entities/education.dart';
 import '../../../../domain/entities/experience.dart';
-import '../../../../domain/entities/certification.dart'; // Import
+import '../../../../domain/entities/certification.dart'; 
 import '../../../profile/widgets/education_list_form.dart';
 import '../../../profile/widgets/experience_list_form.dart';
-import '../../../profile/widgets/certification_list_form.dart'; // Import
+import '../../../profile/widgets/certification_list_form.dart'; 
 import '../../../profile/widgets/skills_input_form.dart';
 import '../../../profile/widgets/personal_info_form.dart';
 import 'tailored_data_header.dart';
@@ -20,26 +20,23 @@ class UserDataFormContent extends StatefulWidget {
   final bool isDark;
   final TailoredCVResult? tailoredResult;
   
-  // Controllers
   final TextEditingController nameController;
   final TextEditingController emailController;
   final TextEditingController phoneController;
   final TextEditingController locationController;
   final TextEditingController summaryController;
 
-  // State
   final bool isGeneratingSummary;
   final List<Experience> experience;
   final List<Education> education;
   final List<String> skills;
-  final List<Certification> certifications; // Add
+  final List<Certification> certifications; 
 
-  // Callbacks
   final VoidCallback onGenerateSummary;
   final ValueChanged<List<Experience>> onExperienceChanged;
   final ValueChanged<List<Education>> onEducationChanged;
   final ValueChanged<List<String>> onSkillsChanged;
-  final ValueChanged<List<Certification>> onCertificationsChanged; // Add
+  final ValueChanged<List<Certification>> onCertificationsChanged; 
 
 
   const UserDataFormContent({
@@ -56,12 +53,12 @@ class UserDataFormContent extends StatefulWidget {
     required this.experience,
     required this.education,
     required this.skills,
-    required this.certifications, // Add
+    required this.certifications, 
     required this.onGenerateSummary,
     required this.onExperienceChanged,
     required this.onEducationChanged,
     required this.onSkillsChanged,
-    required this.onCertificationsChanged, // Add
+    required this.onCertificationsChanged, 
   });
 
   @override
@@ -69,13 +66,12 @@ class UserDataFormContent extends StatefulWidget {
 }
 
 class _UserDataFormContentState extends State<UserDataFormContent> {
-  // Accordion State
   bool _isPersonalExpanded = false;
   bool _isSummaryExpanded = true; 
   bool _isExperienceExpanded = false;
   bool _isEducationExpanded = false;
   bool _isSkillsExpanded = false;
-  bool _isCertificationsExpanded = false; // Add
+  bool _isCertificationsExpanded = false; 
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +81,9 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // Header Message
             if (widget.tailoredResult != null)
               TailoredDataHeader(isDark: widget.isDark),
 
-            // 1. Personal Info Section
             ReviewSectionCard(
               title: AppLocalizations.of(context)!.personalInfo,
               icon: Icons.person_outline,
@@ -104,7 +98,6 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
             ),
             const SizedBox(height: 16),
 
-            // 2. Professional Summary
             ReviewSectionCard(
               title: AppLocalizations.of(context)!.professionalSummary,
               icon: Icons.description_outlined,
@@ -119,7 +112,6 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
             ),
             const SizedBox(height: 16),
 
-            // 3. Experience Section
             ReviewSectionCard(
               title: AppLocalizations.of(context)!.workExperience,
               icon: Icons.work_outline,
@@ -132,7 +124,6 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
             ),
             const SizedBox(height: 16),
 
-            // 4. Education Section
             ReviewSectionCard(
               title: AppLocalizations.of(context)!.educationHistory,
               icon: Icons.school_outlined,
@@ -145,7 +136,6 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
             ),
             const SizedBox(height: 16),
             
-            // 5. Certifications Section (New)
             ReviewSectionCard(
               title: AppLocalizations.of(context)!.certificationsLicenses,
               icon: Icons.card_membership,
@@ -158,7 +148,6 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
             ),
             const SizedBox(height: 16),
 
-            // 6. Skills Section
             ReviewSectionCard(
               title: AppLocalizations.of(context)!.skills,
               icon: Icons.lightbulb_outline,

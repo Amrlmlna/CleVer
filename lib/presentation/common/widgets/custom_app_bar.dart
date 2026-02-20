@@ -5,6 +5,9 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import '../../profile/providers/profile_sync_provider.dart';
 import '../../common/widgets/language_selector.dart';
+import '../../profile/providers/profile_provider.dart';
+import '../../profile/widgets/delete_account_dialog.dart';
+import '../../../core/utils/custom_snackbar.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String? title;
@@ -19,10 +22,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       forceMaterialTransparency: true,
-      leading: IconButton(
-        icon: const Icon(Icons.notifications_outlined),
-        onPressed: () => context.push('/notifications'),
-      ),
+      leading: const BackButton(),
       title: title != null ? Text(title!) : null,
       centerTitle: true,
       actions: [
@@ -40,6 +40,24 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   ref.read(profileSyncProvider).initialCloudFetch(user.uid);
                 } else if (value == 'logout') {
                   await ref.read(authRepositoryProvider).signOut();
+                } else if (value == 'delete') {
+                  final confirmed = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => const DeleteAccountDialog(),
+                  );
+                  if (confirmed == true) {
+                    try {
+                      await ref.read(profileControllerProvider.notifier).deleteAccount();
+                      if (context.mounted) {
+                        CustomSnackBar.showSuccess(context, 'Account successfully deleted. Goodbye!');
+                        context.go('/');
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        CustomSnackBar.showError(context, 'Failed to delete account: $e');
+                      }
+                    }
+                  }
                 }
               },
               offset: const Offset(0, 48),
@@ -59,9 +77,19 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   value: 'logout',
                   child: Row(
                     children: [
-                      const Icon(Icons.logout, color: Colors.red),
+                      const Icon(Icons.logout, color: Colors.blue),
                       const SizedBox(width: 8),
                       Text(AppLocalizations.of(context)!.logOut),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'delete',
+                  child: Row(
+                    children: [
+                      const Icon(Icons.delete_forever_rounded, color: Colors.red),
+                      const SizedBox(width: 8),
+                      const Text('Delete Account', style: TextStyle(color: Colors.red)),
                     ],
                   ),
                 ),

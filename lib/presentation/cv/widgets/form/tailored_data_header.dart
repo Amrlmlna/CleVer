@@ -12,7 +12,7 @@ class TailoredDataHeader extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 24),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.blue.withValues(alpha: 0.1), // Subtle blue
+        color: Colors.blue.withValues(alpha: 0.1), 
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
       ),

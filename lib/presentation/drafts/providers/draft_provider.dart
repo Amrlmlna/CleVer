@@ -4,9 +4,15 @@ import '../../../domain/repositories/draft_repository.dart';
 import '../../../data/repositories/draft_repository_impl.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import 'package:uuid/uuid.dart';
+import '../../../data/datasources/local_draft_datasource.dart';
+
+final localDraftDataSourceProvider = Provider<LocalDraftDataSource>((ref) {
+  return LocalDraftDataSource();
+});
 
 final draftRepositoryProvider = Provider<DraftRepository>((ref) {
-  return DraftRepositoryImpl();
+  final dataSource = ref.watch(localDraftDataSourceProvider);
+  return DraftRepositoryImpl(localDataSource: dataSource);
 });
 
 final draftsProvider = AsyncNotifierProvider<DraftsNotifier, List<CVData>>(DraftsNotifier.new);
@@ -51,7 +57,6 @@ class DraftsNotifier extends AsyncNotifier<List<CVData>> {
 
     final id = creationState.currentDraftId ?? const Uuid().v4();
     
-    // Update state with ID if it was new
     if (creationState.currentDraftId == null) {
       ref.read(cvCreationProvider.notifier).setCurrentDraftId(id);
     }

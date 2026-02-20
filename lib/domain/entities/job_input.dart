@@ -18,7 +18,19 @@ class JobInput extends Equatable {
     return {
       'jobTitle': jobTitle,
       'company': company ?? 'Unknown Company',
-      'description': jobDescription ?? '',
+      'jobDescription': jobDescription ?? '',
     };
+  }
+
+  JobInput copyWith({
+    String? jobTitle,
+    String? company,
+    String? jobDescription,
+  }) {
+    return JobInput(
+      jobTitle: jobTitle ?? this.jobTitle,
+      company: company ?? this.company,
+      jobDescription: jobDescription ?? this.jobDescription,
+    );
   }
 }

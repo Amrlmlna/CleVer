@@ -54,7 +54,6 @@ class UserLevelCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          // Progress bar aesthetic
           Container(
             height: 6,
             width: double.infinity,
@@ -64,7 +63,7 @@ class UserLevelCard extends StatelessWidget {
             ),
             child: FractionallySizedBox(
               alignment: Alignment.centerLeft,
-              widthFactor: 0.7, // Mock progress for now
+              widthFactor: 0.7, 
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,

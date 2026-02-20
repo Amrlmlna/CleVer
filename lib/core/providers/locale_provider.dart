@@ -15,7 +15,6 @@ class LocaleNotifier extends StateNotifier<Locale> {
       return;
     }
 
-    // No saved preference, detect via IP
     final ipService = IpLocationService();
     final countryCode = await ipService.getCountryCode();
 

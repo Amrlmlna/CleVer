@@ -20,26 +20,21 @@ class HomePage extends ConsumerWidget {
             children: [
               const SizedBox(height: 16),
               
-              // Welcome Header
               const WelcomeHeader(),
               const SizedBox(height: 24),
               
-              // Progress Banner
               const ProgressBanner(),
               const SizedBox(height: 24),
               
-              // Quick Actions (3 items)
               const HomeQuickActions(),
               const SizedBox(height: 32),
               
-              // Login CTA (conditional)
               const LoginCTACard(),
               const SizedBox(height: 16),
               
-              // Premium Banner (conditional)
               const PremiumBanner(),
               
-              const SizedBox(height: 100), // Bottom padding for nav
+              const SizedBox(height: 100),
             ],
           ),
         ),

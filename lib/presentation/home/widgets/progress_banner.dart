@@ -48,7 +48,6 @@ class ProgressBanner extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Level badge
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
@@ -77,8 +76,6 @@ class ProgressBanner extends ConsumerWidget {
           
           const SizedBox(height: 16),
           
-          // Profile completion or completion badge
-          // Show percentage only if not complete
           if (!isComplete)
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -109,7 +106,6 @@ class ProgressBanner extends ConsumerWidget {
           
           const SizedBox(height: 16),
           
-          // Progress bar (only show if not complete)
           if (!isComplete)
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
@@ -124,7 +120,6 @@ class ProgressBanner extends ConsumerWidget {
           if (!isComplete) const SizedBox(height: 20),
           if (isComplete) const SizedBox(height: 12),
           
-          // Quick stats
           Row(
             children: [
               _StatItem(

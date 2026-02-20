@@ -20,28 +20,21 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
   String? _selectedFolder; 
 
   void _handleDraftSelection(CVData draft) {
-    // Load Draft Data into Provider
     final notifier = ref.read(cvCreationProvider.notifier);
     
-    // 1. Job Input (Dummy desc since we don't save it in CVData yet)
     notifier.setJobInput(JobInput(
       jobTitle: draft.jobTitle, 
       jobDescription: '',
     ));
 
-    // 2. Profile
     notifier.setUserProfile(draft.userProfile);
 
-    // 3. Summary
     notifier.setSummary(draft.summary);
 
-    // 4. Style
     notifier.setStyle(draft.styleId);
     
-    // 5. Set Draft ID for future updates
     notifier.setCurrentDraftId(draft.id);
 
-    // Navigate to Form for Editing
     final tailoredResult = TailoredCVResult(
       profile: draft.userProfile,
       summary: draft.summary,
@@ -51,7 +44,6 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
 
   void _handleDelete(String id, int currentFolderCount) {
     ref.read(draftsProvider.notifier).deleteDraft(id);
-    // If folder becomes empty after delete, go back to folders
     if (currentFolderCount <= 1 && _selectedFolder != null) {
         setState(() {
           _selectedFolder = null;
@@ -89,12 +81,9 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
           onDraftDeleted: (val) {},
         ),
         data: (drafts) {
-           // 1. Filter by Search (Global search on Job Title)
             final filteredDrafts = _searchQuery.isEmpty 
                 ? drafts 
                 : drafts.where((d) => d.jobTitle.toLowerCase().contains(_searchQuery)).toList();
-
-            // 2. Group by Job Title
             final Map<String, List<CVData>> folders = {};
             for (var draft in filteredDrafts) {
               final key = draft.jobTitle.isNotEmpty ? draft.jobTitle : 'Tanpa Judul';
@@ -104,7 +93,6 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
               folders[key]!.add(draft);
             }
 
-            // 3. Get Current Drafts needed for the View
             List<CVData> currentDrafts = [];
             if (_selectedFolder != null) {
                currentDrafts = folders[_selectedFolder] ?? [];

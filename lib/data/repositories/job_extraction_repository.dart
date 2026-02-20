@@ -1,34 +1,22 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import '../../domain/entities/job_input.dart';
-import '../../core/config/api_config.dart';
+import '../datasources/remote_job_datasource.dart';
+import '../utils/data_error_mapper.dart';
 
 class JobExtractionRepository {
-  static String get baseUrl => ApiConfig.baseUrl;
+  final RemoteJobDataSource remoteDataSource;
 
-  /// Extract job posting from raw text using Groq API via backend
+  JobExtractionRepository({required this.remoteDataSource});
+
   Future<JobInput> extractFromText(String text) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/job/extract'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'text': text}),
+      final data = await remoteDataSource.extractFromText(text);
+      return JobInput(
+        jobTitle: data['jobTitle'] ?? '',
+        company: data['company'],
+        jobDescription: data['jobDescription'] ?? data['description'] ?? '',
       );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        return JobInput(
-          jobTitle: data['jobTitle'] ?? '',
-          company: data['company'],
-          jobDescription: data['description'] ?? '',
-        );
-      } else {
-        final error = jsonDecode(response.body);
-        throw Exception(error['error'] ?? 'Failed to extract job posting');
-      }
     } catch (e) {
-      print('[JobExtractionRepository] Error: $e');
-      rethrow;
+      throw DataErrorMapper.map(e);
     }
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
-/// Profile action buttons (Save + Help)
 class ProfileActionButtons extends StatelessWidget {
   final VoidCallback onSave;
   final bool canSave;
@@ -11,7 +10,7 @@ class ProfileActionButtons extends StatelessWidget {
     super.key,
     required this.onSave,
     this.canSave = true,
-  });
+  }); 
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,6 @@ class ProfileActionButtons extends StatelessWidget {
       children: [
         const SizedBox(height: 48),
         
-        // Save Button
         SizedBox(
           width: double.infinity,
           child: ElevatedButton.icon(
@@ -34,7 +32,6 @@ class ProfileActionButtons extends StatelessWidget {
         
         const SizedBox(height: 24),
         
-        // Help Button
         Center(
           child: TextButton.icon(
             onPressed: () => context.push('/profile/help'),
@@ -46,7 +43,7 @@ class ProfileActionButtons extends StatelessWidget {
           ),
         ),
         
-        const SizedBox(height: 100), // Extra bottom padding
+        const SizedBox(height: 100),
       ],
     );
   }

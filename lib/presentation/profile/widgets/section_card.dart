@@ -15,14 +15,12 @@ class SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // "Gen Z" Card: Dark surface, no heavy borders
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color ?? (isDark ? const Color(0xFF1E1E1E) : Colors.white),
         borderRadius: BorderRadius.circular(16),
-        // Remove border or make it very subtle for dark mode
         border: isDark 
             ? Border.all(color: Colors.white.withValues(alpha: 0.05))
             : Border.all(color: Colors.grey.shade200),
@@ -47,7 +45,7 @@ class SectionCard extends StatelessWidget {
             fontSize: 16,
           ),
         ),
-        shape: const Border(), // Remove default border
+        shape: const Border(),
         childrenPadding: const EdgeInsets.all(16),
         children: [child],
       ),

@@ -3,65 +3,76 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import '../services/analytics_service.dart';
 
 class PaymentService {
   static String get _androidApiKey => dotenv.get('REVENUECAT_GOOGLE_KEY');
   static const _iosApiKey = 'appl_your_actual_key_here';
+  
+  static final _analytics = AnalyticsService();
 
   static Future<void> init() async {
-    await Purchases.setLogLevel(LogLevel.debug);
+    try {
+      await Purchases.setLogLevel(LogLevel.debug);
 
-    PurchasesConfiguration configuration;
-    if (Platform.isAndroid) {
-      configuration = PurchasesConfiguration(_androidApiKey);
-    } else if (Platform.isIOS) {
-      configuration = PurchasesConfiguration(_iosApiKey);
-    } else {
-      return;
-    }
-    
-    await Purchases.configure(configuration);
+      PurchasesConfiguration configuration;
+      if (Platform.isAndroid) {
+        configuration = PurchasesConfiguration(_androidApiKey);
+      } else if (Platform.isIOS) {
+        configuration = PurchasesConfiguration(_iosApiKey);
+      } else {
+        return;
+      }
+      
+      await Purchases.configure(configuration);
 
-    // Sync user ID with RevenueCat
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      await Purchases.logIn(user.uid);
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await Purchases.logIn(user.uid);
+      }
+      _analytics.trackEvent('payment_service_init_success');
+    } catch (e) {
+      _analytics.trackEvent('payment_service_init_error', properties: {'error': e.toString()});
     }
   }
 
   static Future<bool> purchaseCredits() async {
     try {
-      // Fetch offerings
       Offerings offerings = await Purchases.getOfferings();
       if (offerings.current != null && offerings.current!.availablePackages.isNotEmpty) {
-        // Find the pack (look for 'credits' or the first one if only one exists)
         final package = offerings.current!.availablePackages.firstWhere(
           (pkg) => pkg.identifier.contains('credits'),
           orElse: () => offerings.current!.availablePackages.first,
         );
 
-        // ignore: deprecated_member_use
-        await Purchases.purchasePackage(package);
+        await Purchases.purchase(PurchaseParams.package(package));
         
-        // RevenueCat webhook will handle the backend credit update
+        _analytics.trackEvent('purchase_attempt_success', properties: {'package': package.identifier});
         return true;
       }
+      _analytics.trackEvent('purchase_attempt_fail', properties: {'reason': 'no_packages'});
     } on PlatformException catch (e) {
       var errorCode = PurchasesErrorHelper.getErrorCode(e);
       if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
+        _analytics.trackEvent('purchase_error', properties: {'code': errorCode.toString(), 'message': e.message ?? ''});
         rethrow;
       }
+      _analytics.trackEvent('purchase_cancelled');
+    } catch (e) {
+      _analytics.trackEvent('purchase_error_generic', properties: {'error': e.toString()});
     }
     return false;
   }
+
   static Future<bool> presentPaywall() async {
     try {
       final paywallResult = await RevenueCatUI.presentPaywall();
-      return paywallResult == PaywallResult.purchased;
+      final success = paywallResult == PaywallResult.purchased;
+      _analytics.trackEvent('paywall_closed', properties: {'purchased': success});
+      return success;
     } on PlatformException catch (e) {
-      print('Paywall Error: $e');
+      _analytics.trackEvent('paywall_error', properties: {'error': e.toString()});
       return false;
     }
   }
@@ -69,10 +80,30 @@ class PaymentService {
   static Future<bool> presentPaywallIfNeeded() async {
     try {
       final paywallResult = await RevenueCatUI.presentPaywallIfNeeded('premium');
-      return paywallResult == PaywallResult.purchased;
+      final success = paywallResult == PaywallResult.purchased;
+      _analytics.trackEvent('paywall_if_needed_closed', properties: {'purchased': success});
+      return success;
     } on PlatformException catch (e) {
-      print('Paywall Error: $e');
+      _analytics.trackEvent('paywall_error', properties: {'error': e.toString()});
       return false;
+    }
+  }
+
+  static Future<void> login(String uid) async {
+    try {
+      await Purchases.logIn(uid);
+      _analytics.trackEvent('payment_login_success', properties: {'uid': uid});
+    } catch (e) {
+      _analytics.trackEvent('payment_login_error', properties: {'error': e.toString()});
+    }
+  }
+
+  static Future<void> logout() async {
+    try {
+      await Purchases.logOut();
+      _analytics.trackEvent('payment_logout_success');
+    } catch (e) {
+      _analytics.trackEvent('payment_logout_error', properties: {'error': e.toString()});
     }
   }
 }

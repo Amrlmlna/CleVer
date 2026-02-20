@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // Import
+import 'package:google_fonts/google_fonts.dart'; 
 import '../../../common/widgets/spinning_text_loader.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -44,14 +44,13 @@ class SummarySection extends StatelessWidget {
         const SizedBox(height: 12),
         ElevatedButton.icon(
           onPressed: isGenerating ? null : onGenerate,
-          // Premium Loading State
           icon: isGenerating 
-              ? const SizedBox.shrink() // Hide icon when loading
+              ? const SizedBox.shrink() 
               : Icon(Icons.auto_awesome, size: 18, color: isDark ? Colors.black : Colors.white),
           label: isGenerating 
               ? SizedBox(
                   height: 20,
-                  width: 150, // Fixed width to prevent jitter
+                  width: 150, 
                   child: SpinningTextLoader(
                     texts: [
                       AppLocalizations.of(context)!.thinking,
@@ -60,16 +59,6 @@ class SummarySection extends StatelessWidget {
                     ],
                     style: GoogleFonts.outfit(
                       color: isDark ? Colors.black : Colors.white, 
-                      // Wait, if isDark is TRUE (Dark Mode), button is White. 
-                      // If isDark is FALSE (Light Mode), button is Black.
-                      // If button is Black, text is White.
-                      // If button is White, text is Black.
-                      // User said "white shimmering".
-                      // I'll stick to default shimmer (Grey/White/Grey) which works on Dark backgrounds.
-                      // But if the background is WHITE, White shimmer is invisible.
-                      // User said "button will turn into dark color when its on the loading state". 
-                      // implies the background is DARK always during loading?
-                      // I will remove the custom shimmerColors so it defaults to Grey/White/Grey.
                       fontWeight: FontWeight.bold,
                     ),
                     interval: const Duration(milliseconds: 1000),

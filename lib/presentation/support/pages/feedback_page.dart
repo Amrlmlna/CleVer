@@ -3,8 +3,6 @@ import '../../common/widgets/custom_text_form_field.dart';
 import '../../../core/services/analytics_service.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
-// Note: In a real app, you would inject a repository to handle the API call.
-// For this MVP, we will use a simple inline HTTP call or just mock it.
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../../core/config/api_config.dart';
@@ -34,7 +32,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
       AppLocalizations.of(context)!.question,
       AppLocalizations.of(context)!.other,
     ];
-    // Ensure default selection is valid or set to first
     if (!_types.contains(_feedbackType)) {
        _feedbackType = _types.first;
     }
@@ -45,14 +42,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
     setState(() => _isLoading = true);
     
-    // Simulate API Delay
     await Future.delayed(const Duration(seconds: 1));
 
-    // Try to send to backend (if running)
-    // Replace IP with your backend URL
     try {
       final response = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/feedback'), // Dynamic URL
+        Uri.parse('${ApiConfig.baseUrl}/feedback'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'type': _feedbackType,
@@ -63,14 +57,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
       
       if (response.statusCode != 200 && response.statusCode != 201) {
         debugPrint('Feedback API Error: ${response.statusCode}');
-        // We proceed anyway for UX in this demo
       }
     } catch (e) {
       debugPrint('Feedback Network Error: $e');
-      // Proceed silently
     }
-
-    // Track Event
     AnalyticsService().trackEvent('feedback_sent', properties: {
       'type': _feedbackType,
     });
@@ -85,8 +75,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(ctx); // Close Dialog
-                Navigator.pop(context); // Back to Help Page
+                Navigator.pop(ctx); 
+                Navigator.pop(context); 
               },
               child: const Text('OK'),
             )
@@ -127,7 +117,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
             ),
             const SizedBox(height: 32),
 
-            // White Card Form
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
@@ -142,13 +131,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 ],
               ),
               child: Theme(
-                data: Theme.of(context).copyWith(brightness: Brightness.light), // Force Light inputs
+                data: Theme.of(context).copyWith(brightness: Brightness.light), 
                 child: Form(
                   key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Type Dropdown
                       Text(AppLocalizations.of(context)!.category, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                       const SizedBox(height: 8),
                       Container(
@@ -170,7 +158,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       ),
                       const SizedBox(height: 24),
     
-                      // Message
                       CustomTextFormField(
                         controller: _msgController,
                         labelText: AppLocalizations.of(context)!.messageDetail,
@@ -179,7 +166,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       ),
                       const SizedBox(height: 24),
     
-                      // Contact (Optional)
                       CustomTextFormField(
                         controller: _contactController,
                         labelText: AppLocalizations.of(context)!.contactOptional,
@@ -192,7 +178,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _submit,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black, // Contrast on White Card
+                            backgroundColor: Colors.black,
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(vertical: 18),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),

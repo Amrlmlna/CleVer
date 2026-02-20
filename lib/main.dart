@@ -15,19 +15,22 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'core/providers/locale_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'core/services/ad_service.dart';
 import 'core/services/payment_service.dart';
+import 'core/services/permission_service.dart';
 
-import 'package:firebase_core/firebase_core.dart'; // Import Firebase
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   
   await dotenv.load(fileName: ".env");
-  await Firebase.initializeApp(); // Initialize Firebase
-  await PaymentService.init(); // Initialize RevenueCat
+  await Firebase.initializeApp();
+  await PaymentService.init();
+  await adService.init(); // Initialize AdMob
+  await PermissionService.requestAllPermissions(); // Request all permissions at startup
   
-  // Check onboarding status and load master profile
   final prefs = await SharedPreferences.getInstance();
   final onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
   
@@ -43,7 +46,6 @@ void main() async {
 
   runApp(ProviderScope(
     overrides: [
-      // Initialize providers with stored values
       onboardingProvider.overrideWith((ref) {
         return OnboardingNotifier(initialState: onboardingCompleted);
       }),
@@ -72,15 +74,12 @@ class _BootstrapAppState extends State<BootstrapApp> {
   }
 
   Future<void> _initApp() async {
-    // 1. Increase Cache Size
-    PaintingBinding.instance.imageCache.maximumSizeBytes = 300 * 1024 * 1024; // 300MB
+    PaintingBinding.instance.imageCache.maximumSizeBytes = 300 * 1024 * 1024;
 
-    // 2. Precache Images
     await _precacheSequence();
     
     if (mounted) {
       setState(() => _isReady = true);
-      // 3. Remove Splash
       FlutterNativeSplash.remove();
     }
   }
@@ -88,7 +87,6 @@ class _BootstrapAppState extends State<BootstrapApp> {
   Future<void> _precacheSequence() async {
      try {
       final futures = <Future>[];
-      // Frame range 1 to 192
       const startFrame = 1;
       const frameCount = 192;
       
@@ -96,8 +94,6 @@ class _BootstrapAppState extends State<BootstrapApp> {
         final frameIndex = startFrame + i;
         final frameStr = frameIndex.toString().padLeft(3, '0');
         final path = 'assets/sequence/ezgif-frame-$frameStr.jpg';
-        // Need to use PaintingBinding to precache without Context if possible, 
-        // OR standard precacheImage with the current context (which is valid here)
         futures.add(precacheImage(AssetImage(path), context));
       }
       
@@ -109,8 +105,6 @@ class _BootstrapAppState extends State<BootstrapApp> {
 
   @override
   Widget build(BuildContext context) {
-    // While not ready, we show a transparent placeholder.
-    // Since Native Splash is PRESERVED, the user sees the Native Splash.
     if (!_isReady) {
       return const MaterialApp(
         home: Scaffold(backgroundColor: Colors.transparent),
@@ -133,18 +127,15 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     super.initState();
-    // Initialize Sync Managers just ONCE when the app starts
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(profileSyncProvider).init();
       ref.read(draftSyncProvider).init();
-      // Initialize Locale (check IP/Prefs)
       ref.read(localeNotifierProvider.notifier).init();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Watchers are safe here as they return values, not trigger side-effects
     final router = ref.watch(routerProvider);
     final locale = ref.watch(localeNotifierProvider);
     
@@ -153,7 +144,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.dark, // Force Dark Mode for Gen Z aesthetic
+      themeMode: ThemeMode.dark,
       routerConfig: router,
       locale: locale,
       localizationsDelegates: const [
@@ -163,8 +154,8 @@ class _MyAppState extends ConsumerState<MyApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('en'), // English
-        Locale('id'), // Indonesian
+        Locale('en'),
+        Locale('id'),
       ],
     );
   }

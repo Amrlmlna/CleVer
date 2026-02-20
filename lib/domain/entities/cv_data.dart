@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'user_profile.dart'; // Import existing entities
+import 'user_profile.dart';
 
 class CVData extends Equatable {
   final String id;
@@ -44,7 +44,7 @@ class CVData extends Equatable {
     return {
       'id': id,
       'userProfile': userProfile.toJson(),
-      'summary': summary, // Matches backend template variable 'summary'
+      'summary': summary,
       'styleId': styleId,
       'createdAt': createdAt.toIso8601String(),
       'jobTitle': jobTitle,
@@ -56,11 +56,10 @@ class CVData extends Equatable {
     return CVData(
       id: json['id'] as String,
       userProfile: UserProfile.fromJson(json['userProfile'] as Map<String, dynamic>),
-      // Map JSON 'summary' (new) or 'generatedSummary' (legacy)
       summary: (json['summary'] ?? json['generatedSummary']) as String? ?? 'Summary not available',
       styleId: json['styleId'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      jobTitle: json['jobTitle'] as String? ?? 'Untitled Job', // Fallback for old data
+      jobTitle: json['jobTitle'] as String? ?? 'Untitled Job',
       jobDescription: json['jobDescription'] as String? ?? '',
     );
   }

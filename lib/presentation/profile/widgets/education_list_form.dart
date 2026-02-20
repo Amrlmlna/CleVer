@@ -70,7 +70,6 @@ class _EducationListFormState extends State<EducationListForm> {
 
   @override
   Widget build(BuildContext context) {
-    // Check both explicit flag and system theme
     final effectiveIsDark = widget.isDark || Theme.of(context).brightness == Brightness.dark;
 
     return Column(
@@ -181,10 +180,6 @@ class _EducationDialogState extends State<_EducationDialog> {
       },
     );
     if (picked != null) {
-      // Format: yyyy (Education usually mainly cares about Year)
-      // Or 'MMM yyyy' for consistency. Let's stick to 'MMM yyyy' or just 'yyyy' if user prefers.
-      // But let's try 'yyyy' for education as it's cleaner for schools.
-      // Actually, Experience was 'MMM yyyy'. Let's do 'MMM yyyy' for consistency.
       controller.text = DateFormat('MMM yyyy').format(picked);
     }
   }
@@ -269,6 +264,7 @@ class _EducationDialogState extends State<_EducationDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final edu = Education(
+                id: widget.existing?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
                 schoolName: _schoolCtrl.text,
                 degree: _degreeCtrl.text,
                 startDate: _startCtrl.text,
