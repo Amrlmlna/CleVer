@@ -21,10 +21,10 @@ class DangerZone extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: colorScheme.errorContainer.withOpacity(0.2),
+        color: colorScheme.errorContainer.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: colorScheme.error.withOpacity(0.3),
+          color: colorScheme.error.withValues(alpha: 0.3),
         ),
       ),
       child: Column(

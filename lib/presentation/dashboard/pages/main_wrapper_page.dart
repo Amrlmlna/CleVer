@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/widgets/custom_app_bar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import '../../profile/providers/profile_controller.dart';
+import '../../profile/providers/profile_provider.dart';
 
 class MainWrapperPage extends ConsumerWidget {
   final StatefulNavigationShell navigationShell;

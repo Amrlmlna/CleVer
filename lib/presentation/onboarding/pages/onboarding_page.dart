@@ -25,17 +25,26 @@ class OnboardingPage extends ConsumerStatefulWidget {
 
 class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   final PageController _pageController = PageController();
-  int _currentPage = 0;
   final _formKey = GlobalKey<FormState>();
 
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _locationController = TextEditingController();
-  List<Experience> _experiences = [];
-  List<Education> _education = [];
-  List<Certification> _certifications = [];
-  List<String> _skills = [];
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneController;
+  late TextEditingController _locationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+    _emailController = TextEditingController();
+    _phoneController = TextEditingController();
+    _locationController = TextEditingController();
+
+    _nameController.addListener(() => ref.read(onboardingFormProvider.notifier).updateName(_nameController.text));
+    _emailController.addListener(() => ref.read(onboardingFormProvider.notifier).updateEmail(_emailController.text));
+    _phoneController.addListener(() => ref.read(onboardingFormProvider.notifier).updatePhone(_phoneController.text));
+    _locationController.addListener(() => ref.read(onboardingFormProvider.notifier).updateLocation(_locationController.text));
+  }
 
   @override
   void dispose() {
@@ -48,66 +57,53 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   void _nextPage() {
-
-    if (_currentPage == 0) {
-      if (_nameController.text.isEmpty) {
+    final notifier = ref.read(onboardingFormProvider.notifier);
+    
+    // Validate locally for UI feedback if needed, but provider handles logic
+    if (ref.read(onboardingFormProvider).currentPage == 0) {
+       if (_nameController.text.isEmpty) {
         CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.fillNameError);
         return;
       }
     }
 
-    if (_currentPage < 5) {
-      _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-      setState(() {
-        _currentPage++;
-      });
+    if (notifier.nextPage()) {
+      // Animation handled by listener
     } else {
-      _finishOnboarding();
+       // Handle validation failure if provider returns false
     }
   }
 
   void _prevPage() {
-    if (_currentPage > 0) {
-      _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-      setState(() {
-        _currentPage--;
-      });
-    }
+    ref.read(onboardingFormProvider.notifier).prevPage();
   }
 
-  bool _isSaving = false;
-
   Future<void> _finishOnboarding() async {
-    setState(() {
-      _isSaving = true;
-    });
-
-    await Future.delayed(const Duration(seconds: 2));
-
-    final masterProfile = UserProfile(
-      fullName: _nameController.text,
-      email: _emailController.text,
-      phoneNumber: _phoneController.text,
-      location: _locationController.text,
-      experience: _experiences,
-      education: _education,
-      certifications: _certifications,
-      skills: _skills,
-    );
-    
-    await ref.read(masterProfileProvider.notifier).saveProfile(masterProfile);
-
-    await ref.read(onboardingProvider.notifier).completeOnboarding();
-    
-    if (mounted) {
-      context.go('/');
-    }
+     await ref.read(onboardingFormProvider.notifier).submit();
+     if (mounted) {
+       context.go('/');
+     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(onboardingFormProvider);
+    final currentPage = state.currentPage;
+    final isSaving = state.isSaving;
+    
+    // Listen to page changes to animate
+    ref.listen(onboardingFormProvider, (prev, next) {
+      if (prev?.currentPage != next.currentPage) {
+        _pageController.animateToPage(
+          next.currentPage, 
+          duration: const Duration(milliseconds: 300), 
+          curve: Curves.easeInOut
+        );
+      }
+    });
+
     return OnboardingShell(
-      currentPage: _currentPage,
+      currentPage: currentPage,
       totalSteps: 6,
       child: Column(
         children: [
@@ -125,20 +121,20 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                     locationController: _locationController,
                   ),
                   OnboardingExperienceStep(
-                    experiences: _experiences,
-                    onChanged: (val) => setState(() => _experiences = val),
+                    experiences: state.formData.experience,
+                    onChanged: (val) => ref.read(onboardingFormProvider.notifier).updateExperience(val),
                   ),
                   OnboardingEducationStep(
-                    education: _education,
-                    onChanged: (val) => setState(() => _education = val),
+                    education: state.formData.education,
+                    onChanged: (val) => ref.read(onboardingFormProvider.notifier).updateEducation(val),
                   ),
                   OnboardingCertificationStep(
-                    certifications: _certifications,
-                    onChanged: (val) => setState(() => _certifications = val),
+                    certifications: state.formData.certifications,
+                    onChanged: (val) => ref.read(onboardingFormProvider.notifier).updateCertifications(val),
                   ),
                   OnboardingSkillsStep(
-                    skills: _skills,
-                    onChanged: (val) => setState(() => _skills = val),
+                    skills: state.formData.skills,
+                    onChanged: (val) => ref.read(onboardingFormProvider.notifier).updateSkills(val),
                   ),
                   const OnboardingFinalStep(),
                 ],
@@ -147,10 +143,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           ),
 
           OnboardingNavigationBar(
-            currentPage: _currentPage,
-            isLastPage: _currentPage == 5,
-            isLoading: _isSaving,
-            onNext: _nextPage,
+            currentPage: currentPage,
+            isLastPage: currentPage == 5,
+            isLoading: isSaving,
+            onNext: currentPage < 5 ? _nextPage : _finishOnboarding,
             onBack: _prevPage,
           ),
         ],

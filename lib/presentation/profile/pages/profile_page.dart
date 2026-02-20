@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/user_profile.dart';
-import '../providers/profile_controller.dart';
+import '../providers/profile_provider.dart';
 import '../widgets/personal_info_form.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../widgets/experience_list_form.dart';
