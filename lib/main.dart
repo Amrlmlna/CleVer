@@ -17,6 +17,7 @@ import 'core/providers/locale_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/services/ad_service.dart';
 import 'core/services/payment_service.dart';
+import 'core/services/permission_service.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -28,6 +29,7 @@ void main() async {
   await Firebase.initializeApp();
   await PaymentService.init();
   await adService.init(); // Initialize AdMob
+  await PermissionService.requestAllPermissions(); // Request all permissions at startup
   
   final prefs = await SharedPreferences.getInstance();
   final onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;

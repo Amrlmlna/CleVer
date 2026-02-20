@@ -68,6 +68,7 @@ dependencies:
   purchases_flutter: ^9.12.0
   purchases_ui_flutter: ^9.12.0
   google_mobile_ads: ^7.0.0
+  permission_handler: ^12.0.1
  
 dev_dependencies:
   flutter_test:
