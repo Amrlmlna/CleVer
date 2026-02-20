@@ -14,8 +14,6 @@ import '../widgets/section_card.dart';
 import '../widgets/import_cv_button.dart';
 import '../widgets/profile_action_buttons.dart';
 import '../../../core/utils/custom_snackbar.dart';
-import '../widgets/delete_account_dialog.dart';
-import '../widgets/danger_zone.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -94,11 +92,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         content: Text(AppLocalizations.of(context)!.saveChangesMessage),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, true), // Leave anyway
+            onPressed: () => Navigator.pop(context, true),
             child: Text(AppLocalizations.of(context)!.exitWithoutSaving, style: const TextStyle(color: Colors.red)),
           ),
           ElevatedButton(
-            onPressed: () => Navigator.pop(context, false), // Stay
+            onPressed: () => Navigator.pop(context, false),
             child: Text(AppLocalizations.of(context)!.stayHere),
           ),
         ],
@@ -133,34 +131,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
   }
 
-
-
-  Future<void> _confirmAccountDeletion() async {
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => const DeleteAccountDialog(),
-    );
-
-    if (result == true) {
-      _performDeletion();
-    }
-  }
-
-  Future<void> _performDeletion() async {
-    try {
-      await ref.read(profileControllerProvider.notifier).deleteAccount();
-      
-      if (mounted) {
-        CustomSnackBar.showSuccess(context, 'Account successfully deleted. Goodbye!');
-        context.go('/');
-      }
-    } catch (e) {
-      if (mounted) {
-        CustomSnackBar.showError(context, 'Failed to delete account: $e');
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final profileState = ref.watch(profileControllerProvider);
@@ -190,14 +160,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             child: Column(
               children: [
                 const SizedBox(height: 16),
-                const SizedBox(height: 16),
-
                 ImportCVButton(
                   onImportSuccess: _handleImportSuccess,
                 ),
-
                 const SizedBox(height: 32),
-
                 SectionCard(
                   title: AppLocalizations.of(context)!.personalInfo,
                   icon: Icons.person_outline,
@@ -208,9 +174,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     locationController: _locationController,
                   ),
                 ),
-                
                 const SizedBox(height: 24),
-
                 SectionCard(
                   title: AppLocalizations.of(context)!.experience,
                   icon: Icons.work_outline,
@@ -219,9 +183,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     onChanged: (val) => ref.read(profileControllerProvider.notifier).updateExperience(val),
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
                 SectionCard(
                   title: AppLocalizations.of(context)!.educationHistory,
                   icon: Icons.school_outlined,
@@ -230,9 +192,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     onChanged: (val) => ref.read(profileControllerProvider.notifier).updateEducation(val),
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
                 SectionCard(
                   title: AppLocalizations.of(context)!.certifications,
                   icon: Icons.card_membership,
@@ -241,9 +201,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     onChanged: (val) => ref.read(profileControllerProvider.notifier).updateCertifications(val),
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
                 SectionCard(
                   title: AppLocalizations.of(context)!.skills,
                   icon: Icons.code,
@@ -252,7 +210,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     onChanged: (val) => ref.read(profileControllerProvider.notifier).updateSkills(val),
                   ),
                 ),
-
+                const SizedBox(height: 24),
                 ListTile(
                   leading: const Icon(Icons.description_outlined),
                   title: const Text('Legal Information'),
@@ -260,19 +218,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => context.push('/legal'),
                 ),
-
                 const SizedBox(height: 24),
-
                 const Divider(),
-                const SizedBox(height: 24),
-                
-                DangerZone(
-                  isSaving: isSaving,
-                  onConfirmDeletion: _confirmAccountDeletion,
-                ),
-
                 const SizedBox(height: 32),
-
                 ProfileActionButtons(
                   onSave: _saveProfile,
                   canSave: hasChanges && !isSaving,

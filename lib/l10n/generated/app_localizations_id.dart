@@ -471,10 +471,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get helpSupport => 'Bantuan & Dukungan';
 
   @override
-  String get premiumBadge => 'PREMIUM';
+  String get premiumBadge => 'BELI KREDIT';
 
   @override
-  String get unlockFeatures => 'Buka Fitur Canggih';
+  String get unlockFeatures => 'Isi ulang kredit CV kamu';
 
   @override
   String get premiumFeaturesDesc =>

@@ -60,7 +60,7 @@ class PremiumBanner extends ConsumerWidget {
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
-                    Icons.auto_awesome,
+                    Icons.account_balance_wallet_outlined,
                     color: Colors.white,
                     size: 20,
                   ),

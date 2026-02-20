@@ -995,13 +995,13 @@ abstract class AppLocalizations {
   /// No description provided for @premiumBadge.
   ///
   /// In en, this message translates to:
-  /// **'PREMIUM'**
+  /// **'GET CREDITS'**
   String get premiumBadge;
 
   /// No description provided for @unlockFeatures.
   ///
   /// In en, this message translates to:
-  /// **'Unlock Advanced Features'**
+  /// **'Refill generation credits'**
   String get unlockFeatures;
 
   /// No description provided for @premiumFeaturesDesc.

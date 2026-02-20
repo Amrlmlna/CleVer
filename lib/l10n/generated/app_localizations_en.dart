@@ -468,10 +468,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get helpSupport => 'Help & Support';
 
   @override
-  String get premiumBadge => 'PREMIUM';
+  String get premiumBadge => 'GET CREDITS';
 
   @override
-  String get unlockFeatures => 'Unlock Advanced Features';
+  String get unlockFeatures => 'Refill generation credits';
 
   @override
   String get premiumFeaturesDesc =>
