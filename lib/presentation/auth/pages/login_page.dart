@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../../common/widgets/app_loading_screen.dart';
 import '../../profile/providers/profile_sync_provider.dart';
 import '../providers/auth_state_provider.dart';
 
@@ -34,6 +35,22 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     setState(() => _isLoading = true);
 
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        barrierDismissible: false,
+        pageBuilder: (context, animation, secondaryAnimation) => AppLoadingScreen(
+          messages: [
+            AppLocalizations.of(context)!.validatingData,
+            AppLocalizations.of(context)!.finalizing,
+          ],
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
+    );
+
     try {
       final authRepo = ref.read(authRepositoryProvider);
       final user = await authRepo.signInWithEmailAndPassword(
@@ -41,6 +58,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         _passwordController.text,
       );
       
+      if (mounted) {
+        Navigator.of(context).pop(); // Dismiss loading screen
+      }
+
       if (user != null && mounted) {
         try {
           await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
@@ -57,6 +78,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       }
     } catch (e) {
       if (mounted) {
+        Navigator.of(context).pop(); // Dismiss loading screen
         CustomSnackBar.showError(context, e.toString());
       }
     } finally {
@@ -68,10 +90,31 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   Future<void> _loginWithGoogle() async {
     setState(() => _isLoading = true);
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        barrierDismissible: false,
+        pageBuilder: (context, animation, secondaryAnimation) => AppLoadingScreen(
+          messages: [
+            AppLocalizations.of(context)!.googleSignInSuccess,
+            AppLocalizations.of(context)!.finalizing,
+          ],
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
+    );
+
     try {
       final authRepo = ref.read(authRepositoryProvider);
       final user = await authRepo.signInWithGoogle();
       
+      if (mounted) {
+        Navigator.of(context).pop(); // Dismiss loading screen
+      }
+
       if (user != null && mounted) {
         try {
           await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
@@ -88,6 +131,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       }
     } catch (e) {
       if (mounted) {
+        Navigator.of(context).pop(); // Dismiss loading screen
         CustomSnackBar.showError(context, AppLocalizations.of(context)!.googleSignInError(e.toString()));
       }
     } finally {
@@ -201,13 +245,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                        )
-                      : Text(
+                  child: Text(
                           AppLocalizations.of(context)!.login,
                           style: GoogleFonts.outfit(
                             fontSize: 16,
@@ -239,12 +277,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   icon: const Icon(Icons.g_mobiledata, size: 28),
                   label: Text(
-                    AppLocalizations.of(context)!.continueWithGoogle,
-                    style: GoogleFonts.outfit(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                          AppLocalizations.of(context)!.continueWithGoogle,
+                          style: GoogleFonts.outfit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                 ),
                 const SizedBox(height: 24),
 

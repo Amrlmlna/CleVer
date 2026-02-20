@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../../profile/providers/profile_sync_provider.dart';
+import '../../common/widgets/app_loading_screen.dart';
 import '../providers/auth_state_provider.dart';
 
 import 'package:clever/l10n/generated/app_localizations.dart';
@@ -36,6 +37,23 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
     setState(() => _isLoading = true);
 
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        barrierDismissible: false,
+        pageBuilder: (context, animation, secondaryAnimation) => AppLoadingScreen(
+          messages: [
+            AppLocalizations.of(context)!.validatingData,
+            AppLocalizations.of(context)!.finalizing,
+            AppLocalizations.of(context)!.ready,
+          ],
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
+    );
+
     try {
       final authRepo = ref.read(authRepositoryProvider);
       final user = await authRepo.signUpWithEmailAndPassword(
@@ -44,6 +62,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         _nameController.text.trim(),
       );
       
+      if (mounted) {
+        Navigator.of(context).pop(); // Dismiss loading screen
+      }
+
       if (user != null && mounted) {
         try {
           await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
@@ -56,6 +78,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       }
     } catch (e) {
       if (mounted) {
+        Navigator.of(context).pop(); // Dismiss loading screen if error
         CustomSnackBar.showError(context, e.toString());
       }
     } finally {
@@ -181,13 +204,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                        )
-                      : Text(
+                  child: Text(
                           AppLocalizations.of(context)!.createAccount,
                           style: GoogleFonts.outfit(
                             fontSize: 16,

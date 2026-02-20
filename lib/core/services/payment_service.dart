@@ -88,4 +88,22 @@ class PaymentService {
       return false;
     }
   }
+
+  static Future<void> login(String uid) async {
+    try {
+      await Purchases.logIn(uid);
+      _analytics.trackEvent('payment_login_success', properties: {'uid': uid});
+    } catch (e) {
+      _analytics.trackEvent('payment_login_error', properties: {'error': e.toString()});
+    }
+  }
+
+  static Future<void> logout() async {
+    try {
+      await Purchases.logOut();
+      _analytics.trackEvent('payment_logout_success');
+    } catch (e) {
+      _analytics.trackEvent('payment_logout_error', properties: {'error': e.toString()});
+    }
+  }
 }

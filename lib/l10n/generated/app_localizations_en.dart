@@ -878,4 +878,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteConfirmation => 'Are you sure you want to delete this item?';
+
+  @override
+  String get verifyYourEmail => 'Verify Your Email';
+
+  @override
+  String verificationSentTo(String email) {
+    return 'A verification link has been sent to $email. Please check your inbox and spam folder.';
+  }
+
+  @override
+  String get iHaveVerified => 'I HAVE VERIFIED';
+
+  @override
+  String get resendEmail => 'Resend Verification Email';
+
+  @override
+  String get backToLogin => 'Back to Login';
+
+  @override
+  String get sending => 'Sending...';
+
+  @override
+  String get verificationEmailSent => 'Verification email sent!';
+
+  @override
+  String get emailNotVerifiedYet =>
+      'Email not verified yet. Please check your inbox.';
 }

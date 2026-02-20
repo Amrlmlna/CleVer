@@ -885,4 +885,31 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get deleteConfirmation =>
       'Apakah Anda yakin ingin menghapus item ini?';
+
+  @override
+  String get verifyYourEmail => 'Verifikasi Email Anda';
+
+  @override
+  String verificationSentTo(String email) {
+    return 'Link verifikasi telah dikirim ke $email. Silakan cek kotak masuk dan folder spam Anda.';
+  }
+
+  @override
+  String get iHaveVerified => 'SAYA SUDAH VERIFIKASI';
+
+  @override
+  String get resendEmail => 'Kirim Ulang Email Verifikasi';
+
+  @override
+  String get backToLogin => 'Kembali ke Login';
+
+  @override
+  String get sending => 'Mengirim...';
+
+  @override
+  String get verificationEmailSent => 'Email verifikasi terkirim!';
+
+  @override
+  String get emailNotVerifiedYet =>
+      'Email belum diverifikasi. Silakan cek kotak masuk Anda.';
 }

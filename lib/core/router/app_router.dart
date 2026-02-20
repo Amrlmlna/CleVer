@@ -21,7 +21,6 @@ import '../../presentation/legal/pages/legal_page.dart';
 import '../../presentation/common/pages/error_page.dart';
 import '../../presentation/auth/pages/login_page.dart';
 import '../../presentation/auth/pages/signup_page.dart';
-import '../../presentation/auth/pages/email_verification_page.dart';
 import '../../domain/entities/tailored_cv_result.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:clever/l10n/generated/app_localizations.dart';
@@ -38,22 +37,6 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final isGoingToOnboarding = state.uri.toString().startsWith(AppRoutes.onboarding);
       final user = fb.FirebaseAuth.instance.currentUser;
-      final isGoingToVerify = state.uri.toString() == AppRoutes.verifyEmail;
-      final isGoingToAuth = state.uri.toString() == AppRoutes.login || state.uri.toString() == AppRoutes.signup;
-
-      // 0. Email Verification Check
-      if (user != null && !user.emailVerified && !isGoingToVerify && !isGoingToAuth) {
-        // Find if user is signed in with password (social providers are usually verified)
-        final isPasswordProvider = user.providerData.any((p) => p.providerId == 'password');
-        if (isPasswordProvider) {
-          return AppRoutes.verifyEmail;
-        }
-      }
-
-      if (user != null && user.emailVerified && isGoingToVerify) {
-        return AppRoutes.home;
-      }
-      
       if (!onboardingCompleted && !isGoingToOnboarding) {
         return AppRoutes.onboarding;
       }
@@ -76,10 +59,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.signup,
         builder: (context, state) => const SignupPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.verifyEmail,
-        builder: (context, state) => const EmailVerificationPage(),
       ),
       
 

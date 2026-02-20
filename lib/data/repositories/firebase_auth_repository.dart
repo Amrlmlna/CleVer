@@ -5,6 +5,7 @@ import '../../domain/repositories/auth_repository.dart';
 import '../../domain/entities/app_user.dart';
 import '../datasources/remote_user_datasource.dart';
 import '../utils/data_error_mapper.dart';
+import '../../core/services/payment_service.dart';
 
 class FirebaseAuthRepository implements AuthRepository {
   final FirebaseAuth _firebaseAuth;
@@ -42,7 +43,11 @@ class FirebaseAuthRepository implements AuthRepository {
         email: email,
         password: password,
       );
-      return _mapFirebaseUser(userCredential.user);
+      final user = _mapFirebaseUser(userCredential.user);
+      if (user != null) {
+        await PaymentService.login(user.uid);
+      }
+      return user;
     } catch (e) {
       throw DataErrorMapper.map(e);
     }
@@ -60,6 +65,7 @@ class FirebaseAuthRepository implements AuthRepository {
         await userCredential.user!.updateDisplayName(name);
         await userCredential.user!.sendEmailVerification();
         await userCredential.user!.reload();
+        await PaymentService.login(userCredential.user!.uid);
       }
       
       return _mapFirebaseUser(_firebaseAuth.currentUser);
@@ -73,26 +79,33 @@ class FirebaseAuthRepository implements AuthRepository {
     await Future.wait([
       _firebaseAuth.signOut(),
       _googleSignIn.signOut(),
+      PaymentService.logout(),
     ]);
   }
 
   @override
   Future<AppUser?> signInWithGoogle() async {
     try {
-      // Standardize Google Sign-In for Flutter to avoid "canceled" issues
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      await _googleSignIn.initialize();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.attemptLightweightAuthentication() 
+          ?? await _googleSignIn.authenticate();
       
       if (googleUser == null) return null;
 
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final authorization = await googleUser.authorizationClient.authorizeScopes(['email']);
       
       final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
+        accessToken: authorization.accessToken,
         idToken: googleAuth.idToken,
       );
 
       final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
-      return _mapFirebaseUser(userCredential.user);
+      final user = _mapFirebaseUser(userCredential.user);
+      if (user != null) {
+        await PaymentService.login(user.uid);
+      }
+      return user;
     } catch (e) {
       throw DataErrorMapper.map(e);
     }

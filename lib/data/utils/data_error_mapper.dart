@@ -7,6 +7,9 @@ class DataError {
   final String? code;
 
   DataError(this.message, {this.code});
+  
+  @override
+  String toString() => message;
 }
 
 class DataErrorMapper {

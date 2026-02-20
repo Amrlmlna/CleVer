@@ -82,7 +82,7 @@ class _EmailVerificationPageState extends ConsumerState<EmailVerificationPage> {
                 AppLocalizations.of(context)!.verificationSentTo(email),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.7),
+                  color: Colors.white.withValues(alpha: 0.7),
                   fontSize: 14,
                 ),
               ),
@@ -115,7 +115,7 @@ class _EmailVerificationPageState extends ConsumerState<EmailVerificationPage> {
                 onPressed: () => ref.read(authRepositoryProvider).signOut(),
                 child: Text(
                   AppLocalizations.of(context)!.backToLogin,
-                  style: TextStyle(color: Colors.white.withOpacity(0.5)),
+                  style: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
                 ),
               ),
             ],

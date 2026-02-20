@@ -7,7 +7,12 @@ import '../../common/widgets/custom_app_bar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../profile/providers/profile_provider.dart';
 
-class MainWrapperPage extends ConsumerWidget {
+import '../../auth/widgets/email_verification_dialog.dart';
+import '../../auth/providers/auth_state_provider.dart';
+import '../../../domain/entities/app_user.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb;
+
+class MainWrapperPage extends ConsumerStatefulWidget {
   final StatefulNavigationShell navigationShell;
 
   const MainWrapperPage({
@@ -16,14 +21,49 @@ class MainWrapperPage extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MainWrapperPage> createState() => _MainWrapperPageState();
+}
+
+class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
+  bool _dialogShowing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkVerification(ref.read(authStateProvider).value);
+    });
+  }
+
+  void _checkVerification(AppUser? user) {
+    if (user == null) return;
+    
+    // Social providers are usually pre-verified by Google/Apple
+    final firebaseUser = fb.FirebaseAuth.instance.currentUser;
+    final isPasswordProvider = firebaseUser?.providerData.any((p) => p.providerId == 'password') ?? false;
+    
+    if (isPasswordProvider && !firebaseUser!.emailVerified && !_dialogShowing) {
+      _dialogShowing = true;
+      EmailVerificationDialog.show(context).then((_) {
+        _dialogShowing = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Listen for auth changes to trigger dialog
+    ref.listen(authStateProvider, (previous, next) {
+       _checkVerification(next.value);
+    });
+
     return Scaffold(
       appBar: const CustomAppBar(),
       extendBody: true,
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
-          navigationShell,
+          widget.navigationShell,
         ],
       ),
       floatingActionButton: _buildCenterFAB(context),
@@ -111,7 +151,7 @@ class MainWrapperPage extends ConsumerWidget {
   }
 
   Widget _buildNavItem(BuildContext context, WidgetRef ref, int index, IconData icon, String label) {
-    final isSelected = navigationShell.currentIndex == index;
+    final isSelected = widget.navigationShell.currentIndex == index;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final activeColor = Colors.white;
@@ -121,8 +161,8 @@ class MainWrapperPage extends ConsumerWidget {
       message: label,
       child: InkWell(
         onTap: () async {
-          if (index != navigationShell.currentIndex) {
-            if (navigationShell.currentIndex == 1) {
+          if (index != widget.navigationShell.currentIndex) {
+            if (widget.navigationShell.currentIndex == 1) {
               final hasUnsavedChanges = ref.read(profileControllerProvider).hasChanges;
               
               if (hasUnsavedChanges) {
@@ -153,9 +193,9 @@ class MainWrapperPage extends ConsumerWidget {
             }
           }
           
-          navigationShell.goBranch(
+          widget.navigationShell.goBranch(
             index,
-            initialLocation: index == navigationShell.currentIndex,
+            initialLocation: index == widget.navigationShell.currentIndex,
           );
         },
         borderRadius: BorderRadius.circular(16),
@@ -184,7 +224,6 @@ class _CenterDockedFabLocation extends StandardFabLocation
 
   @override
   double getOffsetY(ScaffoldPrelayoutGeometry scaffoldGeometry, double adjustment) {
-
     final double bottomSheetHeight = scaffoldGeometry.bottomSheetSize.height;
     final double fabHeight = scaffoldGeometry.floatingActionButtonSize.height;
     final double safeAreaBottom = scaffoldGeometry.minInsets.bottom;
