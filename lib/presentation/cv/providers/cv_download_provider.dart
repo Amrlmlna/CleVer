@@ -8,6 +8,7 @@ import 'package:open_filex/open_filex.dart';
 import '../../../core/services/ad_service.dart';
 import '../../../core/services/payment_service.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../../auth/utils/auth_guard.dart';
 import '../../../domain/entities/cv_data.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../drafts/providers/draft_provider.dart';
@@ -69,6 +70,8 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       // Use a post-frame callback or check mounted in UI? 
       // Since we passed context, we can show logic here, but ideally logic returns a "ShowPaywall" state.
       // However, for this refactor, we are keeping the side-effects here for simplicity as per plan.
+      if (!AuthGuard.check(context)) return;
+
       final purchased = await PaymentService.presentPaywall();
       if (purchased) {
         ref.invalidate(templatesProvider);

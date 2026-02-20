@@ -36,7 +36,6 @@ final routerProvider = Provider<GoRouter>((ref) {
     initialLocation: AppRoutes.home,
     redirect: (context, state) {
       final isGoingToOnboarding = state.uri.toString().startsWith(AppRoutes.onboarding);
-      final user = fb.FirebaseAuth.instance.currentUser;
       if (!onboardingCompleted && !isGoingToOnboarding) {
         return AppRoutes.onboarding;
       }

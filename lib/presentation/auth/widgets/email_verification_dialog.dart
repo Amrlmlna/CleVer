@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../common/widgets/spinning_text_loader.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';

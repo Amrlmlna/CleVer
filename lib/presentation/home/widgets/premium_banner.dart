@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/services/payment_service.dart';
 import '../../templates/providers/template_provider.dart';
 import '../providers/home_state_provider.dart';
+import '../../auth/utils/auth_guard.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class PremiumBanner extends ConsumerWidget {
@@ -41,12 +42,12 @@ class PremiumBanner extends ConsumerWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () async {
+          onTap: AuthGuard.protected(context, () async {
             final purchased = await PaymentService.presentPaywall();
             if (purchased) {
               ref.invalidate(templatesProvider);
             }
-          },
+          }),
           borderRadius: BorderRadius.circular(20),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

@@ -9,6 +9,7 @@ import '../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 import '../../../domain/entities/tailored_cv_result.dart';
+import '../../auth/utils/auth_guard.dart';
 
 class UserDataFormPage extends ConsumerStatefulWidget {
   final TailoredCVResult? tailoredResult;
@@ -151,6 +152,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
       }
 
       if (mounted) {
+        if (!AuthGuard.check(context)) return;
         context.push('/create/style-selection');
       }
     }

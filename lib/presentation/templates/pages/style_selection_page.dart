@@ -8,6 +8,7 @@ import '../widgets/style_selection_content.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../../../../core/services/payment_service.dart';
 import '../../../../core/utils/custom_snackbar.dart';
+import '../../auth/utils/auth_guard.dart';
 
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -42,6 +43,8 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
 
     if (template.isLocked) {
       if (mounted) {
+        if (!AuthGuard.check(context)) return;
+        
         final purchased = await PaymentService.presentPaywall();
         if (purchased) {
           ref.invalidate(templatesProvider);
