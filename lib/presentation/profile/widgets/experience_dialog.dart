@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../domain/entities/user_profile.dart';
 import '../../common/widgets/custom_text_form_field.dart';
-import '../../common/widgets/spinning_text_loader.dart';
-import '../../../../core/utils/custom_snackbar.dart';
 import '../../cv/providers/cv_generation_provider.dart';
+import '../../common/widgets/spinning_text_loader.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import 'profile_dialog_layout.dart';
 
 class ExperienceDialog extends ConsumerStatefulWidget {
   final Experience? existing;
@@ -105,133 +104,165 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return ProfileDialogLayout(
-      title: widget.existing == null 
-          ? AppLocalizations.of(context)!.addExperience 
-          : AppLocalizations.of(context)!.editExperienceTitle,
-      onSave: () {
-        if (_formKey.currentState!.validate()) {
-          final exp = Experience(
-            id: widget.existing?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
-            jobTitle: _titleCtrl.text,
-            companyName: _companyCtrl.text,
-            startDate: _startCtrl.text,
-            endDate: _endCtrl.text.isEmpty ? null : _endCtrl.text,
-            description: _descCtrl.text,
-          );
-          Navigator.pop(context, exp);
-        }
-      },
-      isSaveEnabled: !_isRewriting,
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CustomTextFormField(
-              controller: _titleCtrl,
-              labelText: AppLocalizations.of(context)!.jobTitle,
-              hintText: 'Software Engineer',
-              isDark: true,
-              validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
-            ),
-            const SizedBox(height: 16),
-            CustomTextFormField(
-              controller: _companyCtrl,
-              labelText: AppLocalizations.of(context)!.company,
-              hintText: AppLocalizations.of(context)!.companyPlaceholder,
-              isDark: true,
-              validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
-            ),
-            const SizedBox(height: 16),
-            
-            // Dates
-            Row(
-              children: [
-                Expanded(
-                  child: CustomTextFormField(
-                    controller: _startCtrl,
-                    labelText: AppLocalizations.of(context)!.startDate,
-                    hintText: AppLocalizations.of(context)!.selectDate,
-                    isDark: true,
-                    readOnly: true,
-                    prefixIcon: Icons.calendar_today,
-                    onTap: () => _pickDate(_startCtrl),
-                    validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: CustomTextFormField(
-                    controller: _endCtrl,
-                    labelText: AppLocalizations.of(context)!.endDate,
-                    hintText: AppLocalizations.of(context)!.untilNow,
-                    isDark: true,
-                    readOnly: true,
-                    prefixIcon: Icons.event,
-                    onTap: () => _pickDate(_endCtrl),
-                  ),
-                ),
-              ],
-            ),
-            
-            const SizedBox(height: 16),
-            
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(AppLocalizations.of(context)!.shortDescription, style: const TextStyle(color: Colors.white70, fontSize: 12)),
-                _isRewriting 
-                ? SizedBox(
-                    height: 16,
-                    width: 100,
-                    child: SpinningTextLoader(
-                      texts: [
-                        AppLocalizations.of(context)!.improving,
-                        AppLocalizations.of(context)!.rephrasing,
-                        AppLocalizations.of(context)!.polishing,
-                      ],
-                      style: GoogleFonts.outfit(
-                        color: Colors.white, 
-                        fontSize: 12, 
-                        fontWeight: FontWeight.bold
-                      ),
-                      interval: const Duration(milliseconds: 800),
-                    ),
-                  )
-                : TextButton.icon(
-                  onPressed: _rewriteDescription,
-                  icon: const Icon(Icons.auto_awesome, size: 12, color: Colors.white),
-                  label: Text(
-                    AppLocalizations.of(context)!.rewriteAI, 
-                    style: GoogleFonts.outfit(
-                      color: Colors.white, 
-                      fontSize: 12, 
-                      fontWeight: FontWeight.bold
-                    )
-                  ),
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero, 
-                    minimumSize: const Size(0,0), 
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    overlayColor: Colors.white.withValues(alpha: 0.1),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            
-            CustomTextFormField(
-              controller: _descCtrl,
-              labelText: '',
-              hintText: AppLocalizations.of(context)!.descriptionHint,
-              isDark: true,
-              maxLines: 4,
-              validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
-            ),
-          ],
+    return AlertDialog(
+      backgroundColor: const Color(0xFF1E1E1E), // Dark Card
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      title: Text(
+        widget.existing == null ? AppLocalizations.of(context)!.addExperience : AppLocalizations.of(context)!.editExperienceTitle,
+        style: const TextStyle(
+          color: Colors.white, 
+          fontWeight: FontWeight.w900, 
+          fontSize: 18,
+          letterSpacing: 1.0,
         ),
       ),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomTextFormField(
+                  controller: _titleCtrl,
+                  labelText: AppLocalizations.of(context)!.jobTitle,
+                  hintText: 'Software Engineer',
+                  isDark: true,
+                  validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+                ),
+                const SizedBox(height: 16),
+                CustomTextFormField(
+                  controller: _companyCtrl,
+                  labelText: AppLocalizations.of(context)!.company,
+                  hintText: AppLocalizations.of(context)!.companyPlaceholder,
+                  isDark: true,
+                  validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+                ),
+                const SizedBox(height: 16),
+                
+                // Dates
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextFormField(
+                        controller: _startCtrl,
+                        labelText: AppLocalizations.of(context)!.startDate,
+                        hintText: AppLocalizations.of(context)!.selectDate,
+                        isDark: true,
+                        readOnly: true,
+                        prefixIcon: Icons.calendar_today,
+                        onTap: () => _pickDate(_startCtrl),
+                        validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: CustomTextFormField(
+                        controller: _endCtrl,
+                        labelText: AppLocalizations.of(context)!.endDate,
+                        hintText: AppLocalizations.of(context)!.untilNow,
+                        isDark: true,
+                        readOnly: true,
+                        prefixIcon: Icons.event,
+                        onTap: () => _pickDate(_endCtrl),
+                      ),
+                    ),
+                  ],
+                ),
+                
+                const SizedBox(height: 16),
+                
+                // Header for Description with Magic Button
+                // Header for Description with Magic Button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(AppLocalizations.of(context)!.shortDescription, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                    // Premium Monochrome Rewrite Button
+                    _isRewriting 
+                    ? SizedBox(
+                        height: 16,
+                        width: 100,
+                        child: SpinningTextLoader(
+                          texts: [
+                            AppLocalizations.of(context)!.improving,
+                            AppLocalizations.of(context)!.rephrasing,
+                            AppLocalizations.of(context)!.polishing,
+                          ],
+                          style: GoogleFonts.outfit(
+                            color: Colors.white, 
+                            fontSize: 12, 
+                            fontWeight: FontWeight.bold
+                          ),
+                          interval: const Duration(milliseconds: 800),
+                        ),
+                      )
+                    : TextButton.icon(
+                      onPressed: _rewriteDescription,
+                      icon: const Icon(Icons.auto_awesome, size: 12, color: Colors.white),
+                      label: Text(
+                        AppLocalizations.of(context)!.rewriteAI, 
+                        style: GoogleFonts.outfit(
+                          color: Colors.white, 
+                          fontSize: 12, 
+                          fontWeight: FontWeight.bold
+                        )
+                      ),
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero, 
+                        minimumSize: const Size(0,0), 
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        overlayColor: Colors.white.withValues(alpha: 0.1),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                
+                CustomTextFormField(
+                  controller: _descCtrl,
+                  labelText: '', // Hide label since header is above
+                  hintText: AppLocalizations.of(context)!.descriptionHint,
+                  isDark: true,
+                  maxLines: 4,
+                  validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context), 
+          style: TextButton.styleFrom(foregroundColor: Colors.white54),
+          child: Text(AppLocalizations.of(context)!.cancelAllCaps),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              final exp = Experience(
+                id: widget.existing?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
+                jobTitle: _titleCtrl.text,
+                companyName: _companyCtrl.text,
+                startDate: _startCtrl.text,
+                endDate: _endCtrl.text.isEmpty ? null : _endCtrl.text,
+                description: _descCtrl.text,
+              );
+              Navigator.pop(context, exp);
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          child: Text(AppLocalizations.of(context)!.saveAllCaps, style: const TextStyle(fontWeight: FontWeight.bold)),
+        ),
+      ],
     );
   }
 }

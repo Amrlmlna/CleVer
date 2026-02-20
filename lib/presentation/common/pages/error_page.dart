@@ -35,7 +35,6 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Determine theme brightness for contrast
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -48,7 +47,6 @@ class ErrorPage extends StatelessWidget {
             children: [
               const Spacer(),
               
-              // 1. Icon / Illustration
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
@@ -63,7 +61,6 @@ class ErrorPage extends StatelessWidget {
               ),
               const SizedBox(height: 32),
 
-              // 2. Title
               Text(
                 args.title,
                 textAlign: TextAlign.center,
@@ -76,7 +73,6 @@ class ErrorPage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              // 3. Message
               Text(
                 args.message,
                 textAlign: TextAlign.center,
@@ -87,7 +83,6 @@ class ErrorPage extends StatelessWidget {
                 ),
               ),
               
-              // 4. Technical Details (Collapsible)
               if (args.technicalDetails != null) ...[
                 const SizedBox(height: 32),
                 Container(
@@ -124,7 +119,7 @@ class ErrorPage extends StatelessWidget {
                         args.technicalDetails!,
                         style: const TextStyle(
                           fontSize: 12,
-                          fontFamily: 'Courier', // Monospace
+                          fontFamily: 'Courier',
                         ),
                         maxLines: 4,
                         overflow: TextOverflow.ellipsis,
@@ -136,7 +131,6 @@ class ErrorPage extends StatelessWidget {
 
               const Spacer(),
 
-              // 5. Actions
               Row(
                 children: [
                   Expanded(

@@ -15,7 +15,7 @@ class LanguageSelector extends ConsumerWidget {
       decoration: BoxDecoration(
         color: theme.brightness == Brightness.dark 
             ? colorScheme.surfaceContainerHighest 
-            : colorScheme.surfaceContainerHighest, // Use consistent container color
+            : colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(20),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
@@ -69,7 +69,7 @@ class _LanguageButton extends StatelessWidget {
           label,
           style: TextStyle(
             color: isSelected 
-                ? colorScheme.onPrimary // Correct contrast color (Black on White in Dark Mode)
+                ? colorScheme.onPrimary
                 : colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.bold,
             fontSize: 12,

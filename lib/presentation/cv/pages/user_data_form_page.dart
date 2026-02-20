@@ -4,15 +4,14 @@ import 'package:go_router/go_router.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../providers/cv_generation_provider.dart';
 import '../../profile/providers/profile_provider.dart';
-// Widgets
 import '../widgets/form/user_data_form_content.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
-import '../../../domain/entities/tailored_cv_result.dart'; // import
+import '../../../domain/entities/tailored_cv_result.dart';
 
 class UserDataFormPage extends ConsumerStatefulWidget {
-  final TailoredCVResult? tailoredResult; // Changed from UserProfile
+  final TailoredCVResult? tailoredResult;
   const UserDataFormPage({super.key, this.tailoredResult});
 
   @override
@@ -22,26 +21,22 @@ class UserDataFormPage extends ConsumerStatefulWidget {
 class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   final _formKey = GlobalKey<FormState>();
 
-  // Personal Info Controllers
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _locationController = TextEditingController();
   
-  // Summary Controller
   final _summaryController = TextEditingController();
   bool _isGeneratingSummary = false;
   
-  // Lists
   List<Experience> _experience = [];
   List<Education> _education = [];
   List<String> _skills = [];
-  List<Certification> _certifications = []; // Add
+  List<Certification> _certifications = [];
 
   @override
   void initState() {
     super.initState();
-    // Auto-fill from Master Profile if available
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final masterProfile = ref.read(masterProfileProvider);
       final creationState = ref.read(cvCreationProvider);
@@ -61,11 +56,9 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
           _experience = List<Experience>.from(profileToUse.experience);
           _education = List<Education>.from(profileToUse.education);
           _skills = List<String>.from(profileToUse.skills);
-          _certifications = List<Certification>.from(profileToUse.certifications); // Load
+          _certifications = List<Certification>.from(profileToUse.certifications);
         });
 
-        // Pre-fill summary
-        // Priority: Passed Result > Saved State
         final initialSummary = widget.tailoredResult?.summary ?? creationState.summary;
         if (initialSummary != null) {
           _summaryController.text = initialSummary;
@@ -103,8 +96,6 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
     });
 
     try {
-      // Use existing generateCV to get summary
-      // We pass current form data as temporary profile
       final currentProfile = UserProfile(
         fullName: _nameController.text,
         email: _emailController.text,
@@ -113,14 +104,14 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         experience: _experience,
         education: _education,
         skills: _skills,
-        certifications: _certifications, // Pass
+        certifications: _certifications,
       );
 
       final repository = ref.read(cvRepositoryProvider);
       final cvData = await repository.generateCV(
         profile: currentProfile,
         jobInput: jobInput,
-        styleId: 'ATS', // Dummy style
+        styleId: 'ATS',
       );
 
       if (mounted) {
@@ -147,16 +138,12 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         experience: _experience,
         education: _education,
         skills: _skills.isNotEmpty ? _skills : ['Leadership', 'Communication'], 
-        certifications: _certifications, // Save
+        certifications: _certifications,
       );
 
-      // Save Profile
       ref.read(cvCreationProvider.notifier).setUserProfile(profile);
-      
-      // Save Summary
       ref.read(cvCreationProvider.notifier).setSummary(_summaryController.text);
       
-      // Smart Save Logic: Try to merge (non-destructive)
       final hasChanges = await ref.read(masterProfileProvider.notifier).mergeProfile(profile);
       
       if (hasChanges && mounted) {
@@ -220,12 +207,12 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         experience: _experience,
         education: _education,
         skills: _skills,
-        certifications: _certifications, // Pass
+        certifications: _certifications,
         onGenerateSummary: _generateSummary,
         onExperienceChanged: (val) => setState(() => _experience = val),
         onEducationChanged: (val) => setState(() => _education = val),
         onSkillsChanged: (val) => setState(() => _skills = val),
-        onCertificationsChanged: (val) => setState(() => _certifications = val), // Pass
+        onCertificationsChanged: (val) => setState(() => _certifications = val),
       ),
     );
   }

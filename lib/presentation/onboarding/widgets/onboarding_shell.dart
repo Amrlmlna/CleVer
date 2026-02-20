@@ -17,20 +17,18 @@ class OnboardingShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Handle Bar for Sheet
         Center(
           child: Container(
             margin: const EdgeInsets.only(top: 16, bottom: 24),
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.grey[700], // Darker handle for dark sheet
+              color: Colors.grey[700],
               borderRadius: BorderRadius.circular(2),
             ),
           ),
         ),
 
-        // Header "Kenalan Dulu Yuk" (Visible when sheet is collapsed/minimized)
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
@@ -40,10 +38,10 @@ class OnboardingShell extends StatelessWidget {
                 currentPage == totalSteps - 1 ? AppLocalizations.of(context)!.youreAllSet : AppLocalizations.of(context)!.dropYourDetails,
                 style: const TextStyle(
                   fontSize: 28,
-                  fontWeight: FontWeight.w900, // Extra Bold
+                  fontWeight: FontWeight.w900,
                   color: Colors.white,
                   letterSpacing: 1.2,
-                  fontFamily: 'Montserrat', // If available, or default
+                  fontFamily: 'Montserrat',
                 ),
               ),
               const SizedBox(height: 12),
@@ -62,7 +60,6 @@ class OnboardingShell extends StatelessWidget {
           ),
         ),
 
-        // Progress Bar (Only show if we start filling)
         if (currentPage > 0)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
@@ -73,7 +70,6 @@ class OnboardingShell extends StatelessWidget {
             ),
           ),
 
-        // Main Content (Form)
         Expanded(child: child),
       ],
     );

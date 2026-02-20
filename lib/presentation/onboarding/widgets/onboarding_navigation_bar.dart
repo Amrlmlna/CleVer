@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // Import
+import 'package:google_fonts/google_fonts.dart';
 import '../../legal/pages/legal_page.dart';
 import 'onboarding_legal_modal.dart';
 import '../../common/widgets/spinning_text_loader.dart';
@@ -11,7 +11,7 @@ class OnboardingNavigationBar extends StatelessWidget {
   final VoidCallback onNext;
   final VoidCallback onBack;
   final bool isLastPage;
-  final bool isLoading; // New
+  final bool isLoading;
 
   const OnboardingNavigationBar({
     super.key,
@@ -19,7 +19,7 @@ class OnboardingNavigationBar extends StatelessWidget {
     required this.onNext,
     required this.onBack,
     this.isLastPage = false,
-    this.isLoading = false, // Default false
+    this.isLoading = false,
   });
 
   @override
@@ -28,7 +28,6 @@ class OnboardingNavigationBar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
       child: Column(
         children: [
-          // Terms & Conditions Text (Only on Final Step)
           if (isLastPage) ...[
             Padding(
               padding: const EdgeInsets.only(bottom: 12.0),
@@ -83,7 +82,7 @@ class OnboardingNavigationBar extends StatelessWidget {
                 foregroundColor: Colors.black,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16), // Softer corners
+                  borderRadius: BorderRadius.circular(16),
                 ),
               ),
               child: isLoading 
@@ -96,7 +95,7 @@ class OnboardingNavigationBar extends StatelessWidget {
                         AppLocalizations.of(context)!.ready
                       ],
                       style: GoogleFonts.outfit(
-                         color: Colors.white, // User implies button turns dark, so text should be white? User said "white shimmering... button will turn into dark color". If button is dark, text should be white.
+                         color: Colors.white,
                          fontWeight: FontWeight.w900,
                          fontSize: 16,
                          letterSpacing: 1.0,
@@ -126,7 +125,7 @@ class OnboardingNavigationBar extends StatelessWidget {
               child: Text(AppLocalizations.of(context)!.back, style: const TextStyle(fontSize: 14)),
             ),
           ] else ...[
-            const SizedBox(height: 24), // Spacer to keep balance if no back button
+            const SizedBox(height: 24),
           ],
         ],
       ),

@@ -58,7 +58,7 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader> with SingleTick
       duration: const Duration(milliseconds: 500),
       transitionBuilder: (Widget child, Animation<double> animation) {
         final offsetAnimation = Tween<Offset>(
-          begin: const Offset(0.0, 0.5), // Start slightly below
+          begin: const Offset(0.0, 0.5),
           end: Offset.zero,
         ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutBack));
 
@@ -67,11 +67,10 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader> with SingleTick
           end: 1.0,
         ).animate(CurvedAnimation(parent: animation, curve: Curves.easeIn));
         
-        // Blur effect during transition
         return AnimatedBuilder(
           animation: animation,
           builder: (context, child) {
-            double blur = (1.0 - animation.value) * 2.0; // Blur fades out as it settles
+            double blur = (1.0 - animation.value) * 2.0;
             return ImageFiltered(
               imageFilter: ImageFilter.blur(sigmaX: 0, sigmaY: blur),
               child: FadeTransition(
@@ -86,9 +85,8 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader> with SingleTick
           child: child,
         );
       },
-      // Wrap the text in Shimmer
       child: AnimatedBuilder(
-        key: ValueKey<int>(_currentIndex), // Key remains here for AnimatedSwitcher to identify change
+        key: ValueKey<int>(_currentIndex),
         animation: _shimmerController,
         builder: (context, child) {
           return ShaderMask(

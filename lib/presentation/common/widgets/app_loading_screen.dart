@@ -25,27 +25,15 @@ import 'spinning_text_loader.dart';
 /// )
 /// ```
 class AppLoadingScreen extends StatelessWidget {
-  /// Badge text shown at the top (e.g., "AI PROCESSING", "OCR SCANNING")
-  /// If null, no badge is shown
   final String? badge;
 
-  /// List of messages that cycle through with animation
-  /// Required parameter
   final List<String> messages;
 
-  /// Duration for each message before cycling to the next
   final Duration messageDuration;
 
-  /// Custom text style for the messages
-  /// If null, uses default Outfit font
   final TextStyle? messageStyle;
 
-  /// Custom badge style
-  /// If null, uses default styling
   final TextStyle? badgeStyle;
-
-  /// Custom badge icon
-  /// If null, uses auto_awesome icon
   final IconData? badgeIcon;
 
   const AppLoadingScreen({
@@ -69,7 +57,6 @@ class AppLoadingScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Optional badge
             if (badge != null) ...[
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -103,9 +90,8 @@ class AppLoadingScreen extends StatelessWidget {
               const SizedBox(height: 40),
             ],
 
-            // Spinning text loader with shimmer effect
             SizedBox(
-              height: 40, // Fixed height to prevent layout jumps
+              height: 40,
               child: SpinningTextLoader(
                 texts: messages,
                 style: messageStyle ?? GoogleFonts.outfit(

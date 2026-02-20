@@ -10,7 +10,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import '../widgets/onboarding_personal_step.dart';
 import '../widgets/onboarding_experience_step.dart';
 import '../widgets/onboarding_education_step.dart';
-import '../widgets/onboarding_certification_step.dart'; // Import
+import '../widgets/onboarding_certification_step.dart';
 import '../widgets/onboarding_skills_step.dart';
 import '../widgets/onboarding_final_step.dart';
 import '../widgets/onboarding_shell.dart';
@@ -28,14 +28,13 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   int _currentPage = 0;
   final _formKey = GlobalKey<FormState>();
 
-  // Data State
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _locationController = TextEditingController();
   List<Experience> _experiences = [];
   List<Education> _education = [];
-  List<Certification> _certifications = []; // Add
+  List<Certification> _certifications = [];
   List<String> _skills = [];
 
   @override
@@ -49,7 +48,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   void _nextPage() {
-    // Validation Logic
+
     if (_currentPage == 0) {
       if (_nameController.text.isEmpty) {
         CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.fillNameError);
@@ -57,7 +56,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       }
     }
 
-    // Increased total steps to 6 (0-5)
     if (_currentPage < 5) {
       _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
       setState(() {
@@ -84,10 +82,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       _isSaving = true;
     });
 
-    // Artificial delay to show off the premium animation
     await Future.delayed(const Duration(seconds: 2));
 
-    // 1. Save to Master Profile
     final masterProfile = UserProfile(
       fullName: _nameController.text,
       email: _emailController.text,
@@ -95,16 +91,14 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       location: _locationController.text,
       experience: _experiences,
       education: _education,
-      certifications: _certifications, // Save
+      certifications: _certifications,
       skills: _skills,
     );
     
     await ref.read(masterProfileProvider.notifier).saveProfile(masterProfile);
 
-    // 2. Mark Onboarding as Complete
     await ref.read(onboardingProvider.notifier).completeOnboarding();
     
-    // 3. Navigate Home
     if (mounted) {
       context.go('/');
     }
@@ -114,7 +108,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   Widget build(BuildContext context) {
     return OnboardingShell(
       currentPage: _currentPage,
-      totalSteps: 6, // Update Total Steps
+      totalSteps: 6,
       child: Column(
         children: [
           Expanded(
@@ -122,7 +116,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               key: _formKey, 
               child: PageView(
                 controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(), // Prevent swipe
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   OnboardingPersonalStep(
                     nameController: _nameController,
@@ -138,7 +132,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                     education: _education,
                     onChanged: (val) => setState(() => _education = val),
                   ),
-                  OnboardingCertificationStep( // Add Step
+                  OnboardingCertificationStep(
                     certifications: _certifications,
                     onChanged: (val) => setState(() => _certifications = val),
                   ),
@@ -154,8 +148,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
           OnboardingNavigationBar(
             currentPage: _currentPage,
-            isLastPage: _currentPage == 5, // Update Last Page Index
-            isLoading: _isSaving, // Pass Loading State
+            isLastPage: _currentPage == 5,
+            isLoading: _isSaving,
             onNext: _nextPage,
             onBack: _prevPage,
           ),

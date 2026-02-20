@@ -7,8 +7,8 @@ class ImageSequenceAnimator extends StatefulWidget {
   final String fileExtension;
   final int startFrame;
   final int frameCount;
-  final int fps; // Used only if explicitFrame is null
-  final int? explicitFrame; // If provided, animation is driven externally (e.g. scroll)
+  final int fps;
+  final int? explicitFrame;
 
   const ImageSequenceAnimator({
     super.key,
@@ -36,7 +36,6 @@ class _ImageSequenceAnimatorState extends State<ImageSequenceAnimator>
     super.initState();
     _internalFrame = widget.startFrame;
 
-    // Only start internal animation loop if external control is NOT provided
     if (widget.explicitFrame == null) {
       _setupInternalAnimation();
     }
@@ -67,7 +66,6 @@ class _ImageSequenceAnimatorState extends State<ImageSequenceAnimator>
   @override
   void didUpdateWidget(covariant ImageSequenceAnimator oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // If switching modes (controlled <-> uncontrolled), handle controller
     if (widget.explicitFrame != null) {
        _controller?.dispose();
        _controller = null;
@@ -95,18 +93,14 @@ class _ImageSequenceAnimatorState extends State<ImageSequenceAnimator>
 
   @override
   Widget build(BuildContext context) {
-    // START CHANGE: Use explicitFrame if available, otherwise internal loop
     final frameToRender = widget.explicitFrame ?? _internalFrame;
-    // Safety clamp (just in case external input is out of bounds)
     final clampedFrame = frameToRender.clamp(
       widget.startFrame, 
       widget.startFrame + widget.frameCount - 1
     );
-    // END CHANGE
 
     return Image.asset(
       _getAssetPath(clampedFrame),
-      // key: ValueKey(clampedFrame), // REMOVED: Caused flickering by forcing rebuilds
       gaplessPlayback: true,
       fit: BoxFit.cover,
       width: double.infinity,

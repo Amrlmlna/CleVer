@@ -12,7 +12,6 @@ class OnboardingFinalStep extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Success Illustration with Fade/Depth Effect
             Stack(
               alignment: Alignment.bottomCenter,
               children: [
@@ -21,9 +20,8 @@ class OnboardingFinalStep extends StatelessWidget {
                   height: 250, 
                   fit: BoxFit.contain,
                 ),
-                // Gradient Overlay for "Depth" / Fade into background
                 Container(
-                  height: 80, // Height of the fade
+                  height: 80,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
