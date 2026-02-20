@@ -518,6 +518,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get notificationsTitle => 'Notifikasi';
 
   @override
+  String get notifications => 'Notifikasi';
+
+  @override
   String get noNotifications => 'Belum ada notifikasi';
 
   @override

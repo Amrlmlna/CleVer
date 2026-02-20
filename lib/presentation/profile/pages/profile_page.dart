@@ -33,10 +33,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController();
-    _emailController = TextEditingController();
-    _phoneController = TextEditingController();
-    _locationController = TextEditingController();
+    final initialProfile = ref.read(profileControllerProvider).currentProfile;
+    
+    _nameController = TextEditingController(text: initialProfile.fullName);
+    _emailController = TextEditingController(text: initialProfile.email);
+    _phoneController = TextEditingController(text: initialProfile.phoneNumber ?? '');
+    _locationController = TextEditingController(text: initialProfile.location ?? '');
     
     _nameController.addListener(_onNameChanged);
     _emailController.addListener(_onEmailChanged);

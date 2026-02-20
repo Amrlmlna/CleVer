@@ -19,10 +19,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       forceMaterialTransparency: true,
-      leading: IconButton(
-        icon: const Icon(Icons.notifications_outlined),
-        onPressed: () => context.push('/notifications'),
-      ),
+      leading: const BackButton(),
       title: title != null ? Text(title!) : null,
       centerTitle: true,
       actions: [

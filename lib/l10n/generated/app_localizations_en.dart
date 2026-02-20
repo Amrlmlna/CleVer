@@ -515,6 +515,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationsTitle => 'Notifications';
 
   @override
+  String get notifications => 'Notifications';
+
+  @override
   String get noNotifications => 'No notifications yet';
 
   @override

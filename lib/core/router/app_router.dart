@@ -8,7 +8,7 @@ import '../../presentation/onboarding/pages/onboarding_page.dart';
 import '../../presentation/onboarding/providers/onboarding_provider.dart';
 import '../../presentation/home/pages/home_page.dart';
 import '../../presentation/dashboard/pages/main_wrapper_page.dart';
-import '../../presentation/notifications/pages/notification_page.dart';
+
 import '../../presentation/drafts/pages/drafts_page.dart';
 import '../../presentation/profile/pages/profile_page.dart';
 import '../../presentation/cv/pages/job_input_page.dart';
@@ -60,11 +60,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const SignupPage(),
       ),
       
-      // System & Shared Routes
-      GoRoute(
-        path: AppRoutes.notifications,
-        builder: (context, state) => const NotificationPage(),
-      ),
+
       GoRoute(
         path: AppRoutes.error,
         builder: (context, state) {

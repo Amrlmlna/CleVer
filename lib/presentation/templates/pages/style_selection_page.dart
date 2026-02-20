@@ -1,10 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:open_filex/open_filex.dart';
-import '../../../../domain/entities/cv_data.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../cv/providers/cv_download_provider.dart';
 import '../../drafts/providers/draft_provider.dart';
@@ -13,7 +8,7 @@ import '../widgets/style_selection_content.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../../../../core/services/payment_service.dart';
 import '../../../../core/utils/custom_snackbar.dart';
-import '../../../../core/services/ad_service.dart';
+
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class StyleSelectionPage extends ConsumerStatefulWidget {
