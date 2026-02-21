@@ -32,7 +32,7 @@ class _HelpPageState extends State<HelpPage> {
   Future<void> _contactSupport() async {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: 'support@cvmaster.id',
+      path: 'cvfast.contact@gmail.com',
       query: 'subject=Bantuan Aplikasi CV Master&body=Halo tim support, saya butuh bantuan...',
     );
 

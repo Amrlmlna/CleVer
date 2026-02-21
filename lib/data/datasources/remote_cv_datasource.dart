@@ -95,7 +95,19 @@ class RemoteCVDataSource {
     );
 
     if (response.statusCode == 200) {
-      return response.bodyBytes;
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      final String? pdfUrl = data['pdfUrl'];
+      
+      if (pdfUrl == null || pdfUrl.isEmpty) {
+        throw http.ClientException('Generated PDF URL is empty');
+      }
+
+      final pdfResponse = await http.get(Uri.parse(pdfUrl));
+      if (pdfResponse.statusCode == 200) {
+        return pdfResponse.bodyBytes;
+      } else {
+        throw http.ClientException('Failed to download PDF from GCS: ${pdfResponse.statusCode}');
+      }
     } else {
       throw http.ClientException('Failed to generate PDF: ${response.statusCode}', response.request?.url);
     }

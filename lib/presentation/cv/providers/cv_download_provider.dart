@@ -44,6 +44,9 @@ class CVDownloadState {
 }
 
 class CVDownloadNotifier extends Notifier<CVDownloadState> {
+  // Simple session cache: templateId -> localFilePath
+  final Map<String, String> _localCache = {};
+
   @override
   CVDownloadState build() {
     return const CVDownloadState();
@@ -53,23 +56,32 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     required BuildContext context,
     required String styleId,
   }) async {
+    if (state.status == DownloadStatus.generating) {
+      debugPrint('Download already in progress. Ignoring request.');
+      return;
+    }
+
+    if (_localCache.containsKey(styleId)) {
+      final file = File(_localCache[styleId]!);
+      if (await file.exists()) {
+        debugPrint('Opening cached PDF from: ${file.path}');
+        await OpenFilex.open(file.path);
+        return;
+      }
+    }
+
     final templates = ref.read(templatesProvider).value ?? [];
     final template = templates.firstWhere(
       (t) => t.id == styleId,
       orElse: () => templates.first,
     );
 
-    // 1. Check if user has credits (Premium behavior)
     if (template.userCredits > 0) {
       await _generateAndOpenPDF(context, styleId);
       return;
     }
 
-    // 2. Check if template is locked (Usage >= 2 and No Credits)
     if (template.currentUsage >= 2) {
-      // Use a post-frame callback or check mounted in UI? 
-      // Since we passed context, we can show logic here, but ideally logic returns a "ShowPaywall" state.
-      // However, for this refactor, we are keeping the side-effects here for simplicity as per plan.
       if (!AuthGuard.check(context)) return;
 
       final purchased = await PaymentService.presentPaywall();
@@ -79,7 +91,6 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       return;
     }
 
-    // 3. Free Usage (Usage < 2) -> Show Ad then Generate
     await adService.showInterstitialAd(
       context,
       onAdClosed: () {
@@ -94,7 +105,6 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     try {
       final creationState = ref.read(cvCreationProvider);
       
-      // Ensure data is saved first
       await ref.read(draftsProvider.notifier).saveFromState(creationState);
 
       final cvData = CVData(
