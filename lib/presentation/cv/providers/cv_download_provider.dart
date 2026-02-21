@@ -127,7 +127,6 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       }
 
       final output = await getTemporaryDirectory();
-      // Use a timestamp and clean ID to avoid filename/permission issues
       final safeId = styleId.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_').toLowerCase();
       final fileName = 'cv_${safeId}_${DateTime.now().millisecondsSinceEpoch}.pdf';
       final file = File('${output.path}/$fileName');
@@ -136,7 +135,6 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       
       final result = await OpenFilex.open(file.path);
       
-      // Cache the successful path for this session
       _localCache[styleId] = file.path;
       
       ref.invalidate(templatesProvider);
