@@ -11,10 +11,6 @@ class PremiumBanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isPremiumUser = ref.watch(isPremiumUserProvider);
-    
-    if (isPremiumUser) return const SizedBox.shrink();
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
@@ -69,13 +65,12 @@ class PremiumBanner extends ConsumerWidget {
                 
                 const SizedBox(width: 16),
                 
-                // Minimal Text
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        AppLocalizations.of(context)!.premiumBadge, // "PREMIUM"
+                        AppLocalizations.of(context)!.premiumBadge,
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -85,7 +80,7 @@ class PremiumBanner extends ConsumerWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        AppLocalizations.of(context)!.unlockFeatures, // "Unlock All Features"
+                        AppLocalizations.of(context)!.unlockFeatures,
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.6),
                           fontSize: 12,
@@ -97,7 +92,6 @@ class PremiumBanner extends ConsumerWidget {
                   ),
                 ),
                 
-                // Subtle Arrow
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(

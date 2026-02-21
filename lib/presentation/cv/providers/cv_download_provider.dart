@@ -122,11 +122,22 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
         templateId: styleId,
       );
 
+      if (pdfBytes.length < 1000) {
+        throw Exception('Downloaded PDF is too small (${pdfBytes.length} bytes). It might be an error message.');
+      }
+
       final output = await getTemporaryDirectory();
-      final file = File('${output.path}/cv_${styleId.toLowerCase()}.pdf');
-      await file.writeAsBytes(pdfBytes);
+      // Use a timestamp and clean ID to avoid filename/permission issues
+      final safeId = styleId.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_').toLowerCase();
+      final fileName = 'cv_${safeId}_${DateTime.now().millisecondsSinceEpoch}.pdf';
+      final file = File('${output.path}/$fileName');
+      
+      await file.writeAsBytes(pdfBytes, flush: true);
       
       final result = await OpenFilex.open(file.path);
+      
+      // Cache the successful path for this session
+      _localCache[styleId] = file.path;
       
       ref.invalidate(templatesProvider);
       state = state.copyWith(status: DownloadStatus.success);

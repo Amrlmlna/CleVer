@@ -104,7 +104,19 @@ class RemoteCVDataSource {
 
       final pdfResponse = await http.get(Uri.parse(pdfUrl));
       if (pdfResponse.statusCode == 200) {
-        return pdfResponse.bodyBytes;
+        // Diagnostic: Check if this is a PDF or an XML error
+        final bytes = pdfResponse.bodyBytes;
+        final startString = String.fromCharCodes(bytes.take(100));
+        
+        if (startString.contains('<?xml') || startString.contains('<Error>')) {
+          throw http.ClientException('Received XML error instead of PDF. Check GCS permissions.');
+        }
+
+        if (!startString.contains('%PDF')) {
+          throw http.ClientException('Downloaded file is not a valid PDF.');
+        }
+        
+        return bytes;
       } else {
         throw http.ClientException('Failed to download PDF from GCS: ${pdfResponse.statusCode}');
       }
