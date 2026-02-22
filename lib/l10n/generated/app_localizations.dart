@@ -2105,6 +2105,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'General app notifications'**
   String get notificationChannelGeneralDesc;
+
+  /// No description provided for @authWallCreateCV.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to create your CV'**
+  String get authWallCreateCV;
+
+  /// No description provided for @authWallCreateCVDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'An account is required to create and save your CV'**
+  String get authWallCreateCVDesc;
+
+  /// No description provided for @authWallBuyCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to buy credits'**
+  String get authWallBuyCredits;
+
+  /// No description provided for @authWallBuyCreditsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'An account is required to purchase credits'**
+  String get authWallBuyCreditsDesc;
+
+  /// No description provided for @authWallSelectTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to select a template'**
+  String get authWallSelectTemplate;
+
+  /// No description provided for @authWallSelectTemplateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'An account is required to choose a template'**
+  String get authWallSelectTemplateDesc;
 }
 
 class _AppLocalizationsDelegate

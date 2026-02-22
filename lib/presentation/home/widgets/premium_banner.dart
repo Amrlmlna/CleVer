@@ -42,13 +42,12 @@ class PremiumBanner extends ConsumerWidget {
             if (purchased) {
               ref.invalidate(templatesProvider);
             }
-          }),
+          }, featureTitle: AppLocalizations.of(context)!.authWallBuyCredits, featureDescription: AppLocalizations.of(context)!.authWallBuyCreditsDesc),
           borderRadius: BorderRadius.circular(20),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Row(
               children: [
-                // Minimalist Icon
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(

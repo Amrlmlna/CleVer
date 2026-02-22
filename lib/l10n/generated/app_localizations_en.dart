@@ -1076,4 +1076,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationChannelGeneralDesc => 'General app notifications';
+
+  @override
+  String get authWallCreateCV => 'Sign in to create your CV';
+
+  @override
+  String get authWallCreateCVDesc =>
+      'An account is required to create and save your CV';
+
+  @override
+  String get authWallBuyCredits => 'Sign in to buy credits';
+
+  @override
+  String get authWallBuyCreditsDesc =>
+      'An account is required to purchase credits';
+
+  @override
+  String get authWallSelectTemplate => 'Sign in to select a template';
+
+  @override
+  String get authWallSelectTemplateDesc =>
+      'An account is required to choose a template';
 }

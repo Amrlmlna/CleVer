@@ -152,7 +152,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
       }
 
       if (mounted) {
-        if (!AuthGuard.check(context)) return;
+        if (!AuthGuard.check(context, featureTitle: AppLocalizations.of(context)!.authWallSelectTemplate, featureDescription: AppLocalizations.of(context)!.authWallSelectTemplateDesc)) return;
         context.push('/create/style-selection');
       }
     }

@@ -100,7 +100,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     }
 
     if (template.currentUsage >= 2) {
-      if (!AuthGuard.check(context)) return;
+      if (!AuthGuard.check(context, featureTitle: AppLocalizations.of(context)!.authWallBuyCredits, featureDescription: AppLocalizations.of(context)!.authWallBuyCreditsDesc)) return;
 
       final purchased = await PaymentService.presentPaywall();
       if (purchased) {
@@ -191,12 +191,11 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       ref.invalidate(templatesProvider);
       state = state.copyWith(status: DownloadStatus.success);
 
-      // Show success notification
       if (context.mounted) {
         NotificationService.showSimpleNotification(
           title: AppLocalizations.of(context)!.cvGeneratedSuccess,
           body: AppLocalizations.of(context)!.cvReadyMessage(cvData.jobTitle),
-          payload: '/drafts', // Navigate to drafts when tapped
+          payload: '/drafts',
         );
       }
 

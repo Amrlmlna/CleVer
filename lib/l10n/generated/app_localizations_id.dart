@@ -1082,4 +1082,25 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get notificationChannelGeneralDesc => 'Notifikasi aplikasi umum';
+
+  @override
+  String get authWallCreateCV => 'Login untuk membuat CV';
+
+  @override
+  String get authWallCreateCVDesc =>
+      'Kamu perlu login untuk membuat dan menyimpan CV';
+
+  @override
+  String get authWallBuyCredits => 'Login untuk beli kredit';
+
+  @override
+  String get authWallBuyCreditsDesc =>
+      'Kamu perlu login untuk bisa membeli kredit';
+
+  @override
+  String get authWallSelectTemplate => 'Login untuk pilih template';
+
+  @override
+  String get authWallSelectTemplateDesc =>
+      'Kamu perlu login untuk bisa memilih template';
 }

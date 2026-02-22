@@ -141,7 +141,7 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
       child: FloatingActionButton(
         onPressed: AuthGuard.protected(context, () {
           context.push('/create/job-input');
-        }),
+        }, featureTitle: AppLocalizations.of(context)!.authWallCreateCV, featureDescription: AppLocalizations.of(context)!.authWallCreateCVDesc),
         backgroundColor: Colors.white,
         elevation: 4,
         shape: const CircleBorder(),

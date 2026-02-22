@@ -78,7 +78,7 @@ class HeroSection extends ConsumerWidget {
                   width: double.infinity,
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: AuthGuard.protected(context, () => context.push('/create/job-input')),
+                    onPressed: AuthGuard.protected(context, () => context.push('/create/job-input'), featureTitle: AppLocalizations.of(context)!.authWallCreateCV, featureDescription: AppLocalizations.of(context)!.authWallCreateCVDesc),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       foregroundColor: Colors.white,

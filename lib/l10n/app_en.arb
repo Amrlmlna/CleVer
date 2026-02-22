@@ -359,5 +359,11 @@
   "notificationChannelCVTitle": "CV Generation",
   "notificationChannelCVDesc": "Notifications for CV generation updates",
   "notificationChannelGeneralTitle": "General Alerts",
-  "notificationChannelGeneralDesc": "General app notifications"
+  "notificationChannelGeneralDesc": "General app notifications",
+  "authWallCreateCV": "Sign in to create your CV",
+  "authWallCreateCVDesc": "An account is required to create and save your CV",
+  "authWallBuyCredits": "Sign in to buy credits",
+  "authWallBuyCreditsDesc": "An account is required to purchase credits",
+  "authWallSelectTemplate": "Sign in to select a template",
+  "authWallSelectTemplateDesc": "An account is required to choose a template"
 }

@@ -65,7 +65,7 @@ class HomeQuickActions extends ConsumerWidget {
           label: AppLocalizations.of(context)!.createCV,
           onTap: AuthGuard.protected(context, () {
             context.push('/create/job-input');
-          }),
+          }, featureTitle: AppLocalizations.of(context)!.authWallCreateCV, featureDescription: AppLocalizations.of(context)!.authWallCreateCVDesc),
         ),
       ],
     );

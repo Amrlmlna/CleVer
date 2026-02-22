@@ -359,5 +359,11 @@
   "notificationChannelCVTitle": "Pembuatan CV",
   "notificationChannelCVDesc": "Notifikasi untuk update pembuatan CV",
   "notificationChannelGeneralTitle": "Peringatan Umum",
-  "notificationChannelGeneralDesc": "Notifikasi aplikasi umum"
+  "notificationChannelGeneralDesc": "Notifikasi aplikasi umum",
+  "authWallCreateCV": "Login untuk membuat CV",
+  "authWallCreateCVDesc": "Kamu perlu login untuk membuat dan menyimpan CV",
+  "authWallBuyCredits": "Login untuk beli kredit",
+  "authWallBuyCreditsDesc": "Kamu perlu login untuk bisa membeli kredit",
+  "authWallSelectTemplate": "Login untuk pilih template",
+  "authWallSelectTemplateDesc": "Kamu perlu login untuk bisa memilih template"
 }

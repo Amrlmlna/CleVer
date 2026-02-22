@@ -43,7 +43,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
 
     if (template.isLocked) {
       if (mounted) {
-        if (!AuthGuard.check(context)) return;
+        if (!AuthGuard.check(context, featureTitle: AppLocalizations.of(context)!.authWallSelectTemplate, featureDescription: AppLocalizations.of(context)!.authWallSelectTemplateDesc)) return;
         
         final purchased = await PaymentService.presentPaywall();
         if (purchased) {
