@@ -42,10 +42,8 @@ class OnboardingImportStep extends ConsumerWidget {
           const SizedBox(height: 32),
 
           _OptionCard(
-            icon: Icons.upload_file_rounded,
             title: AppLocalizations.of(context)!.importExistingCV,
             subtitle: AppLocalizations.of(context)!.importExistingCVDesc,
-            accentColor: Colors.blue,
             onTap: () => CVImportHandler.showImportDialog(
               context: context,
               ref: ref,
@@ -56,10 +54,8 @@ class OnboardingImportStep extends ConsumerWidget {
           const SizedBox(height: 16),
 
           _OptionCard(
-            icon: Icons.edit_note_rounded,
             title: AppLocalizations.of(context)!.startFromScratch,
             subtitle: AppLocalizations.of(context)!.startFromScratchDesc,
-            accentColor: Colors.green,
             onTap: onManualEntry,
           ),
         ],
@@ -69,17 +65,13 @@ class OnboardingImportStep extends ConsumerWidget {
 }
 
 class _OptionCard extends StatelessWidget {
-  final IconData icon;
   final String title;
   final String subtitle;
-  final Color accentColor;
   final VoidCallback onTap;
 
   const _OptionCard({
-    required this.icon,
     required this.title,
     required this.subtitle,
-    required this.accentColor,
     required this.onTap,
   });
 
@@ -99,16 +91,6 @@ class _OptionCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Container(
-                width: 52,
-                height: 52,
-                decoration: BoxDecoration(
-                  color: accentColor.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Icon(icon, color: accentColor, size: 28),
-              ),
-              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

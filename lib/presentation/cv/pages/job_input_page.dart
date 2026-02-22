@@ -151,37 +151,104 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
   Future<void> _showImageSourceDialog() async {
     showModalBottomSheet(
       context: context,
+      backgroundColor: const Color(0xFF1E1E1E),
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 16),
-            Text(
-              AppLocalizations.of(context)!.scanJobPosting,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 16),
-            ListTile(
-              leading: const Icon(Icons.camera_alt),
-              title: Text(AppLocalizations.of(context)!.camera),
-              onTap: () {
-                Navigator.pop(context);
-                _scanJobPosting(ImageSource.camera);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.photo_library),
-              title: Text(AppLocalizations.of(context)!.gallery),
-              onTap: () {
-                Navigator.pop(context);
-                _scanJobPosting(ImageSource.gallery);
-              },
-            ),
-            const SizedBox(height: 16),
-          ],
+      builder: (sheetContext) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[700],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                AppLocalizations.of(context)!.scanJobPosting,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pop(sheetContext);
+                        _scanJobPosting(ImageSource.camera);
+                      },
+                      borderRadius: BorderRadius.circular(14),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white12),
+                          borderRadius: BorderRadius.circular(14),
+                          color: Colors.white.withValues(alpha: 0.04),
+                        ),
+                        child: Column(
+                          children: [
+                            const Icon(Icons.camera_alt_outlined, color: Colors.white70, size: 28),
+                            const SizedBox(height: 10),
+                            Text(
+                              AppLocalizations.of(context)!.camera,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pop(sheetContext);
+                        _scanJobPosting(ImageSource.gallery);
+                      },
+                      borderRadius: BorderRadius.circular(14),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white12),
+                          borderRadius: BorderRadius.circular(14),
+                          color: Colors.white.withValues(alpha: 0.04),
+                        ),
+                        child: Column(
+                          children: [
+                            const Icon(Icons.photo_library_outlined, color: Colors.white70, size: 28),
+                            const SizedBox(height: 10),
+                            Text(
+                              AppLocalizations.of(context)!.gallery,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -13,37 +13,115 @@ class CVImportHandler {
     required WidgetRef ref,
     required Function(UserProfile) onImportSuccess,
   }) {
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.importCVTitle),
-        content: Text(AppLocalizations.of(context)!.importCVMessage),
-        actions: [
-          TextButton.icon(
-            onPressed: () {
-              Navigator.pop(dialogContext);
-              _importFromImage(context, ref, ImageSource.camera, onImportSuccess);
-            },
-            icon: const Icon(Icons.camera_alt),
-            label: Text(AppLocalizations.of(context)!.camera),
+      backgroundColor: const Color(0xFF1E1E1E),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (sheetContext) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Handle bar
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[700],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                AppLocalizations.of(context)!.importCVTitle,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                AppLocalizations.of(context)!.importCVMessage,
+                style: TextStyle(fontSize: 13, color: Colors.grey[500]),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  _buildOption(
+                    context: sheetContext,
+                    icon: Icons.camera_alt_outlined,
+                    label: AppLocalizations.of(context)!.camera,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      _importFromImage(context, ref, ImageSource.camera, onImportSuccess);
+                    },
+                  ),
+                  const SizedBox(width: 12),
+                  _buildOption(
+                    context: sheetContext,
+                    icon: Icons.photo_library_outlined,
+                    label: AppLocalizations.of(context)!.gallery,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      _importFromImage(context, ref, ImageSource.gallery, onImportSuccess);
+                    },
+                  ),
+                  const SizedBox(width: 12),
+                  _buildOption(
+                    context: sheetContext,
+                    icon: Icons.picture_as_pdf_outlined,
+                    label: AppLocalizations.of(context)!.pdfFile,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      _importFromPDF(context, ref, onImportSuccess);
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
-          TextButton.icon(
-            onPressed: () {
-              Navigator.pop(dialogContext);
-              _importFromImage(context, ref, ImageSource.gallery, onImportSuccess);
-            },
-            icon: const Icon(Icons.photo_library),
-            label: Text(AppLocalizations.of(context)!.gallery),
+        ),
+      ),
+    );
+  }
+
+  static Widget _buildOption({
+    required BuildContext context,
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 18),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white12),
+            borderRadius: BorderRadius.circular(14),
+            color: Colors.white.withValues(alpha: 0.04),
           ),
-          TextButton.icon(
-            onPressed: () {
-              Navigator.pop(dialogContext);
-              _importFromPDF(context, ref, onImportSuccess);
-            },
-            icon: const Icon(Icons.picture_as_pdf),
-            label: Text(AppLocalizations.of(context)!.pdfFile),
+          child: Column(
+            children: [
+              Icon(icon, color: Colors.white70, size: 28),
+              const SizedBox(height: 10),
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: Colors.white70,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
