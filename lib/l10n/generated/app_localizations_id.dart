@@ -1066,4 +1066,20 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get sendResetLink => 'Kirim Tautan Reset';
+
+  @override
+  String get notificationNew => 'Notifikasi Baru';
+
+  @override
+  String get notificationChannelCVTitle => 'Pembuatan CV';
+
+  @override
+  String get notificationChannelCVDesc =>
+      'Notifikasi untuk update pembuatan CV';
+
+  @override
+  String get notificationChannelGeneralTitle => 'Peringatan Umum';
+
+  @override
+  String get notificationChannelGeneralDesc => 'Notifikasi aplikasi umum';
 }

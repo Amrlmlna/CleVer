@@ -1,6 +1,6 @@
 class NotificationEntity {
   final String id;
-  final String title;
+  final String? title;
   final String body;
   final DateTime timestamp;
   final bool isRead;
@@ -8,7 +8,7 @@ class NotificationEntity {
 
   NotificationEntity({
     required this.id,
-    required this.title,
+    this.title,
     required this.body,
     required this.timestamp,
     this.isRead = false,
@@ -17,10 +17,11 @@ class NotificationEntity {
 
   NotificationEntity copyWith({
     bool? isRead,
+    String? title,
   }) {
     return NotificationEntity(
       id: id,
-      title: title,
+      title: title ?? this.title,
       body: body,
       timestamp: timestamp,
       isRead: isRead ?? this.isRead,

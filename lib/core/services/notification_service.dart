@@ -4,14 +4,19 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'notification_controller.dart';
 
 class NotificationService {
-  static Future<void> init() async {
+  static Future<void> init({
+    String? cvChannelName,
+    String? cvChannelDesc,
+    String? generalChannelName,
+    String? generalChannelDesc,
+  }) async {
     await AwesomeNotifications().initialize(
       'resource://drawable/notification_icon',
       [
         NotificationChannel(
           channelKey: 'cv_generation',
-          channelName: 'CV Generation',
-          channelDescription: 'Notifications for CV generation updates',
+          channelName: cvChannelName ?? 'CV Generation',
+          channelDescription: cvChannelDesc ?? 'Notifications for CV generation updates',
           defaultColor: const Color(0xFF1E1E1E),
           importance: NotificationImportance.High,
           channelShowBadge: true,
@@ -21,8 +26,8 @@ class NotificationService {
         ),
         NotificationChannel(
           channelKey: 'general_alerts',
-          channelName: 'General Alerts',
-          channelDescription: 'General app notifications',
+          channelName: generalChannelName ?? 'General Alerts',
+          channelDescription: generalChannelDesc ?? 'General app notifications',
           defaultColor: const Color(0xFF1E1E1E),
           importance: NotificationImportance.Default,
           channelShowBadge: true,
@@ -40,6 +45,38 @@ class NotificationService {
     );
 
     await _initFirebaseMessaging();
+  }
+
+  static Future<void> updateChannelLocalization({
+    required String cvChannelName,
+    required String cvChannelDesc,
+    required String generalChannelName,
+    required String generalChannelDesc,
+  }) async {
+    await AwesomeNotifications().setChannel(
+      NotificationChannel(
+        channelKey: 'cv_generation',
+        channelName: cvChannelName,
+        channelDescription: cvChannelDesc,
+        defaultColor: const Color(0xFF1E1E1E),
+        importance: NotificationImportance.High,
+        channelShowBadge: true,
+        onlyAlertOnce: true,
+        playSound: true,
+        criticalAlerts: true,
+      ),
+    );
+    await AwesomeNotifications().setChannel(
+      NotificationChannel(
+        channelKey: 'general_alerts',
+        channelName: generalChannelName,
+        channelDescription: generalChannelDesc,
+        defaultColor: const Color(0xFF1E1E1E),
+        importance: NotificationImportance.Default,
+        channelShowBadge: true,
+        playSound: true,
+      ),
+    );
   }
 
   static Future<void> _initFirebaseMessaging() async {
@@ -64,7 +101,7 @@ class NotificationService {
 
       if (title != null || body != null) {
         showSimpleNotification(
-          title: title ?? 'New Notification',
+          title: title ?? '',
           body: body ?? '',
           payload: message.data['route'],
         );
@@ -83,7 +120,7 @@ class NotificationService {
   }
 
   static Future<void> showSimpleNotification({
-    required String title,
+    String? title,
     required String body,
     String? payload,
     String channelKey = 'general_alerts',

@@ -354,5 +354,10 @@
   "cvReadyMessage": "Your CV for {jobTitle} is ready!",
   "forgotPassword": "Forgot Password",
   "forgotPasswordResetMessage": "Enter your email address and we'll send you a link to reset your password.",
-  "sendResetLink": "Send Reset Link"
+  "sendResetLink": "Send Reset Link",
+  "notificationNew": "New Notification",
+  "notificationChannelCVTitle": "CV Generation",
+  "notificationChannelCVDesc": "Notifications for CV generation updates",
+  "notificationChannelGeneralTitle": "General Alerts",
+  "notificationChannelGeneralDesc": "General app notifications"
 }

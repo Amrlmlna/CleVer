@@ -39,7 +39,9 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
       if (mounted) {
         InAppNotificationOverlay.show(
           context,
-          title: notification.title ?? 'New Notification',
+          title: (notification.title == null || notification.title!.isEmpty)
+              ? AppLocalizations.of(context)!.notificationNew
+              : notification.title!,
           body: notification.body ?? '',
         );
       }

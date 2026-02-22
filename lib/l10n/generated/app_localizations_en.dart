@@ -1060,4 +1060,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sendResetLink => 'Send Reset Link';
+
+  @override
+  String get notificationNew => 'New Notification';
+
+  @override
+  String get notificationChannelCVTitle => 'CV Generation';
+
+  @override
+  String get notificationChannelCVDesc =>
+      'Notifications for CV generation updates';
+
+  @override
+  String get notificationChannelGeneralTitle => 'General Alerts';
+
+  @override
+  String get notificationChannelGeneralDesc => 'General app notifications';
 }

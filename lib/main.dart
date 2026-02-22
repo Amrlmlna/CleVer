@@ -144,6 +144,18 @@ class _MyAppState extends ConsumerState<MyApp> {
     final router = ref.watch(routerProvider);
     final locale = ref.watch(localeNotifierProvider);
     
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final l10n = AppLocalizations.of(context);
+      if (l10n != null) {
+        NotificationService.updateChannelLocalization(
+          cvChannelName: l10n.notificationChannelCVTitle,
+          cvChannelDesc: l10n.notificationChannelCVDesc,
+          generalChannelName: l10n.notificationChannelGeneralTitle,
+          generalChannelDesc: l10n.notificationChannelGeneralDesc,
+        );
+      }
+    });
+
     return MaterialApp.router(
       title: 'CV Master',
       debugShowCheckedModeBanner: false,

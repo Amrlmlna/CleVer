@@ -354,5 +354,10 @@
   "cvReadyMessage": "CV Anda untuk {jobTitle} sudah siap!",
   "forgotPassword": "Lupa Kata Sandi",
   "forgotPasswordResetMessage": "Masukkan alamat email Anda dan kami akan mengirimkan tautan untuk mengatur ulang kata sandi Anda.",
-  "sendResetLink": "Kirim Tautan Reset"
+  "sendResetLink": "Kirim Tautan Reset",
+  "notificationNew": "Notifikasi Baru",
+  "notificationChannelCVTitle": "Pembuatan CV",
+  "notificationChannelCVDesc": "Notifikasi untuk update pembuatan CV",
+  "notificationChannelGeneralTitle": "Peringatan Umum",
+  "notificationChannelGeneralDesc": "Notifikasi aplikasi umum"
 }

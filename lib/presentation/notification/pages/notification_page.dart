@@ -58,7 +58,9 @@ class NotificationPage extends ConsumerWidget {
             ),
           ),
           title: Text(
-            notification.title,
+            (notification.title == null || notification.title!.isEmpty)
+                ? AppLocalizations.of(context)!.notificationNew
+                : notification.title!,
             style: TextStyle(
               fontWeight: notification.isRead ? FontWeight.normal : FontWeight.bold,
               color: Colors.white,

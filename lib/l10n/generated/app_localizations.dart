@@ -2075,6 +2075,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send Reset Link'**
   String get sendResetLink;
+
+  /// No description provided for @notificationNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New Notification'**
+  String get notificationNew;
+
+  /// No description provided for @notificationChannelCVTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'CV Generation'**
+  String get notificationChannelCVTitle;
+
+  /// No description provided for @notificationChannelCVDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications for CV generation updates'**
+  String get notificationChannelCVDesc;
+
+  /// No description provided for @notificationChannelGeneralTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'General Alerts'**
+  String get notificationChannelGeneralTitle;
+
+  /// No description provided for @notificationChannelGeneralDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'General app notifications'**
+  String get notificationChannelGeneralDesc;
 }
 
 class _AppLocalizationsDelegate

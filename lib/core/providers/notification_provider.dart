@@ -17,7 +17,7 @@ class NotificationNotifier extends StateNotifier<List<NotificationEntity>> {
     NotificationController.displayStreamController.stream.listen((receivedNotification) {
       final notification = NotificationEntity(
         id: const Uuid().v4(),
-        title: receivedNotification.title ?? 'New Notification',
+        title: receivedNotification.title,
         body: receivedNotification.body ?? '',
         timestamp: DateTime.now(),
         payload: receivedNotification.payload != null ? jsonEncode(receivedNotification.payload) : null,
