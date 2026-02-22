@@ -27,5 +27,6 @@ class AppRoutes {
   static const String createStyleSelection = '/create/style-selection';
 
   // System
+  static const String notifications = '/notifications';
   static const String error = '/error';
 }

@@ -8,6 +8,8 @@ import '../../common/widgets/language_selector.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../profile/widgets/delete_account_dialog.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../../../core/providers/notification_provider.dart';
+import '../../../core/router/app_routes.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String? title;
@@ -22,7 +24,56 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       forceMaterialTransparency: true,
-      leading: const BackButton(),
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (Navigator.of(context).canPop())
+              const BackButton()
+            else
+              Consumer(
+                builder: (context, ref, child) {
+                  final unreadCount = ref.watch(unreadNotificationCountProvider);
+                  return Stack(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.notifications_none_rounded, color: Colors.white),
+                        onPressed: () => context.push(AppRoutes.notifications),
+                      ),
+                      if (unreadCount > 0)
+                        Positioned(
+                          right: 8,
+                          top: 8,
+                          child: Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            constraints: const BoxConstraints(
+                              minWidth: 16,
+                              minHeight: 16,
+                            ),
+                            child: Text(
+                              unreadCount > 9 ? '9+' : '$unreadCount',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+          ],
+        ),
+      ),
+      leadingWidth: 100,
       title: title != null ? Text(title!) : null,
       centerTitle: true,
       actions: [

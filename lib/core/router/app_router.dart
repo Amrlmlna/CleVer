@@ -18,6 +18,7 @@ import '../../presentation/wallet/pages/wallet_page.dart';
 import '../../presentation/templates/pages/style_selection_page.dart';
 import '../../presentation/support/pages/help_page.dart';
 import '../../presentation/support/pages/feedback_page.dart';
+import '../../presentation/notification/pages/notification_page.dart';
 import '../../presentation/legal/pages/legal_page.dart';
 import '../../presentation/common/pages/error_page.dart';
 import '../../presentation/auth/pages/login_page.dart';
@@ -145,7 +146,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
       
-      // Standalone Content Routes
+      GoRoute(
+        path: AppRoutes.notifications,
+        builder: (context, state) => const NotificationPage(),
+      ),
+
       GoRoute(
         path: AppRoutes.feedback,
         builder: (context, state) => const FeedbackPage(),

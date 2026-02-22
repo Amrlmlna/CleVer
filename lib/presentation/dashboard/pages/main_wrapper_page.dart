@@ -9,6 +9,8 @@ import '../../profile/providers/profile_provider.dart';
 import '../../auth/widgets/email_verification_dialog.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import '../../../domain/entities/app_user.dart';
+import '../../../core/services/notification_controller.dart';
+import '../../common/widgets/in_app_notification.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 
 class MainWrapperPage extends ConsumerStatefulWidget {
@@ -32,12 +34,21 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkVerification(ref.read(authStateProvider).value);
     });
+
+    NotificationController.displayStreamController.stream.listen((notification) {
+      if (mounted) {
+        InAppNotificationOverlay.show(
+          context,
+          title: notification.title ?? 'New Notification',
+          body: notification.body ?? '',
+        );
+      }
+    });
   }
 
   void _checkVerification(AppUser? user) {
     if (user == null) return;
     
-    // Social providers are usually pre-verified by Google/Apple
     final firebaseUser = fb.FirebaseAuth.instance.currentUser;
     final isPasswordProvider = firebaseUser?.providerData.any((p) => p.providerId == 'password') ?? false;
     
@@ -50,7 +61,6 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
   }
 
   Future<void> _onTabTap(int index) async {
-    // Guard: if leaving Profile tab with unsaved changes, confirm
     if (index != widget.navigationShell.currentIndex) {
       if (widget.navigationShell.currentIndex == 3) {
         final hasUnsavedChanges = ref.read(profileControllerProvider).hasChanges;
@@ -91,7 +101,6 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Listen for auth changes to trigger dialog
     ref.listen(authStateProvider, (previous, next) {
        _checkVerification(next.value);
     });
@@ -114,7 +123,7 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
           children: [
             _buildNavItem(context, 0, Icons.home_outlined, Icons.home_rounded, AppLocalizations.of(context)!.home, currentIndex),
             _buildNavItem(context, 1, Icons.description_outlined, Icons.description_rounded, AppLocalizations.of(context)!.myDrafts, currentIndex),
-            const SizedBox(width: 64), // spacer for FAB
+            const SizedBox(width: 64),
             _buildNavItem(context, 2, Icons.account_balance_wallet_outlined, Icons.account_balance_wallet_rounded, AppLocalizations.of(context)!.wallet, currentIndex),
             _buildNavItem(context, 3, Icons.person_outline, Icons.person_rounded, AppLocalizations.of(context)!.profile, currentIndex),
           ],

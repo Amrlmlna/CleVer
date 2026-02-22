@@ -325,5 +325,10 @@
   "noCompletedCVs": "Belum ada CV yang dihasilkan",
   "generateCVFirst": "Buat CV pertama Anda untuk melihatnya di sini",
   "openPDF": "Buka PDF",
-  "delete": "Hapus"
+  "delete": "Hapus",
+  "notifications": "Notifikasi",
+  "noNotifications": "Belum ada notifikasi",
+  "newNotification": "Notifikasi Baru",
+  "cvGeneratedSuccess": "CV Berhasil Dibuat",
+  "cvReadyMessage": "CV Anda untuk {jobTitle} sudah siap!"
 }

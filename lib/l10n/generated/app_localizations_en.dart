@@ -991,4 +991,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openPDF => 'Open PDF';
+
+  @override
+  String get newNotification => 'New Notification';
+
+  @override
+  String get cvGeneratedSuccess => 'CV Generated Successfully';
+
+  @override
+  String cvReadyMessage(Object jobTitle) {
+    return 'Your CV for $jobTitle is ready!';
+  }
 }

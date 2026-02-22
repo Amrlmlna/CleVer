@@ -325,5 +325,10 @@
   "noCompletedCVs": "No generated CVs yet",
   "generateCVFirst": "Generate your first CV to see it here",
   "openPDF": "Open PDF",
-  "delete": "Delete"
+  "delete": "Delete",
+  "notifications": "Notifications",
+  "noNotifications": "No notifications yet",
+  "newNotification": "New Notification",
+  "cvGeneratedSuccess": "CV Generated Successfully",
+  "cvReadyMessage": "Your CV for {jobTitle} is ready!"
 }

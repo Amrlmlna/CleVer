@@ -1955,6 +1955,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open PDF'**
   String get openPDF;
+
+  /// No description provided for @newNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'New Notification'**
+  String get newNotification;
+
+  /// No description provided for @cvGeneratedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'CV Generated Successfully'**
+  String get cvGeneratedSuccess;
+
+  /// No description provided for @cvReadyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your CV for {jobTitle} is ready!'**
+  String cvReadyMessage(Object jobTitle);
 }
 
 class _AppLocalizationsDelegate

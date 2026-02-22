@@ -10,6 +10,7 @@ import 'package:pdfx/pdfx.dart';
 
 import '../../../core/services/ad_service.dart';
 import '../../../core/services/payment_service.dart';
+import '../../../core/services/notification_service.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../../auth/utils/auth_guard.dart';
 import '../../../domain/entities/cv_data.dart';
@@ -189,6 +190,15 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       
       ref.invalidate(templatesProvider);
       state = state.copyWith(status: DownloadStatus.success);
+
+      // Show success notification
+      if (context.mounted) {
+        NotificationService.showSimpleNotification(
+          title: AppLocalizations.of(context)!.cvGeneratedSuccess,
+          body: AppLocalizations.of(context)!.cvReadyMessage(cvData.jobTitle),
+          payload: '/drafts', // Navigate to drafts when tapped
+        );
+      }
 
       if (result.type != ResultType.done) {
         if (context.mounted) {
