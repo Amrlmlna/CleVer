@@ -351,5 +351,8 @@
   "noNotifications": "Belum ada notifikasi",
   "newNotification": "Notifikasi Baru",
   "cvGeneratedSuccess": "CV Berhasil Dibuat",
-  "cvReadyMessage": "CV Anda untuk {jobTitle} sudah siap!"
+  "cvReadyMessage": "CV Anda untuk {jobTitle} sudah siap!",
+  "forgotPassword": "Lupa Kata Sandi",
+  "forgotPasswordResetMessage": "Masukkan alamat email Anda dan kami akan mengirimkan tautan untuk mengatur ulang kata sandi Anda.",
+  "sendResetLink": "Kirim Tautan Reset"
 }

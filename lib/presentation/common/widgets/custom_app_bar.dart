@@ -11,8 +11,6 @@ import '../../../core/providers/notification_provider.dart';
 import '../../../core/router/app_routes.dart';
 import '../../auth/widgets/email_verification_bottom_sheet.dart';
 import '../../auth/widgets/delete_account_verification_content.dart';
-import '../../templates/providers/template_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fb;
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String? title;

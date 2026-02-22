@@ -82,8 +82,8 @@ class OnboardingNavigationBar extends StatelessWidget {
               onPressed: onNext,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 18),
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
+                backgroundColor: isLoading ? Colors.black : Colors.white,
+                foregroundColor: isLoading ? Colors.white : Colors.black,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),

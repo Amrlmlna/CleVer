@@ -351,5 +351,8 @@
   "noNotifications": "No notifications yet",
   "newNotification": "New Notification",
   "cvGeneratedSuccess": "CV Generated Successfully",
-  "cvReadyMessage": "Your CV for {jobTitle} is ready!"
+  "cvReadyMessage": "Your CV for {jobTitle} is ready!",
+  "forgotPassword": "Forgot Password",
+  "forgotPasswordResetMessage": "Enter your email address and we'll send you a link to reset your password.",
+  "sendResetLink": "Send Reset Link"
 }

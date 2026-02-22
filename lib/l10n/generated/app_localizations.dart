@@ -2057,6 +2057,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your CV for {jobTitle} is ready!'**
   String cvReadyMessage(Object jobTitle);
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password'**
+  String get forgotPassword;
+
+  /// No description provided for @forgotPasswordResetMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address and we\'ll send you a link to reset your password.'**
+  String get forgotPasswordResetMessage;
+
+  /// No description provided for @sendResetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get sendResetLink;
 }
 
 class _AppLocalizationsDelegate

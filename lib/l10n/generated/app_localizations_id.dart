@@ -1056,4 +1056,14 @@ class AppLocalizationsId extends AppLocalizations {
   String cvReadyMessage(Object jobTitle) {
     return 'CV Anda untuk $jobTitle sudah siap!';
   }
+
+  @override
+  String get forgotPassword => 'Lupa Kata Sandi';
+
+  @override
+  String get forgotPasswordResetMessage =>
+      'Masukkan alamat email Anda dan kami akan mengirimkan tautan untuk mengatur ulang kata sandi Anda.';
+
+  @override
+  String get sendResetLink => 'Kirim Tautan Reset';
 }

@@ -89,7 +89,7 @@ class DeleteAccountVerificationContent extends ConsumerWidget {
               AppLocalizations.of(context)!.clearLocalData,
               style: const TextStyle(color: Colors.white24, fontSize: 11),
             ),
-            activeColor: Colors.white,
+            activeThumbColor: Colors.white,
             activeTrackColor: Colors.white24,
           ),
         ),

@@ -1050,4 +1050,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String cvReadyMessage(Object jobTitle) {
     return 'Your CV for $jobTitle is ready!';
   }
+
+  @override
+  String get forgotPassword => 'Forgot Password';
+
+  @override
+  String get forgotPasswordResetMessage =>
+      'Enter your email address and we\'ll send you a link to reset your password.';
+
+  @override
+  String get sendResetLink => 'Send Reset Link';
 }
