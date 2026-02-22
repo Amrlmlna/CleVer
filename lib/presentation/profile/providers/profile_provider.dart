@@ -344,13 +344,7 @@ class ProfileController extends StateNotifier<ProfileState> {
   }
 
   Future<void> deleteAccount() async {
-    state = state.copyWith(isSaving: true);
-    try {
-      await ref.read(authRepositoryProvider).deleteAccount();
-      await ref.read(masterProfileProvider.notifier).clearProfile();
-    } finally {
-      state = state.copyWith(isSaving: false);
-    }
+    // TODO: Implement fresh account deletion logic
   }
 
   void discardChanges() {

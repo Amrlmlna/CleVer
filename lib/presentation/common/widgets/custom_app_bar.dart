@@ -6,7 +6,6 @@ import '../../auth/providers/auth_state_provider.dart';
 import '../../profile/providers/profile_sync_provider.dart';
 import '../../common/widgets/language_selector.dart';
 import '../../profile/providers/profile_provider.dart';
-import '../../profile/widgets/delete_account_dialog.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../../../core/providers/notification_provider.dart';
 import '../../../core/router/app_routes.dart';
@@ -92,23 +91,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 } else if (value == 'logout') {
                   await ref.read(authRepositoryProvider).signOut();
                 } else if (value == 'delete') {
-                  final confirmed = await showDialog<bool>(
-                    context: context,
-                    builder: (context) => const DeleteAccountDialog(),
-                  );
-                  if (confirmed == true) {
-                    try {
-                      await ref.read(profileControllerProvider.notifier).deleteAccount();
-                      if (context.mounted) {
-                        CustomSnackBar.showSuccess(context, 'Account successfully deleted. Goodbye!');
-                        context.go('/');
-                      }
-                    } catch (e) {
-                      if (context.mounted) {
-                        CustomSnackBar.showError(context, 'Failed to delete account: $e');
-                      }
-                    }
-                  }
+                  // TODO: Implement fresh account deletion flow
                 }
               },
               offset: const Offset(0, 48),

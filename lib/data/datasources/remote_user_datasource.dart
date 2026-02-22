@@ -10,13 +10,6 @@ class RemoteUserDataSource {
   static String get _baseUrl => ApiConfig.baseUrl;
 
   Future<void> deleteAccount() async {
-    final response = await _httpClient.delete(
-      Uri.parse('$_baseUrl/user/account'),
-      headers: await ApiConfig.getAuthHeaders(),
-    );
-
-    if (response.statusCode != 200) {
-      throw http.ClientException('Failed to delete account: ${response.statusCode}', response.request?.url);
-    }
+    // TODO: Implement fresh account deletion logic
   }
 }
