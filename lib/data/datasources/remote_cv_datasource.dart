@@ -13,6 +13,7 @@ class RemoteCVDataSource {
   Future<Map<String, dynamic>> generateCV({
     required Map<String, dynamic> profileJson,
     required Map<String, dynamic> jobInputJson,
+    String? locale,
   }) async {
     final response = await _httpClient.post(
       Uri.parse('$_cvBaseUrl/generate'),
@@ -20,6 +21,7 @@ class RemoteCVDataSource {
       body: jsonEncode({
         'profile': profileJson,
         'jobInput': jobInputJson,
+        if (locale != null) 'locale': locale,
       }),
     );
 
@@ -33,6 +35,7 @@ class RemoteCVDataSource {
   Future<Map<String, dynamic>> tailorProfile({
     required Map<String, dynamic> masterProfileJson,
     required Map<String, dynamic> jobInputJson,
+    String? locale,
   }) async {
     final response = await _httpClient.post(
       Uri.parse('$_cvBaseUrl/tailor'),
@@ -40,6 +43,7 @@ class RemoteCVDataSource {
       body: jsonEncode({
         'masterProfile': masterProfileJson,
         'jobInput': jobInputJson,
+        if (locale != null) 'locale': locale,
       }),
     );
 
@@ -50,12 +54,13 @@ class RemoteCVDataSource {
     }
   }
 
-  Future<String> rewriteContent(String originalText) async {
+  Future<String> rewriteContent(String originalText, {String? locale}) async {
     final response = await _httpClient.post(
       Uri.parse('$_cvBaseUrl/rewrite'),
       headers: await ApiConfig.getAuthHeaders(),
       body: jsonEncode({
         'originalText': originalText,
+        if (locale != null) 'locale': locale,
       }),
     );
 
@@ -84,6 +89,7 @@ class RemoteCVDataSource {
   Future<List<int>> downloadPDF({
     required Map<String, dynamic> cvDataJson,
     required String templateId,
+    String? locale,
   }) async {
     final response = await _httpClient.post(
       Uri.parse('$_cvBaseUrl/generate'),
@@ -91,6 +97,7 @@ class RemoteCVDataSource {
       body: jsonEncode({
         'cvData': cvDataJson,
         'templateId': templateId,
+        if (locale != null) 'locale': locale,
       }),
     );
 
@@ -104,7 +111,6 @@ class RemoteCVDataSource {
 
       final pdfResponse = await http.get(Uri.parse(pdfUrl));
       if (pdfResponse.statusCode == 200) {
-        // Diagnostic: Check if this is a PDF or an XML error
         final bytes = pdfResponse.bodyBytes;
         final startString = String.fromCharCodes(bytes.take(100));
         

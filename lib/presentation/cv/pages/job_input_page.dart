@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../domain/entities/job_input.dart';
+
 import '../../../core/utils/custom_snackbar.dart';
 import '../providers/cv_generation_provider.dart';
 import '../providers/ocr_provider.dart';
@@ -12,6 +13,7 @@ import '../../profile/providers/profile_provider.dart';
 import '../widgets/job/job_input_content.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../core/providers/locale_provider.dart';
 
 class JobInputPage extends ConsumerStatefulWidget {
   const JobInputPage({super.key});
@@ -124,9 +126,11 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
         ref.read(cvCreationProvider.notifier).setJobInput(jobInput);
 
         final repository = ref.read(cvRepositoryProvider);
+        final locale = ref.read(localeNotifierProvider);
         final tailoredResult = await repository.tailorProfile(
           masterProfile: masterProfile, 
-          jobInput: jobInput
+          jobInput: jobInput,
+          locale: locale.languageCode,
         );
         
         if (mounted) {

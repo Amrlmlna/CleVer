@@ -7,6 +7,7 @@ import '../../profile/providers/profile_provider.dart';
 import '../widgets/form/user_data_form_content.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../core/providers/locale_provider.dart';
 
 import '../../../domain/entities/tailored_cv_result.dart';
 import '../../auth/utils/auth_guard.dart';
@@ -109,12 +110,13 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
       );
 
       final repository = ref.read(cvRepositoryProvider);
+      final locale = ref.read(localeNotifierProvider);
       final cvData = await repository.generateCV(
         profile: currentProfile,
         jobInput: jobInput,
         styleId: 'ATS',
+        locale: locale.languageCode,
       );
-
       if (mounted) {
         setState(() {
           _summaryController.text = cvData.summary;

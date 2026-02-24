@@ -20,6 +20,7 @@ import '../../drafts/providers/draft_provider.dart';
 import '../../drafts/providers/completed_cv_provider.dart';
 import '../../templates/providers/template_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../../core/providers/locale_provider.dart';
 
 enum DownloadStatus {
   idle,
@@ -135,12 +136,12 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
         jobTitle: creationState.jobInput!.jobTitle,
         jobDescription: creationState.jobInput!.jobDescription ?? '',
       );
-
+      final locale = ref.read(localeNotifierProvider);
       final pdfBytes = await ref.read(cvRepositoryProvider).downloadPDF(
         cvData: cvData,
         templateId: styleId,
+        locale: locale.languageCode,
       );
-
       if (pdfBytes.length < 1000) {
         throw Exception('Downloaded PDF is too small (${pdfBytes.length} bytes). It might be an error message.');
       }

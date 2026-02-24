@@ -17,11 +17,13 @@ class CVRepositoryImpl implements CVRepository {
     required UserProfile profile,
     required JobInput jobInput,
     required String styleId,
+    String? locale,
   }) async {
     try {
       final responseData = await remoteDataSource.generateCV(
         profileJson: profile.toJson(),
         jobInputJson: jobInput.toJson(),
+        locale: locale,
       );
 
       return CVDataParser.parseGenerateResponse(
@@ -36,9 +38,9 @@ class CVRepositoryImpl implements CVRepository {
   }
 
   @override
-  Future<String> rewriteContent(String originalText) async {
+  Future<String> rewriteContent(String originalText, {String? locale}) async {
     try {
-      return await remoteDataSource.rewriteContent(originalText);
+      return await remoteDataSource.rewriteContent(originalText, locale: locale);
     } catch (e) {
       throw DataErrorMapper.map(e);
     }
@@ -48,11 +50,13 @@ class CVRepositoryImpl implements CVRepository {
   Future<TailoredCVResult> tailorProfile({
     required UserProfile masterProfile,
     required JobInput jobInput,
+    String? locale,
   }) async {
     try {
       final responseData = await remoteDataSource.tailorProfile(
         masterProfileJson: masterProfile.toJson(),
         jobInputJson: jobInput.toJson(),
+        locale: locale,
       );
 
       final profileJson = responseData['tailoredProfile'] as Map<String, dynamic>;
@@ -71,11 +75,13 @@ class CVRepositoryImpl implements CVRepository {
   Future<List<int>> downloadPDF({
     required CVData cvData,
     required String templateId,
+    String? locale,
   }) async {
     try {
       return await remoteDataSource.downloadPDF(
         cvDataJson: cvData.toJson(),
         templateId: templateId,
+        locale: locale,
       );
     } catch (e) {
       throw DataErrorMapper.map(e);

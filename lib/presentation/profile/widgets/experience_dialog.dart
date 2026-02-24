@@ -6,6 +6,7 @@ import '../../common/widgets/custom_text_form_field.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../common/widgets/spinning_text_loader.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../core/providers/locale_provider.dart';
 import '../../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -85,7 +86,11 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
 
     try {
       final repository = ref.read(cvRepositoryProvider);
-      final newText = await repository.rewriteContent(_descCtrl.text);
+      final locale = ref.read(localeNotifierProvider);
+      final newText = await repository.rewriteContent(
+        _descCtrl.text,
+        locale: locale.languageCode,
+      );
       
       if (mounted) {
         setState(() {

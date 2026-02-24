@@ -8,17 +8,20 @@ abstract class CVRepository {
     required UserProfile profile,
     required JobInput jobInput,
     required String styleId,
+    String? locale,
   });
 
-  Future<String> rewriteContent(String originalText);
+  Future<String> rewriteContent(String originalText, {String? locale});
   
   Future<TailoredCVResult> tailorProfile({
     required UserProfile masterProfile,
     required JobInput jobInput,
+    String? locale,
   });
 
   Future<List<int>> downloadPDF({
     required CVData cvData,
     required String templateId,
+    String? locale,
   });
 }
