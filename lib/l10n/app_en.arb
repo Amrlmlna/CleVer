@@ -383,5 +383,9 @@
   "takesLessThan3Min": "Takes less than 3 minutes.",
   "skipIntro": "Skip Intro",
   "getStarted": "Get Started",
-  "next": "Next"
+  "next": "Next",
+  "cvLanguage": "CV Language",
+  "previewCV": "Preview CV",
+  "regenerateSummary": "Regenerate Summary",
+  "summaryRegenerating": "Regenerating summary..."
 }

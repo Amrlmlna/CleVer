@@ -1165,4 +1165,16 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get next => 'Lanjut';
+
+  @override
+  String get cvLanguage => 'Bahasa CV';
+
+  @override
+  String get previewCV => 'Pratinjau CV';
+
+  @override
+  String get regenerateSummary => 'Regenerasi Ringkasan';
+
+  @override
+  String get summaryRegenerating => 'Meregenerasi ringkasan...';
 }

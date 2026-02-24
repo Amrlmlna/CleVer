@@ -383,5 +383,9 @@
   "takesLessThan3Min": "Cuma butuh waktu kurang dari 3 menit.",
   "skipIntro": "Lewati Intro",
   "getStarted": "Mulai Sekarang",
-  "next": "Lanjut"
+  "next": "Lanjut",
+  "cvLanguage": "Bahasa CV",
+  "previewCV": "Pratinjau CV",
+  "regenerateSummary": "Regenerasi Ringkasan",
+  "summaryRegenerating": "Meregenerasi ringkasan..."
 }

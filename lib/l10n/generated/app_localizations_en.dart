@@ -1158,4 +1158,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get next => 'Next';
+
+  @override
+  String get cvLanguage => 'CV Language';
+
+  @override
+  String get previewCV => 'Preview CV';
+
+  @override
+  String get regenerateSummary => 'Regenerate Summary';
+
+  @override
+  String get summaryRegenerating => 'Regenerating summary...';
 }

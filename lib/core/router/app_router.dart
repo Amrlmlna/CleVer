@@ -16,6 +16,7 @@ import '../../presentation/cv/pages/user_data_form_page.dart';
 import '../../presentation/stats/pages/stats_page.dart';
 import '../../presentation/wallet/pages/wallet_page.dart';
 import '../../presentation/templates/pages/style_selection_page.dart';
+import '../../presentation/templates/pages/template_preview_page.dart';
 import '../../presentation/support/pages/help_page.dart';
 import '../../presentation/support/pages/feedback_page.dart';
 import '../../presentation/notification/pages/notification_page.dart';
@@ -179,6 +180,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.createStyleSelection,
         builder: (context, state) => const StyleSelectionPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.createTemplatePreview,
+        builder: (context, state) => const TemplatePreviewPage(),
       ),
     ],
   );

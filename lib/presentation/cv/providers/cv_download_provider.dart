@@ -58,13 +58,14 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     return const CVDownloadState();
   }
 
-  String _buildCacheKey(String styleId) {
+  String _buildCacheKey(String styleId, String locale) {
     final creationState = ref.read(cvCreationProvider);
     final raw = jsonEncode({
       'profile': creationState.userProfile?.toJson(),
       'summary': creationState.summary,
       'jobInput': creationState.jobInput?.toJson(),
       'styleId': styleId,
+      'locale': locale,
     });
     return md5.convert(utf8.encode(raw)).toString();
   }
@@ -72,13 +73,15 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
   Future<void> attemptDownload({
     required BuildContext context,
     required String styleId,
+    String? locale,
   }) async {
     if (state.status == DownloadStatus.generating) {
       debugPrint('Download already in progress. Ignoring request.');
       return;
     }
 
-    final cacheKey = _buildCacheKey(styleId);
+    final effectiveLocale = locale ?? ref.read(localeNotifierProvider).languageCode;
+    final cacheKey = _buildCacheKey(styleId, effectiveLocale);
 
     if (_localCache.containsKey(cacheKey)) {
       final file = File(_localCache[cacheKey]!);
@@ -96,7 +99,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     );
 
     if (template.userCredits > 0) {
-      await _generateAndOpenPDF(context, styleId);
+      await _generateAndOpenPDF(context, styleId, locale: locale);
       return;
     }
 
@@ -113,12 +116,12 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     await adService.showInterstitialAd(
       context,
       onAdClosed: () {
-        _generateAndOpenPDF(context, styleId);
+        _generateAndOpenPDF(context, styleId, locale: locale);
       },
     );
   }
 
-  Future<void> _generateAndOpenPDF(BuildContext context, String styleId) async {
+  Future<void> _generateAndOpenPDF(BuildContext context, String styleId, {String? locale}) async {
     state = state.copyWith(status: DownloadStatus.generating);
     
     try {
@@ -136,11 +139,11 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
         jobTitle: creationState.jobInput!.jobTitle,
         jobDescription: creationState.jobInput!.jobDescription ?? '',
       );
-      final locale = ref.read(localeNotifierProvider);
+      final effectiveLocale = locale ?? ref.read(localeNotifierProvider).languageCode;
       final pdfBytes = await ref.read(cvRepositoryProvider).downloadPDF(
         cvData: cvData,
         templateId: styleId,
-        locale: locale.languageCode,
+        locale: effectiveLocale,
       );
       if (pdfBytes.length < 1000) {
         throw Exception('Downloaded PDF is too small (${pdfBytes.length} bytes). It might be an error message.');
@@ -187,7 +190,8 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       
       final result = await OpenFilex.open(pdfFile.path);
       
-      _localCache[_buildCacheKey(styleId)] = pdfFile.path;
+      final effectiveLocale = locale ?? ref.read(localeNotifierProvider).languageCode;
+      _localCache[_buildCacheKey(styleId, effectiveLocale)] = pdfFile.path;
       
       ref.invalidate(templatesProvider);
       state = state.copyWith(status: DownloadStatus.success);

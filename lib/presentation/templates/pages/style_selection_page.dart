@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../cv/providers/cv_download_provider.dart';
 import '../../drafts/providers/draft_provider.dart';
@@ -9,6 +10,7 @@ import '../../common/widgets/app_loading_screen.dart';
 import '../../../../core/services/payment_service.dart';
 import '../../../../core/utils/custom_snackbar.dart';
 import '../../auth/utils/auth_guard.dart';
+import '../../../../core/router/app_routes.dart';
 
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -22,40 +24,12 @@ class StyleSelectionPage extends ConsumerStatefulWidget {
 class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
 
   Future<void> _exportPDF() async {
-    final creationState = ref.read(cvCreationProvider);
-    
-    if (creationState.jobInput == null || creationState.userProfile == null || creationState.summary == null) {
-      CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.incompleteData);
-      return;
-    }
-
-    final selectedStyleId = creationState.selectedStyle;
-
-    await ref.read(cvDownloadProvider.notifier).attemptDownload(
-      context: context,
-      styleId: selectedStyleId,
-    );
+    context.push(AppRoutes.createTemplatePreview);
   }
 
   Future<void> _handleStyleSelection(String styleId) async {
-    final templates = ref.read(templatesProvider).value ?? [];
-    final template = templates.firstWhere((t) => t.id == styleId);
-
-    if (template.isLocked) {
-      if (mounted) {
-        if (!AuthGuard.check(context, featureTitle: AppLocalizations.of(context)!.authWallSelectTemplate, featureDescription: AppLocalizations.of(context)!.authWallSelectTemplateDesc)) return;
-        
-        final purchased = await PaymentService.presentPaywall();
-        if (purchased) {
-          ref.invalidate(templatesProvider);
-        }
-      }
-      return;
-    }
-
     ref.read(cvCreationProvider.notifier).setStyle(styleId);
-
-    await ref.read(draftsProvider.notifier).saveFromState(ref.read(cvCreationProvider));
+    context.push(AppRoutes.createTemplatePreview);
   }
 
   @override

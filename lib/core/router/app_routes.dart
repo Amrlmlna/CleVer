@@ -25,6 +25,7 @@ class AppRoutes {
   static const String createJobInput = '/create/job-input';
   static const String createUserData = '/create/user-data';
   static const String createStyleSelection = '/create/style-selection';
+  static const String createTemplatePreview = '/create/template-preview';
 
   // System
   static const String notifications = '/notifications';

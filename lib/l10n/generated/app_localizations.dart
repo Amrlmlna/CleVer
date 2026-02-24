@@ -2249,6 +2249,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next'**
   String get next;
+
+  /// No description provided for @cvLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'CV Language'**
+  String get cvLanguage;
+
+  /// No description provided for @previewCV.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview CV'**
+  String get previewCV;
+
+  /// No description provided for @regenerateSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Regenerate Summary'**
+  String get regenerateSummary;
+
+  /// No description provided for @summaryRegenerating.
+  ///
+  /// In en, this message translates to:
+  /// **'Regenerating summary...'**
+  String get summaryRegenerating;
 }
 
 class _AppLocalizationsDelegate
