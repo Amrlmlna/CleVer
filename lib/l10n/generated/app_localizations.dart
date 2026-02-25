@@ -545,7 +545,7 @@ abstract class AppLocalizations {
   /// No description provided for @personalInfo.
   ///
   /// In en, this message translates to:
-  /// **'Personal Information'**
+  /// **'Contact Information'**
   String get personalInfo;
 
   /// No description provided for @professionalSummary.
@@ -1929,7 +1929,7 @@ abstract class AppLocalizations {
   /// No description provided for @stepPersonalInfo.
   ///
   /// In en, this message translates to:
-  /// **'Personal Info'**
+  /// **'Contact Info'**
   String get stepPersonalInfo;
 
   /// No description provided for @stepImportCV.
@@ -2304,11 +2304,11 @@ abstract class AppLocalizations {
   /// **'Uploading photo...'**
   String get uploadingPhoto;
 
-  /// No description provided for @noPhotoFound.
+  /// No description provided for @uploadInstruction.
   ///
   /// In en, this message translates to:
-  /// **'No photo found in Master Profile'**
-  String get noPhotoFound;
+  /// **'Tap to upload your professional photo'**
+  String get uploadInstruction;
 
   /// No description provided for @usingMasterPhoto.
   ///

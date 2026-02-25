@@ -27,6 +27,7 @@ class OnboardingPersonalStep extends StatelessWidget {
             emailController: emailController,
             phoneController: phoneController,
             locationController: locationController,
+            showPhotoField: false,
           ),
         ],
       ),

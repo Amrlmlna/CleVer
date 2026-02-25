@@ -119,23 +119,37 @@ class OnboardingNavigationBar extends StatelessWidget {
             ),
           ),
 
-          if (currentPage > 0) ...[
+          if (currentPage > 0 || isSkippable) ...[
             const SizedBox(height: 12),
-            if (isSkippable && onSkip != null) ...[
-              TextButton(
-                onPressed: onSkip,
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white38,
-                ),
-                child: Text(AppLocalizations.of(context)!.skipForNow, style: const TextStyle(fontSize: 13)),
-              ),
-            ],
-            TextButton(
-              onPressed: onBack,
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white54,
-              ),
-              child: Text(AppLocalizations.of(context)!.back, style: const TextStyle(fontSize: 14)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (currentPage > 0)
+                  TextButton(
+                    onPressed: onBack,
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white54,
+                    ),
+                    child: Text(AppLocalizations.of(context)!.back, style: const TextStyle(fontSize: 14)),
+                  ),
+                if (currentPage > 0 && isSkippable && onSkip != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Container(
+                      width: 1,
+                      height: 12,
+                      color: Colors.white24,
+                    ),
+                  ),
+                if (isSkippable && onSkip != null)
+                  TextButton(
+                    onPressed: onSkip,
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white38,
+                    ),
+                    child: Text(AppLocalizations.of(context)!.skipForNow, style: const TextStyle(fontSize: 13)),
+                  ),
+              ],
             ),
           ] else ...[
             const SizedBox(height: 24),

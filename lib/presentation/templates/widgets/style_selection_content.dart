@@ -92,105 +92,127 @@ class StyleSelectionContent extends StatelessWidget {
                       Expanded(
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
+                          padding: isSelected ? const EdgeInsets.all(3) : EdgeInsets.zero,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF5F5F5),
-                            border: Border.all(
-                              color: isSelected ? Colors.black : Colors.transparent,
-                              width: 3,
-                            ),
+                            color: isSelected ? (template.isPremium ? null : Colors.black) : Colors.transparent,
+                            gradient: isSelected && template.isPremium
+                                ? const LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xFF000000),
+                                      Color(0xFF0D1B2A),
+                                      Color(0xFFD4AF37),
+                                    ],
+                                  )
+                                : null,
                             borderRadius: BorderRadius.circular(0),
                             boxShadow: isSelected
                                 ? [
                                     BoxShadow(
-                                      color: Colors.black.withValues(alpha: 0.1),
+                                      color: Colors.black.withValues(alpha: 0.2),
                                       blurRadius: 15,
                                       offset: const Offset(0, 10),
                                     )
                                   ]
                                 : [],
                           ),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              CachedNetworkImage(
-                                imageUrl: template.thumbnailUrl,
-                                cacheKey: template.id,
-                                fit: BoxFit.cover,
-                                memCacheHeight: 600,
-                                maxHeightDiskCache: 800,
-                                fadeInDuration: const Duration(milliseconds: 200),
-                                placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
-                                ),
-                                errorWidget: (context, url, error) => Center(
-                                  child: Icon(Icons.error_outline, color: Colors.red.withValues(alpha: 0.5)),
-                                ),
-                              ),
-                              if (template.isLocked)
-                                Container(
-                                  color: Colors.black.withValues(alpha: 0.7),
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        const Icon(Icons.lock_rounded, color: Colors.white, size: 32),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          AppLocalizations.of(context)!.premium,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1.2,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF5F5F5),
+                              borderRadius: BorderRadius.circular(0),
+                            ),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                CachedNetworkImage(
+                                  imageUrl: template.thumbnailUrl,
+                                  cacheKey: template.id,
+                                  fit: BoxFit.cover,
+                                  memCacheHeight: 600,
+                                  maxHeightDiskCache: 800,
+                                  fadeInDuration: const Duration(milliseconds: 200),
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
+                                  ),
+                                  errorWidget: (context, url, error) => Center(
+                                    child: Icon(Icons.error_outline, color: Colors.red.withValues(alpha: 0.5)),
                                   ),
                                 ),
-                            ],
+                                if (template.supportsPhoto)
+                                  Positioned(
+                                    top: 8,
+                                    right: 8,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withValues(alpha: 0.9),
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withValues(alpha: 0.1),
+                                            blurRadius: 4,
+                                          )
+                                        ],
+                                      ),
+                                      child: const Icon(Icons.add_a_photo_outlined, size: 10, color: Colors.black),
+                                    ),
+                                  ),
+                                if (template.isLocked)
+                                  Container(
+                                    color: Colors.black.withValues(alpha: 0.7),
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(Icons.lock_rounded, color: Colors.white, size: 32),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            AppLocalizations.of(context)!.premium,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 1.2,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(height: 12),
-                      Text(
-                        template.name.toUpperCase(),
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: isSelected ? FontWeight.w900 : FontWeight.w600,
-                          color: isSelected ? Colors.black : Colors.grey[600],
-                          letterSpacing: 0.5,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              template.name.toUpperCase(),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: isSelected ? FontWeight.w900 : FontWeight.w600,
+                                color: isSelected ? Colors.black : Colors.grey[800],
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                          ),
+                          if (template.isPremium) ...[
+                            const SizedBox(width: 4),
+                            const Icon(
+                              Icons.star_rounded,
+                              size: 10,
+                              color: Color(0xFFD4AF37),
+                            ),
+                          ],
+                        ],
                       ),
-                       if (template.isPremium) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          AppLocalizations.of(context)!.premium,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 8,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.amber[900],
-                            letterSpacing: 1,
-                          ),
-                        ),
-                      ],
-                      if (template.supportsPhoto) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          AppLocalizations.of(context)!.photoSupported.toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 8,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue[800],
-                            letterSpacing: 1,
-                          ),
-                        ),
-                      ],
                     ],
                   ),
                 );

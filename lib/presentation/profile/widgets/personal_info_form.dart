@@ -7,6 +7,8 @@ import '../../common/widgets/custom_text_form_field.dart';
 import '../../common/widgets/location_picker.dart';
 import '../providers/profile_provider.dart';
 import '../../../core/services/storage_service.dart';
+import '../../../core/utils/custom_snackbar.dart';
+import '../../auth/providers/auth_state_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class PersonalInfoForm extends ConsumerStatefulWidget {
@@ -14,6 +16,7 @@ class PersonalInfoForm extends ConsumerStatefulWidget {
   final TextEditingController emailController;
   final TextEditingController phoneController;
   final TextEditingController locationController;
+  final bool showPhotoField;
 
   const PersonalInfoForm({
     super.key,
@@ -21,6 +24,7 @@ class PersonalInfoForm extends ConsumerStatefulWidget {
     required this.emailController,
     required this.phoneController,
     required this.locationController,
+    this.showPhotoField = true,
   });
 
   @override
@@ -48,8 +52,9 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please login to upload photo')),
+          CustomSnackBar.showError(
+            context,
+            AppLocalizations.of(context)!.userNotLoggedIn,
           );
         }
         return;
@@ -76,45 +81,64 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
 
     return Column(
       children: [
-        Center(
-          child: Stack(
-            children: [
-              GestureDetector(
-                onTap: _pickAndUploadImage,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.grey[850],
-                  backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
-                  child: photoUrl == null && !_isUploading
-                      ? const Icon(Icons.person, size: 50, color: Colors.grey)
-                      : null,
-                ),
-              ),
-              if (_isUploading)
-                const Positioned.fill(
-                  child: Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: GestureDetector(
+        if (widget.showPhotoField) ...[
+          Center(
+            child: Stack(
+              children: [
+                GestureDetector(
                   onTap: _pickAndUploadImage,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.camera_alt, size: 20, color: Colors.white),
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.grey[850],
+                    backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
+                    child: photoUrl == null && !_isUploading
+                        ? const Icon(Icons.person, size: 50, color: Colors.grey)
+                        : null,
                   ),
                 ),
-              ),
-            ],
+                if (_isUploading)
+                  const Positioned.fill(
+                    child: Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: _pickAndUploadImage,
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Theme.of(context).brightness == Brightness.dark 
+                              ? Colors.white.withOpacity(0.2) 
+                              : Colors.black.withOpacity(0.1), 
+                          width: 1.0,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.15),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        Icons.camera_alt_rounded,
+                        size: 18,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 24),
+          const SizedBox(height: 24),
+        ],
         CustomTextFormField(
           controller: widget.nameController,
           labelText: AppLocalizations.of(context)!.fullName,

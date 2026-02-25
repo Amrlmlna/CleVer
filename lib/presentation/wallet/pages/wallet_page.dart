@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../templates/providers/template_provider.dart';
+import '../../profile/providers/profile_provider.dart';
 
 class WalletPage extends ConsumerWidget {
   const WalletPage({super.key});
@@ -30,75 +31,143 @@ class WalletPage extends ConsumerWidget {
               ),
               const SizedBox(height: 32),
 
-              // Credit balance card
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white12),
-                  color: Colors.white.withValues(alpha: 0.04),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.creditBalance,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey[500],
-                        letterSpacing: 0.5,
+              // Premium Credit Balance Card
+              Consumer(
+                builder: (context, ref, child) {
+                  final profile = ref.watch(masterProfileProvider);
+                  final cardHolder = profile?.fullName.toUpperCase() ?? "CARD HOLDER";
+                  final maskedUid = (profile != null) 
+                      ? "**** **** **** ${profile.email.length.toString().padLeft(4, '0')}" // Simul  ated UID suffix
+                      : "**** **** **** 0000";
+
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    width: double.infinity,
+                    height: 220,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xFF0D1B2A),
+                          Color(0xFF1B263B),
+                          Color(0xFF000000),
+                        ],
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.4),
+                          blurRadius: 20,
+                          offset: const Offset(0, 10),
+                        ),
+                        BoxShadow(
+                          color: const Color(0xFFD4AF37).withValues(alpha: 0.05),
+                          blurRadius: 40,
+                          spreadRadius: -10,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 12),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                    child: Stack(
                       children: [
-                        templatesAsync.when(
-                          data: (templates) {
-                            final totalCredits = templates.isNotEmpty
-                                ? templates.first.userCredits
-                                : 0;
-                            return Text(
-                              '$totalCredits',
-                              style: const TextStyle(
-                                fontSize: 48,
-                                fontWeight: FontWeight.w800,
+                        Positioned.fill(
+                          child: Opacity(
+                            opacity: 0.03,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(24),
                                 color: Colors.white,
-                                height: 1,
                               ),
-                            );
-                          },
-                          loading: () => const Text(
-                            '—',
-                            style: TextStyle(fontSize: 48, fontWeight: FontWeight.w800, color: Colors.white, height: 1),
-                          ),
-                          error: (_, __) => const Text(
-                            '0',
-                            style: TextStyle(fontSize: 48, fontWeight: FontWeight.w800, color: Colors.white, height: 1),
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 6),
-                          child: Text(
-                            AppLocalizations.of(context)!.credits,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey[400],
-                              fontWeight: FontWeight.w500,
-                            ),
+                          padding: const EdgeInsets.all(32.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'CLEVER',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 18,
+                                  letterSpacing: 4.0,
+                                ),
+                              ),
+                              const Spacer(),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!.creditBalance.toUpperCase(),
+                                    style: TextStyle(
+                                      color: Colors.white.withValues(alpha: 0.3),
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  templatesAsync.when(
+                                    data: (templates) {
+                                      final totalCredits = templates.isNotEmpty
+                                          ? templates.first.userCredits
+                                          : 0;
+                                      return Text(
+                                        '$totalCredits ${AppLocalizations.of(context)!.credits.toUpperCase()}',
+                                        style: const TextStyle(
+                                          fontSize: 32,
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.white,
+                                          letterSpacing: 0.5,
+                                        ),
+                                      );
+                                    },
+                                    loading: () => const Text('—', style: TextStyle(color: Colors.white, fontSize: 32)),
+                                    error: (_, __) => const Text('0', style: TextStyle(color: Colors.white, fontSize: 32)),
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "MEMBER",
+                                    style: TextStyle(
+                                      color: Colors.white.withValues(alpha: 0.3),
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    cardHolder,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  );
+                },
               ),
 
               const SizedBox(height: 24),
 
-              // Placeholder for future: usage history, purchase buttons, etc.
               Expanded(
                 child: Center(
                   child: Column(

@@ -65,7 +65,6 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       'cvData': {
         ...creationState.userProfile!.toJson(),
         'summary': creationState.summary,
-        // jobTitle and jobDescription here for easy access in new templates
         'jobTitle': creationState.jobInput?.jobTitle,
         'jobDescription': creationState.jobInput?.jobDescription,
         // BACKWARD COMPATIBILITY: Preserve styleId and jobInput nested for older templates
@@ -111,7 +110,6 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       orElse: () => templates.first,
     );
 
-    // If it's a premium template and user has credits, or if it's free/ad-supported usage
     if (template.userCredits > 0 || template.currentUsage < 2) {
         if (template.userCredits > 0) {
         await _generateAndOpenPDF(context, styleId, locale: locale, usePhoto: usePhoto);

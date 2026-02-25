@@ -242,7 +242,7 @@ class AppLocalizationsId extends AppLocalizations {
       'Data ini sudah disesuaikan AI agar relevan dengan posisi yang kamu tuju. Cek lagi ya!';
 
   @override
-  String get personalInfo => 'Informasi Personal';
+  String get personalInfo => 'Informasi Kontak';
 
   @override
   String get professionalSummary => 'Ringkasan Profesional';
@@ -990,7 +990,7 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get stepPersonalInfo => 'Info Pribadi';
+  String get stepPersonalInfo => 'Info Kontak';
 
   @override
   String get stepImportCV => 'Setup Cepat';
@@ -1194,7 +1194,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get uploadingPhoto => 'Mengunggah foto...';
 
   @override
-  String get noPhotoFound => 'Foto tidak ditemukan di Master Profile';
+  String get uploadInstruction =>
+      'Ketuk untuk mengunggah foto profesional Anda';
 
   @override
   String get usingMasterPhoto => 'Menggunakan foto Master Profile';

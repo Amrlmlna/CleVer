@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:flutter/foundation.dart';
 import '../config/api_config.dart';
 
@@ -11,21 +12,18 @@ class StorageService {
     try {
       final request = http.MultipartRequest('POST', Uri.parse(_uploadUrl));
       
-      // Add Firebase Auth headers
       final headers = await ApiConfig.getAuthHeaders();
-      // Remove Content-Type from getAuthHeaders because MultipartRequest sets it automatically
       headers.remove('Content-Type');
       request.headers.addAll(headers);
 
-      // Add file
-      final fileStream = http.ByteStream(file.openRead());
-      final length = await file.length();
-      
-      final multipartFile = http.MultipartFile(
-        'photo', 
-        fileStream, 
-        length,
-        filename: 'profile.jpg',
+      final extension = file.path.split('.').last.toLowerCase();
+      final mimeSubType = (extension == 'png' || extension == 'webp' || extension == 'gif') ? extension : 'jpeg';
+
+      final multipartFile = await http.MultipartFile.fromPath(
+        'photo',
+        file.path,
+        filename: 'profile.$extension',
+        contentType: MediaType('image', mimeSubType),
       );
       
       request.files.add(multipartFile);

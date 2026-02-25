@@ -240,7 +240,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'This data has been tailored by AI to be relevant to your target position. Please review!';
 
   @override
-  String get personalInfo => 'Personal Information';
+  String get personalInfo => 'Contact Information';
 
   @override
   String get professionalSummary => 'Professional Summary';
@@ -984,7 +984,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get stepPersonalInfo => 'Personal Info';
+  String get stepPersonalInfo => 'Contact Info';
 
   @override
   String get stepImportCV => 'Quick Setup';
@@ -1187,7 +1187,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get uploadingPhoto => 'Uploading photo...';
 
   @override
-  String get noPhotoFound => 'No photo found in Master Profile';
+  String get uploadInstruction => 'Tap to upload your professional photo';
 
   @override
   String get usingMasterPhoto => 'Using Master Profile photo';
