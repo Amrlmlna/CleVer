@@ -8,7 +8,6 @@ import '../../common/widgets/location_picker.dart';
 import '../providers/profile_provider.dart';
 import '../../../core/services/storage_service.dart';
 import '../../../core/utils/custom_snackbar.dart';
-import '../../auth/providers/auth_state_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class PersonalInfoForm extends ConsumerStatefulWidget {
@@ -77,7 +76,10 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
 
   @override
   Widget build(BuildContext context) {
-    final photoUrl = ref.watch(profileControllerProvider).currentProfile.photoUrl;
+    final photoUrl = ref
+        .watch(profileControllerProvider)
+        .currentProfile
+        .photoUrl;
 
     return Column(
       children: [
@@ -90,7 +92,9 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                   child: CircleAvatar(
                     radius: 50,
                     backgroundColor: Colors.grey[850],
-                    backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
+                    backgroundImage: photoUrl != null
+                        ? NetworkImage(photoUrl)
+                        : null,
                     child: photoUrl == null && !_isUploading
                         ? const Icon(Icons.person, size: 50, color: Colors.grey)
                         : null,
@@ -113,9 +117,9 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                         color: Theme.of(context).primaryColor,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Theme.of(context).brightness == Brightness.dark 
-                              ? Colors.white.withOpacity(0.2) 
-                              : Colors.black.withOpacity(0.1), 
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white.withValues(alpha: 0.2)
+                              : Colors.black.withValues(alpha: 0.1),
                           width: 1.0,
                         ),
                         boxShadow: [
@@ -143,7 +147,8 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
           controller: widget.nameController,
           labelText: AppLocalizations.of(context)!.fullName,
           prefixIcon: Icons.person_outline,
-          validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+          validator: (v) =>
+              v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
           textInputAction: TextInputAction.next,
           isDark: true,
         ),
@@ -152,7 +157,8 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
           controller: widget.emailController,
           labelText: AppLocalizations.of(context)!.email,
           prefixIcon: Icons.email_outlined,
-          validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+          validator: (v) =>
+              v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
           isDark: true,
@@ -167,10 +173,7 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
           isDark: true,
         ),
         const SizedBox(height: 16),
-        LocationPicker(
-          controller: widget.locationController,
-          isDark: true,
-        ),
+        LocationPicker(controller: widget.locationController, isDark: true),
       ],
     );
   }

@@ -188,7 +188,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/icon/app_logo.png', height: 40),
+                    Image.asset('assets/icon/new_logo.png', height: 40),
                     const SizedBox(width: 12),
                     Text(
                       'clever',

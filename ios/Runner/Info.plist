@@ -59,7 +59,7 @@
 		<true/>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
-	<key>UIStatusBarHidden</key>
+		<key>UIStatusBarHidden</key>
 		<false/>
 		<key>CFBundleURLTypes</key>
 		<array>

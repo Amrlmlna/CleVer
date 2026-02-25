@@ -24,7 +24,8 @@ class PhotoToggleSettings extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<PhotoToggleSettings> createState() => _PhotoToggleSettingsState();
+  ConsumerState<PhotoToggleSettings> createState() =>
+      _PhotoToggleSettingsState();
 }
 
 class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
@@ -51,19 +52,23 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        if (mounted) throw Exception(AppLocalizations.of(context)!.userNotLoggedIn);
+        if (mounted)
+          throw Exception(AppLocalizations.of(context)!.userNotLoggedIn);
         return;
       }
 
       final storageService = StorageService();
-      final downloadUrl = await storageService.uploadProfilePhoto(File(image.path), userId);
+      final downloadUrl = await storageService.uploadProfilePhoto(
+        File(image.path),
+        userId,
+      );
 
       if (downloadUrl != null) {
         ref.read(profileControllerProvider.notifier).updatePhoto(downloadUrl);
         await ref.read(profileControllerProvider.notifier).saveProfile();
-        
+
         widget.onToggleChanged(true);
-        
+
         if (mounted) {
           CustomSnackBar.showSuccess(
             context,
@@ -92,7 +97,7 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
 
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
-      child: _isUploading 
+      child: _isUploading
           ? _buildUploadingState(l10n)
           : (!hasPhoto ? _buildEmptyState(l10n) : _buildFilledState(l10n)),
     );
@@ -106,24 +111,35 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
         decoration: BoxDecoration(
-          color: primaryColor.withOpacity(0.05),
+          color: primaryColor.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: primaryColor.withOpacity(0.3), width: 1.5),
+          border: Border.all(
+            color: primaryColor.withValues(alpha: 0.3),
+            width: 1.5,
+          ),
         ),
         child: Column(
           children: [
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: primaryColor.withOpacity(0.1),
+                color: primaryColor.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.add_a_photo_outlined, color: primaryColor, size: 32),
+              child: Icon(
+                Icons.add_a_photo_outlined,
+                color: primaryColor,
+                size: 32,
+              ),
             ),
             const SizedBox(height: 12),
             Text(
               l10n.includeProfilePhoto,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: primaryColor),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: primaryColor,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
@@ -149,10 +165,18 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
           SizedBox(
             width: 40,
             height: 40,
-            child: CircularProgressIndicator(strokeWidth: 3, valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
+            child: CircularProgressIndicator(
+              strokeWidth: 3,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                Theme.of(context).primaryColor,
+              ),
+            ),
           ),
           const SizedBox(height: 16),
-          Text(l10n.uploadingPhoto, style: const TextStyle(color: Colors.white70)),
+          Text(
+            l10n.uploadingPhoto,
+            style: const TextStyle(color: Colors.white70),
+          ),
         ],
       ),
     );
@@ -198,8 +222,8 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
-                            Icons.camera_alt, 
-                            size: 12, 
+                            Icons.camera_alt,
+                            size: 12,
                             color: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ),
@@ -214,7 +238,10 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
                     children: [
                       Text(
                         l10n.includeProfilePhoto,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
                       ),
                       Text(
                         l10n.usingMasterPhoto,
@@ -226,7 +253,8 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
                 Switch.adaptive(
                   value: widget.usePhoto,
                   onChanged: widget.onToggleChanged,
-                  activeColor: primaryColor,
+                  activeTrackColor: primaryColor.withValues(alpha: 0.5),
+                  activeThumbColor: primaryColor,
                 ),
               ],
             ),

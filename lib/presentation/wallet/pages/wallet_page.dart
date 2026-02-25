@@ -31,14 +31,11 @@ class WalletPage extends ConsumerWidget {
               ),
               const SizedBox(height: 32),
 
-              // Premium Credit Balance Card
               Consumer(
                 builder: (context, ref, child) {
                   final profile = ref.watch(masterProfileProvider);
-                  final cardHolder = profile?.fullName.toUpperCase() ?? "CARD HOLDER";
-                  final maskedUid = (profile != null) 
-                      ? "**** **** **** ${profile.email.length.toString().padLeft(4, '0')}" // Simul  ated UID suffix
-                      : "**** **** **** 0000";
+                  final cardHolder =
+                      profile?.fullName.toUpperCase() ?? "CARD HOLDER";
 
                   return AnimatedContainer(
                     duration: const Duration(milliseconds: 500),
@@ -62,7 +59,9 @@ class WalletPage extends ConsumerWidget {
                           offset: const Offset(0, 10),
                         ),
                         BoxShadow(
-                          color: const Color(0xFFD4AF37).withValues(alpha: 0.05),
+                          color: const Color(
+                            0xFFD4AF37,
+                          ).withValues(alpha: 0.05),
                           blurRadius: 40,
                           spreadRadius: -10,
                         ),
@@ -81,7 +80,7 @@ class WalletPage extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        
+
                         Padding(
                           padding: const EdgeInsets.all(32.0),
                           child: Column(
@@ -101,9 +100,13 @@ class WalletPage extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    AppLocalizations.of(context)!.creditBalance.toUpperCase(),
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.creditBalance.toUpperCase(),
                                     style: TextStyle(
-                                      color: Colors.white.withValues(alpha: 0.3),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.3,
+                                      ),
                                       fontSize: 10,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 1.0,
@@ -125,8 +128,20 @@ class WalletPage extends ConsumerWidget {
                                         ),
                                       );
                                     },
-                                    loading: () => const Text('—', style: TextStyle(color: Colors.white, fontSize: 32)),
-                                    error: (_, __) => const Text('0', style: TextStyle(color: Colors.white, fontSize: 32)),
+                                    loading: () => const Text(
+                                      '—',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 32,
+                                      ),
+                                    ),
+                                    error: (_, __) => const Text(
+                                      '0',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 32,
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -137,7 +152,9 @@ class WalletPage extends ConsumerWidget {
                                   Text(
                                     "MEMBER",
                                     style: TextStyle(
-                                      color: Colors.white.withValues(alpha: 0.3),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.3,
+                                      ),
                                       fontSize: 10,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 1.0,
@@ -173,14 +190,15 @@ class WalletPage extends ConsumerWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.receipt_long_outlined, size: 48, color: Colors.grey[700]),
+                      Icon(
+                        Icons.receipt_long_outlined,
+                        size: 48,
+                        color: Colors.grey[700],
+                      ),
                       const SizedBox(height: 16),
                       Text(
                         AppLocalizations.of(context)!.usageHistoryComingSoon,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                       ),
                     ],
                   ),
