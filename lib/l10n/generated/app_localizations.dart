@@ -824,6 +824,24 @@ abstract class AppLocalizations {
   /// **'Later'**
   String get later;
 
+  /// No description provided for @secure.
+  ///
+  /// In en, this message translates to:
+  /// **'SECURE'**
+  String get secure;
+
+  /// No description provided for @member.
+  ///
+  /// In en, this message translates to:
+  /// **'MEMBER'**
+  String get member;
+
+  /// No description provided for @recentTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Transactions'**
+  String get recentTransactions;
+
   /// No description provided for @feedbackThanksMessage.
   ///
   /// In en, this message translates to:
@@ -1263,7 +1281,7 @@ abstract class AppLocalizations {
   /// No description provided for @loginToSave.
   ///
   /// In en, this message translates to:
-  /// **'Login to save your data'**
+  /// **'Login to access all features'**
   String get loginToSave;
 
   /// No description provided for @masterProfileUpdated.

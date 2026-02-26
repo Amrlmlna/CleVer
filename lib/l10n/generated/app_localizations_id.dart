@@ -402,6 +402,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get later => 'Nanti Aja';
 
   @override
+  String get secure => 'AMAN';
+
+  @override
+  String get member => 'MEMBER';
+
+  @override
+  String get recentTransactions => 'Transaksi Terakhir';
+
+  @override
   String get feedbackThanksMessage =>
       'Masukan Anda sangat berharga buat pengembangan Clever.';
 
@@ -637,7 +646,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get login => 'Masuk';
 
   @override
-  String get loginToSave => 'Login agar datamu tersimpan';
+  String get loginToSave => 'Login untuk akses semua fitur';
 
   @override
   String get masterProfileUpdated => 'Master Profile berhasil diperbarui';

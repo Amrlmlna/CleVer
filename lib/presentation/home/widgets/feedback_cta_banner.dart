@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:clever/core/services/review_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FeedbackCTABanner extends ConsumerWidget {
   const FeedbackCTABanner({super.key});
@@ -56,10 +57,9 @@ class FeedbackCTABanner extends ConsumerWidget {
               Expanded(
                 child: Text(
                   l10n.feedbackTitle,
-                  style: const TextStyle(
+                  style: GoogleFonts.outfit(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'Outfit',
                   ),
                 ),
               ),
@@ -97,7 +97,6 @@ class FeedbackCTABanner extends ConsumerWidget {
               const SizedBox(width: 12),
               TextButton(
                 onPressed: () {
-                  // Hide for this session or similar logic could go here
                 },
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

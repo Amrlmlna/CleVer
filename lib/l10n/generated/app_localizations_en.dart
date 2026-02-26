@@ -398,6 +398,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get later => 'Later';
 
   @override
+  String get secure => 'SECURE';
+
+  @override
+  String get member => 'MEMBER';
+
+  @override
+  String get recentTransactions => 'Recent Transactions';
+
+  @override
   String get feedbackThanksMessage =>
       'Your feedback is valuable for CV Master development.';
 
@@ -634,7 +643,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login => 'Login';
 
   @override
-  String get loginToSave => 'Login to save your data';
+  String get loginToSave => 'Login to access all features';
 
   @override
   String get masterProfileUpdated => 'Master Profile updated successfully';
