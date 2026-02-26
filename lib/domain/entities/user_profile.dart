@@ -17,6 +17,8 @@ class UserProfile extends Equatable {
   final List<String> skills;
   final List<Certification> certifications;
   final String? photoUrl;
+  final String? birthDate;
+  final String? gender;
 
   const UserProfile({
     required this.fullName,
@@ -28,6 +30,8 @@ class UserProfile extends Equatable {
     this.skills = const [],
     this.certifications = const [],
     this.photoUrl,
+    this.birthDate,
+    this.gender,
   });
 
   UserProfile copyWith({
@@ -40,6 +44,8 @@ class UserProfile extends Equatable {
     List<String>? skills,
     List<Certification>? certifications,
     String? photoUrl,
+    String? birthDate,
+    String? gender,
   }) {
     return UserProfile(
       fullName: fullName ?? this.fullName,
@@ -51,6 +57,8 @@ class UserProfile extends Equatable {
       skills: skills ?? this.skills,
       certifications: certifications ?? this.certifications,
       photoUrl: photoUrl ?? this.photoUrl,
+      birthDate: birthDate ?? this.birthDate,
+      gender: gender ?? this.gender,
     );
   }
 
@@ -65,6 +73,8 @@ class UserProfile extends Equatable {
       'skills': skills,
       'certifications': certifications.map((e) => e.toJson()).toList(),
       'photoUrl': photoUrl,
+      'birthDate': birthDate,
+      'gender': gender,
     };
   }
 
@@ -95,6 +105,8 @@ class UserProfile extends Equatable {
               .toList() ??
           const [],
       photoUrl: json['photoUrl'] as String?,
+      birthDate: json['birthDate'] as String?,
+      gender: json['gender'] as String?,
     );
   }
 
@@ -109,5 +121,7 @@ class UserProfile extends Equatable {
     skills,
     certifications,
     photoUrl,
+    birthDate,
+    gender,
   ];
 }

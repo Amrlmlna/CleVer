@@ -272,6 +272,12 @@ abstract class AppLocalizations {
   /// **'Bug Report'**
   String get bugReport;
 
+  /// No description provided for @birthDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Date'**
+  String get birthDate;
+
   /// No description provided for @camera.
   ///
   /// In en, this message translates to:
@@ -824,11 +830,29 @@ abstract class AppLocalizations {
   /// **'Later'**
   String get later;
 
+  /// No description provided for @male.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get male;
+
+  /// No description provided for @female.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get female;
+
   /// No description provided for @secure.
   ///
   /// In en, this message translates to:
   /// **'SECURE'**
   String get secure;
+
+  /// No description provided for @gender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get gender;
 
   /// No description provided for @member.
   ///

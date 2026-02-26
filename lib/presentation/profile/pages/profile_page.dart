@@ -27,6 +27,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   late TextEditingController _emailController;
   late TextEditingController _phoneController;
   late TextEditingController _locationController;
+  late TextEditingController _birthDateController;
+  late TextEditingController _genderController;
 
   @override
   void initState() {
@@ -41,11 +43,19 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     _locationController = TextEditingController(
       text: initialProfile.location ?? '',
     );
+    _birthDateController = TextEditingController(
+      text: initialProfile.birthDate ?? '',
+    );
+    _genderController = TextEditingController(
+      text: initialProfile.gender ?? '',
+    );
 
     _nameController.addListener(_onNameChanged);
     _emailController.addListener(_onEmailChanged);
     _phoneController.addListener(_onPhoneChanged);
     _locationController.addListener(_onLocationChanged);
+    _birthDateController.addListener(_onBirthDateChanged);
+    _genderController.addListener(_onGenderChanged);
   }
 
   void _onNameChanged() {
@@ -72,12 +82,26 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         .updateLocation(_locationController.text);
   }
 
+  void _onBirthDateChanged() {
+    ref
+        .read(profileControllerProvider.notifier)
+        .updateBirthDate(_birthDateController.text);
+  }
+
+  void _onGenderChanged() {
+    ref
+        .read(profileControllerProvider.notifier)
+        .updateGender(_genderController.text);
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _locationController.dispose();
+    _birthDateController.dispose();
+    _genderController.dispose();
     super.dispose();
   }
 
@@ -93,6 +117,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
     if (_locationController.text != (profile.location ?? '')) {
       _locationController.text = profile.location ?? '';
+    }
+    if (_birthDateController.text != (profile.birthDate ?? '')) {
+      _birthDateController.text = profile.birthDate ?? '';
+    }
+    if (_genderController.text != (profile.gender ?? '')) {
+      _genderController.text = profile.gender ?? '';
     }
   }
 
@@ -196,6 +226,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     emailController: _emailController,
                     phoneController: _phoneController,
                     locationController: _locationController,
+                    birthDateController: _birthDateController,
+                    genderController: _genderController,
                   ),
                 ),
                 const SizedBox(height: 24),

@@ -39,8 +39,10 @@ class WalletPage extends ConsumerWidget {
                     ),
                   ),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(20),
@@ -50,8 +52,11 @@ class WalletPage extends ConsumerWidget {
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.verified_user_rounded,
-                            color: Colors.blueAccent, size: 14),
+                        const Icon(
+                          Icons.verified_user_rounded,
+                          color: Colors.blueAccent,
+                          size: 14,
+                        ),
                         const SizedBox(width: 4),
                         Text(
                           l10n.secure,
@@ -72,8 +77,9 @@ class WalletPage extends ConsumerWidget {
               // Premium Wallet Card
               templatesAsync.when(
                 data: (templates) {
-                  final totalCredits =
-                      templates.isNotEmpty ? templates.first.userCredits : 0;
+                  final totalCredits = templates.isNotEmpty
+                      ? templates.first.userCredits
+                      : 0;
                   return WalletCard(
                     totalCredits: totalCredits,
                     cardHolder: cardHolder,
@@ -84,17 +90,22 @@ class WalletPage extends ConsumerWidget {
                   cardHolder: cardHolder,
                   isLoading: true,
                 ),
-                error: (error, stack) => WalletCard(
-                  totalCredits: 0,
-                  cardHolder: cardHolder,
-                ),
+                error: (error, stack) =>
+                    WalletCard(totalCredits: 0, cardHolder: cardHolder),
               ),
 
               const SizedBox(height: 32),
 
               // Buy Credit Section
-              const PremiumBanner().animate().fadeIn(delay: 200.ms).slideY(
-                  begin: 0.1, end: 0, duration: 600.ms, curve: Curves.easeOut),
+              const PremiumBanner()
+                  .animate()
+                  .fadeIn(delay: 200.ms)
+                  .slideY(
+                    begin: 0.1,
+                    end: 0,
+                    duration: 600.ms,
+                    curve: Curves.easeOut,
+                  ),
 
               const SizedBox(height: 40),
 
@@ -102,7 +113,7 @@ class WalletPage extends ConsumerWidget {
               Text(
                 l10n.recentTransactions,
                 style: GoogleFonts.outfit(
-                   fontSize: 18,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.white.withValues(alpha: 0.95),
                 ),

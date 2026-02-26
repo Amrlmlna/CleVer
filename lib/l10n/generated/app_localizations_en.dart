@@ -105,6 +105,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bugReport => 'Bug Report';
 
   @override
+  String get birthDate => 'Birth Date';
+
+  @override
   String get camera => 'Camera';
 
   @override
@@ -398,7 +401,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get later => 'Later';
 
   @override
+  String get male => 'Male';
+
+  @override
+  String get female => 'Female';
+
+  @override
   String get secure => 'SECURE';
+
+  @override
+  String get gender => 'Gender';
 
   @override
   String get member => 'MEMBER';

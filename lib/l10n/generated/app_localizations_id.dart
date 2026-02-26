@@ -106,6 +106,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get bugReport => 'Lapor Bug';
 
   @override
+  String get birthDate => 'Tanggal Lahir';
+
+  @override
   String get camera => 'Kamera';
 
   @override
@@ -402,7 +405,16 @@ class AppLocalizationsId extends AppLocalizations {
   String get later => 'Nanti Aja';
 
   @override
+  String get male => 'Laki-laki';
+
+  @override
+  String get female => 'Perempuan';
+
+  @override
   String get secure => 'AMAN';
+
+  @override
+  String get gender => 'Jenis Kelamin';
 
   @override
   String get member => 'MEMBER';

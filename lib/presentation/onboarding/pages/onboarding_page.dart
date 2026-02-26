@@ -31,6 +31,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   late TextEditingController _emailController;
   late TextEditingController _phoneController;
   late TextEditingController _locationController;
+  late TextEditingController _birthDateController;
+  late TextEditingController _genderController;
 
   @override
   void initState() {
@@ -39,6 +41,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     _emailController = TextEditingController();
     _phoneController = TextEditingController();
     _locationController = TextEditingController();
+    _birthDateController = TextEditingController();
+    _genderController = TextEditingController();
 
     _nameController.addListener(
       () => ref
@@ -59,6 +63,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       () => ref
           .read(onboardingFormProvider.notifier)
           .updateLocation(_locationController.text),
+    );
+    _birthDateController.addListener(
+      () => ref
+          .read(onboardingFormProvider.notifier)
+          .updateBirthDate(_birthDateController.text),
+    );
+    _genderController.addListener(
+      () => ref
+          .read(onboardingFormProvider.notifier)
+          .updateGender(_genderController.text),
     );
 
     _prefillFromAuth();
@@ -83,6 +97,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     _emailController.dispose();
     _phoneController.dispose();
     _locationController.dispose();
+    _birthDateController.dispose();
+    _genderController.dispose();
     super.dispose();
   }
 
@@ -116,6 +132,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     _emailController.text = profile.email;
     _phoneController.text = profile.phoneNumber ?? '';
     _locationController.text = profile.location ?? '';
+    _birthDateController.text = profile.birthDate ?? '';
+    _genderController.text = profile.gender ?? '';
 
     notifier.skipToFinal();
 
@@ -176,6 +194,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                     emailController: _emailController,
                     phoneController: _phoneController,
                     locationController: _locationController,
+                    birthDateController: _birthDateController,
+                    genderController: _genderController,
                   ),
                   OnboardingImportStep(
                     onManualEntry: _handleManualEntry,

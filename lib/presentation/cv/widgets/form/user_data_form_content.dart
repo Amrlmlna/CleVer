@@ -12,6 +12,7 @@ import 'summary_section.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 import '../../../../domain/entities/tailored_cv_result.dart';
+import 'requirement_checklist.dart';
 
 class UserDataFormContent extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -23,6 +24,8 @@ class UserDataFormContent extends StatefulWidget {
   final TextEditingController phoneController;
   final TextEditingController locationController;
   final TextEditingController summaryController;
+  final TextEditingController birthDateController;
+  final TextEditingController genderController;
 
   final List<Experience> experience;
   final List<Education> education;
@@ -44,6 +47,8 @@ class UserDataFormContent extends StatefulWidget {
     required this.phoneController,
     required this.locationController,
     required this.summaryController,
+    required this.birthDateController,
+    required this.genderController,
     required this.experience,
     required this.education,
     required this.skills,
@@ -74,6 +79,12 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+            if (widget.tailoredResult?.analysis != null)
+              RequirementChecklist(
+                analysis: widget.tailoredResult!.analysis!,
+                isDark: widget.isDark,
+              ),
+
             ReviewSectionCard(
               title: AppLocalizations.of(context)!.personalInfo,
               icon: Icons.person_outline,
@@ -85,6 +96,8 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
                 emailController: widget.emailController,
                 phoneController: widget.phoneController,
                 locationController: widget.locationController,
+                birthDateController: widget.birthDateController,
+                genderController: widget.genderController,
               ),
             ),
             const SizedBox(height: 16),

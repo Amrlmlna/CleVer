@@ -26,6 +26,8 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _locationController = TextEditingController();
+  final _birthDateController = TextEditingController();
+  final _genderController = TextEditingController();
 
   final _summaryController = TextEditingController();
 
@@ -52,6 +54,8 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
           _emailController.text = profileToUse.email;
           _phoneController.text = profileToUse.phoneNumber ?? '';
           _locationController.text = profileToUse.location ?? '';
+          _birthDateController.text = profileToUse.birthDate ?? '';
+          _genderController.text = profileToUse.gender ?? '';
 
           _experience = List<Experience>.from(profileToUse.experience);
           _education = List<Education>.from(profileToUse.education);
@@ -83,6 +87,8 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
     _emailController.dispose();
     _phoneController.dispose();
     _locationController.dispose();
+    _birthDateController.dispose();
+    _genderController.dispose();
     _summaryController.dispose();
     super.dispose();
   }
@@ -94,6 +100,8 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         email: _emailController.text,
         phoneNumber: _phoneController.text,
         location: _locationController.text,
+        birthDate: _birthDateController.text,
+        gender: _genderController.text,
         experience: _experience,
         education: _education,
         skills: _skills.isNotEmpty ? _skills : ['Leadership', 'Communication'],
@@ -174,6 +182,8 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         emailController: _emailController,
         phoneController: _phoneController,
         locationController: _locationController,
+        birthDateController: _birthDateController,
+        genderController: _genderController,
         summaryController: _summaryController,
         experience: _experience,
         education: _education,

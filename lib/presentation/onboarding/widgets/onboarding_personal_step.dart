@@ -6,6 +6,8 @@ class OnboardingPersonalStep extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController phoneController;
   final TextEditingController locationController;
+  final TextEditingController birthDateController;
+  final TextEditingController genderController;
 
   const OnboardingPersonalStep({
     super.key,
@@ -13,6 +15,8 @@ class OnboardingPersonalStep extends StatelessWidget {
     required this.emailController,
     required this.phoneController,
     required this.locationController,
+    required this.birthDateController,
+    required this.genderController,
   });
 
   @override
@@ -27,6 +31,8 @@ class OnboardingPersonalStep extends StatelessWidget {
             emailController: emailController,
             phoneController: phoneController,
             locationController: locationController,
+            birthDateController: birthDateController,
+            genderController: genderController,
             showPhotoField: false,
           ),
         ],

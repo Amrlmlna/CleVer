@@ -92,6 +92,16 @@ class OnboardingFormNotifier extends StateNotifier<OnboardingState> {
     );
   }
 
+  void updateBirthDate(String birthDate) {
+    state = state.copyWith(
+      formData: state.formData.copyWith(birthDate: birthDate),
+    );
+  }
+
+  void updateGender(String gender) {
+    state = state.copyWith(formData: state.formData.copyWith(gender: gender));
+  }
+
   void updateExperience(List<Experience> experience) {
     state = state.copyWith(
       formData: state.formData.copyWith(experience: experience),

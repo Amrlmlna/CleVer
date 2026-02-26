@@ -15,6 +15,8 @@ class PersonalInfoForm extends ConsumerStatefulWidget {
   final TextEditingController emailController;
   final TextEditingController phoneController;
   final TextEditingController locationController;
+  final TextEditingController birthDateController;
+  final TextEditingController genderController;
   final bool showPhotoField;
 
   const PersonalInfoForm({
@@ -23,6 +25,8 @@ class PersonalInfoForm extends ConsumerStatefulWidget {
     required this.emailController,
     required this.phoneController,
     required this.locationController,
+    required this.birthDateController,
+    required this.genderController,
     this.showPhotoField = true,
   });
 
@@ -171,6 +175,78 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
           isDark: true,
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () async {
+                  final now = DateTime.now();
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: now.subtract(const Duration(days: 365 * 20)),
+                    firstDate: DateTime(1900),
+                    lastDate: now,
+                  );
+                  if (date != null) {
+                    widget.birthDateController.text =
+                        "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+                  }
+                },
+                child: AbsorbPointer(
+                  child: CustomTextFormField(
+                    controller: widget.birthDateController,
+                    labelText: AppLocalizations.of(context)!.birthDate,
+                    prefixIcon: Icons.cake_outlined,
+                    isDark: true,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: DropdownButtonFormField<String>(
+                initialValue: widget.genderController.text.isEmpty
+                    ? null
+                    : widget.genderController.text,
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.gender,
+                  prefixIcon: const Icon(Icons.person_search_outlined),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey.shade700
+                          : Colors.grey.shade300,
+                    ),
+                  ),
+                ),
+                dropdownColor: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.grey.shade900
+                    : Colors.white,
+                items: [
+                  DropdownMenuItem(
+                    value: 'Male',
+                    child: Text(AppLocalizations.of(context)!.male),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Female',
+                    child: Text(AppLocalizations.of(context)!.female),
+                  ),
+                ],
+                onChanged: (val) {
+                  if (val != null) {
+                    widget.genderController.text = val;
+                  }
+                },
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 16),
         LocationPicker(controller: widget.locationController, isDark: true),

@@ -56,6 +56,12 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     final newLocation = newProfile.location?.isNotEmpty == true
         ? newProfile.location
         : current.location;
+    final newBirthDate = newProfile.birthDate?.isNotEmpty == true
+        ? newProfile.birthDate
+        : current.birthDate;
+    final newGender = newProfile.gender?.isNotEmpty == true
+        ? newProfile.gender
+        : current.gender;
     final newPhoto = newProfile.photoUrl?.isNotEmpty == true
         ? newProfile.photoUrl
         : current.photoUrl;
@@ -64,6 +70,8 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
         newEmail != current.email ||
         newPhone != current.phoneNumber ||
         newLocation != current.location ||
+        newBirthDate != current.birthDate ||
+        newGender != current.gender ||
         newPhoto != current.photoUrl) {
       print("[DEBUG] Personal Info Changed (including photo)!");
       hasChanges = true;
@@ -74,6 +82,8 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
       email: newEmail,
       phoneNumber: newPhone,
       location: newLocation,
+      birthDate: newBirthDate,
+      gender: newGender,
       photoUrl: newPhoto,
     );
 
@@ -305,6 +315,18 @@ class ProfileController extends StateNotifier<ProfileState> {
     );
   }
 
+  void updateBirthDate(String birthDate) {
+    state = state.copyWith(
+      currentProfile: state.currentProfile.copyWith(birthDate: birthDate),
+    );
+  }
+
+  void updateGender(String gender) {
+    state = state.copyWith(
+      currentProfile: state.currentProfile.copyWith(gender: gender),
+    );
+  }
+
   void updateExperience(List<Experience> experience) {
     state = state.copyWith(
       currentProfile: state.currentProfile.copyWith(experience: experience),
@@ -384,6 +406,12 @@ class ProfileController extends StateNotifier<ProfileState> {
       location: (current.location == null || current.location!.isEmpty)
           ? importedProfile.location
           : current.location,
+      birthDate: (current.birthDate == null || current.birthDate!.isEmpty)
+          ? importedProfile.birthDate
+          : current.birthDate,
+      gender: (current.gender == null || current.gender!.isEmpty)
+          ? importedProfile.gender
+          : current.gender,
       experience: dedupedExp,
       education: dedupedEdu,
       skills: {...current.skills, ...importedProfile.skills}.toList(),

@@ -2,6 +2,7 @@ import '../../domain/entities/cv_data.dart';
 import '../../domain/entities/job_input.dart';
 import '../../domain/entities/user_profile.dart';
 import '../../domain/entities/tailored_cv_result.dart';
+import '../../domain/entities/tailor_analysis.dart';
 import '../../domain/repositories/cv_repository.dart';
 import '../datasources/remote_cv_datasource.dart';
 import '../utils/cv_data_parser.dart';
@@ -65,10 +66,14 @@ class CVRepositoryImpl implements CVRepository {
       final profileJson =
           responseData['tailoredProfile'] as Map<String, dynamic>;
       final summary = responseData['summary'] as String;
+      final analysisJson = responseData['analysis'] as Map<String, dynamic>?;
 
       return TailoredCVResult(
         profile: UserProfile.fromJson(profileJson),
         summary: summary,
+        analysis: analysisJson != null
+            ? TailorAnalysis.fromJson(analysisJson)
+            : null,
       );
     } catch (e) {
       throw DataErrorMapper.map(e);

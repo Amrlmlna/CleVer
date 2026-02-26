@@ -26,7 +26,9 @@ class FeedbackCTABanner extends ConsumerWidget {
         ),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05),
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.1)
+              : Colors.black.withValues(alpha: 0.05),
         ),
         boxShadow: [
           BoxShadow(
@@ -44,7 +46,9 @@ class FeedbackCTABanner extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.05),
+                  color: isDark
+                      ? Colors.white10
+                      : Colors.black.withValues(alpha: 0.05),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -52,7 +56,11 @@ class FeedbackCTABanner extends ConsumerWidget {
                   color: Colors.amber,
                   size: 28,
                 ),
-              ).animate().scale(delay: 400.ms, duration: 600.ms, curve: Curves.easeOutBack),
+              ).animate().scale(
+                delay: 400.ms,
+                duration: 600.ms,
+                curve: Curves.easeOutBack,
+              ),
               const SizedBox(width: 16),
               Expanded(
                 child: Text(
@@ -96,10 +104,12 @@ class FeedbackCTABanner extends ConsumerWidget {
               ),
               const SizedBox(width: 12),
               TextButton(
-                onPressed: () {
-                },
+                onPressed: () {},
                 style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 16,
+                  ),
                 ),
                 child: Text(
                   l10n.later,
