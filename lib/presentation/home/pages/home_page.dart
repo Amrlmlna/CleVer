@@ -5,6 +5,7 @@ import '../widgets/progress_banner.dart';
 import '../widgets/home_quick_actions.dart';
 import '../widgets/login_cta_card.dart';
 import '../widgets/premium_banner.dart';
+import '../widgets/feedback_cta_banner.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -33,6 +34,9 @@ class HomePage extends ConsumerWidget {
               const SizedBox(height: 16),
 
               const PremiumBanner(),
+              const SizedBox(height: 24),
+
+              const FeedbackCTABanner(),
 
               const SizedBox(height: 100),
             ],

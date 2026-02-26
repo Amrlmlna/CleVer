@@ -389,8 +389,21 @@ class AppLocalizationsId extends AppLocalizations {
       'Ceritakan pengalamanmu atau laporkan masalah.';
 
   @override
+  String get feedbackTitle => 'Terbantu dengan Clever?';
+
+  @override
+  String get feedbackContent =>
+      'Masukanmu sangat berarti buat bikin Clever jadi lebih baik. Boleh minta tolong kasih rating di Play Store?';
+
+  @override
+  String get rateNow => 'Kasih Rating';
+
+  @override
+  String get later => 'Nanti Aja';
+
+  @override
   String get feedbackThanksMessage =>
-      'Masukan Anda sangat berharga buat pengembangan CV Master.';
+      'Masukan Anda sangat berharga buat pengembangan Clever.';
 
   @override
   String get fetchingTemplates => 'Mengambil Template...';

@@ -19,6 +19,7 @@ import 'core/services/ad_service.dart';
 import 'core/services/payment_service.dart';
 import 'core/services/permission_service.dart';
 import 'core/services/notification_service.dart';
+import 'core/services/app_update_service.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -126,6 +127,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       await NotificationService.init();
       await NotificationService.requestPermissions();
       PermissionService.requestAllPermissions();
+      AppUpdateService().checkForUpdate();
     } catch (e) {
       debugPrint('Error initializing background services: $e');
     }

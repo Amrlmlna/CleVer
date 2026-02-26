@@ -800,6 +800,30 @@ abstract class AppLocalizations {
   /// **'Share your experience or report an issue.'**
   String get feedbackSubtitle;
 
+  /// No description provided for @feedbackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoying Clever?'**
+  String get feedbackTitle;
+
+  /// No description provided for @feedbackContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your feedback helps us make Clever better for everyone. Would you mind rating us on the Play Store?'**
+  String get feedbackContent;
+
+  /// No description provided for @rateNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Now'**
+  String get rateNow;
+
+  /// No description provided for @later.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get later;
+
   /// No description provided for @feedbackThanksMessage.
   ///
   /// In en, this message translates to:

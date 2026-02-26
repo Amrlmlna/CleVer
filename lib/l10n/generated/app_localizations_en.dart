@@ -385,6 +385,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feedbackSubtitle => 'Share your experience or report an issue.';
 
   @override
+  String get feedbackTitle => 'Enjoying Clever?';
+
+  @override
+  String get feedbackContent =>
+      'Your feedback helps us make Clever better for everyone. Would you mind rating us on the Play Store?';
+
+  @override
+  String get rateNow => 'Rate Now';
+
+  @override
+  String get later => 'Later';
+
+  @override
   String get feedbackThanksMessage =>
       'Your feedback is valuable for CV Master development.';
 
