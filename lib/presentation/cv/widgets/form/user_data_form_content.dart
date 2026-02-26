@@ -7,7 +7,6 @@ import '../../../profile/widgets/experience_list_form.dart';
 import '../../../profile/widgets/certification_list_form.dart';
 import '../../../profile/widgets/skills_input_form.dart';
 import '../../../profile/widgets/personal_info_form.dart';
-import 'tailored_data_header.dart';
 import 'review_section_card.dart';
 import 'summary_section.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
@@ -75,8 +74,6 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            if (widget.tailoredResult != null)
-              TailoredDataHeader(isDark: widget.isDark),
 
             ReviewSectionCard(
               title: AppLocalizations.of(context)!.personalInfo,

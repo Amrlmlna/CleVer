@@ -47,10 +47,10 @@ class HomeQuickActions extends ConsumerWidget {
           },
         ),
         _QuickActionCircle(
-          icon: Icons.folder_open_rounded,
-          label: AppLocalizations.of(context)!.viewDrafts,
+          icon: Icons.work_outline,
+          label: 'Jobs',
           onTap: () {
-            context.push('/drafts');
+            context.push('/jobs');
           },
         ),
         _QuickActionCircle(

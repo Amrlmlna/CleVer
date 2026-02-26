@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../core/config/api_config.dart';
+import '../models/job_posting_model.dart';
 
 class RemoteJobDataSource {
   final http.Client _httpClient;
@@ -24,6 +25,27 @@ class RemoteJobDataSource {
         'Failed to extract job posting: ${response.statusCode}',
         response.request?.url,
       );
+    }
+  }
+
+  Future<List<JobPostingModel>> getJobPostings() async {
+    try {
+      final response = await _httpClient.get(
+        Uri.parse(_jobBaseUrl), 
+        headers: await ApiConfig.getAuthHeaders(),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        return data.map((json) => JobPostingModel.fromJson(json)).toList();
+      } else {
+        throw http.ClientException(
+          'Failed to load jobs: ${response.statusCode}',
+          response.request?.url,
+        );
+      }
+    } catch (e) {
+      return [];
     }
   }
 }

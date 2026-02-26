@@ -9,6 +9,7 @@ import '../../presentation/onboarding/providers/onboarding_provider.dart';
 import '../../presentation/home/pages/home_page.dart';
 import '../../presentation/dashboard/pages/main_wrapper_page.dart';
 
+import '../../presentation/jobs/pages/job_list_page.dart';
 import '../../presentation/drafts/pages/drafts_page.dart';
 import '../../presentation/profile/pages/profile_page.dart';
 import '../../presentation/cv/pages/job_input_page.dart';
@@ -25,6 +26,7 @@ import '../../presentation/common/pages/error_page.dart';
 import '../../presentation/auth/pages/login_page.dart';
 import '../../presentation/auth/pages/signup_page.dart';
 import '../../domain/entities/tailored_cv_result.dart';
+import '../../domain/entities/job_input.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'app_routes.dart';
 
@@ -162,14 +164,20 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const LegalPage(),
       ),
       GoRoute(
+        path: AppRoutes.jobs,
+        builder: (context, state) => const JobListPage(),
+      ),
+      GoRoute(
         path: AppRoutes.stats,
         builder: (context, state) => const StatsPage(),
       ),
 
-      // CV Generation Flow
       GoRoute(
         path: AppRoutes.createJobInput,
-        builder: (context, state) => const JobInputPage(),
+        builder: (context, state) {
+          final jobInput = state.extra as JobInput?;
+          return JobInputPage(initialJobInput: jobInput);
+        },
       ),
       GoRoute(
         path: AppRoutes.createUserData,

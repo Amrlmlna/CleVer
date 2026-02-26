@@ -16,7 +16,8 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../core/providers/locale_provider.dart';
 
 class JobInputPage extends ConsumerStatefulWidget {
-  const JobInputPage({super.key});
+  final JobInput? initialJobInput;
+  const JobInputPage({super.key, this.initialJobInput});
 
   @override
   ConsumerState<JobInputPage> createState() => _JobInputPageState();
@@ -37,7 +38,13 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
   @override
   void initState() {
     super.initState();
-    _loadDrafts();
+    if (widget.initialJobInput != null) {
+      _titleController.text = widget.initialJobInput!.jobTitle;
+      _companyController.text = widget.initialJobInput!.company ?? '';
+      _descController.text = widget.initialJobInput!.jobDescription ?? '';
+    } else {
+      _loadDrafts();
+    }
     _titleController.addListener(_onTextChanged);
     _companyController.addListener(_onTextChanged);
     _descController.addListener(_onTextChanged);
