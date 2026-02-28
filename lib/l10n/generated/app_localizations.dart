@@ -146,6 +146,24 @@ abstract class AppLocalizations {
   /// **'Add Skill'**
   String get addSkill;
 
+  /// No description provided for @aiAnalysisTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Analysis'**
+  String get aiAnalysisTitle;
+
+  /// No description provided for @aiAnalyzingProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'AI is analyzing your profile...'**
+  String get aiAnalyzingProfile;
+
+  /// No description provided for @aiExtractingInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'Extracting insights...'**
+  String get aiExtractingInsights;
+
   /// No description provided for @aiHelpCreateCV.
   ///
   /// In en, this message translates to:
@@ -157,6 +175,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'AI POWERED'**
   String get aiPowered;
+
+  /// No description provided for @aiTestingConstraints.
+  ///
+  /// In en, this message translates to:
+  /// **'Testing against ATS constraints...'**
+  String get aiTestingConstraints;
 
   /// No description provided for @almostThere.
   ///
@@ -1781,6 +1805,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This is required!'**
   String get requiredFieldFriendly;
+
+  /// No description provided for @requirementsCheckLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Requirements Check:'**
+  String get requirementsCheckLabel;
 
   /// No description provided for @resendEmail.
   ///

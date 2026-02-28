@@ -58,10 +58,7 @@ final userLevelProvider = Provider<String>((ref) {
   return calculateUserLevel(profile, drafts);
 });
 
-final profileCompletionProvider = Provider<int>((ref) {
-  final profile = ref.watch(masterProfileProvider);
-  return calculateProfileCompletion(profile);
-});
+
 final profileStatsProvider = Provider<Map<String, int>>((ref) {
   final profile = ref.watch(masterProfileProvider);
   final draftsAsync = ref.watch(draftsProvider);

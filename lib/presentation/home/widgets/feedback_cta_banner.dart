@@ -17,26 +17,11 @@ class FeedbackCTABanner extends ConsumerWidget {
       margin: const EdgeInsets.symmetric(vertical: 8),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: isDark
-              ? [const Color(0xFF1E1E1E), const Color(0xFF2C2C2C)]
-              : [Colors.white, const Color(0xFFF5F5F5)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: isDark
-              ? Colors.white.withValues(alpha: 0.1)
-              : Colors.black.withValues(alpha: 0.05),
+          color: isDark ? Colors.white24 : Colors.black12,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,9 +36,9 @@ class FeedbackCTABanner extends ConsumerWidget {
                       : Colors.black.withValues(alpha: 0.05),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.star_rounded,
-                  color: Colors.amber,
+                  color: isDark ? Colors.white : Colors.black,
                   size: 28,
                 ),
               ).animate().scale(

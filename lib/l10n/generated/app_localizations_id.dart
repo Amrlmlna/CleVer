@@ -35,11 +35,23 @@ class AppLocalizationsId extends AppLocalizations {
   String get addSkill => 'Tambah Skill';
 
   @override
+  String get aiAnalysisTitle => 'Analisis AI';
+
+  @override
+  String get aiAnalyzingProfile => 'AI sedang menganalisis profilmu...';
+
+  @override
+  String get aiExtractingInsights => 'Mengekstrak wawasan...';
+
+  @override
   String get aiHelpCreateCV =>
       'AI bakal bantuin bikin CV yang pas banget buat tujuan ini.';
 
   @override
   String get aiPowered => 'AI POWERED';
+
+  @override
+  String get aiTestingConstraints => 'Menguji terhadap batasan ATS...';
 
   @override
   String get almostThere => 'Sesaat lagi...';
@@ -915,6 +927,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get requiredFieldFriendly => 'Wajib diisi ya';
+
+  @override
+  String get requirementsCheckLabel => 'Cek Persyaratan:';
 
   @override
   String get resendEmail => 'Kirim Ulang Email Verifikasi';
