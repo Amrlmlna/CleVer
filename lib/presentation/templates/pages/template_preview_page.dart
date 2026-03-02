@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../cv/providers/cv_download_provider.dart';
+import '../../cv/widgets/first_cv_upsell_bottom_sheet.dart';
 import '../providers/template_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../../core/providers/locale_provider.dart';
@@ -80,6 +82,18 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
           locale: effectiveLocale,
           usePhoto: _usePhoto,
         );
+
+    if (mounted) {
+      final downloadResult = ref.read(cvDownloadProvider);
+      if (downloadResult.status == DownloadStatus.success) {
+        final prefs = await SharedPreferences.getInstance();
+        final alreadyShown = prefs.getBool('first_cv_upsell_shown') ?? false;
+        if (!alreadyShown && mounted) {
+          await prefs.setBool('first_cv_upsell_shown', true);
+          await FirstCvUpsellBottomSheet.show(context);
+        }
+      }
+    }
   }
 
   @override

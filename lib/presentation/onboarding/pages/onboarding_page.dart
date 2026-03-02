@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../providers/onboarding_provider.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../../../core/router/app_routes.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 import '../widgets/onboarding_personal_step.dart';
@@ -152,7 +153,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   Future<void> _finishOnboarding() async {
     await ref.read(onboardingFormProvider.notifier).submit();
     if (mounted) {
-      context.go('/');
+      context.go(AppRoutes.createJobInput);
     }
   }
 
