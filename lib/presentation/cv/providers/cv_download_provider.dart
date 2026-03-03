@@ -10,6 +10,7 @@ import 'package:pdfx/pdfx.dart';
 
 import '../../../core/services/ad_service.dart';
 import '../../../core/services/notification_service.dart';
+import '../../../core/services/analytics_service.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../../../domain/entities/cv_data.dart';
 import '../../../domain/entities/completed_cv.dart';
@@ -142,6 +143,8 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     bool usePhoto = false,
   }) async {
     state = state.copyWith(status: DownloadStatus.generating);
+    final effectiveLocale = locale ?? ref.read(localeNotifierProvider).languageCode;
+    AnalyticsService().trackEvent('cv_generation_started', properties: {'template_id': styleId, 'locale': effectiveLocale});
 
     try {
       final creationState = ref.read(cvCreationProvider);
@@ -158,8 +161,6 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
         jobTitle: creationState.jobInput!.jobTitle,
         jobDescription: creationState.jobInput!.jobDescription ?? '',
       );
-      final effectiveLocale =
-          locale ?? ref.read(localeNotifierProvider).languageCode;
       final photoUrl = ref
           .read(profileControllerProvider)
           .currentProfile
@@ -228,6 +229,8 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
 
       _localCache[_buildCacheKey(styleId, effectiveLocale)] = pdfFile.path;
 
+      AnalyticsService().trackEvent('cv_generation_completed', properties: {'template_id': styleId, 'locale': effectiveLocale, 'use_photo': usePhoto});
+
       ref.invalidate(templatesProvider);
       state = state.copyWith(status: DownloadStatus.success);
 
@@ -248,6 +251,9 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
         }
       }
     } catch (e) {
+      final effectiveLocale = locale ?? ref.read(localeNotifierProvider).languageCode;
+      AnalyticsService().trackEvent('cv_generation_failed', properties: {'template_id': styleId, 'locale': effectiveLocale, 'error': e.toString()});
+      
       state = state.copyWith(
         status: DownloadStatus.error,
         errorMessage: e.toString(),

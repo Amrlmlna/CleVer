@@ -6,6 +6,7 @@ import '../../domain/entities/app_user.dart';
 import '../datasources/remote_user_datasource.dart';
 import '../utils/data_error_mapper.dart';
 import '../../core/services/payment_service.dart';
+import '../../core/services/analytics_service.dart';
 
 class FirebaseAuthRepository implements AuthRepository {
   final FirebaseAuth _firebaseAuth;
@@ -49,6 +50,8 @@ class FirebaseAuthRepository implements AuthRepository {
       final user = _mapFirebaseUser(userCredential.user);
       if (user != null) {
         await PaymentService.login(user.uid);
+        await AnalyticsService().identifyUser(user.uid);
+        AnalyticsService().trackEvent('login_completed', properties: {'method': 'email'});
       }
       return user;
     } catch (e) {
@@ -73,6 +76,8 @@ class FirebaseAuthRepository implements AuthRepository {
         await userCredential.user!.sendEmailVerification();
         await userCredential.user!.reload();
         await PaymentService.login(userCredential.user!.uid);
+        await AnalyticsService().identifyUser(userCredential.user!.uid);
+        AnalyticsService().trackEvent('signup_completed', properties: {'method': 'email'});
       }
 
       return _mapFirebaseUser(_firebaseAuth.currentUser);
@@ -87,6 +92,7 @@ class FirebaseAuthRepository implements AuthRepository {
       _firebaseAuth.signOut(),
       _googleSignIn.signOut(),
       PaymentService.logout(),
+      AnalyticsService().reset(),
     ]);
   }
 
@@ -115,6 +121,8 @@ class FirebaseAuthRepository implements AuthRepository {
       final user = _mapFirebaseUser(userCredential.user);
       if (user != null) {
         await PaymentService.login(user.uid);
+        await AnalyticsService().identifyUser(user.uid);
+        AnalyticsService().trackEvent('login_completed', properties: {'method': 'google'});
       }
       return user;
     } catch (e) {

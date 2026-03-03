@@ -53,20 +53,20 @@ class PaymentService {
         await Purchases.purchase(PurchaseParams.package(package));
 
         _analytics.trackEvent(
-          'purchase_attempt_success',
+          'purchase_completed',
           properties: {'package': package.identifier},
         );
         return true;
       }
       _analytics.trackEvent(
-        'purchase_attempt_fail',
+        'purchase_failed',
         properties: {'reason': 'no_packages'},
       );
     } on PlatformException catch (e) {
       var errorCode = PurchasesErrorHelper.getErrorCode(e);
       if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
         _analytics.trackEvent(
-          'purchase_error',
+          'purchase_failed',
           properties: {
             'code': errorCode.toString(),
             'message': e.message ?? '',
@@ -77,8 +77,8 @@ class PaymentService {
       _analytics.trackEvent('purchase_cancelled');
     } catch (e) {
       _analytics.trackEvent(
-        'purchase_error_generic',
-        properties: {'error': e.toString()},
+        'purchase_failed',
+        properties: {'error': e.toString(), 'reason': 'generic'},
       );
     }
     return false;
@@ -86,10 +86,11 @@ class PaymentService {
 
   static Future<bool> presentPaywall() async {
     try {
+      _analytics.trackEvent('paywall_viewed');
       final paywallResult = await RevenueCatUI.presentPaywall();
       final success = paywallResult == PaywallResult.purchased;
       _analytics.trackEvent(
-        'paywall_closed',
+        'paywall_dismissed',
         properties: {'purchased': success},
       );
       return success;
@@ -104,12 +105,13 @@ class PaymentService {
 
   static Future<bool> presentPaywallIfNeeded() async {
     try {
+      _analytics.trackEvent('paywall_viewed');
       final paywallResult = await RevenueCatUI.presentPaywallIfNeeded(
         'premium',
       );
       final success = paywallResult == PaywallResult.purchased;
       _analytics.trackEvent(
-        'paywall_if_needed_closed',
+        'paywall_dismissed',
         properties: {'purchased': success},
       );
       return success;

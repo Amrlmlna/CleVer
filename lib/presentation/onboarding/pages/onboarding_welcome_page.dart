@@ -3,6 +3,7 @@ import '../../auth/widgets/gradient_button.dart';
 import '../widgets/onboarding_carousel_screen.dart';
 import 'onboarding_page.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../core/services/analytics_service.dart';
 
 class OnboardingWelcomePage extends StatefulWidget {
   const OnboardingWelcomePage({super.key});
@@ -15,6 +16,12 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   bool _showForm = false;
+
+  @override
+  void initState() {
+    super.initState();
+    AnalyticsService().trackEvent('onboarding_started');
+  }
 
   List<Map<String, dynamic>> _getScreens(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
