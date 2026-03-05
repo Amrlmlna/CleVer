@@ -26,7 +26,6 @@ class CVImportHandler {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Handle bar
               Container(
                 width: 40,
                 height: 4,
@@ -230,14 +229,13 @@ class CVImportHandler {
             context: context,
             extractedProfile: result.extractedProfile!,
             onContinue: () {
-              Navigator.pop(context); // Close the bottom sheet
+              Navigator.pop(context);
               onImportSuccess(result.extractedProfile!);
             },
           );
         }
         break;
       case CVImportStatus.cancelled:
-        // User cancelled, do nothing
         break;
       case CVImportStatus.noText:
         CustomSnackBar.showWarning(
