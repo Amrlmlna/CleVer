@@ -51,7 +51,10 @@ class FirebaseAuthRepository implements AuthRepository {
       if (user != null) {
         await PaymentService.login(user.uid);
         await AnalyticsService().identifyUser(user.uid);
-        AnalyticsService().trackEvent('login_completed', properties: {'method': 'email'});
+        AnalyticsService().trackEvent(
+          'login_completed',
+          properties: {'method': 'email'},
+        );
       }
       return user;
     } catch (e) {
@@ -77,7 +80,10 @@ class FirebaseAuthRepository implements AuthRepository {
         await userCredential.user!.reload();
         await PaymentService.login(userCredential.user!.uid);
         await AnalyticsService().identifyUser(userCredential.user!.uid);
-        AnalyticsService().trackEvent('signup_completed', properties: {'method': 'email'});
+        AnalyticsService().trackEvent(
+          'signup_completed',
+          properties: {'method': 'email'},
+        );
       }
 
       return _mapFirebaseUser(_firebaseAuth.currentUser);
@@ -122,7 +128,10 @@ class FirebaseAuthRepository implements AuthRepository {
       if (user != null) {
         await PaymentService.login(user.uid);
         await AnalyticsService().identifyUser(user.uid);
-        AnalyticsService().trackEvent('login_completed', properties: {'method': 'google'});
+        AnalyticsService().trackEvent(
+          'login_completed',
+          properties: {'method': 'google'},
+        );
       }
       return user;
     } catch (e) {

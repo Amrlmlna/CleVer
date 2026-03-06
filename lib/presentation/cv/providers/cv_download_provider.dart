@@ -111,7 +111,8 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       orElse: () => templates.first,
     );
 
-    if (template.hasFreeGeneration || template.userCredits >= template.requiredCredits) {
+    if (template.hasFreeGeneration ||
+        template.userCredits >= template.requiredCredits) {
       if (template.userCredits > 0) {
         await _generateAndOpenPDF(
           context,
@@ -143,8 +144,12 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     bool usePhoto = false,
   }) async {
     state = state.copyWith(status: DownloadStatus.generating);
-    final effectiveLocale = locale ?? ref.read(localeNotifierProvider).languageCode;
-    AnalyticsService().trackEvent('cv_generation_started', properties: {'template_id': styleId, 'locale': effectiveLocale});
+    final effectiveLocale =
+        locale ?? ref.read(localeNotifierProvider).languageCode;
+    AnalyticsService().trackEvent(
+      'cv_generation_started',
+      properties: {'template_id': styleId, 'locale': effectiveLocale},
+    );
 
     try {
       final creationState = ref.read(cvCreationProvider);
@@ -229,7 +234,14 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
 
       _localCache[_buildCacheKey(styleId, effectiveLocale)] = pdfFile.path;
 
-      AnalyticsService().trackEvent('cv_generation_completed', properties: {'template_id': styleId, 'locale': effectiveLocale, 'use_photo': usePhoto});
+      AnalyticsService().trackEvent(
+        'cv_generation_completed',
+        properties: {
+          'template_id': styleId,
+          'locale': effectiveLocale,
+          'use_photo': usePhoto,
+        },
+      );
 
       ref.invalidate(templatesProvider);
       state = state.copyWith(status: DownloadStatus.success);
@@ -251,9 +263,17 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
         }
       }
     } catch (e) {
-      final effectiveLocale = locale ?? ref.read(localeNotifierProvider).languageCode;
-      AnalyticsService().trackEvent('cv_generation_failed', properties: {'template_id': styleId, 'locale': effectiveLocale, 'error': e.toString()});
-      
+      final effectiveLocale =
+          locale ?? ref.read(localeNotifierProvider).languageCode;
+      AnalyticsService().trackEvent(
+        'cv_generation_failed',
+        properties: {
+          'template_id': styleId,
+          'locale': effectiveLocale,
+          'error': e.toString(),
+        },
+      );
+
       state = state.copyWith(
         status: DownloadStatus.error,
         errorMessage: e.toString(),

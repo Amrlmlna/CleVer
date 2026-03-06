@@ -93,7 +93,11 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
                 ),
                 shimmerColors: isDark
                     ? [Colors.grey.shade700, Colors.white, Colors.grey.shade700]
-                    : [Colors.grey.shade400, Colors.black, Colors.grey.shade400],
+                    : [
+                        Colors.grey.shade400,
+                        Colors.black,
+                        Colors.grey.shade400,
+                      ],
               ),
             ),
           ],

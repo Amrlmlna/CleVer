@@ -49,9 +49,7 @@ class PackageCard extends StatelessWidget {
               height: 20,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isSelected
-                    ? Colors.white
-                    : Colors.transparent,
+                color: isSelected ? Colors.white : Colors.transparent,
                 border: Border.all(
                   color: isSelected
                       ? Colors.white

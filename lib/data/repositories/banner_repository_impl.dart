@@ -23,7 +23,9 @@ class BannerRepositoryImpl {
 
         if (now.difference(cacheTime).inHours < _cacheTtlHours) {
           final List<dynamic> decoded = jsonDecode(cachedData);
-          return decoded.map((json) => BannerAd.fromJson(json as Map<String, dynamic>)).toList();
+          return decoded
+              .map((json) => BannerAd.fromJson(json as Map<String, dynamic>))
+              .toList();
         }
       }
 
@@ -31,8 +33,9 @@ class BannerRepositoryImpl {
       final banners = data.map((json) => BannerAd.fromJson(json)).toList();
 
       // Save to local cache
-      final List<Map<String, dynamic>> serializedBanners =
-          banners.map((b) => b.toJson()).toList();
+      final List<Map<String, dynamic>> serializedBanners = banners
+          .map((b) => b.toJson())
+          .toList();
       await prefs.setString(_cacheKey, jsonEncode(serializedBanners));
       await prefs.setString(_cacheTimeKey, DateTime.now().toIso8601String());
 
@@ -44,7 +47,9 @@ class BannerRepositoryImpl {
         final cachedData = prefs.getString(_cacheKey);
         if (cachedData != null) {
           final List<dynamic> decoded = jsonDecode(cachedData);
-          return decoded.map((json) => BannerAd.fromJson(json as Map<String, dynamic>)).toList();
+          return decoded
+              .map((json) => BannerAd.fromJson(json as Map<String, dynamic>))
+              .toList();
         }
       } catch (_) {
         // Fall through to throw below

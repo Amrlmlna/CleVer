@@ -147,9 +147,9 @@ class WalletPage extends ConsumerWidget {
                       ),
                     );
                   }
-                  
+
                   final latestTransactions = transactions.take(3).toList();
-                  
+
                   return ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -164,7 +164,7 @@ class WalletPage extends ConsumerWidget {
                     itemBuilder: (context, index) {
                       final txn = latestTransactions[index];
                       final isAdd = txn.isAddition;
-                      
+
                       return Row(
                         children: [
                           Container(
@@ -176,7 +176,9 @@ class WalletPage extends ConsumerWidget {
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
-                              isAdd ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded,
+                              isAdd
+                                  ? Icons.arrow_downward_rounded
+                                  : Icons.arrow_upward_rounded,
                               color: isAdd ? Colors.green : Colors.red,
                               size: 16,
                             ),
@@ -187,7 +189,9 @@ class WalletPage extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  txn.type == 'credit_add' ? l10n.topUp : l10n.cvExport,
+                                  txn.type == 'credit_add'
+                                      ? l10n.topUp
+                                      : l10n.cvExport,
                                   style: GoogleFonts.inter(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
@@ -196,7 +200,9 @@ class WalletPage extends ConsumerWidget {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  DateFormat('MMM d, yyyy • h:mm a').format(txn.timestamp),
+                                  DateFormat(
+                                    'MMM d, yyyy • h:mm a',
+                                  ).format(txn.timestamp),
                                   style: GoogleFonts.inter(
                                     fontSize: 12,
                                     color: Colors.white.withValues(alpha: 0.5),

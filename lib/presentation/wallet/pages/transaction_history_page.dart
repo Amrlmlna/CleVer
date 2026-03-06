@@ -11,7 +11,8 @@ class TransactionHistoryPage extends ConsumerStatefulWidget {
   const TransactionHistoryPage({super.key});
 
   @override
-  ConsumerState<TransactionHistoryPage> createState() => _TransactionHistoryPageState();
+  ConsumerState<TransactionHistoryPage> createState() =>
+      _TransactionHistoryPageState();
 }
 
 class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
@@ -19,7 +20,7 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
   late TabController _tabController;
   final ScrollController _exportScrollController = ScrollController();
   final ScrollController _topUpScrollController = ScrollController();
-  
+
   double _exportTopFade = 0.0;
   double _exportBottomFade = 0.0;
   double _topUpTopFade = 0.0;
@@ -29,34 +30,56 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    
-    _exportScrollController.addListener(() => _updateFade(_exportScrollController, (t, b) {
-      setState(() {
-        _exportTopFade = t;
-        _exportBottomFade = b;
-      });
-    }));
 
-    _topUpScrollController.addListener(() => _updateFade(_topUpScrollController, (t, b) {
-      setState(() {
-        _topUpTopFade = t;
-        _topUpBottomFade = b;
-      });
-    }));
-    
+    _exportScrollController.addListener(
+      () => _updateFade(_exportScrollController, (t, b) {
+        setState(() {
+          _exportTopFade = t;
+          _exportBottomFade = b;
+        });
+      }),
+    );
+
+    _topUpScrollController.addListener(
+      () => _updateFade(_topUpScrollController, (t, b) {
+        setState(() {
+          _topUpTopFade = t;
+          _topUpBottomFade = b;
+        });
+      }),
+    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _updateFade(_exportScrollController, (t, b) => setState(() { _exportTopFade = t; _exportBottomFade = b; }));
-      _updateFade(_topUpScrollController, (t, b) => setState(() { _topUpTopFade = t; _topUpBottomFade = b; }));
+      _updateFade(
+        _exportScrollController,
+        (t, b) => setState(() {
+          _exportTopFade = t;
+          _exportBottomFade = b;
+        }),
+      );
+      _updateFade(
+        _topUpScrollController,
+        (t, b) => setState(() {
+          _topUpTopFade = t;
+          _topUpBottomFade = b;
+        }),
+      );
     });
   }
 
-  void _updateFade(ScrollController controller, Function(double, double) onUpdate) {
+  void _updateFade(
+    ScrollController controller,
+    Function(double, double) onUpdate,
+  ) {
     if (!controller.hasClients) return;
-    
+
     final pos = controller.position;
     double topFade = (pos.pixels / 20).clamp(0.0, 1.0);
-    double bottomFade = ((pos.maxScrollExtent - pos.pixels) / 20).clamp(0.0, 1.0);
-    
+    double bottomFade = ((pos.maxScrollExtent - pos.pixels) / 20).clamp(
+      0.0,
+      1.0,
+    );
+
     onUpdate(topFade, bottomFade);
   }
 
@@ -85,7 +108,11 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                 children: [
                   IconButton(
                     onPressed: () => context.pop(),
-                    icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white70, size: 20),
+                    icon: const Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: Colors.white70,
+                      size: 20,
+                    ),
                     style: IconButton.styleFrom(
                       backgroundColor: Colors.white.withValues(alpha: 0.05),
                     ),
@@ -117,7 +144,9 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                   indicator: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.05),
+                    ),
                   ),
                   indicatorSize: TabBarIndicatorSize.tab,
                   dividerColor: Colors.transparent,
@@ -144,19 +173,42 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
             Expanded(
               child: transactionAsync.when(
                 data: (transactions) {
-                  final exports = transactions.where((t) => t.type == 'credit_deduct').toList();
-                  final topUps = transactions.where((t) => t.type == 'credit_add').toList();
+                  final exports = transactions
+                      .where((t) => t.type == 'credit_deduct')
+                      .toList();
+                  final topUps = transactions
+                      .where((t) => t.type == 'credit_add')
+                      .toList();
 
                   return TabBarView(
                     controller: _tabController,
                     children: [
-                      _buildTransactionList(exports, _exportScrollController, _exportTopFade, _exportBottomFade, l10n),
-                      _buildTransactionList(topUps, _topUpScrollController, _topUpTopFade, _topUpBottomFade, l10n),
+                      _buildTransactionList(
+                        exports,
+                        _exportScrollController,
+                        _exportTopFade,
+                        _exportBottomFade,
+                        l10n,
+                      ),
+                      _buildTransactionList(
+                        topUps,
+                        _topUpScrollController,
+                        _topUpTopFade,
+                        _topUpBottomFade,
+                        l10n,
+                      ),
                     ],
                   );
                 },
-                loading: () => const Center(child: CircularProgressIndicator(color: Colors.white24)),
-                error: (err, _) => Center(child: Text(l10n.failedToLoadTransactions, style: const TextStyle(color: Colors.white38))),
+                loading: () => const Center(
+                  child: CircularProgressIndicator(color: Colors.white24),
+                ),
+                error: (err, _) => Center(
+                  child: Text(
+                    l10n.failedToLoadTransactions,
+                    style: const TextStyle(color: Colors.white38),
+                  ),
+                ),
               ),
             ),
           ],
@@ -177,7 +229,11 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.receipt_long_rounded, size: 48, color: Colors.white.withValues(alpha: 0.05)),
+            Icon(
+              Icons.receipt_long_rounded,
+              size: 48,
+              color: Colors.white.withValues(alpha: 0.05),
+            ),
             const SizedBox(height: 16),
             Text(
               l10n.noTransactionsYet,
@@ -194,7 +250,8 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
           controller: controller,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           itemCount: items.length,
-          separatorBuilder: (_, __) => Divider(color: Colors.white.withValues(alpha: 0.03), height: 32),
+          separatorBuilder: (_, __) =>
+              Divider(color: Colors.white.withValues(alpha: 0.03), height: 32),
           itemBuilder: (context, index) {
             final txn = items[index];
             final isAdd = txn.isAddition;
@@ -204,7 +261,9 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: isAdd ? Colors.green.withValues(alpha: 0.08) : Colors.white.withValues(alpha: 0.05),
+                    color: isAdd
+                        ? Colors.green.withValues(alpha: 0.08)
+                        : Colors.white.withValues(alpha: 0.05),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -228,7 +287,9 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        DateFormat('MMMM d, yyyy • HH:mm').format(txn.timestamp),
+                        DateFormat(
+                          'MMMM d, yyyy • HH:mm',
+                        ).format(txn.timestamp),
                         style: GoogleFonts.inter(
                           fontSize: 12,
                           color: Colors.white38,
@@ -262,10 +323,7 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.black,
-                      Colors.black.withValues(alpha: 0),
-                    ],
+                    colors: [Colors.black, Colors.black.withValues(alpha: 0)],
                   ),
                 ),
               ),
@@ -285,10 +343,7 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                   gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                    colors: [
-                      Colors.black,
-                      Colors.black.withValues(alpha: 0),
-                    ],
+                    colors: [Colors.black, Colors.black.withValues(alpha: 0)],
                   ),
                 ),
               ),

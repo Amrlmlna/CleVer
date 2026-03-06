@@ -23,9 +23,7 @@ class FeedbackCTABanner extends ConsumerWidget {
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: isDark ? Colors.white24 : Colors.black12,
-        ),
+        border: Border.all(color: isDark ? Colors.white24 : Colors.black12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,10 +44,10 @@ class FeedbackCTABanner extends ConsumerWidget {
                   size: 28,
                 ),
               ).animate().scale(
-                    delay: 400.ms,
-                    duration: 600.ms,
-                    curve: Curves.easeOutBack,
-                  ),
+                delay: 400.ms,
+                duration: 600.ms,
+                curve: Curves.easeOutBack,
+              ),
               const SizedBox(width: 16),
               Expanded(
                 child: Text(
@@ -96,9 +94,8 @@ class FeedbackCTABanner extends ConsumerWidget {
               TextButton(
                 // Hides the banner until the app is restarted (in-memory)
                 onPressed: () {
-                  ref
-                      .read(feedbackBannerDismissedProvider.notifier)
-                      .state = true;
+                  ref.read(feedbackBannerDismissedProvider.notifier).state =
+                      true;
                 },
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(

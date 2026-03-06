@@ -40,10 +40,7 @@ CustomTransitionPage<void> _buildPage(Widget child, GoRouterState state) {
     transitionDuration: const Duration(milliseconds: 300),
     reverseTransitionDuration: const Duration(milliseconds: 250),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      final curve = CurvedAnimation(
-        parent: animation,
-        curve: Curves.easeOut,
-      );
+      final curve = CurvedAnimation(parent: animation, curve: Curves.easeOut);
       return FadeTransition(
         opacity: curve,
         child: SlideTransition(
@@ -168,7 +165,8 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'history', // Relative to /wallet
                     parentNavigatorKey: _rootNavigatorKey,
-                    pageBuilder: (context, state) => _buildPage(const TransactionHistoryPage(), state),
+                    pageBuilder: (context, state) =>
+                        _buildPage(const TransactionHistoryPage(), state),
                   ),
                 ],
               ),
@@ -207,28 +205,22 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.legal,
-        pageBuilder: (context, state) =>
-            _buildPage(const LegalPage(), state),
+        pageBuilder: (context, state) => _buildPage(const LegalPage(), state),
       ),
       GoRoute(
         path: AppRoutes.jobs,
-        pageBuilder: (context, state) =>
-            _buildPage(const JobListPage(), state),
+        pageBuilder: (context, state) => _buildPage(const JobListPage(), state),
       ),
       GoRoute(
         path: AppRoutes.stats,
-        pageBuilder: (context, state) =>
-            _buildPage(const StatsPage(), state),
+        pageBuilder: (context, state) => _buildPage(const StatsPage(), state),
       ),
 
       GoRoute(
         path: AppRoutes.createJobInput,
         pageBuilder: (context, state) {
           final jobInput = state.extra as JobInput?;
-          return _buildPage(
-            JobInputPage(initialJobInput: jobInput),
-            state,
-          );
+          return _buildPage(JobInputPage(initialJobInput: jobInput), state);
         },
       ),
       GoRoute(
@@ -300,10 +292,7 @@ class _AnimatedBranchContainerState extends State<AnimatedBranchContainer> {
             begin: beginOffset,
             end: Offset.zero,
           ).animate(animation),
-          child: FadeTransition(
-            opacity: animation,
-            child: child,
-          ),
+          child: FadeTransition(opacity: animation, child: child),
         );
       },
       child: KeyedSubtree(

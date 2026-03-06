@@ -12,9 +12,7 @@ class RemoteBannerDataSource {
   Future<List<Map<String, dynamic>>> getActiveBanners() async {
     final response = await client.get(
       Uri.parse('$baseUrl/banners'),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: {'Content-Type': 'application/json'},
     );
 
     if (response.statusCode == 200) {

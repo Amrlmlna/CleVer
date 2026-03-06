@@ -91,7 +91,8 @@ class PaymentService {
       if (offerings.current != null &&
           offerings.current!.availablePackages.isNotEmpty) {
         final package = offerings.current!.availablePackages.firstWhere(
-          (pkg) => pkg.identifier.contains(packageIdentifier) ||
+          (pkg) =>
+              pkg.identifier.contains(packageIdentifier) ||
               pkg.storeProduct.identifier.contains(packageIdentifier),
           orElse: () {
             debugPrint(

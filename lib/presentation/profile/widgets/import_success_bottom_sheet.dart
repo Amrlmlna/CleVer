@@ -37,7 +37,8 @@ class ImportSuccessBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final hasPersonalInfo = extractedProfile.fullName.isNotEmpty ||
+    final hasPersonalInfo =
+        extractedProfile.fullName.isNotEmpty ||
         extractedProfile.email.isNotEmpty;
     final expCount = extractedProfile.experience.length;
     final eduCount = extractedProfile.education.length;
@@ -47,34 +48,44 @@ class ImportSuccessBottomSheet extends StatelessWidget {
     final summaryItems = <_SummaryItem>[];
 
     if (hasPersonalInfo) {
-      summaryItems.add(_SummaryItem(
-        icon: Icons.person_outline,
-        label: l10n.importSuccessPersonalInfo,
-      ));
+      summaryItems.add(
+        _SummaryItem(
+          icon: Icons.person_outline,
+          label: l10n.importSuccessPersonalInfo,
+        ),
+      );
     }
     if (expCount > 0) {
-      summaryItems.add(_SummaryItem(
-        icon: Icons.work_outline,
-        label: l10n.importSuccessExperience(expCount),
-      ));
+      summaryItems.add(
+        _SummaryItem(
+          icon: Icons.work_outline,
+          label: l10n.importSuccessExperience(expCount),
+        ),
+      );
     }
     if (eduCount > 0) {
-      summaryItems.add(_SummaryItem(
-        icon: Icons.school_outlined,
-        label: l10n.importSuccessEducation(eduCount),
-      ));
+      summaryItems.add(
+        _SummaryItem(
+          icon: Icons.school_outlined,
+          label: l10n.importSuccessEducation(eduCount),
+        ),
+      );
     }
     if (skillCount > 0) {
-      summaryItems.add(_SummaryItem(
-        icon: Icons.psychology_outlined,
-        label: l10n.importSuccessSkills(skillCount),
-      ));
+      summaryItems.add(
+        _SummaryItem(
+          icon: Icons.psychology_outlined,
+          label: l10n.importSuccessSkills(skillCount),
+        ),
+      );
     }
     if (certCount > 0) {
-      summaryItems.add(_SummaryItem(
-        icon: Icons.verified_outlined,
-        label: l10n.importSuccessCertifications(certCount),
-      ));
+      summaryItems.add(
+        _SummaryItem(
+          icon: Icons.verified_outlined,
+          label: l10n.importSuccessCertifications(certCount),
+        ),
+      );
     }
 
     return SafeArea(
@@ -84,104 +95,104 @@ class ImportSuccessBottomSheet extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey[700],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.check_rounded,
-                color: Colors.white,
-                size: 32,
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            Text(
-              l10n.importSuccessTitle,
-              style: GoogleFonts.inter(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-                letterSpacing: 0.5,
-              ),
-            ),
-            const SizedBox(height: 6),
-
-            Text(
-              summaryItems.isEmpty
-                  ? l10n.importSuccessNoNewData
-                  : l10n.importSuccessSubtitle,
-              style: TextStyle(fontSize: 13, color: Colors.grey[500]),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-
-            if (summaryItems.isNotEmpty) ...[
               Container(
-                padding: const EdgeInsets.all(16),
+                width: 40,
+                height: 4,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white12),
-                  borderRadius: BorderRadius.circular(14),
-                  color: Colors.white.withValues(alpha: 0.04),
-                ),
-                child: Column(
-                  children: [
-                    for (int i = 0; i < summaryItems.length; i++) ...[
-                      _SummaryRow(item: summaryItems[i]),
-                      if (i < summaryItems.length - 1)
-                        Divider(
-                          color: Colors.white.withValues(alpha: 0.06),
-                          height: 20,
-                        ),
-                    ],
-                  ],
+                  color: Colors.grey[700],
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
               const SizedBox(height: 24),
-            ],
 
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: onContinue,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  elevation: 0,
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
                 ),
-                child: Text(
-                  l10n.importSuccessContinue,
-                  style: GoogleFonts.inter(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.5,
+                child: const Icon(
+                  Icons.check_rounded,
+                  color: Colors.white,
+                  size: 32,
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              Text(
+                l10n.importSuccessTitle,
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              const SizedBox(height: 6),
+
+              Text(
+                summaryItems.isEmpty
+                    ? l10n.importSuccessNoNewData
+                    : l10n.importSuccessSubtitle,
+                style: TextStyle(fontSize: 13, color: Colors.grey[500]),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+
+              if (summaryItems.isNotEmpty) ...[
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white12),
+                    borderRadius: BorderRadius.circular(14),
+                    color: Colors.white.withValues(alpha: 0.04),
+                  ),
+                  child: Column(
+                    children: [
+                      for (int i = 0; i < summaryItems.length; i++) ...[
+                        _SummaryRow(item: summaryItems[i]),
+                        if (i < summaryItems.length - 1)
+                          Divider(
+                            color: Colors.white.withValues(alpha: 0.06),
+                            height: 20,
+                          ),
+                      ],
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+              ],
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: onContinue,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: Text(
+                    l10n.importSuccessContinue,
+                    style: GoogleFonts.inter(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 }
 
 class _SummaryItem {

@@ -118,49 +118,48 @@ class _CreditPurchaseBottomSheetState
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 28),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(2),
+                  Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: 28),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
-                ),
 
-                Text(
-                  l10n.getCredits,
-                  style: GoogleFonts.inter(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                    letterSpacing: -0.5,
+                  Text(
+                    l10n.getCredits,
+                    style: GoogleFonts.inter(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      letterSpacing: -0.5,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                BenefitItem(
-                  icon: Icons.description_outlined,
-                  title: l10n.benefitRegularTitle,
-                  description: l10n.benefitRegularDesc,
-                ),
-                const SizedBox(height: 12),
-                BenefitItem(
-                  icon: Icons.workspace_premium_outlined,
-                  title: l10n.benefitPremiumTitle,
-                  description: l10n.benefitPremiumDesc,
-                ),
-                const SizedBox(height: 12),
-                BenefitItem(
-                  icon: Icons.block_outlined,
-                  title: l10n.benefitSkipAdsTitle,
-                  description: l10n.benefitSkipAdsDesc,
-                ),
+                  BenefitItem(
+                    icon: Icons.description_outlined,
+                    title: l10n.benefitRegularTitle,
+                    description: l10n.benefitRegularDesc,
+                  ),
+                  const SizedBox(height: 12),
+                  BenefitItem(
+                    icon: Icons.workspace_premium_outlined,
+                    title: l10n.benefitPremiumTitle,
+                    description: l10n.benefitPremiumDesc,
+                  ),
+                  const SizedBox(height: 12),
+                  BenefitItem(
+                    icon: Icons.block_outlined,
+                    title: l10n.benefitSkipAdsTitle,
+                    description: l10n.benefitSkipAdsDesc,
+                  ),
 
-                const SizedBox(height: 28),
+                  const SizedBox(height: 28),
 
-                ..._packages.asMap().entries.map(
-                  (entry) {
+                  ..._packages.asMap().entries.map((entry) {
                     final index = entry.key;
                     final pkg = entry.value;
                     final isSelected = _selectedIndex == index;
@@ -175,87 +174,87 @@ class _CreditPurchaseBottomSheetState
                         onTap: () => setState(() => _selectedIndex = index),
                       ),
                     );
-                  },
-                ),
+                  }),
 
-                const SizedBox(height: 28),
+                  const SizedBox(height: 28),
 
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: _isPurchasing ? null : _handlePurchase,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      disabledBackgroundColor:
-                          Colors.white.withValues(alpha: 0.3),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton(
+                      onPressed: _isPurchasing ? null : _handlePurchase,
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        disabledBackgroundColor: Colors.white.withValues(
+                          alpha: 0.3,
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                       ),
-                    ),
-                    child: _isPurchasing
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.black,
+                      child: _isPurchasing
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.black,
+                              ),
+                            )
+                          : Text(
+                              l10n.getCredits,
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
-                          )
-                        : Text(
-                            l10n.getCredits,
-                            style: GoogleFonts.inter(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-
-                SizedBox(
-                  width: double.infinity,
-                  child: TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
-                    child: Text(
-                      l10n.skipForNow,
-                      style: GoogleFonts.inter(
-                        fontSize: 15,
-                        color: Colors.white.withValues(alpha: 0.4),
-                        fontWeight: FontWeight.w500,
-                      ),
                     ),
                   ),
-                ),
+                  const SizedBox(height: 12),
 
-                const SizedBox(height: 8),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.lock_outline_rounded,
-                      size: 12,
-                      color: Colors.white.withValues(alpha: 0.25),
+                  SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: Text(
+                        l10n.skipForNow,
+                        style: GoogleFonts.inter(
+                          fontSize: 15,
+                          color: Colors.white.withValues(alpha: 0.4),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
-                    const SizedBox(width: 6),
-                    Text(
-                      l10n.securePayment,
-                      style: GoogleFonts.inter(
-                        fontSize: 11,
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.lock_outline_rounded,
+                        size: 12,
                         color: Colors.white.withValues(alpha: 0.25),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      const SizedBox(width: 6),
+                      Text(
+                        l10n.securePayment,
+                        style: GoogleFonts.inter(
+                          fontSize: 11,
+                          color: Colors.white.withValues(alpha: 0.25),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
         ),
       ),
     );

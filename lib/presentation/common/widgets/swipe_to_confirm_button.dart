@@ -129,18 +129,20 @@ class _SwipeToConfirmButtonState extends State<SwipeToConfirmButton> {
                               color: Colors.black.withValues(alpha: 0.2),
                               blurRadius: 8,
                               offset: const Offset(2, 0),
-                            )
+                            ),
                           ],
                         ),
-                        child: const Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: Colors.cyanAccent,
-                          size: 18,
-                        )
-                            .animate(
-                                onPlay: (controller) => controller.repeat())
-                            .moveX(begin: -2, end: 4, duration: 1.seconds)
-                            .fade(begin: 0.3, end: 1.0),
+                        child:
+                            const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Colors.cyanAccent,
+                                  size: 18,
+                                )
+                                .animate(
+                                  onPlay: (controller) => controller.repeat(),
+                                )
+                                .moveX(begin: -2, end: 4, duration: 1.seconds)
+                                .fade(begin: 0.3, end: 1.0),
                       ),
                     ),
                   ),

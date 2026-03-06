@@ -228,15 +228,22 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
             width: double.infinity,
             height: 56,
             child: SwipeToConfirmButton(
-              isLoading: downloadState.status == DownloadStatus.generating ||
+              isLoading:
+                  downloadState.status == DownloadStatus.generating ||
                   _isUploading,
               onConfirm: _handleDownload,
               child: downloadState.status == DownloadStatus.generating
                   ? SpinningTextLoader(
                       texts: [
-                        AppLocalizations.of(context)!.generatingPdfBadge.toUpperCase(),
-                        AppLocalizations.of(context)!.processingData.toUpperCase(),
-                        AppLocalizations.of(context)!.finalizingPdf.toUpperCase(),
+                        AppLocalizations.of(
+                          context,
+                        )!.generatingPdfBadge.toUpperCase(),
+                        AppLocalizations.of(
+                          context,
+                        )!.processingData.toUpperCase(),
+                        AppLocalizations.of(
+                          context,
+                        )!.finalizingPdf.toUpperCase(),
                       ],
                       style: GoogleFonts.inter(
                         color: Colors.black,
@@ -251,9 +258,9 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                             ref.watch(templatesProvider).valueOrNull ?? [];
                         if (currentTemplates.isEmpty) {
                           return Text(
-                            AppLocalizations.of(context)!
-                                .exportPdf
-                                .toUpperCase(),
+                            AppLocalizations.of(
+                              context,
+                            )!.exportPdf.toUpperCase(),
                             style: GoogleFonts.inter(
                               color: Colors.black,
                               fontWeight: FontWeight.w800,
@@ -277,13 +284,18 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                               children: [
                                 Text(
                                   currentTemplate.hasFreeGeneration
-                                      ? AppLocalizations.of(context)!
-                                          .generateCvFree
-                                          .toUpperCase()
+                                      ? AppLocalizations.of(
+                                          context,
+                                        )!.generateCvFree.toUpperCase()
                                       : AppLocalizations.of(context)!
-                                          .generateCvCost(0) // We only use this for baseline translation, bypassing the cost parser safely as it was removed from the arb payload.
-                                          .replaceAll(RegExp(r'\s*\(.*?\)'), '')
-                                          .toUpperCase(),
+                                            .generateCvCost(
+                                              0,
+                                            ) // We only use this for baseline translation, bypassing the cost parser safely as it was removed from the arb payload.
+                                            .replaceAll(
+                                              RegExp(r'\s*\(.*?\)'),
+                                              '',
+                                            )
+                                            .toUpperCase(),
                                   style: GoogleFonts.inter(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w800,
@@ -320,7 +332,8 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                                 padding: const EdgeInsets.only(top: 2.0),
                                 child: Text(
                                   AppLocalizations.of(context)!.freeExportsLeft(
-                                      2 - currentTemplate.currentUsage),
+                                    2 - currentTemplate.currentUsage,
+                                  ),
                                   style: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600,

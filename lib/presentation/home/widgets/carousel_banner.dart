@@ -43,7 +43,8 @@ class _CarouselBannerState extends ConsumerState<CarouselBanner> {
                 final banner = banners[index];
                 return GestureDetector(
                   onTap: () async {
-                    if (banner.redirectUrl != null && banner.redirectUrl!.isNotEmpty) {
+                    if (banner.redirectUrl != null &&
+                        banner.redirectUrl!.isNotEmpty) {
                       final url = Uri.parse(banner.redirectUrl!);
                       if (await canLaunchUrl(url)) {
                         await launchUrl(url);
@@ -93,7 +94,9 @@ class _CarouselBannerState extends ConsumerState<CarouselBanner> {
         height: 180,
         margin: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
-          color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05),
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.05)
+              : Colors.black.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Center(
