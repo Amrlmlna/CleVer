@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-/// Domain entity representing an authenticated user.
 class AppUser extends Equatable {
   final String uid;
   final String email;

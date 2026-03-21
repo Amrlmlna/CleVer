@@ -78,7 +78,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         await authRepo.sendEmailVerification();
 
         popLoadingScreen();
-        // Wait for the loading screen to animate out before opening the bottom sheet
         await Future.delayed(const Duration(milliseconds: 300));
 
         if (mounted) {

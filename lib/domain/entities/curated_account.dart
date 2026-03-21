@@ -4,7 +4,7 @@ class CuratedAccount extends Equatable {
   final String id;
   final String name;
   final String handle;
-  final String platform; // 'instagram', 'tiktok', 'linkedin'
+  final String platform;
   final String url;
   final String description;
   final List<String> tags;

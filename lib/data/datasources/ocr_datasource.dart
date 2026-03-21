@@ -9,7 +9,6 @@ class OCRDataSource {
   final _textRecognizer = TextRecognizer();
   final _imagePicker = ImagePicker();
 
-  /// Extract text from an image using ML Kit
   Future<String?> extractTextFromImage(ImageSource source) async {
     try {
       debugPrint('[OCRDataSource] Starting image picker with source: $source');

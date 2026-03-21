@@ -5,11 +5,11 @@ class JobPosting extends Equatable {
   final String title;
   final String company;
   final String description;
-  final String source; // 'api', 'manual'
+  final String source;
   final String sourceUrl;
   final DateTime postedAt;
   final String? location;
-  final String? employmentType; // full-time, part-time, etc
+  final String? employmentType;
   final List<String>? requirements;
 
   const JobPosting({
