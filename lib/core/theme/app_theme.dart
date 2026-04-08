@@ -6,15 +6,15 @@ class AppTheme {
   // Light Theme Configuration
   static ThemeData get lightTheme {
     final colorScheme = ColorScheme.light(
-      primary: AppColors.primaryBlue,
+      primary: AppColors.primaryLight, // Black
       onPrimary: AppColors.white,
-      secondary: AppColors.grey900, // Used to be secondaryColor
-      onSecondary: AppColors.white,
+      secondary: AppColors.grey200,
+      onSecondary: AppColors.grey900,
       surface: AppColors.surfaceLight,
       onSurface: AppColors.grey900,
       error: AppColors.error,
       onError: AppColors.white,
-      surfaceContainerHighest: AppColors.grey100, // Useful for filled text fields
+      surfaceContainerHighest: AppColors.grey100,
     );
 
     final textTheme = TextTheme(
@@ -131,15 +131,15 @@ class AppTheme {
   // Dark Theme Configuration
   static ThemeData get darkTheme {
     final colorScheme = ColorScheme.dark(
-      primary: AppColors.primaryBlue, // Keep blue vibrant in dark mode too
-      onPrimary: AppColors.white,
-      secondary: AppColors.surfaceDark,
+      primary: AppColors.primaryDark, // White
+      onPrimary: AppColors.black,
+      secondary: AppColors.grey800,
       onSecondary: AppColors.white,
       surface: AppColors.surfaceDark,
       onSurface: AppColors.white,
       error: AppColors.error,
-      onError: AppColors.white,
-      surfaceContainerHighest: const Color(0xFF2C2C2C), // Input fill color
+      onError: AppColors.black,
+      surfaceContainerHighest: const Color(0xFF2C2C2C),
     );
 
     final textTheme = TextTheme(
