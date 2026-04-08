@@ -53,16 +53,16 @@ class DraftsContent extends StatelessWidget {
                   ),
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)!.searchJob,
-                  hintStyle: TextStyle(color: Colors.grey[600]),
-                  prefixIcon: Icon(Icons.search, color: Colors.grey[500]),
+                  hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurfaceVariant),
                   filled: true,
-                  fillColor: Colors.white.withValues(alpha: 0.06),
+                  fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
                 ),
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                 onChanged: onSearchChanged,
               ),
               const SizedBox(height: 16),
@@ -70,17 +70,17 @@ class DraftsContent extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
                     onPressed: () => onFolderSelected(null),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       selectedFolderName!,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 18,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -143,9 +143,9 @@ class DraftsContent extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.04),
+              color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+              border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,10 +153,10 @@ class DraftsContent extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -169,14 +169,14 @@ class DraftsContent extends StatelessWidget {
                         vertical: 3,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.08),
+                        color: Theme.of(context).colorScheme.surfaceContainerHighest,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         '$count draft${count != 1 ? 's' : ''}',
                         style: TextStyle(
                           fontSize: 11,
-                          color: Colors.grey[400],
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -185,7 +185,7 @@ class DraftsContent extends StatelessWidget {
                     Icon(
                       Icons.chevron_right,
                       size: 16,
-                      color: Colors.grey[600],
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ],
                 ),
@@ -222,10 +222,10 @@ class DraftsContent extends StatelessWidget {
             alignment: Alignment.centerRight,
             padding: const EdgeInsets.only(right: 20),
             decoration: BoxDecoration(
-              color: Colors.red,
+              color: Theme.of(context).colorScheme.error,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.delete, color: Colors.white),
+            child: Icon(Icons.delete, color: Theme.of(context).colorScheme.onError),
           ),
           onDismissed: (_) {
             onDraftDeleted(draft.id);
@@ -235,9 +235,7 @@ class DraftsContent extends StatelessWidget {
               color: Theme.of(context).cardTheme.color,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white.withValues(alpha: 0.05)
-                    : Colors.grey.shade200,
+                color: Theme.of(context).colorScheme.outlineVariant,
               ),
             ),
             child: ListTile(
@@ -245,12 +243,10 @@ class DraftsContent extends StatelessWidget {
               leading: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.blue.withValues(alpha: 0.2)
-                      : Colors.blue[50],
+                  color: Theme.of(context).colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.description, color: Colors.blue),
+                child: Icon(Icons.description, color: Theme.of(context).colorScheme.primary),
               ),
               title: Text(
                 title,
@@ -262,16 +258,16 @@ class DraftsContent extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     'Template: $templateName',
-                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                    style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     '${AppLocalizations.of(context)!.created} ${timeago.format(draft.createdAt)}',
-                    style: TextStyle(fontSize: 11, color: Colors.grey[500]),
+                    style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.onSurfaceVariant),
                   ),
                 ],
               ),
-              trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+              trailing: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurfaceVariant),
               onTap: () => onDraftSelected(draft),
             ),
           ),
