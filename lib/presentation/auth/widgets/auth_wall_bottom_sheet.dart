@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../../profile/providers/profile_sync_provider.dart';
 import '../providers/auth_state_provider.dart';
@@ -142,7 +141,7 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                   widget.featureTitle ??
                       AppLocalizations.of(context)!.loginToSave,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.inter(
+                  style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
@@ -154,7 +153,7 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                   widget.featureDescription ??
                       AppLocalizations.of(context)!.syncAnywhere,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.inter(
+                  style: TextStyle(
                     fontSize: 14,
                     color: Colors.white.withValues(alpha: 0.6),
                     height: 1.4,
@@ -202,9 +201,9 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                       },
                       child: Text(
                         AppLocalizations.of(context)!.signUp,
-                        style: GoogleFonts.inter(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF5EEAD4),
+                          color: Color(0xFF5EEAD4),
                           fontSize: 14,
                         ),
                       ),

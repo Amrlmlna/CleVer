@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import '../../../core/utils/custom_snackbar.dart';
 import '../../profile/providers/profile_sync_provider.dart';
 import '../../common/widgets/app_loading_screen.dart';
@@ -172,8 +172,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -181,7 +179,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: isDark ? Colors.white : Colors.black,
+            color: Theme.of(context).iconTheme.color,
           ),
           onPressed: () => context.pop(),
         ),
@@ -202,10 +200,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     const SizedBox(width: 12),
                     Text(
                       'clever',
-                      style: GoogleFonts.inter(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ],
                 ),
@@ -213,16 +208,15 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 Text(
                   AppLocalizations.of(context)!.createAccount,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.inter(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   AppLocalizations.of(context)!.createAccountSubtitle,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.inter(color: Colors.grey, fontSize: 16),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                      ),
                 ),
                 const SizedBox(height: 32),
 
@@ -231,14 +225,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.fullName,
                     prefixIcon: const Icon(Icons.person_outline),
-                    filled: true,
-                    fillColor: isDark
-                        ? const Color(0xFF1E1E1E)
-                        : Colors.grey.shade100,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
-                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -255,14 +241,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.email,
                     prefixIcon: const Icon(Icons.email_outlined),
-                    filled: true,
-                    fillColor: isDark
-                        ? const Color(0xFF1E1E1E)
-                        : Colors.grey.shade100,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
-                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -279,10 +257,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.password,
                     prefixIcon: const Icon(Icons.lock_outline),
-                    filled: true,
-                    fillColor: isDark
-                        ? const Color(0xFF1E1E1E)
-                        : Colors.grey.shade100,
                     suffixIcon: IconButton(
                       icon: Icon(
                         _isPasswordVisible
@@ -294,10 +268,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                           _isPasswordVisible = !_isPasswordVisible;
                         });
                       },
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
                     ),
                   ),
                   validator: (value) {
@@ -324,19 +294,21 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   children: [
                     Expanded(
                       child: Divider(
-                        color: isDark ? Colors.white24 : Colors.black12,
+                        color: Theme.of(context).dividerTheme.color,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
                         AppLocalizations.of(context)!.or,
-                        style: TextStyle(color: Colors.grey.shade600),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            ),
                       ),
                     ),
                     Expanded(
                       child: Divider(
-                        color: isDark ? Colors.white24 : Colors.black12,
+                        color: Theme.of(context).dividerTheme.color,
                       ),
                     ),
                   ],
@@ -363,7 +335,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                       onPressed: () => context.go('/login'),
                       child: Text(
                         AppLocalizations.of(context)!.logIn,
-                        style: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

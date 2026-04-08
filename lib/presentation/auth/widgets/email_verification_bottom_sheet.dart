@@ -116,9 +116,9 @@ class _EmailVerificationBottomSheetState
     final email = user?.email ?? '';
 
     return Container(
-      decoration: const BoxDecoration(
-        color: Color(0xFF121212),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
       ),
       padding: EdgeInsets.fromLTRB(
         24,
@@ -133,7 +133,7 @@ class _EmailVerificationBottomSheetState
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.white24,
+               color: Theme.of(context).dividerTheme.color ?? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -142,10 +142,8 @@ class _EmailVerificationBottomSheetState
           Text(
             widget.title ?? AppLocalizations.of(context)!.verifyYourEmail,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 24,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
-              color: Colors.white,
             ),
           ),
           const SizedBox(height: 12),
@@ -154,7 +152,9 @@ class _EmailVerificationBottomSheetState
             widget.description ??
                 AppLocalizations.of(context)!.verificationSentTo(email),
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14, color: Colors.white60),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
           ),
 
           if (widget.extensionContent != null) ...[
@@ -167,14 +167,16 @@ class _EmailVerificationBottomSheetState
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.05),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+              border: Border.all(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1)),
             ),
             child: Text(
               AppLocalizations.of(context)!.checkSpamFolder,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white38, fontSize: 13),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+              ),
             ),
           ),
           const SizedBox(height: 40),
@@ -185,8 +187,8 @@ class _EmailVerificationBottomSheetState
             child: ElevatedButton(
               onPressed: _isChecking ? null : _checkStatus,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -198,9 +200,9 @@ class _EmailVerificationBottomSheetState
                         AppLocalizations.of(context)!.validatingLink,
                         AppLocalizations.of(context)!.almostThere,
                       ],
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     )
                   : Text(
@@ -220,8 +222,8 @@ class _EmailVerificationBottomSheetState
               _isResending
                   ? AppLocalizations.of(context)!.sending
                   : AppLocalizations.of(context)!.resendEmail,
-              style: const TextStyle(
-                color: Colors.white70,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.w600,
               ),
             ),

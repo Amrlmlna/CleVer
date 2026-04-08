@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import '../../../core/utils/custom_snackbar.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../../profile/providers/profile_sync_provider.dart';
@@ -168,8 +168,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -187,10 +185,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     const SizedBox(width: 12),
                     Text(
                       'clever',
-                      style: GoogleFonts.inter(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ],
                 ),
@@ -198,16 +193,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 Text(
                   AppLocalizations.of(context)!.welcomeBack,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.inter(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   AppLocalizations.of(context)!.signInSubtitle,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.inter(color: Colors.grey, fontSize: 16),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                      ),
                 ),
                 const SizedBox(height: 48),
 
@@ -217,14 +211,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.email,
                     prefixIcon: const Icon(Icons.email_outlined),
-                    filled: true,
-                    fillColor: isDark
-                        ? const Color(0xFF1E1E1E)
-                        : Colors.grey.shade100,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
-                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -241,10 +227,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.password,
                     prefixIcon: const Icon(Icons.lock_outline),
-                    filled: true,
-                    fillColor: isDark
-                        ? const Color(0xFF1E1E1E)
-                        : Colors.grey.shade100,
                     suffixIcon: IconButton(
                       icon: Icon(
                         _isPasswordVisible
@@ -256,10 +238,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           _isPasswordVisible = !_isPasswordVisible;
                         });
                       },
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
                     ),
                   ),
                   validator: (value) {
@@ -283,19 +261,21 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   children: [
                     Expanded(
                       child: Divider(
-                        color: isDark ? Colors.white24 : Colors.black12,
+                        color: Theme.of(context).dividerTheme.color,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
                         AppLocalizations.of(context)!.or,
-                        style: TextStyle(color: Colors.grey.shade600),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            ),
                       ),
                     ),
                     Expanded(
                       child: Divider(
-                        color: isDark ? Colors.white24 : Colors.black12,
+                        color: Theme.of(context).dividerTheme.color,
                       ),
                     ),
                   ],
@@ -323,7 +303,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       onPressed: () => context.push('/signup'),
                       child: Text(
                         AppLocalizations.of(context)!.signUp,
-                        style: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'package:google_fonts/google_fonts.dart';
 
 class GradientButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -74,7 +73,7 @@ class GradientButton extends StatelessWidget {
                         ],
                         Text(
                           text,
-                          style: GoogleFonts.inter(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,

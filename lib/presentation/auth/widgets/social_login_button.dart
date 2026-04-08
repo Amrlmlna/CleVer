@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SocialLoginButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -17,11 +16,9 @@ class SocialLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade100,
+        color: Theme.of(context).colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(30),
       ),
       child: Material(
@@ -45,8 +42,7 @@ class SocialLoginButton extends StatelessWidget {
                   const SizedBox(width: 12),
                   Text(
                     text,
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
                   ),
