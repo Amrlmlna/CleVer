@@ -24,7 +24,7 @@ class ExperienceBottomSheet extends ConsumerStatefulWidget {
     return showModalBottomSheet<Experience>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF1E1E1E),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       isDismissible: false,
       enableDrag: false,
       shape: const RoundedRectangleBorder(
@@ -121,14 +121,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
       lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
-          data: ThemeData.dark().copyWith(
-            colorScheme: const ColorScheme.dark(
-              primary: Colors.white,
-              onPrimary: Colors.black,
-              surface: Color(0xFF1E1E1E),
-              onSurface: Colors.white,
-            ),
-          ),
+          data: Theme.of(context),
           child: child!,
         );
       },
@@ -200,7 +193,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                         width: 40,
                         height: 4,
                         decoration: BoxDecoration(
-                          color: Colors.grey[700],
+                          color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -212,7 +205,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                         ? localization.addExperience
                         : localization.editExperienceTitle,
                     style: GoogleFonts.inter(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.w700,
                       fontSize: 20,
                       letterSpacing: -0.5,
@@ -273,7 +266,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                       Text(
                         localization.shortDescription,
                         style: GoogleFonts.inter(
-                          color: Colors.white70,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
                         ),
@@ -289,7 +282,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                                   localization.polishing,
                                 ],
                                 style: GoogleFonts.inter(
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.onSurface,
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -298,15 +291,15 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                             )
                           : TextButton.icon(
                               onPressed: _rewriteDescription,
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.auto_awesome,
                                 size: 14,
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                               label: Text(
                                 localization.rewriteAI,
                                 style: GoogleFonts.inter(
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.onSurface,
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -335,8 +328,8 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                     child: ElevatedButton(
                       onPressed: _save,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -363,7 +356,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                       child: Text(
                         localization.cancel.toUpperCase(),
                         style: GoogleFonts.inter(
-                          color: Colors.white.withValues(alpha: 0.5),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontWeight: FontWeight.w600,
                           fontSize: 15,
                         ),

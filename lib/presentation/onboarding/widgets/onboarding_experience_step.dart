@@ -37,7 +37,6 @@ class OnboardingExperienceStep extends StatelessWidget {
           ExperienceListForm(
             experiences: experiences,
             onChanged: onChanged,
-            isDark: true,
           ),
         ],
       ),

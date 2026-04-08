@@ -37,7 +37,6 @@ class OnboardingEducationStep extends StatelessWidget {
           EducationListForm(
             education: education,
             onChanged: onChanged,
-            isDark: true,
           ),
         ],
       ),

@@ -8,13 +8,11 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 class EducationListForm extends StatefulWidget {
   final List<Education> education;
   final Function(List<Education>) onChanged;
-  final bool isDark;
 
   const EducationListForm({
     super.key,
     required this.education,
     required this.onChanged,
-    this.isDark = false,
   });
 
   @override
@@ -68,7 +66,7 @@ class _EducationListFormState extends State<EducationListForm> {
             onPressed: () => Navigator.pop(context, true),
             child: Text(
               AppLocalizations.of(context)!.delete,
-              style: const TextStyle(color: Colors.red),
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
           ),
         ],
@@ -84,9 +82,6 @@ class _EducationListFormState extends State<EducationListForm> {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveIsDark =
-        widget.isDark || Theme.of(context).brightness == Brightness.dark;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -98,29 +93,23 @@ class _EducationListFormState extends State<EducationListForm> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
-                color: effectiveIsDark ? Colors.white : Colors.black,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             TextButton.icon(
               onPressed: () => _editEducation(),
               icon: Icon(
                 Icons.add,
-                color: effectiveIsDark
-                    ? Colors.white
-                    : Theme.of(context).primaryColor,
+                color: Theme.of(context).colorScheme.primary,
               ),
               label: Text(
                 AppLocalizations.of(context)!.add,
                 style: TextStyle(
-                  color: effectiveIsDark
-                      ? Colors.white
-                      : Theme.of(context).primaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               style: TextButton.styleFrom(
-                backgroundColor: effectiveIsDark
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.grey[100],
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -134,7 +123,7 @@ class _EducationListFormState extends State<EducationListForm> {
             child: Text(
               AppLocalizations.of(context)!.noEducation,
               style: TextStyle(
-                color: effectiveIsDark ? Colors.white54 : Colors.grey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -147,24 +136,24 @@ class _EducationListFormState extends State<EducationListForm> {
             final edu = widget.education[index];
             return Card(
               margin: EdgeInsets.zero,
-              color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white,
+              color: Theme.of(context).cardTheme.color,
               child: ListTile(
                 title: Text(
                   edu.schoolName,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: effectiveIsDark ? Colors.white : Colors.black,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 subtitle: Text(
                   '${edu.degree}\n${edu.startDate} - ${edu.endDate ?? AppLocalizations.of(context)!.present}',
                   style: TextStyle(
-                    color: effectiveIsDark ? Colors.white70 : Colors.black87,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
                 isThreeLine: true,
                 trailing: IconButton(
-                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                  icon: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.error),
                   onPressed: () => _removeEducation(index),
                 ),
                 onTap: () => _editEducation(existing: edu, index: index),

@@ -37,7 +37,6 @@ class OnboardingCertificationStep extends StatelessWidget {
           CertificationListForm(
             certifications: certifications,
             onChanged: onChanged,
-            isDark: true,
           ),
         ],
       ),

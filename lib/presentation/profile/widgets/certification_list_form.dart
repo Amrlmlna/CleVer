@@ -7,13 +7,11 @@ import '../../../../core/utils/custom_snackbar.dart';
 class CertificationListForm extends StatefulWidget {
   final List<Certification> certifications;
   final Function(List<Certification>) onChanged;
-  final bool isDark;
 
   const CertificationListForm({
     super.key,
     required this.certifications,
     required this.onChanged,
-    this.isDark = false,
   });
 
   @override
@@ -70,7 +68,7 @@ class _CertificationListFormState extends State<CertificationListForm> {
             onPressed: () => Navigator.pop(context, true),
             child: Text(
               AppLocalizations.of(context)!.delete,
-              style: const TextStyle(color: Colors.red),
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
           ),
         ],
@@ -86,9 +84,6 @@ class _CertificationListFormState extends State<CertificationListForm> {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveIsDark =
-        widget.isDark || Theme.of(context).brightness == Brightness.dark;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -100,29 +95,23 @@ class _CertificationListFormState extends State<CertificationListForm> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
-                color: effectiveIsDark ? Colors.white : Colors.black,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             TextButton.icon(
               onPressed: () => _editCertification(),
               icon: Icon(
                 Icons.add,
-                color: effectiveIsDark
-                    ? Colors.white
-                    : Theme.of(context).primaryColor,
+                color: Theme.of(context).colorScheme.primary,
               ),
               label: Text(
                 AppLocalizations.of(context)!.add,
                 style: TextStyle(
-                  color: effectiveIsDark
-                      ? Colors.white
-                      : Theme.of(context).primaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               style: TextButton.styleFrom(
-                backgroundColor: effectiveIsDark
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.grey[100],
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -136,7 +125,7 @@ class _CertificationListFormState extends State<CertificationListForm> {
             child: Text(
               AppLocalizations.of(context)!.noCertifications,
               style: TextStyle(
-                color: effectiveIsDark ? Colors.white54 : Colors.grey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -149,23 +138,23 @@ class _CertificationListFormState extends State<CertificationListForm> {
             final cert = widget.certifications[index];
             return Card(
               margin: EdgeInsets.zero,
-              color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white,
+              color: Theme.of(context).cardTheme.color,
               child: ListTile(
                 title: Text(
                   cert.name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: effectiveIsDark ? Colors.white : Colors.black,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 subtitle: Text(
                   '${cert.issuer} • ${cert.date.year}',
                   style: TextStyle(
-                    color: effectiveIsDark ? Colors.white70 : Colors.black87,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
                 trailing: IconButton(
-                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                  icon: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.error),
                   onPressed: () => _removeCertification(index),
                 ),
                 onTap: () => _editCertification(existing: cert, index: index),

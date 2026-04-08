@@ -18,7 +18,7 @@ class CertificationBottomSheet extends StatefulWidget {
     return showModalBottomSheet<Certification>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF1E1E1E),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       isDismissible: false,
       enableDrag: false,
       shape: const RoundedRectangleBorder(
@@ -104,14 +104,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
       lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
-          data: ThemeData.dark().copyWith(
-            colorScheme: const ColorScheme.dark(
-              primary: Colors.white,
-              onPrimary: Colors.black,
-              surface: Color(0xFF1E1E1E),
-              onSurface: Colors.white,
-            ),
-          ),
+          data: Theme.of(context),
           child: child!,
         );
       },
@@ -150,7 +143,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                         width: 40,
                         height: 4,
                         decoration: BoxDecoration(
-                          color: Colors.grey[700],
+                          color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -162,7 +155,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                         ? localization.addCertification
                         : localization.editCertification,
                     style: GoogleFonts.inter(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.w700,
                       fontSize: 20,
                       letterSpacing: -0.5,
@@ -196,14 +189,14 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white24),
+                        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.calendar_today_outlined,
-                            color: Colors.white70,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                             size: 20,
                           ),
                           const SizedBox(width: 12),
@@ -212,15 +205,15 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                             children: [
                               Text(
                                 localization.dateLabel,
-                                style: const TextStyle(
-                                  color: Colors.white54,
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                                   fontSize: 12,
                                 ),
                               ),
                               Text(
                                 '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
-                                style: const TextStyle(
-                                  color: Colors.white,
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.onSurface,
                                   fontSize: 15,
                                 ),
                               ),
@@ -236,8 +229,8 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                     child: ElevatedButton(
                       onPressed: _save,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -264,7 +257,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                       child: Text(
                         localization.cancel.toUpperCase(),
                         style: GoogleFonts.inter(
-                          color: Colors.white.withValues(alpha: 0.5),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontWeight: FontWeight.w600,
                           fontSize: 15,
                         ),

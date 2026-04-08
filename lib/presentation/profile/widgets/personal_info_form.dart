@@ -95,12 +95,12 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                   onTap: _pickAndUploadImage,
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundColor: Colors.grey[850],
+                    backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                     backgroundImage: photoUrl != null
                         ? NetworkImage(photoUrl)
                         : null,
                     child: photoUrl == null && !_isUploading
-                        ? const Icon(Icons.person, size: 50, color: Colors.grey)
+                        ? Icon(Icons.person, size: 50, color: Theme.of(context).colorScheme.onSurfaceVariant)
                         : null,
                   ),
                 ),
@@ -121,9 +121,7 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                         color: Theme.of(context).primaryColor,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white.withValues(alpha: 0.2)
-                              : Colors.black.withValues(alpha: 0.1),
+                          color: Theme.of(context).colorScheme.outlineVariant,
                           width: 1.0,
                         ),
                         boxShadow: [
@@ -209,10 +207,10 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                 isExpanded: true,
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.gender,
-                  labelStyle: TextStyle(color: Colors.grey[400]),
+                  labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
                   prefixIcon: Icon(
                     Icons.person_search_outlined,
-                    color: Colors.grey[400],
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -224,21 +222,21 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
-                      color: Colors.white54,
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.primary,
                       width: 1.5,
                     ),
                   ),
                   filled: true,
-                  fillColor: const Color(0xFF2C2C2C),
+                  fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 16,
                   ),
                 ),
-                dropdownColor: const Color(0xFF1E1E1E),
-                style: const TextStyle(color: Colors.white),
-                iconEnabledColor: Colors.grey[400],
+                dropdownColor: Theme.of(context).cardTheme.color,
+                style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                iconEnabledColor: Theme.of(context).colorScheme.onSurfaceVariant,
                 items: [
                   DropdownMenuItem(
                     value: 'Male',

@@ -20,7 +20,7 @@ class ImportSuccessBottomSheet extends StatelessWidget {
   }) {
     return showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E1E1E),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -99,7 +99,7 @@ class ImportSuccessBottomSheet extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey[700],
+                  color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -109,12 +109,12 @@ class ImportSuccessBottomSheet extends StatelessWidget {
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.1),
+                  color: Theme.of(context).colorScheme.primaryContainer,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.check_rounded,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
                   size: 32,
                 ),
               ),
@@ -125,7 +125,7 @@ class ImportSuccessBottomSheet extends StatelessWidget {
                 style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onSurface,
                   letterSpacing: 0.5,
                 ),
               ),
@@ -135,7 +135,7 @@ class ImportSuccessBottomSheet extends StatelessWidget {
                 summaryItems.isEmpty
                     ? l10n.importSuccessNoNewData
                     : l10n.importSuccessSubtitle,
-                style: TextStyle(fontSize: 13, color: Colors.grey[500]),
+                style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onSurfaceVariant),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
@@ -144,9 +144,9 @@ class ImportSuccessBottomSheet extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white12),
+                    border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                     borderRadius: BorderRadius.circular(14),
-                    color: Colors.white.withValues(alpha: 0.04),
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                   ),
                   child: Column(
                     children: [
@@ -154,7 +154,7 @@ class ImportSuccessBottomSheet extends StatelessWidget {
                         _SummaryRow(item: summaryItems[i]),
                         if (i < summaryItems.length - 1)
                           Divider(
-                            color: Colors.white.withValues(alpha: 0.06),
+                            color: Theme.of(context).colorScheme.outlineVariant,
                             height: 20,
                           ),
                       ],
@@ -169,8 +169,8 @@ class ImportSuccessBottomSheet extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: onContinue,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
@@ -211,13 +211,13 @@ class _SummaryRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(item.icon, color: Colors.white70, size: 20),
+        Icon(item.icon, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20),
         const SizedBox(width: 12),
         Text(
           item.label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 14,
-            color: Colors.white70,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w500,
           ),
         ),

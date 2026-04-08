@@ -15,39 +15,22 @@ class SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Container(
       decoration: BoxDecoration(
-        color:
-            Theme.of(context).cardTheme.color ??
-            (isDark ? const Color(0xFF1E1E1E) : Colors.white),
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(16),
-        border: isDark
-            ? Border.all(color: Colors.white.withValues(alpha: 0.05))
-            : Border.all(color: Colors.grey.shade200),
-        boxShadow: isDark
-            ? []
-            : [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
       ),
       child: ExpansionTile(
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: isDark
-                ? Colors.white.withValues(alpha: 0.1)
-                : Colors.black.withValues(alpha: 0.05),
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
-            color: isDark ? Colors.white : Colors.black,
+            color: Theme.of(context).colorScheme.onSurface,
             size: 20,
           ),
         ),
@@ -55,7 +38,7 @@ class SectionCard extends StatelessWidget {
           title,
           style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : Colors.black,
+            color: Theme.of(context).colorScheme.onSurface,
             fontSize: 16,
           ),
         ),

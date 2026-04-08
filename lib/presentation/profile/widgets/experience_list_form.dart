@@ -7,13 +7,11 @@ import '../../../../core/utils/custom_snackbar.dart';
 class ExperienceListForm extends StatefulWidget {
   final List<Experience> experiences;
   final Function(List<Experience>) onChanged;
-  final bool isDark;
 
   const ExperienceListForm({
     super.key,
     required this.experiences,
     required this.onChanged,
-    this.isDark = false,
   });
 
   @override
@@ -72,7 +70,7 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
             onPressed: () => Navigator.pop(context, true),
             child: Text(
               AppLocalizations.of(context)!.delete,
-              style: const TextStyle(color: Colors.red),
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
           ),
         ],
@@ -88,9 +86,6 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveIsDark =
-        widget.isDark || Theme.of(context).brightness == Brightness.dark;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -102,29 +97,23 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
-                color: effectiveIsDark ? Colors.white : Colors.black,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             TextButton.icon(
               onPressed: () => _editExperience(),
               icon: Icon(
                 Icons.add,
-                color: effectiveIsDark
-                    ? Colors.white
-                    : Theme.of(context).primaryColor,
+                color: Theme.of(context).colorScheme.primary,
               ),
               label: Text(
                 AppLocalizations.of(context)!.add,
                 style: TextStyle(
-                  color: effectiveIsDark
-                      ? Colors.white
-                      : Theme.of(context).primaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               style: TextButton.styleFrom(
-                backgroundColor: effectiveIsDark
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.grey[100],
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -138,7 +127,7 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
             child: Text(
               AppLocalizations.of(context)!.noExperience,
               style: TextStyle(
-                color: effectiveIsDark ? Colors.white54 : Colors.grey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -151,24 +140,24 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
             final exp = widget.experiences[index];
             return Card(
               margin: EdgeInsets.zero,
-              color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white,
+              color: Theme.of(context).cardTheme.color,
               child: ListTile(
                 title: Text(
                   exp.jobTitle,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: effectiveIsDark ? Colors.white : Colors.black,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 subtitle: Text(
                   '${exp.companyName}\n${exp.startDate} - ${exp.endDate ?? AppLocalizations.of(context)!.present}',
                   style: TextStyle(
-                    color: effectiveIsDark ? Colors.white70 : Colors.black87,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
                 isThreeLine: true,
                 trailing: IconButton(
-                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                  icon: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.error),
                   onPressed: () => _removeExperience(index),
                 ),
                 onTap: () => _editExperience(existing: exp, index: index),

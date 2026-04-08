@@ -33,8 +33,6 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -46,25 +44,23 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
-                color: isDark ? Colors.white : Colors.black,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             TextButton.icon(
               onPressed: _showAddSkill,
               icon: Icon(
                 Icons.add,
-                color: isDark ? Colors.white : Theme.of(context).primaryColor,
+                color: Theme.of(context).colorScheme.primary,
               ),
               label: Text(
                 l10n.add,
                 style: TextStyle(
-                  color: isDark ? Colors.white : Theme.of(context).primaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               style: TextButton.styleFrom(
-                backgroundColor: isDark
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.grey[100],
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -78,7 +74,7 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               l10n.noSkills,
-              style: TextStyle(color: isDark ? Colors.white54 : Colors.grey),
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
           )
         else
@@ -91,12 +87,10 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
                     label: Text(
                       skill,
                       style: TextStyle(
-                        color: isDark ? Colors.white : Colors.black,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
-                    backgroundColor: isDark
-                        ? Colors.white.withValues(alpha: 0.05)
-                        : Colors.grey[200],
+                    backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                     side: BorderSide.none,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -105,7 +99,7 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
                     deleteIcon: Icon(
                       Icons.cancel,
                       size: 18,
-                      color: isDark ? Colors.white38 : Colors.black38,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                 )
