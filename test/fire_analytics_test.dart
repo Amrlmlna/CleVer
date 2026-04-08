@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/material.dart';
-import 'package:clever/core/services/analytics_service.dart';
+
 
 void main() {
   testWidgets('Trigger Analytics Events', (tester) async {

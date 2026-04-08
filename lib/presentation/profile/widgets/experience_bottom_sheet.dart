@@ -88,7 +88,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
       return;
     }
 
-    final localization = AppLocalizations.of(context)!;
+
     UnsavedChangesDialog.show(
       context,
       onSave: _save,
@@ -223,7 +223,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                     controller: _titleCtrl,
                     labelText: localization.jobTitle,
                     hintText: 'Software Engineer',
-                    isDark: true,
+
                     validator: (v) =>
                         v!.isEmpty ? localization.requiredField : null,
                   ),
@@ -232,7 +232,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                     controller: _companyCtrl,
                     labelText: localization.company,
                     hintText: localization.companyPlaceholder,
-                    isDark: true,
+
                     validator: (v) =>
                         v!.isEmpty ? localization.requiredField : null,
                   ),
@@ -244,7 +244,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                           controller: _startCtrl,
                           labelText: localization.startDate,
                           hintText: localization.selectDate,
-                          isDark: true,
+
                           readOnly: true,
                           prefixIcon: Icons.calendar_today,
                           onTap: () => _pickDate(_startCtrl),
@@ -258,7 +258,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                           controller: _endCtrl,
                           labelText: localization.endDate,
                           hintText: localization.untilNow,
-                          isDark: true,
+
                           readOnly: true,
                           prefixIcon: Icons.event,
                           onTap: () => _pickDate(_endCtrl),
@@ -324,7 +324,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                     controller: _descCtrl,
                     labelText: '',
                     hintText: localization.descriptionHint,
-                    isDark: true,
+
                     maxLines: 4,
                     validator: (v) =>
                         v!.isEmpty ? localization.requiredField : null,

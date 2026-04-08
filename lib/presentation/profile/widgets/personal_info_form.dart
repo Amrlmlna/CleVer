@@ -154,7 +154,6 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
           validator: (v) =>
               v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
           textInputAction: TextInputAction.next,
-          isDark: true,
         ),
         const SizedBox(height: 16),
         CustomTextFormField(
@@ -165,7 +164,6 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
               v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
-          isDark: true,
         ),
         const SizedBox(height: 16),
         CustomTextFormField(
@@ -174,7 +172,6 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
           prefixIcon: Icons.phone_outlined,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
-          isDark: true,
         ),
         const SizedBox(height: 16),
         Row(
@@ -199,7 +196,6 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                     controller: widget.birthDateController,
                     labelText: AppLocalizations.of(context)!.birthDate,
                     prefixIcon: Icons.cake_outlined,
-                    isDark: true,
                   ),
                 ),
               ),
@@ -263,7 +259,7 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
           ],
         ),
         const SizedBox(height: 16),
-        LocationPicker(controller: widget.locationController, isDark: true),
+        LocationPicker(controller: widget.locationController),
       ],
     );
   }

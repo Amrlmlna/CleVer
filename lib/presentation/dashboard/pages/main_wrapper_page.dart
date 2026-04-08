@@ -26,12 +26,12 @@ class MainWrapperPage extends ConsumerStatefulWidget {
 class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
     with TickerProviderStateMixin {
   bool _sheetShowing = false;
-  int _previousIndex = 0;
+
 
   @override
   void initState() {
     super.initState();
-    _previousIndex = widget.navigationShell.currentIndex;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkVerification(ref.read(authStateProvider).value);
     });
@@ -90,9 +90,7 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
       }
     }
 
-    setState(() {
-      _previousIndex = widget.navigationShell.currentIndex;
-    });
+
 
     widget.navigationShell.goBranch(
       index,

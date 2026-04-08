@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import '../../../../domain/entities/user_profile.dart';
 import '../../common/widgets/custom_text_form_field.dart';
 import '../../common/widgets/university_picker.dart';
-import '../../../../core/utils/custom_snackbar.dart';
+
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -168,13 +168,12 @@ class _EducationBottomSheetState extends State<EducationBottomSheet> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  UniversityPicker(controller: _schoolCtrl, isDark: true),
+                  UniversityPicker(controller: _schoolCtrl),
                   const SizedBox(height: 16),
                   CustomTextFormField(
                     controller: _degreeCtrl,
                     labelText: localization.degree,
                     hintText: localization.degreeHint,
-                    isDark: true,
                     validator: (v) =>
                         v!.isEmpty ? localization.requiredField : null,
                   ),
@@ -186,7 +185,6 @@ class _EducationBottomSheetState extends State<EducationBottomSheet> {
                           controller: _startCtrl,
                           labelText: localization.startDate,
                           hintText: localization.year,
-                          isDark: true,
                           readOnly: true,
                           prefixIcon: Icons.calendar_today,
                           onTap: () => _pickDate(_startCtrl),
@@ -200,7 +198,6 @@ class _EducationBottomSheetState extends State<EducationBottomSheet> {
                           controller: _endCtrl,
                           labelText: localization.endDate,
                           hintText: localization.year,
-                          isDark: true,
                           readOnly: true,
                           prefixIcon: Icons.event,
                           onTap: () => _pickDate(_endCtrl),

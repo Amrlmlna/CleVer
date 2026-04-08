@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'education_bottom_sheet.dart';
 import '../../../../domain/entities/user_profile.dart';
-import '../../common/widgets/custom_text_form_field.dart';
-import '../../common/widgets/university_picker.dart';
+
 import '../../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 

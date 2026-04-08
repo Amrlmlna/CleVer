@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class UnsavedChangesDialog extends StatelessWidget {
@@ -29,19 +28,19 @@ class UnsavedChangesDialog extends StatelessWidget {
     final localization = AppLocalizations.of(context)!;
 
     return AlertDialog(
-      backgroundColor: const Color(0xFF1E1E1E),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       title: Text(
         localization.saveChangesTitle,
-        style: GoogleFonts.inter(
-          color: Colors.white,
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.w700,
-          fontSize: 20,
         ),
       ),
       content: Text(
         localization.saveChangesMessage,
-        style: GoogleFonts.inter(color: Colors.white70, fontSize: 15),
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+        ),
       ),
       actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       actions: [
@@ -58,8 +57,8 @@ class UnsavedChangesDialog extends StatelessWidget {
                 ),
                 child: Text(
                   localization.exitWithoutSaving,
-                  style: GoogleFonts.inter(
-                    color: Colors.redAccent,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.error,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -73,8 +72,8 @@ class UnsavedChangesDialog extends StatelessWidget {
                   onSave();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -83,7 +82,9 @@ class UnsavedChangesDialog extends StatelessWidget {
                 ),
                 child: Text(
                   localization.save,
-                  style: GoogleFonts.inter(fontWeight: FontWeight.w700),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ),

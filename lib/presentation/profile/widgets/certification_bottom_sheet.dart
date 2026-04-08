@@ -173,7 +173,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                     controller: _nameController,
                     labelText: localization.certificationName,
                     hintText: 'AWS Certified Cloud Practitioner',
-                    isDark: true,
+
                     validator: (v) =>
                         v!.isEmpty ? localization.requiredField : null,
                   ),
@@ -182,7 +182,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                     controller: _issuerController,
                     labelText: localization.issuer,
                     hintText: 'Amazon Web Services',
-                    isDark: true,
+
                     validator: (v) =>
                         v!.isEmpty ? localization.requiredField : null,
                   ),

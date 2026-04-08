@@ -49,7 +49,7 @@ class _SwipeToConfirmButtonState extends State<SwipeToConfirmButton> {
             height: _buttonHeight,
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(_buttonHeight / 2),
             ),
             child: Stack(
@@ -61,7 +61,7 @@ class _SwipeToConfirmButtonState extends State<SwipeToConfirmButton> {
                   width: _dragPosition + _buttonHeight,
                   height: _buttonHeight,
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.05),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(_buttonHeight / 2),
                   ),
                 ),
@@ -122,20 +122,20 @@ class _SwipeToConfirmButtonState extends State<SwipeToConfirmButton> {
                         width: _buttonHeight - 8,
                         height: _buttonHeight - 8,
                         decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: Theme.of(context).colorScheme.primary,
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.2),
+                              color: Theme.of(context).shadowColor.withValues(alpha: 0.2),
                               blurRadius: 8,
                               offset: const Offset(2, 0),
                             ),
                           ],
                         ),
                         child:
-                            const Icon(
+                            Icon(
                                   Icons.arrow_forward_ios_rounded,
-                                  color: Colors.cyanAccent,
+                                  color: Theme.of(context).colorScheme.onPrimary,
                                   size: 18,
                                 )
                                 .animate(

@@ -6,14 +6,14 @@ class SpinningTextLoader extends StatefulWidget {
   final List<String> texts;
   final TextStyle? style;
   final Duration interval;
-  final List<Color> shimmerColors;
+  final List<Color>? shimmerColors;
 
   const SpinningTextLoader({
     super.key,
     required this.texts,
     this.style,
     this.interval = const Duration(milliseconds: 2000),
-    this.shimmerColors = const [Colors.grey, Colors.white, Colors.grey],
+    this.shimmerColors,
   });
 
   @override
@@ -90,10 +90,16 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader>
         key: ValueKey<int>(_currentIndex),
         animation: _shimmerController,
         builder: (context, child) {
+          final colors = widget.shimmerColors ?? [
+            Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+            Theme.of(context).colorScheme.onSurface,
+            Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+          ];
+
           return ShaderMask(
             shaderCallback: (bounds) {
               return LinearGradient(
-                colors: widget.shimmerColors,
+                colors: colors,
                 stops: const [0.0, 0.5, 1.0],
                 begin: Alignment(-1.0 + (_shimmerController.value * 2.0), 0.0),
                 end: Alignment(0.0 + (_shimmerController.value * 2.0), 0.0),
@@ -103,8 +109,8 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader>
             child: Text(
               widget.texts[_currentIndex],
               style:
-                  widget.style?.copyWith(color: Colors.white) ??
-                  const TextStyle(color: Colors.white),
+                  widget.style?.copyWith(color: Theme.of(context).colorScheme.onSurface) ??
+                  TextStyle(color: Theme.of(context).colorScheme.onSurface),
               textAlign: TextAlign.center,
             ),
           );

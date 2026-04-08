@@ -93,7 +93,7 @@ class _CreditPurchaseBottomSheetState
     final l10n = AppLocalizations.of(context)!;
     final locale = ref.watch(localeNotifierProvider);
     final isIdr = locale.languageCode == 'id';
-    final screenHeight = MediaQuery.of(context).size.height;
+
 
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),

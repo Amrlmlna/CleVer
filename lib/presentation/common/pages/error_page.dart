@@ -35,12 +35,8 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: isDark
-          ? const Color(0xFF121212)
-          : const Color(0xFFF9FAFB),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -52,13 +48,13 @@ class ErrorPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: Colors.red.withValues(alpha: 0.1),
+                  color: Theme.of(context).colorScheme.errorContainer,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.error_outline_rounded,
                   size: 64,
-                  color: Colors.red[400],
+                  color: Theme.of(context).colorScheme.error,
                 ),
               ),
               const SizedBox(height: 32),
@@ -66,10 +62,8 @@ class ErrorPage extends StatelessWidget {
               Text(
                 args.title,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 24,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w900,
-                  fontFamily: 'Outfit',
                   height: 1.2,
                 ),
               ),
@@ -78,9 +72,8 @@ class ErrorPage extends StatelessWidget {
               Text(
                 args.message,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: isDark ? Colors.grey[400] : Colors.grey[600],
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                   height: 1.5,
                 ),
               ),
@@ -91,10 +84,10 @@ class ErrorPage extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: isDark ? Colors.black26 : Colors.grey[200],
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: isDark ? Colors.white10 : Colors.grey[300]!,
+                      color: Theme.of(context).dividerTheme.color ?? Theme.of(context).dividerColor,
                     ),
                   ),
                   child: Column(
@@ -105,19 +98,19 @@ class ErrorPage extends StatelessWidget {
                         children: [
                           Text(
                             AppLocalizations.of(context)!.technicalDetails,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.5,
-                              color: Colors.grey,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                             ),
                           ),
                           InkWell(
                             onTap: () => _copyToClipboard(context),
-                            child: const Icon(
+                            child: Icon(
                               Icons.copy,
                               size: 14,
-                              color: Colors.grey,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ],
@@ -153,12 +146,12 @@ class ErrorPage extends StatelessWidget {
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         side: BorderSide(
-                          color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
+                          color: Theme.of(context).dividerTheme.color ?? Theme.of(context).dividerColor,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        foregroundColor: isDark ? Colors.white : Colors.black,
+                        foregroundColor: Theme.of(context).colorScheme.onSurface,
                       ),
                       child: Text(AppLocalizations.of(context)!.goHome),
                     ),

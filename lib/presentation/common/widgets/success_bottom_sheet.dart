@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SuccessBottomSheet extends StatelessWidget {
   final String title;
@@ -24,7 +23,7 @@ class SuccessBottomSheet extends StatelessWidget {
   }) {
     return showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E1E1E),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -49,7 +48,7 @@ class SuccessBottomSheet extends StatelessWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey[700],
+                color: Theme.of(context).dividerTheme.color ?? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -58,31 +57,28 @@ class SuccessBottomSheet extends StatelessWidget {
               width: 64,
               height: 64,
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.1),
+                color: Theme.of(context).colorScheme.primaryContainer,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.check_rounded,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
                 size: 36,
               ),
             ),
             const SizedBox(height: 24),
             Text(
               title,
-              style: GoogleFonts.inter(
-                fontSize: 20,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
-                color: Colors.white,
                 letterSpacing: -0.5,
               ),
             ),
             const SizedBox(height: 12),
             Text(
               message,
-              style: GoogleFonts.inter(
-                fontSize: 15,
-                color: Colors.grey[400],
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                 height: 1.5,
               ),
               textAlign: TextAlign.center,
@@ -96,8 +92,8 @@ class SuccessBottomSheet extends StatelessWidget {
                   onConfirm();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -106,8 +102,7 @@ class SuccessBottomSheet extends StatelessWidget {
                 ),
                 child: Text(
                   buttonText,
-                  style: GoogleFonts.inter(
-                    fontSize: 16,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),

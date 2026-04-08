@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'spinning_text_loader.dart';
 
 /// Unified loading screen widget following DRY principle
@@ -48,8 +47,7 @@ class AppLoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDark ? Colors.white : Colors.black;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -64,9 +62,7 @@ class AppLoadingScreen extends StatelessWidget {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: 0.1)
-                      : Colors.black.withValues(alpha: 0.05),
+                  color: colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Row(
@@ -75,18 +71,16 @@ class AppLoadingScreen extends StatelessWidget {
                     Icon(
                       badgeIcon ?? Icons.auto_awesome,
                       size: 16,
-                      color: isDark ? Colors.white70 : Colors.black54,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
                     Text(
                       badge!,
-                      style:
-                          badgeStyle ??
-                          GoogleFonts.inter(
-                            fontSize: 12,
+                      style: badgeStyle ??
+                          Theme.of(context).textTheme.labelSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.5,
-                            color: isDark ? Colors.white70 : Colors.black54,
+                            color: colorScheme.onSurfaceVariant,
                           ),
                     ),
                   ],
@@ -99,12 +93,10 @@ class AppLoadingScreen extends StatelessWidget {
               height: 40,
               child: SpinningTextLoader(
                 texts: messages,
-                style:
-                    messageStyle ??
-                    GoogleFonts.inter(
-                      fontSize: 24,
+                style: messageStyle ??
+                    Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w300,
-                      color: textColor,
+                      color: colorScheme.onSurface,
                     ),
                 interval: messageDuration,
               ),

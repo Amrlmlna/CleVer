@@ -41,9 +41,9 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   return Stack(
                     children: [
                       IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.notifications_none_rounded,
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                         onPressed: () => context.push(AppRoutes.notifications),
                       ),
@@ -54,7 +54,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                           child: Container(
                             padding: const EdgeInsets.all(2),
                             decoration: BoxDecoration(
-                              color: Colors.red,
+                              color: Theme.of(context).colorScheme.error,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             constraints: const BoxConstraints(
@@ -63,8 +63,8 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                             ),
                             child: Text(
                               unreadCount > 9 ? '9+' : '$unreadCount',
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onError,
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -110,7 +110,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   value: 'sync',
                   child: Row(
                     children: [
-                      const Icon(Icons.sync, color: Colors.blue),
+                      Icon(Icons.sync, color: Theme.of(context).colorScheme.primary),
                       const SizedBox(width: 8),
                       Text(AppLocalizations.of(context)!.syncData),
                     ],
@@ -120,7 +120,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   value: 'logout',
                   child: Row(
                     children: [
-                      const Icon(Icons.logout, color: Colors.blue),
+                      Icon(Icons.logout, color: Theme.of(context).colorScheme.primary),
                       const SizedBox(width: 8),
                       Text(AppLocalizations.of(context)!.logOut),
                     ],
@@ -130,14 +130,14 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   value: 'delete',
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.delete_forever_rounded,
-                        color: Colors.red,
+                        color: Theme.of(context).colorScheme.error,
                       ),
                       const SizedBox(width: 8),
                       Text(
                         AppLocalizations.of(context)!.deleteAccount,
-                        style: const TextStyle(color: Colors.red),
+                        style: TextStyle(color: Theme.of(context).colorScheme.error),
                       ),
                     ],
                   ),
@@ -147,12 +147,12 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: CircleAvatar(
                   radius: 16,
-                  backgroundColor: Colors.white.withValues(alpha: 0.1),
+                  backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                   backgroundImage: photoUrl != null
                       ? NetworkImage(photoUrl)
                       : null,
                   child: photoUrl == null
-                      ? const Icon(Icons.person, size: 20, color: Colors.white)
+                      ? Icon(Icons.person, size: 20, color: Theme.of(context).colorScheme.onSurfaceVariant)
                       : null,
                 ),
               ),

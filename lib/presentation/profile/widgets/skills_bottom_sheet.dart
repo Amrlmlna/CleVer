@@ -99,7 +99,7 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
                     controller: _controller,
                     labelText: localization.skills,
                     hintText: localization.skillHint,
-                    isDark: true,
+
                     validator: (v) {
                       if (v == null || v.trim().isEmpty) {
                         return localization.requiredField;

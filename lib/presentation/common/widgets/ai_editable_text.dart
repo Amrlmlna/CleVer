@@ -114,16 +114,15 @@ class _AIEditableTextState extends State<AIEditableText> {
   @override
   Widget build(BuildContext context) {
     if (_isEditing) {
-      final isDark = Theme.of(context).brightness == Brightness.dark;
       return Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
-          border: Border.all(color: Colors.blueAccent),
+          color: Theme.of(context).colorScheme.surface,
+          border: Border.all(color: Theme.of(context).colorScheme.primary),
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Colors.blueAccent.withValues(alpha: 0.1),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -138,7 +137,7 @@ class _AIEditableTextState extends State<AIEditableText> {
                   icon: Icon(
                     Icons.format_bold,
                     size: 20,
-                    color: isDark ? Colors.white70 : Colors.black87,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                   onPressed: () => _applyFormatting('**'),
                   tooltip: AppLocalizations.of(context)!.bold,
@@ -149,7 +148,7 @@ class _AIEditableTextState extends State<AIEditableText> {
                   icon: Icon(
                     Icons.format_italic,
                     size: 20,
-                    color: isDark ? Colors.white70 : Colors.black87,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                   onPressed: () => _applyFormatting('_'),
                   tooltip: AppLocalizations.of(context)!.italic,
@@ -160,7 +159,7 @@ class _AIEditableTextState extends State<AIEditableText> {
                   icon: Icon(
                     Icons.title,
                     size: 20,
-                    color: isDark ? Colors.white70 : Colors.black87,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                   onPressed: _applyHeader,
                   tooltip: AppLocalizations.of(context)!.header,
@@ -182,7 +181,7 @@ class _AIEditableTextState extends State<AIEditableText> {
                       AppLocalizations.of(context)!.rewrite,
                       style: const TextStyle(fontSize: 12),
                     ),
-                    style: TextButton.styleFrom(foregroundColor: Colors.purple),
+                    style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.primary),
                   ),
               ],
             ),
@@ -200,12 +199,12 @@ class _AIEditableTextState extends State<AIEditableText> {
                 contentPadding: EdgeInsets.zero,
                 hintText: AppLocalizations.of(context)!.typeHere,
                 hintStyle: TextStyle(
-                  color: isDark ? Colors.grey[600] : Colors.grey[400],
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
               style:
                   widget.style ??
-                  TextStyle(color: isDark ? Colors.white : Colors.black),
+                  TextStyle(color: Theme.of(context).colorScheme.onSurface),
             ),
             const SizedBox(height: 12),
             Row(
@@ -262,9 +261,9 @@ class _AIEditableTextState extends State<AIEditableText> {
               ),
             ),
             const SizedBox(width: 8),
-            const Opacity(
+            Opacity(
               opacity: 0.5,
-              child: Icon(Icons.edit, size: 14, color: Colors.grey),
+              child: Icon(Icons.edit, size: 14, color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
           ],
         ),
