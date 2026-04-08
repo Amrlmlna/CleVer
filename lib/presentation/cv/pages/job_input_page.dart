@@ -172,9 +172,11 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
   }
 
   Future<void> _showImageSourceDialog() async {
+    final colorScheme = Theme.of(context).colorScheme;
+
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E1E1E),
+      backgroundColor: colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -188,17 +190,17 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey[700],
+                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
               const SizedBox(height: 20),
               Text(
                 AppLocalizations.of(context)!.scanJobPosting,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: colorScheme.onSurface,
                   letterSpacing: 0.5,
                 ),
               ),
@@ -215,23 +217,23 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 18),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white12),
+                          border: Border.all(color: colorScheme.outlineVariant),
                           borderRadius: BorderRadius.circular(14),
-                          color: Colors.white.withValues(alpha: 0.04),
+                          color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.1),
                         ),
                         child: Column(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.camera_alt_outlined,
-                              color: Colors.white70,
+                              color: colorScheme.onSurface,
                               size: 28,
                             ),
                             const SizedBox(height: 10),
                             Text(
                               AppLocalizations.of(context)!.camera,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
-                                color: Colors.white70,
+                                color: colorScheme.onSurface,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -251,23 +253,23 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 18),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white12),
+                          border: Border.all(color: colorScheme.outlineVariant),
                           borderRadius: BorderRadius.circular(14),
-                          color: Colors.white.withValues(alpha: 0.04),
+                          color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.1),
                         ),
                         child: Column(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.photo_library_outlined,
-                              color: Colors.white70,
+                              color: colorScheme.onSurface,
                               size: 28,
                             ),
                             const SizedBox(height: 10),
                             Text(
                               AppLocalizations.of(context)!.gallery,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
-                                color: Colors.white70,
+                                color: colorScheme.onSurface,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),

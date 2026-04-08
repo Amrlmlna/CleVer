@@ -18,7 +18,7 @@ class JobInputHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,7 +26,7 @@ class JobInputHeroCard extends StatelessWidget {
         Text(
           AppLocalizations.of(context)!.whatJobApply,
           style: GoogleFonts.inter(
-            color: isDark ? Colors.white : Colors.black,
+            color: colorScheme.onSurface,
             fontSize: 32,
             fontWeight: FontWeight.w800,
             height: 1.2,
@@ -38,7 +38,7 @@ class JobInputHeroCard extends StatelessWidget {
         Text(
           AppLocalizations.of(context)!.aiHelpCreateCV,
           style: GoogleFonts.inter(
-            color: isDark ? Colors.grey[400] : Colors.grey[600],
+            color: colorScheme.onSurfaceVariant,
             height: 1.5,
             fontSize: 16,
             fontWeight: FontWeight.w400,
@@ -49,7 +49,7 @@ class JobInputHeroCard extends StatelessWidget {
 
         Container(
           decoration: BoxDecoration(
-            color: isDark ? Colors.grey[900] : Colors.grey[100],
+            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
@@ -68,7 +68,7 @@ class JobInputHeroCard extends StatelessWidget {
                 child: Divider(
                   height: 1,
                   thickness: 1,
-                  color: isDark ? Colors.grey[800] : Colors.grey[300],
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.5),
                 ),
               ),
 
@@ -94,20 +94,20 @@ class JobInputHeroCard extends StatelessWidget {
     bool isLast = false,
     VoidCallback? onSubmit,
   }) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return TextFormField(
       controller: controller,
       autofocus: autoFocus,
       style: GoogleFonts.inter(
-        color: isDark ? Colors.white : Colors.black,
+        color: colorScheme.onSurface,
         fontSize: 17,
         fontWeight: FontWeight.w600,
       ),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: GoogleFonts.inter(
-          color: isDark ? Colors.grey[600] : Colors.grey[400],
+          color: colorScheme.onSurfaceVariant,
           fontSize: 17,
           fontWeight: FontWeight.w400,
         ),

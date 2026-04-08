@@ -9,7 +9,7 @@ class JobDescriptionField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -18,26 +18,26 @@ class JobDescriptionField extends StatelessWidget {
           style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white : Colors.black,
+            color: colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 12),
         Container(
           decoration: BoxDecoration(
-            color: isDark ? Colors.grey[900] : Colors.grey[100],
+            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12),
           ),
           child: TextFormField(
             controller: controller,
             maxLines: 5,
             style: GoogleFonts.inter(
-              color: isDark ? Colors.white : Colors.black,
+              color: colorScheme.onSurface,
               fontSize: 16,
             ),
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context)!.jobDetailHint,
               hintStyle: GoogleFonts.inter(
-                color: isDark ? Colors.grey[600] : Colors.grey[400],
+                color: colorScheme.onSurfaceVariant,
                 fontSize: 16,
               ),
               border: InputBorder.none,

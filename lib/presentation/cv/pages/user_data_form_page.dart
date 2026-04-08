@@ -138,7 +138,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -148,7 +148,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1A1A1A) : Colors.white,
+          color: colorScheme.surface,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.1),
@@ -160,8 +160,8 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         child: ElevatedButton(
           onPressed: _submit,
           style: ElevatedButton.styleFrom(
-            backgroundColor: isDark ? Colors.white : Colors.black,
-            foregroundColor: isDark ? Colors.black : Colors.white,
+            backgroundColor: colorScheme.primary,
+            foregroundColor: colorScheme.onPrimary,
             padding: const EdgeInsets.symmetric(vertical: 18),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
@@ -176,7 +176,6 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
       ),
       body: UserDataFormContent(
         formKey: _formKey,
-        isDark: isDark,
         tailoredResult: widget.tailoredResult,
         nameController: _nameController,
         emailController: _emailController,

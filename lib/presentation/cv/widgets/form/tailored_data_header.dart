@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class TailoredDataHeader extends StatelessWidget {
-  final bool isDark;
-
-  const TailoredDataHeader({super.key, required this.isDark});
+  const TailoredDataHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 24),
       padding: const EdgeInsets.all(16),
@@ -24,7 +24,7 @@ class TailoredDataHeader extends StatelessWidget {
             child: Text(
               AppLocalizations.of(context)!.tailoredDataMessage,
               style: TextStyle(
-                color: isDark ? Colors.blue[100] : Colors.blue[900],
+                color: colorScheme.primary,
                 fontSize: 14,
                 height: 1.4,
               ),

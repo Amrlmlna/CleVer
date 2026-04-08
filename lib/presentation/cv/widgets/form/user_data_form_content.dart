@@ -16,7 +16,6 @@ import 'requirement_checklist.dart';
 
 class UserDataFormContent extends StatefulWidget {
   final GlobalKey<FormState> formKey;
-  final bool isDark;
   final TailoredCVResult? tailoredResult;
 
   final TextEditingController nameController;
@@ -40,7 +39,6 @@ class UserDataFormContent extends StatefulWidget {
   const UserDataFormContent({
     super.key,
     required this.formKey,
-    required this.isDark,
     required this.tailoredResult,
     required this.nameController,
     required this.emailController,
@@ -82,7 +80,6 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
             if (widget.tailoredResult?.analysis != null)
               RequirementChecklist(
                 analysis: widget.tailoredResult!.analysis!,
-                isDark: widget.isDark,
               ),
 
             ReviewSectionCard(
@@ -110,7 +107,6 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
                   setState(() => _isSummaryExpanded = val),
               child: SummarySection(
                 controller: widget.summaryController,
-                isDark: widget.isDark,
               ),
             ),
             const SizedBox(height: 16),

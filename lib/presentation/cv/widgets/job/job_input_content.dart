@@ -94,6 +94,8 @@ class _JobInputContentState extends State<JobInputContent> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
@@ -120,8 +122,8 @@ class _JobInputContentState extends State<JobInputContent> {
                 child: ElevatedButton(
                   onPressed: widget.onSubmit,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
+                    backgroundColor: colorScheme.primary,
+                    foregroundColor: colorScheme.onPrimary,
                     padding: const EdgeInsets.symmetric(vertical: 18),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
@@ -129,11 +131,11 @@ class _JobInputContentState extends State<JobInputContent> {
                     ),
                   ),
                   child: widget.isLoading
-                      ? const SizedBox(
+                      ? SizedBox(
                           width: 20,
                           height: 20,
                           child: CircularProgressIndicator(
-                            color: Colors.black,
+                            color: colorScheme.onPrimary,
                             strokeWidth: 2,
                           ),
                         )

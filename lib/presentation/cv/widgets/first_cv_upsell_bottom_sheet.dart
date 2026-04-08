@@ -18,11 +18,12 @@ class FirstCvUpsellBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      decoration: const BoxDecoration(
-        color: Color(0xFF1A1A1A),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
       ),
       padding: EdgeInsets.fromLTRB(
         24,
@@ -38,7 +39,7 @@ class FirstCvUpsellBottomSheet extends StatelessWidget {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.2),
+              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -51,10 +52,10 @@ class FirstCvUpsellBottomSheet extends StatelessWidget {
           // Title
           Text(
             l10n.cvGeneratedSuccess,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w800,
-              color: Colors.white,
+              color: colorScheme.onSurface,
               letterSpacing: -0.5,
             ),
             textAlign: TextAlign.center,
@@ -66,7 +67,7 @@ class FirstCvUpsellBottomSheet extends StatelessWidget {
             l10n.onboardingFreeLabel,
             style: TextStyle(
               fontSize: 15,
-              color: Colors.white.withValues(alpha: 0.6),
+              color: colorScheme.onSurfaceVariant,
               height: 1.4,
             ),
             textAlign: TextAlign.center,
@@ -82,8 +83,8 @@ class FirstCvUpsellBottomSheet extends StatelessWidget {
                 context.go(AppRoutes.wallet);
               },
               style: FilledButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
+                backgroundColor: colorScheme.primary,
+                foregroundColor: colorScheme.onPrimary,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -112,7 +113,7 @@ class FirstCvUpsellBottomSheet extends StatelessWidget {
                 l10n.skipForNow,
                 style: TextStyle(
                   fontSize: 15,
-                  color: Colors.white.withValues(alpha: 0.5),
+                  color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w500,
                 ),
               ),

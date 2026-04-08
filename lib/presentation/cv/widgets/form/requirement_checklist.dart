@@ -6,12 +6,10 @@ import '../../../common/widgets/spinning_text_loader.dart';
 
 class RequirementChecklist extends StatefulWidget {
   final TailorAnalysis analysis;
-  final bool isDark;
 
   const RequirementChecklist({
     super.key,
     required this.analysis,
-    required this.isDark,
   });
 
   @override
@@ -47,8 +45,10 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
       return const SizedBox.shrink();
     }
 
-    final isDark = widget.isDark;
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     Widget cardContent;
 
@@ -72,7 +72,7 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation<Color>(
-                    isDark ? Colors.white : Colors.black,
+                    colorScheme.onSurface,
                   ),
                 ),
               ),
@@ -124,7 +124,7 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
           ),
           child: Icon(
             Icons.analytics_outlined,
-            color: isDark ? Colors.white : Colors.black,
+            color: colorScheme.onSurface,
             size: 20,
           ),
         ),
@@ -133,7 +133,7 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
-            color: isDark ? Colors.white : Colors.black,
+            color: colorScheme.onSurface,
             fontFamily: 'Outfit',
           ),
         ),
@@ -159,7 +159,7 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
               child: Text(
                 widget.analysis.naturalResponse,
                 style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
+                  color: colorScheme.onSurface,
                   fontSize: 14,
                   height: 1.5,
                   fontStyle: FontStyle.italic,
@@ -174,7 +174,7 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
               child: Text(
                 l10n.requirementsCheckLabel,
                 style: TextStyle(
-                  color: isDark ? Colors.grey[400] : Colors.grey[700],
+                  color: colorScheme.onSurfaceVariant,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
@@ -233,7 +233,7 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
   }
 
   Widget _buildCheckItem(RequirementCheck check) {
-    final isDark = widget.isDark;
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -241,7 +241,7 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
         children: [
           Icon(
             check.isMet ? Icons.check_circle_outline : Icons.close_rounded,
-            color: isDark ? Colors.white : Colors.black,
+            color: colorScheme.onSurface,
             size: 20,
           ),
           const SizedBox(width: 12),
@@ -252,7 +252,7 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
                 Text(
                   check.field,
                   style: TextStyle(
-                    color: isDark ? Colors.white : Colors.black,
+                    color: colorScheme.onSurface,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
@@ -261,7 +261,7 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
                 Text(
                   check.message,
                   style: TextStyle(
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    color: colorScheme.onSurfaceVariant,
                     fontSize: 13,
                     height: 1.4,
                   ),

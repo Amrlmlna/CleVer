@@ -18,19 +18,19 @@ class ReviewSectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     return Card(
       elevation: isDark ? 0 : 4,
       shadowColor: Colors.black.withValues(alpha: 0.2),
-      color:
-          Theme.of(context).cardTheme.color ??
-          (isDark ? const Color(0xFF1E1E1E) : Colors.white),
+      color: theme.cardTheme.color ?? colorScheme.surface,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
         side: isDark
-            ? BorderSide(color: Colors.white.withValues(alpha: 0.05))
+            ? BorderSide(color: colorScheme.outlineVariant.withValues(alpha: 0.3))
             : BorderSide.none,
       ),
       clipBehavior: Clip.antiAlias,
@@ -49,7 +49,7 @@ class ReviewSectionCard extends StatelessWidget {
           ),
           child: Icon(
             icon,
-            color: isDark ? Colors.white : Colors.black,
+            color: colorScheme.onSurface,
             size: 20,
           ),
         ),
@@ -58,7 +58,7 @@ class ReviewSectionCard extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
-            color: isDark ? Colors.white : Colors.black,
+            color: colorScheme.onSurface,
             fontFamily: 'Outfit',
           ),
         ),
