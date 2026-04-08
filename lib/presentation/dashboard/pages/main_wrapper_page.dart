@@ -113,7 +113,7 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
       floatingActionButton: _buildCenterFAB(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        color: const Color(0xFF1E1E1E),
+        color: Theme.of(context).colorScheme.surface,
         shape: const CircularNotchedRectangle(),
         notchMargin: 8,
         padding: EdgeInsets.zero,
@@ -174,10 +174,10 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
             context,
           )!.authWallCreateCVDesc,
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 4,
         shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: Colors.black, size: 28),
+        child: Icon(Icons.add, color: Theme.of(context).colorScheme.onPrimary, size: 28),
       ),
     );
   }
@@ -200,7 +200,7 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
           children: [
             Icon(
               isSelected ? activeIcon : icon,
-              color: isSelected ? Colors.white : Colors.white38,
+              color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38),
               size: 22,
             ),
             const SizedBox(height: 4),
@@ -208,7 +208,7 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
               label,
               style: TextStyle(
                 fontSize: 10,
-                color: isSelected ? Colors.white : Colors.white38,
+                color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38),
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
               ),
               overflow: TextOverflow.ellipsis,
