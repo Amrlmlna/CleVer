@@ -86,11 +86,6 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
                 style: textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
-                shimmerColors: [
-                  colorScheme.onSurface.withValues(alpha: 0.3),
-                  colorScheme.onSurface,
-                  colorScheme.onSurface.withValues(alpha: 0.3),
-                ],
               ),
             ),
           ],

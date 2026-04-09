@@ -123,7 +123,6 @@ class OnboardingNavigationBar extends StatelessWidget {
                           AppLocalizations.of(context)!.ready,
                         ],
                         style: textTheme.titleMedium?.copyWith(
-                          color: colorScheme.onPrimary,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 1.0,
                         ),

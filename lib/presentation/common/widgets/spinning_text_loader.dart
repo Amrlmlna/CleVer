@@ -90,11 +90,15 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader>
         key: ValueKey<int>(_currentIndex),
         animation: _shimmerController,
         builder: (context, child) {
-          final textColor = widget.style?.color ?? Theme.of(context).colorScheme.onSurface;
+          // Resolve effective style from parent (e.g. ElevatedButton, Card) or ambient default
+          final effectiveStyle = DefaultTextStyle.of(context).style.merge(widget.style);
+          final textColor = effectiveStyle.color ?? Theme.of(context).colorScheme.onSurface;
+          
+          // Auto-generate shimmer colors if not explicitly provided
           final colors = widget.shimmerColors ?? [
-            textColor.withValues(alpha: 0.5),
+            textColor.withValues(alpha: 0.3),
             textColor,
-            textColor.withValues(alpha: 0.5),
+            textColor.withValues(alpha: 0.3),
           ];
 
           return ShaderMask(
@@ -102,14 +106,14 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader>
               return LinearGradient(
                 colors: colors,
                 stops: const [0.0, 0.5, 1.0],
-                begin: Alignment(-1.0 + (_shimmerController.value * 2.0), 0.0),
-                end: Alignment(0.0 + (_shimmerController.value * 2.0), 0.0),
+                begin: Alignment(-1.2 + (_shimmerController.value * 2.4), 0.0),
+                end: Alignment(0.2 + (_shimmerController.value * 2.4), 0.0),
                 tileMode: TileMode.clamp,
               ).createShader(bounds);
             },
             child: Text(
               widget.texts[_currentIndex],
-              style: widget.style ?? TextStyle(color: textColor),
+              style: effectiveStyle,
               textAlign: TextAlign.center,
             ),
           );
