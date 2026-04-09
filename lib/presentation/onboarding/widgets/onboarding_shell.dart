@@ -15,6 +15,9 @@ class OnboardingShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Column(
       children: [
         Center(
@@ -23,7 +26,7 @@ class OnboardingShell extends StatelessWidget {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.grey[700],
+              color: colorScheme.outlineVariant,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -38,21 +41,18 @@ class OnboardingShell extends StatelessWidget {
                 currentPage == totalSteps - 1
                     ? AppLocalizations.of(context)!.youreAllSet
                     : AppLocalizations.of(context)!.dropYourDetails,
-                style: const TextStyle(
-                  fontSize: 28,
+                style: textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w900,
-                  color: Colors.white,
+                  color: colorScheme.onSurface,
                   letterSpacing: 1.2,
-                  fontFamily: 'Montserrat',
                 ),
               ),
               const SizedBox(height: 12),
               if (currentPage == 0) ...[
                 Text(
                   AppLocalizations.of(context)!.onboardingSubtitle,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[400],
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
                     height: 1.5,
                   ),
                 ),
@@ -73,18 +73,17 @@ class OnboardingShell extends StatelessWidget {
               children: [
                 Text(
                   _getStepLabel(context, currentPage, totalSteps),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[500],
+                  style: textTheme.labelMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
                     letterSpacing: 0.5,
                   ),
                 ),
                 const SizedBox(height: 8),
                 LinearProgressIndicator(
                   value: (currentPage + 1) / totalSteps,
-                  backgroundColor: Colors.grey[200],
+                  backgroundColor: colorScheme.surfaceContainerHighest,
                   valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).primaryColor,
+                    colorScheme.primary,
                   ),
                 ),
               ],

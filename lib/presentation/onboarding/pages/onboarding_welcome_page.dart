@@ -96,8 +96,8 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
           width: _currentPage == index ? 24 : 8,
           decoration: BoxDecoration(
             color: _currentPage == index
-                ? Colors.white
-                : Colors.white.withValues(alpha: 0.2),
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(4),
           ),
         ),
@@ -109,10 +109,12 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     final screens = _getScreens(context);
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: colorScheme.surface,
       body: Stack(
         children: [
           // Background Carousel
@@ -169,15 +171,12 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                                       ),
                                     ),
                                     const SizedBox(height: 16),
-                                    Text(
-                                      l10n.takesLessThan3Min,
-                                      style: TextStyle(
-                                        color: Colors.white.withValues(
-                                          alpha: 0.6,
+                                      Text(
+                                        l10n.takesLessThan3Min,
+                                        style: textTheme.titleSmall?.copyWith(
+                                          color: colorScheme.onSurfaceVariant,
+                                          fontWeight: FontWeight.w500,
                                         ),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
                                     ),
                                   ],
                                 )
@@ -196,11 +195,8 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                                       ),
                                       child: Text(
                                         l10n.skipIntro,
-                                        style: TextStyle(
-                                          color: Colors.white.withValues(
-                                            alpha: 0.6,
-                                          ),
-                                          fontSize: 16,
+                                        style: textTheme.titleMedium?.copyWith(
+                                          color: colorScheme.onSurfaceVariant,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -208,9 +204,8 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                                     ElevatedButton(
                                       onPressed: () => _onNext(screens.length),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white
-                                            .withValues(alpha: 0.15),
-                                        foregroundColor: Colors.white,
+                                        backgroundColor: colorScheme.surfaceContainerHighest,
+                                        foregroundColor: colorScheme.onSurface,
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 32,
                                           vertical: 16,
@@ -224,8 +219,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                                       ),
                                       child: Text(
                                         l10n.next,
-                                        style: const TextStyle(
-                                          fontSize: 16,
+                                        style: textTheme.titleMedium?.copyWith(
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -251,14 +245,14 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
             left: 0,
             right: 0,
             child: Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFF1E1E1E),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+              decoration: BoxDecoration(
+                color: colorScheme.surfaceContainer,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black54,
+                    color: colorScheme.shadow.withValues(alpha: 0.54),
                     blurRadius: 40,
-                    offset: Offset(0, -10),
+                    offset: const Offset(0, -10),
                   ),
                 ],
               ),
@@ -277,8 +271,8 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                     _showForm = false;
                   });
                 },
-                icon: const Icon(Icons.arrow_downward, color: Colors.white),
-                style: IconButton.styleFrom(backgroundColor: Colors.black45),
+                icon: Icon(Icons.arrow_downward, color: colorScheme.onSurface),
+                style: IconButton.styleFrom(backgroundColor: colorScheme.scrim.withValues(alpha: 0.45)),
               ),
             ),
         ],

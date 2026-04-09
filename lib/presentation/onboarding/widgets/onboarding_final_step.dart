@@ -6,6 +6,9 @@ class OnboardingFinalStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -16,9 +19,8 @@ class OnboardingFinalStep extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!.onboardingFinalMessage,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.white70,
+              style: textTheme.titleMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
                 height: 1.5,
               ),
             ),

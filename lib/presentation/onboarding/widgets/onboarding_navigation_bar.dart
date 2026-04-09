@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import '../../legal/pages/legal_page.dart';
 import 'onboarding_legal_modal.dart';
 import '../../common/widgets/spinning_text_loader.dart';
@@ -28,6 +28,9 @@ class OnboardingNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
       child: Column(
@@ -39,10 +42,8 @@ class OnboardingNavigationBar extends StatelessWidget {
                 textAlign: TextAlign.center,
 
                 text: TextSpan(
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.white38,
-                    fontFamily: 'Outfit',
+                  style: textTheme.labelSmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
                   ),
                   children: [
                     TextSpan(
@@ -50,8 +51,8 @@ class OnboardingNavigationBar extends StatelessWidget {
                     ),
                     TextSpan(
                       text: AppLocalizations.of(context)!.termsOfService,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: colorScheme.onSurface,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
                       ),
@@ -67,8 +68,8 @@ class OnboardingNavigationBar extends StatelessWidget {
                     TextSpan(text: AppLocalizations.of(context)!.and),
                     TextSpan(
                       text: AppLocalizations.of(context)!.privacyPolicy,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: colorScheme.onSurface,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
                       ),
@@ -96,8 +97,8 @@ class OnboardingNavigationBar extends StatelessWidget {
               onPressed: onNext,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 18),
-                backgroundColor: isLoading ? Colors.black : Colors.white,
-                foregroundColor: isLoading ? Colors.white : Colors.black,
+                backgroundColor: isLoading ? colorScheme.surfaceContainer : colorScheme.primary,
+                foregroundColor: isLoading ? colorScheme.onSurface : colorScheme.onPrimary,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -112,10 +113,9 @@ class OnboardingNavigationBar extends StatelessWidget {
                           AppLocalizations.of(context)!.savingProfile,
                           AppLocalizations.of(context)!.ready,
                         ],
-                        style: GoogleFonts.inter(
-                          color: Colors.white,
+                        style: textTheme.titleMedium?.copyWith(
+                          color: isLoading ? colorScheme.onSurface : colorScheme.onPrimary,
                           fontWeight: FontWeight.w900,
-                          fontSize: 16,
                           letterSpacing: 1.0,
                         ),
                         interval: const Duration(milliseconds: 800),
@@ -125,10 +125,10 @@ class OnboardingNavigationBar extends StatelessWidget {
                       isLastPage
                           ? AppLocalizations.of(context)!.startNow
                           : AppLocalizations.of(context)!.nextStep,
-                      style: GoogleFonts.inter(
+                      style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w900,
-                        fontSize: 16,
                         letterSpacing: 1.0,
+                        color: isLoading ? colorScheme.onSurface : colorScheme.onPrimary,
                       ),
                     ),
             ),
@@ -143,7 +143,7 @@ class OnboardingNavigationBar extends StatelessWidget {
                   TextButton(
                     onPressed: onBack,
                     style: TextButton.styleFrom(
-                      foregroundColor: Colors.white54,
+                      foregroundColor: colorScheme.onSurfaceVariant,
                     ),
                     child: Text(
                       AppLocalizations.of(context)!.back,
@@ -156,14 +156,14 @@ class OnboardingNavigationBar extends StatelessWidget {
                     child: Container(
                       width: 1,
                       height: 12,
-                      color: Colors.white24,
+                      color: colorScheme.outlineVariant,
                     ),
                   ),
                 if (isSkippable && onSkip != null)
                   TextButton(
                     onPressed: onSkip,
                     style: TextButton.styleFrom(
-                      foregroundColor: Colors.white38,
+                      foregroundColor: colorScheme.onSurfaceVariant,
                     ),
                     child: Text(
                       AppLocalizations.of(context)!.skipForNow,

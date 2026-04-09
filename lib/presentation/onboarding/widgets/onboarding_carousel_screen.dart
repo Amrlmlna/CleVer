@@ -15,6 +15,8 @@ class OnboardingCarouselScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Stack(
       children: [
@@ -34,19 +36,19 @@ class OnboardingCarouselScreen extends StatelessWidget {
         if (imageAsset != null)
           Positioned.fill(
             child: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  stops: [0.35, 0.75],
-                  colors: [Colors.transparent, Colors.black],
+                  stops: const [0.35, 0.75],
+                  colors: [Colors.transparent, colorScheme.surface],
                 ),
               ),
             ),
           ),
 
         if (imageAsset == null)
-          Positioned.fill(child: Container(color: Colors.black)),
+          Positioned.fill(child: Container(color: colorScheme.surface)),
 
         Positioned(
           left: 32,
@@ -57,10 +59,9 @@ class OnboardingCarouselScreen extends StatelessWidget {
             children: [
               Text(
                 headline,
-                style: const TextStyle(
-                  fontSize: 32,
+                style: textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: Colors.white,
+                  color: colorScheme.onSurface,
                   height: 1.1,
                   letterSpacing: -0.5,
                 ),
@@ -69,9 +70,8 @@ class OnboardingCarouselScreen extends StatelessWidget {
               const SizedBox(height: 16),
               Text(
                 subtext,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white.withValues(alpha: 0.7),
+                style: textTheme.titleMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
                   height: 1.5,
                 ),
                 textAlign: TextAlign.center,

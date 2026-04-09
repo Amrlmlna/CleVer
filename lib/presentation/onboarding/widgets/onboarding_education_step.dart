@@ -15,6 +15,9 @@ class OnboardingEducationStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
       child: Column(
@@ -22,16 +25,18 @@ class OnboardingEducationStep extends StatelessWidget {
         children: [
           Text(
             AppLocalizations.of(context)!.educationTitle,
-            style: const TextStyle(
-              fontSize: 24,
+            style: textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.educationSubtitle,
-            style: const TextStyle(color: Colors.grey, height: 1.5),
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              height: 1.5,
+            ),
           ),
           const SizedBox(height: 32),
           EducationListForm(
