@@ -49,7 +49,9 @@ class _HelpPageState extends State<HelpPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.helpSupport),
@@ -86,11 +88,8 @@ class _HelpPageState extends State<HelpPage> {
             const SizedBox(height: 48),
             Text(
               AppLocalizations.of(context)!.frequentQuestions,
-              style: TextStyle(
-                fontSize: 20,
+              style: textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Outfit',
-                color: isDark ? Colors.white : Colors.black,
               ),
             ),
             const SizedBox(height: 20),
@@ -122,17 +121,17 @@ class _HelpPageState extends State<HelpPage> {
                       'assets/icon/icon.png',
                       width: 48,
                       height: 48,
-                      errorBuilder: (context, error, stackTrace) => const Icon(
+                      errorBuilder: (context, error, stackTrace) => Icon(
                         Icons.description,
                         size: 48,
-                        color: Colors.grey,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     'CV Master $_appVersion',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                    style: textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant),
                   ),
                   const SizedBox(height: 8),
                   Row(
@@ -142,23 +141,23 @@ class _HelpPageState extends State<HelpPage> {
                         onPressed: () => context.push('/legal/privacy'),
                         child: Text(
                           AppLocalizations.of(context)!.privacyPolicy,
-                          style: TextStyle(
-                            color: Colors.grey[500],
-                            fontSize: 12,
+                          style: textTheme.labelSmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ),
                       Text(
                         '|',
-                        style: TextStyle(color: Colors.grey[700], fontSize: 12),
+                        style: textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                       TextButton(
                         onPressed: () => context.push('/legal/terms'),
                         child: Text(
                           AppLocalizations.of(context)!.termsOfService,
-                          style: TextStyle(
-                            color: Colors.grey[500],
-                            fontSize: 12,
+                          style: textTheme.labelSmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ),
@@ -190,13 +189,16 @@ class _SupportCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: colorScheme.shadow.withValues(alpha: 0.1),
             offset: const Offset(0, 4),
             blurRadius: 10,
           ),
@@ -214,25 +216,25 @@ class _SupportCard extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.all(12),
-                  decoration: const BoxDecoration(
-                    color: Colors.black,
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary,
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(icon, color: Colors.white, size: 20),
+                  child: Icon(icon, color: colorScheme.onPrimary, size: 20),
                 ),
                 const SizedBox(height: 16),
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                  style: textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),

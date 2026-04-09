@@ -87,7 +87,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.sendFeedback),
@@ -100,62 +102,55 @@ class _FeedbackPageState extends State<FeedbackPage> {
           children: [
             Text(
               AppLocalizations.of(context)!.howCanWeHelp,
-              style: TextStyle(
-                fontSize: 24,
+              style: textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black,
-                fontFamily: 'Outfit',
               ),
             ),
             const SizedBox(height: 8),
             Text(
               AppLocalizations.of(context)!.feedbackSubtitle,
-              style: TextStyle(color: Colors.grey[500], fontSize: 16),
+              style: textTheme.bodyLarge?.copyWith(color: colorScheme.onSurfaceVariant),
             ),
             const SizedBox(height: 32),
 
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: colorScheme.surfaceContainer,
                 borderRadius: BorderRadius.circular(32),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
+                    color: colorScheme.shadow.withValues(alpha: 0.1),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
                 ],
               ),
-              child: Theme(
-                data: Theme.of(context).copyWith(brightness: Brightness.light),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
+              child: Form(
+                key: _formKey,
+                child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         AppLocalizations.of(context)!.category,
-                        style: const TextStyle(
+                        style: textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade300),
+                          border: Border.all(color: colorScheme.outlineVariant),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: _feedbackType,
                             isExpanded: true,
-                            dropdownColor: Colors.white,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
+                            dropdownColor: colorScheme.surfaceContainerHigh,
+                            style: textTheme.bodyLarge?.copyWith(
+                              color: colorScheme.onSurface,
                             ),
                             items: _types
                                 .map(
@@ -196,8 +191,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _submit,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
+                            backgroundColor: colorScheme.primary,
+                            foregroundColor: colorScheme.onPrimary,
                             padding: const EdgeInsets.symmetric(vertical: 18),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
@@ -205,11 +200,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
                             elevation: 0,
                           ),
                           child: _isLoading
-                              ? const SizedBox(
+                              ? SizedBox(
                                   width: 20,
                                   height: 20,
                                   child: CircularProgressIndicator(
-                                    color: Colors.white,
+                                    color: colorScheme.onPrimary,
                                     strokeWidth: 2,
                                   ),
                                 )
@@ -225,7 +220,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),

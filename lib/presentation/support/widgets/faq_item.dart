@@ -8,14 +8,17 @@ class FAQItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: colorScheme.shadow.withValues(alpha: 0.05),
             offset: const Offset(0, 4),
             blurRadius: 10,
           ),
@@ -25,25 +28,21 @@ class FAQItem extends StatelessWidget {
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
           tilePadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          iconColor: Colors.black,
-          collapsedIconColor: Colors.grey,
+          iconColor: colorScheme.onSurface,
+          collapsedIconColor: colorScheme.onSurfaceVariant,
           title: Text(
             question,
-            style: const TextStyle(
+            style: textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.bold,
-              fontSize: 15,
-              color: Colors.black87,
-              fontFamily: 'Outfit',
             ),
           ),
           childrenPadding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
           children: [
             Text(
               answer,
-              style: TextStyle(
-                color: Colors.grey[700],
+              style: textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
                 height: 1.6,
-                fontSize: 14,
               ),
             ),
           ],
