@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../../domain/entities/tailor_analysis.dart';
@@ -48,7 +47,7 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
+    final textTheme = theme.textTheme;
 
     Widget cardContent;
 
@@ -61,9 +60,7 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: isDark
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.black.withValues(alpha: 0.05),
+                color: colorScheme.onSurface.withValues(alpha: 0.07),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: SizedBox(
@@ -86,18 +83,14 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
                   l10n.aiExtractingInsights,
                 ],
                 interval: const Duration(milliseconds: 1100),
-                style: const TextStyle(
-                  fontSize: 16,
+                style: textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
-                  fontFamily: 'Outfit',
                 ),
-                shimmerColors: isDark
-                    ? [Colors.grey.shade700, Colors.white, Colors.grey.shade700]
-                    : [
-                        Colors.grey.shade400,
-                        Colors.black,
-                        Colors.grey.shade400,
-                      ],
+                shimmerColors: [
+                  colorScheme.onSurface.withValues(alpha: 0.3),
+                  colorScheme.onSurface,
+                  colorScheme.onSurface.withValues(alpha: 0.3),
+                ],
               ),
             ),
           ],
@@ -117,9 +110,7 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
         leading: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: isDark
-                ? Colors.white.withValues(alpha: 0.1)
-                : Colors.black.withValues(alpha: 0.05),
+            color: colorScheme.onSurface.withValues(alpha: 0.07),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
@@ -130,30 +121,26 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
         ),
         title: Text(
           l10n.aiAnalysisTitle,
-          style: TextStyle(
+          style: textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
-            fontSize: 16,
             color: colorScheme.onSurface,
-            fontFamily: 'Outfit',
           ),
         ),
         shape: const Border(),
         collapsedShape: const Border(),
         childrenPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
         children: [
-          Divider(height: 1, color: isDark ? Colors.white12 : Colors.grey[200]),
+          Divider(height: 1, color: colorScheme.outlineVariant),
           const SizedBox(height: 20),
           if (widget.analysis.naturalResponse.isNotEmpty) ...[
             Container(
               padding: const EdgeInsets.all(16),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: isDark
-                    ? Colors.white.withValues(alpha: 0.05)
-                    : Colors.black.withValues(alpha: 0.03),
+                color: colorScheme.onSurface.withValues(alpha: 0.04),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: isDark ? Colors.white12 : Colors.black12,
+                  color: colorScheme.outlineVariant,
                 ),
               ),
               child: Text(
@@ -196,36 +183,16 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
       child: cardContent,
     );
 
-    if (isDark) {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
-            child: CustomPaint(
-              painter: _LiquidGlassCardPainter(),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.35),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: innerContent,
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
     return Card(
-      elevation: 4,
-      shadowColor: Colors.black.withValues(alpha: 0.2),
-      color: Theme.of(context).cardTheme.color ?? Colors.white,
+      elevation: colorScheme.brightness == Brightness.dark ? 0 : 4,
+      shadowColor: colorScheme.shadow.withValues(alpha: 0.2),
+      color: theme.cardTheme.color ?? colorScheme.surface,
       margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
-        side: BorderSide.none,
+        side: colorScheme.brightness == Brightness.dark
+            ? BorderSide(color: colorScheme.outlineVariant.withValues(alpha: 0.3))
+            : BorderSide.none,
       ),
       clipBehavior: Clip.antiAlias,
       child: innerContent,
@@ -275,45 +242,3 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
   }
 }
 
-class _LiquidGlassCardPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final rect = Offset.zero & size;
-    final rrect = RRect.fromRectAndCorners(
-      rect,
-      topLeft: const Radius.circular(24),
-      topRight: const Radius.circular(24),
-      bottomLeft: const Radius.circular(24),
-      bottomRight: const Radius.circular(24),
-    );
-
-    final specularPaint = Paint()
-      ..shader = RadialGradient(
-        center: const Alignment(0.0, -1.2),
-        radius: 1.5,
-        colors: [
-          Colors.white.withValues(alpha: 0.15),
-          Colors.white.withValues(alpha: 0.04),
-          Colors.transparent,
-        ],
-        stops: const [0.0, 0.4, 1.0],
-      ).createShader(rect);
-    canvas.drawRRect(rrect, specularPaint);
-
-    final borderPaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.0
-      ..shader = LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [
-          Colors.white.withValues(alpha: 0.25),
-          Colors.white.withValues(alpha: 0.05),
-        ],
-      ).createShader(rect);
-    canvas.drawRRect(rrect, borderPaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}

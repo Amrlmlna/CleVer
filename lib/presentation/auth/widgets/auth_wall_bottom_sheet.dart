@@ -80,7 +80,7 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
@@ -91,9 +91,7 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
           child: Container(
             padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
             decoration: BoxDecoration(
-              color: (isDark ? Colors.black : Colors.grey.shade900).withValues(
-                alpha: 0.35,
-              ),
+              color: colorScheme.shadow.withValues(alpha: 0.35),
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(28),
               ),

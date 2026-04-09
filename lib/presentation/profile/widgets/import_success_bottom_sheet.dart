@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../domain/entities/user_profile.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -122,8 +121,7 @@ class ImportSuccessBottomSheet extends StatelessWidget {
 
               Text(
                 l10n.importSuccessTitle,
-                style: GoogleFonts.inter(
-                  fontSize: 18,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                   color: Theme.of(context).colorScheme.onSurface,
                   letterSpacing: 0.5,
@@ -179,8 +177,7 @@ class ImportSuccessBottomSheet extends StatelessWidget {
                   ),
                   child: Text(
                     l10n.importSuccessContinue,
-                    style: GoogleFonts.inter(
-                      fontSize: 15,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 0.5,
                     ),

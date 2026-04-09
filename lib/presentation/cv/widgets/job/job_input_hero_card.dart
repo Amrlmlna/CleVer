@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class JobInputHeroCard extends StatelessWidget {
@@ -19,15 +18,15 @@ class JobInputHeroCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           AppLocalizations.of(context)!.whatJobApply,
-          style: GoogleFonts.inter(
+          style: textTheme.displaySmall?.copyWith(
             color: colorScheme.onSurface,
-            fontSize: 32,
             fontWeight: FontWeight.w800,
             height: 1.2,
             letterSpacing: -0.5,
@@ -37,11 +36,9 @@ class JobInputHeroCard extends StatelessWidget {
 
         Text(
           AppLocalizations.of(context)!.aiHelpCreateCV,
-          style: GoogleFonts.inter(
+          style: textTheme.bodyLarge?.copyWith(
             color: colorScheme.onSurfaceVariant,
             height: 1.5,
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
           ),
         ),
 
@@ -95,20 +92,19 @@ class JobInputHeroCard extends StatelessWidget {
     VoidCallback? onSubmit,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return TextFormField(
       controller: controller,
       autofocus: autoFocus,
-      style: GoogleFonts.inter(
+      style: textTheme.titleSmall?.copyWith(
         color: colorScheme.onSurface,
-        fontSize: 17,
         fontWeight: FontWeight.w600,
       ),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: GoogleFonts.inter(
+        hintStyle: textTheme.titleSmall?.copyWith(
           color: colorScheme.onSurfaceVariant,
-          fontSize: 17,
           fontWeight: FontWeight.w400,
         ),
         border: InputBorder.none,

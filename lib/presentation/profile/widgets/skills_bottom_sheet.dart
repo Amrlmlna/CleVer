@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../common/widgets/unsaved_changes_dialog.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../common/widgets/custom_text_form_field.dart';
 
 class SkillsBottomSheet extends StatefulWidget {
@@ -87,10 +86,8 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
                   const SizedBox(height: 24),
                   Text(
                     localization.addSkill,
-                    style: GoogleFonts.inter(
-                      color: Theme.of(context).colorScheme.onSurface,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w700,
-                      fontSize: 20,
                       letterSpacing: -0.5,
                     ),
                   ),
@@ -128,9 +125,8 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
                       ),
                       child: Text(
                         localization.add,
-                        style: GoogleFonts.inter(
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.w700,
-                          fontSize: 15,
                         ),
                       ),
                     ),
@@ -145,10 +141,9 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
                       ),
                       child: Text(
                         localization.cancel,
-                        style: GoogleFonts.inter(
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontWeight: FontWeight.w600,
-                          fontSize: 15,
                         ),
                       ),
                     ),

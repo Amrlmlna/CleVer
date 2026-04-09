@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../utils/cv_import_handler.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
@@ -34,13 +33,10 @@ class ImportCVButton extends ConsumerWidget {
         ),
         child: Text(
           AppLocalizations.of(context)!.importFromCV,
-          style: GoogleFonts.inter(
-            fontSize: 14,
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
             fontWeight: FontWeight.w600,
             letterSpacing: 1.2,
-            color: Theme.of(
-              context,
-            ).colorScheme.onSurface.withValues(alpha: 0.8),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
           ),
         ),
       ),

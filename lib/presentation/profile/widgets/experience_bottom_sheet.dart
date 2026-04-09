@@ -5,7 +5,7 @@ import '../../../../domain/entities/user_profile.dart';
 import '../../common/widgets/custom_text_form_field.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../common/widgets/spinning_text_loader.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import '../../../../core/providers/locale_provider.dart';
 import '../../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
@@ -204,10 +204,8 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                     widget.existing == null
                         ? localization.addExperience
                         : localization.editExperienceTitle,
-                    style: GoogleFonts.inter(
-                      color: Theme.of(context).colorScheme.onSurface,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w700,
-                      fontSize: 20,
                       letterSpacing: -0.5,
                     ),
                   ),
@@ -265,9 +263,8 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                     children: [
                       Text(
                         localization.shortDescription,
-                        style: GoogleFonts.inter(
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontSize: 13,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -281,9 +278,8 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                                   localization.rephrasing,
                                   localization.polishing,
                                 ],
-                                style: GoogleFonts.inter(
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: Theme.of(context).colorScheme.onSurface,
-                                  fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 interval: const Duration(milliseconds: 800),
@@ -298,9 +294,8 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                               ),
                               label: Text(
                                 localization.rewriteAI,
-                                style: GoogleFonts.inter(
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: Theme.of(context).colorScheme.onSurface,
-                                  fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -338,9 +333,8 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                       ),
                       child: Text(
                         localization.saveAllCaps,
-                        style: GoogleFonts.inter(
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.w700,
-                          fontSize: 15,
                         ),
                       ),
                     ),
@@ -355,10 +349,9 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                       ),
                       child: Text(
                         localization.cancel.toUpperCase(),
-                        style: GoogleFonts.inter(
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontWeight: FontWeight.w600,
-                          fontSize: 15,
                         ),
                       ),
                     ),

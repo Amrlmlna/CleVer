@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../domain/entities/certification.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../common/widgets/custom_text_form_field.dart';
 
 import '../../common/widgets/unsaved_changes_dialog.dart';
@@ -154,10 +153,8 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                     widget.existing == null
                         ? localization.addCertification
                         : localization.editCertification,
-                    style: GoogleFonts.inter(
-                      color: Theme.of(context).colorScheme.onSurface,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w700,
-                      fontSize: 20,
                       letterSpacing: -0.5,
                     ),
                   ),
@@ -239,9 +236,8 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                       ),
                       child: Text(
                         localization.saveAllCaps,
-                        style: GoogleFonts.inter(
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.w700,
-                          fontSize: 15,
                         ),
                       ),
                     ),
@@ -256,10 +252,9 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                       ),
                       child: Text(
                         localization.cancel.toUpperCase(),
-                        style: GoogleFonts.inter(
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontWeight: FontWeight.w600,
-                          fontSize: 15,
                         ),
                       ),
                     ),

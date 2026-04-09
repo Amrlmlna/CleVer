@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class JobDescriptionField extends StatelessWidget {
@@ -10,13 +9,13 @@ class JobDescriptionField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           AppLocalizations.of(context)!.jobDetailLabel,
-          style: GoogleFonts.inter(
-            fontSize: 16,
+          style: textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.w600,
             color: colorScheme.onSurface,
           ),
@@ -30,15 +29,13 @@ class JobDescriptionField extends StatelessWidget {
           child: TextFormField(
             controller: controller,
             maxLines: 5,
-            style: GoogleFonts.inter(
+            style: textTheme.bodyMedium?.copyWith(
               color: colorScheme.onSurface,
-              fontSize: 16,
             ),
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context)!.jobDetailHint,
-              hintStyle: GoogleFonts.inter(
+              hintStyle: textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onSurfaceVariant,
-                fontSize: 16,
               ),
               border: InputBorder.none,
               enabledBorder: InputBorder.none,

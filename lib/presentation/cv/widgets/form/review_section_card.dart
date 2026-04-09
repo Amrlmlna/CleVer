@@ -20,16 +20,16 @@ class ReviewSectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
+    final textTheme = theme.textTheme;
 
     return Card(
-      elevation: isDark ? 0 : 4,
-      shadowColor: Colors.black.withValues(alpha: 0.2),
+      elevation: colorScheme.brightness == Brightness.dark ? 0 : 4,
+      shadowColor: colorScheme.shadow.withValues(alpha: 0.2),
       color: theme.cardTheme.color ?? colorScheme.surface,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
-        side: isDark
+        side: colorScheme.brightness == Brightness.dark
             ? BorderSide(color: colorScheme.outlineVariant.withValues(alpha: 0.3))
             : BorderSide.none,
       ),
@@ -42,9 +42,7 @@ class ReviewSectionCard extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: isDark
-                ? Colors.white.withValues(alpha: 0.1)
-                : Colors.black.withValues(alpha: 0.05),
+            color: colorScheme.onSurface.withValues(alpha: 0.07),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
@@ -55,18 +53,16 @@ class ReviewSectionCard extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: TextStyle(
+          style: textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
-            fontSize: 16,
             color: colorScheme.onSurface,
-            fontFamily: 'Outfit',
           ),
         ),
         shape: const Border(),
         collapsedShape: const Border(),
         childrenPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
         children: [
-          Divider(height: 1, color: isDark ? Colors.white12 : Colors.grey[200]),
+          Divider(height: 1, color: colorScheme.outlineVariant),
           const SizedBox(height: 20),
           child,
         ],
