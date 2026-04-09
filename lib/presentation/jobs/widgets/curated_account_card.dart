@@ -23,11 +23,14 @@ class CuratedAccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey.shade900,
+        color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Material(
         color: Colors.transparent,
@@ -59,24 +62,23 @@ class CuratedAccountCard extends StatelessWidget {
                       ? Image.network(
                           account.profileImageUrl!,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const Icon(
+                          errorBuilder: (_, __, ___) => Icon(
                             Icons.person,
-                            color: Colors.white54,
+                            color: colorScheme.onSurfaceVariant,
                             size: 28,
                           ),
                         )
-                      : const Icon(
+                      : Icon(
                           Icons.person,
-                          color: Colors.white54,
+                          color: colorScheme.onSurfaceVariant,
                           size: 28,
                         ),
                 ),
                 const SizedBox(height: 12),
                 Text(
                   account.name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
+                  style: textTheme.titleSmall?.copyWith(
+                    color: colorScheme.onSurface,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
@@ -86,9 +88,8 @@ class CuratedAccountCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   account.handle,
-                  style: TextStyle(
-                    color: Colors.grey.shade400,
-                    fontSize: 12,
+                  style: textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
                   ),
                   textAlign: TextAlign.center,
@@ -113,18 +114,20 @@ class _AccountTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05),
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+        border: Border.all(color: colorScheme.outline),
       ),
       child: Text(
         tag,
-        style: const TextStyle(
-          color: Colors.white70,
-          fontSize: 10,
+        style: textTheme.labelSmall?.copyWith(
+          color: colorScheme.onSurfaceVariant,
           fontWeight: FontWeight.w600,
         ),
         maxLines: 1,

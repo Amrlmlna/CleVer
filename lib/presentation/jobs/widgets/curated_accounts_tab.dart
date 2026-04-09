@@ -19,6 +19,8 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     final accountsAsync = ref.watch(curatedAccountsProvider);
 
     return accountsAsync.when(
@@ -49,17 +51,17 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)!.jobListSearchTagsHint,
-                  hintStyle: TextStyle(color: Colors.grey[600]),
-                  prefixIcon: Icon(Icons.search, color: Colors.grey[500]),
+                  hintStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
+                  prefixIcon: Icon(Icons.search, color: colorScheme.onSurfaceVariant),
                   filled: true,
-                  fillColor: Colors.white.withValues(alpha: 0.06),
+                  fillColor: colorScheme.surfaceContainerHighest,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
                   contentPadding: const EdgeInsets.symmetric(vertical: 0),
                 ),
-                style: const TextStyle(color: Colors.white),
+                style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface),
                 onChanged: (val) {
                   setState(() {
                     _searchQuery = val;
@@ -71,20 +73,19 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
               padding: const EdgeInsets.all(16),
               margin: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.05),
+                color: colorScheme.surfaceContainer,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                border: Border.all(color: colorScheme.outlineVariant),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.lightbulb_outline, color: Colors.white),
+                  Icon(Icons.lightbulb_outline, color: colorScheme.onSurface),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       AppLocalizations.of(context)!.jobListScannerHint,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 13,
+                      style: textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ),
@@ -102,16 +103,15 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
                             Icon(
                               Icons.search_off,
                               size: 64,
-                              color: Colors.grey.shade800,
+                              color: colorScheme.onSurfaceVariant,
                             ),
                             const SizedBox(height: 16),
                             Text(
                               AppLocalizations.of(
                                 context,
                               )!.jobListNoAccountsFound,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
+                              style: textTheme.titleMedium?.copyWith(
+                                color: colorScheme.onSurface,
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
@@ -121,9 +121,8 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
                               AppLocalizations.of(
                                 context,
                               )!.jobListNoAccountsFoundDesc(_searchQuery),
-                              style: TextStyle(
-                                color: Colors.grey.shade500,
-                                fontSize: 13,
+                              style: textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
                                 height: 1.5,
                               ),
                               textAlign: TextAlign.center,
@@ -141,8 +140,8 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
                                 )!.jobListGiveFeedback,
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                foregroundColor: Colors.black,
+                                backgroundColor: colorScheme.primary,
+                                foregroundColor: colorScheme.onPrimary,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
@@ -182,7 +181,7 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
       },
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, stack) => Center(
-        child: Text('$err', style: const TextStyle(color: Colors.white)),
+        child: Text('$err', style: TextStyle(color: colorScheme.error)),
       ),
     );
   }

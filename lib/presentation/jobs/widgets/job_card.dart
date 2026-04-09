@@ -9,12 +9,15 @@ class JobCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.grey.shade900,
+        color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Material(
         color: Colors.transparent,
@@ -30,7 +33,7 @@ class JobCard extends StatelessWidget {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.05),
+                    color: colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(
@@ -38,9 +41,8 @@ class JobCard extends StatelessWidget {
                       job.company.isNotEmpty
                           ? job.company[0].toUpperCase()
                           : '?',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+                      style: textTheme.titleLarge?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -54,18 +56,16 @@ class JobCard extends StatelessWidget {
                     children: [
                       Text(
                         job.title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+                        style: textTheme.titleMedium?.copyWith(
+                          color: colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         job.company,
-                        style: TextStyle(
-                          color: Colors.grey.shade400,
-                          fontSize: 14,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -75,14 +75,13 @@ class JobCard extends StatelessWidget {
                             Icon(
                               Icons.location_on,
                               size: 14,
-                              color: Colors.grey.shade500,
+                              color: colorScheme.onSurfaceVariant,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               job.location!,
-                              style: TextStyle(
-                                color: Colors.grey.shade500,
-                                fontSize: 12,
+                              style: textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -91,14 +90,13 @@ class JobCard extends StatelessWidget {
                             Icon(
                               Icons.work,
                               size: 14,
-                              color: Colors.grey.shade500,
+                              color: colorScheme.onSurfaceVariant,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               job.employmentType!,
-                              style: TextStyle(
-                                color: Colors.grey.shade500,
-                                fontSize: 12,
+                              style: textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
                               ),
                             ),
                           ],

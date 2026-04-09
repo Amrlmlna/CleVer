@@ -50,9 +50,12 @@ class JobPreviewBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey.shade900,
+        color: colorScheme.surfaceContainer,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: const EdgeInsets.all(24),
@@ -65,7 +68,7 @@ class JobPreviewBottomSheet extends StatelessWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey.shade700,
+                color: colorScheme.outlineVariant,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -77,15 +80,14 @@ class JobPreviewBottomSheet extends StatelessWidget {
                 width: 64,
                 height: 64,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.05),
+                  color: colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Center(
                   child: Text(
                     job.company.isNotEmpty ? job.company[0].toUpperCase() : '?',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
+                    style: textTheme.headlineMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -98,18 +100,16 @@ class JobPreviewBottomSheet extends StatelessWidget {
                   children: [
                     Text(
                       job.title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
+                      style: textTheme.titleLarge?.copyWith(
+                        color: colorScheme.onSurface,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       job.company,
-                      style: TextStyle(
-                        color: Colors.grey.shade400,
-                        fontSize: 16,
+                      style: textTheme.titleMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -125,18 +125,16 @@ class JobPreviewBottomSheet extends StatelessWidget {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.jobDescription,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
+                    style: textTheme.titleMedium?.copyWith(
+                      color: colorScheme.onSurface,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     job.description,
-                    style: TextStyle(
-                      color: Colors.grey.shade300,
-                      fontSize: 15,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
                       height: 1.6,
                     ),
                   ),
@@ -145,9 +143,8 @@ class JobPreviewBottomSheet extends StatelessWidget {
                     const SizedBox(height: 24),
                     Text(
                       AppLocalizations.of(context)!.jobRequirements,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
+                      style: textTheme.titleMedium?.copyWith(
+                        color: colorScheme.onSurface,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -168,9 +165,8 @@ class JobPreviewBottomSheet extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 req,
-                                style: TextStyle(
-                                  color: Colors.grey.shade300,
-                                  fontSize: 15,
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
                                   height: 1.5,
                                 ),
                               ),
@@ -194,7 +190,7 @@ class JobPreviewBottomSheet extends StatelessWidget {
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     side: BorderSide(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color: colorScheme.outline,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
