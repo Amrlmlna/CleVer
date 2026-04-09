@@ -135,39 +135,56 @@ class OnboardingNavigationBar extends StatelessWidget {
           ),
 
           if (currentPage > 0 || isSkippable) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // ← Back: outlined box icon button — no label needed
                 if (currentPage > 0)
-                  TextButton(
-                    onPressed: onBack,
-                    style: TextButton.styleFrom(
-                      foregroundColor: colorScheme.onSurfaceVariant,
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.back,
-                      style: const TextStyle(fontSize: 14),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: onBack,
+                      borderRadius: BorderRadius.circular(14),
+                      child: Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: colorScheme.outlineVariant,
+                            width: 1.5,
+                          ),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Icon(
+                          Icons.arrow_back_rounded,
+                          color: colorScheme.onSurfaceVariant,
+                          size: 20,
+                        ),
+                      ),
                     ),
                   ),
-                if (currentPage > 0 && isSkippable && onSkip != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Container(
-                      width: 1,
-                      height: 12,
-                      color: colorScheme.outlineVariant,
-                    ),
-                  ),
+
+                const Spacer(),
+
+                // Skip: ghost text link — clearly tertiary
                 if (isSkippable && onSkip != null)
                   TextButton(
                     onPressed: onSkip,
                     style: TextButton.styleFrom(
-                      foregroundColor: colorScheme.onSurfaceVariant,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 12,
+                      ),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
                     child: Text(
                       AppLocalizations.of(context)!.skipForNow,
-                      style: const TextStyle(fontSize: 13),
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant.withValues(
+                          alpha: 0.7,
+                        ),
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
               ],

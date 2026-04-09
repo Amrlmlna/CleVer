@@ -186,44 +186,66 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                                   key: const ValueKey('nav'),
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
+                                    // Skip — subtle, clearly secondary
                                     TextButton(
                                       onPressed: _onSkip,
                                       style: TextButton.styleFrom(
                                         padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
+                                          horizontal: 8,
                                           vertical: 12,
                                         ),
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
                                       ),
                                       child: Text(
                                         l10n.skipIntro,
-                                        style: textTheme.titleMedium?.copyWith(
-                                          color: colorScheme.onSurfaceVariant,
-                                          fontWeight: FontWeight.w600,
+                                        style: textTheme.bodyMedium?.copyWith(
+                                          color: colorScheme.onSurface
+                                              .withValues(alpha: 0.45),
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
+
+                                    // Next — white pill with arrow, clearly primary
                                     ElevatedButton(
-                                      onPressed: () => _onNext(screens.length),
+                                      onPressed: () =>
+                                          _onNext(screens.length),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: colorScheme.surfaceContainerHighest,
-                                        foregroundColor: colorScheme.onSurface,
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 32,
-                                          vertical: 16,
+                                        backgroundColor: Colors.white,
+                                        foregroundColor: Colors.black,
+                                        padding: const EdgeInsets.only(
+                                          left: 28,
+                                          right: 20,
+                                          top: 16,
+                                          bottom: 16,
                                         ),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            24,
-                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(32),
                                         ),
                                         elevation: 0,
                                       ),
-                                      child: Text(
-                                        l10n.next,
-                                        style: textTheme.titleMedium?.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            l10n.next,
+                                            style: textTheme.titleMedium
+                                                ?.copyWith(
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          const Icon(
+                                            Icons.arrow_forward_rounded,
+                                            size: 18,
+                                            color: Colors.black,
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
