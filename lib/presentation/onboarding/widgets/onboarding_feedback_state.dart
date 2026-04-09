@@ -138,8 +138,8 @@ class _CompleteStateState extends State<_CompleteState>
         _buildFeatureCard(
           context,
           icon: Icons.star_rounded,
-          title: 'Top Tier Profile',
-          subtitle: 'Kamu di antara kandidat paling siap.',
+          title: AppLocalizations.of(context)!.onboardingFeedbackCompleteFeatureTitle,
+          subtitle: AppLocalizations.of(context)!.onboardingFeedbackCompleteFeatureSubtitle,
         ).animate().fadeIn(delay: 800.ms, duration: 500.ms).slideY(begin: 0.2, end: 0),
       ],
     );

@@ -1578,6 +1578,18 @@ abstract class AppLocalizations {
   /// **'The app gets smarter as you add more info.'**
   String get onboardingFeedbackGetSmarterHint;
 
+  /// No description provided for @onboardingFeedbackCompleteFeatureTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Tier Profile'**
+  String get onboardingFeedbackCompleteFeatureTitle;
+
+  /// No description provided for @onboardingFeedbackCompleteFeatureSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re among the most prepared candidates.'**
+  String get onboardingFeedbackCompleteFeatureSubtitle;
+
   /// No description provided for @onboardingHeadline1.
   ///
   /// In en, this message translates to:

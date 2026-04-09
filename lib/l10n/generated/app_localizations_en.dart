@@ -810,6 +810,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'The app gets smarter as you add more info.';
 
   @override
+  String get onboardingFeedbackCompleteFeatureTitle => 'Top Tier Profile';
+
+  @override
+  String get onboardingFeedbackCompleteFeatureSubtitle =>
+      'You\'re among the most prepared candidates.';
+
+  @override
   String get onboardingHeadline1 => 'still editing your cv at 1am?';
 
   @override

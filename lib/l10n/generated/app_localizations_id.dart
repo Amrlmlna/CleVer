@@ -813,6 +813,13 @@ class AppLocalizationsId extends AppLocalizations {
       'Aplikasi makin pintar seiring kamu lengkapi data.';
 
   @override
+  String get onboardingFeedbackCompleteFeatureTitle => 'Profil Terbaik';
+
+  @override
+  String get onboardingFeedbackCompleteFeatureSubtitle =>
+      'Kamu di antara kandidat paling siap.';
+
+  @override
   String get onboardingHeadline1 => 'masih ngedit cv jam 1 pagi?';
 
   @override

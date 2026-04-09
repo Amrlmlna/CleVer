@@ -295,6 +295,8 @@
   "onboardingFeedbackEmptyTitle": "No worries!",
   "onboardingFeedbackEmptyMessage": "You can explore first. Spruce up your profile anytime in the 'Master Profile' tab so we can work our magic for you.",
   "onboardingFeedbackGetSmarterHint": "The app gets smarter as you add more info.",
+  "onboardingFeedbackCompleteFeatureTitle": "Top Tier Profile",
+  "onboardingFeedbackCompleteFeatureSubtitle": "You're among the most prepared candidates.",
   "onboardingHeadline1": "still editing your cv at 1am?",
   "onboardingHeadline2": "qualified, but still getting rejected?",
   "onboardingHeadline3": "don't start from zero.",

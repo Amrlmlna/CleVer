@@ -295,6 +295,8 @@
   "onboardingFeedbackEmptyTitle": "Gapapa!",
   "onboardingFeedbackEmptyMessage": "Kamu bisa explore dulu. Isi profilmu kapan aja di tab 'Master Profile' biar kami bisa bantu maksimal.",
   "onboardingFeedbackGetSmarterHint": "Aplikasi makin pintar seiring kamu lengkapi data.",
+  "onboardingFeedbackCompleteFeatureTitle": "Profil Terbaik",
+  "onboardingFeedbackCompleteFeatureSubtitle": "Kamu di antara kandidat paling siap.",
   "onboardingHeadline1": "masih ngedit cv jam 1 pagi?",
   "onboardingHeadline2": "kualifikasi pas, tapi sering ditolak?",
   "onboardingHeadline3": "gak perlu mulai dari nol lagi.",
