@@ -90,10 +90,11 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader>
         key: ValueKey<int>(_currentIndex),
         animation: _shimmerController,
         builder: (context, child) {
+          final textColor = widget.style?.color ?? Theme.of(context).colorScheme.onSurface;
           final colors = widget.shimmerColors ?? [
-            Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
-            Theme.of(context).colorScheme.onSurface,
-            Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+            textColor.withValues(alpha: 0.5),
+            textColor,
+            textColor.withValues(alpha: 0.5),
           ];
 
           return ShaderMask(
@@ -108,9 +109,7 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader>
             },
             child: Text(
               widget.texts[_currentIndex],
-              style:
-                  widget.style?.copyWith(color: Theme.of(context).colorScheme.onSurface) ??
-                  TextStyle(color: Theme.of(context).colorScheme.onSurface),
+              style: widget.style ?? TextStyle(color: textColor),
               textAlign: TextAlign.center,
             ),
           );
