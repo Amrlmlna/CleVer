@@ -36,19 +36,19 @@ class OnboardingCarouselScreen extends StatelessWidget {
         if (imageAsset != null)
           Positioned.fill(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  stops: const [0.35, 0.75],
-                  colors: [Colors.transparent, colorScheme.surface],
+                  stops: [0.3, 0.72],
+                  colors: [Colors.transparent, Colors.black],
                 ),
               ),
             ),
           ),
 
         if (imageAsset == null)
-          Positioned.fill(child: Container(color: colorScheme.surface)),
+          Positioned.fill(child: Container(color: Colors.black)),
 
         Positioned(
           left: 32,
