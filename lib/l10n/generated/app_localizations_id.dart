@@ -544,6 +544,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get importFromCV => 'import dari cv';
 
   @override
+  String get importCVHeroSubtitle =>
+      'rapihin profilmu secepat kilat cuma dengan import cv lama.';
+
+  @override
   String importSuccessMessage(
     Object eduCount,
     Object expCount,
@@ -792,32 +796,33 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get onboardingFeedbackCompleteMessage =>
-      'Profilmu 90% siap. Kamu sekarang di tier atas untuk dilirik recruiter!';
+      'Wih keren, Pengalaman kamu banyak juga ya! Udah siap nyobain clever?';
 
   @override
   String get onboardingFeedbackPartialTitle => 'Awal yang bagus!';
 
   @override
   String get onboardingFeedbackPartialMessage =>
-      'Kami sudah siapkan rekomendasi awal. Lengkapi nanti di tab \'Master Profile\' untuk match lebih baik.';
+      'Riwayat karir kamu lumayan juga! Udah siap nyobain clever?';
 
   @override
-  String get onboardingFeedbackEmptyTitle => 'Gapapa!';
+  String get onboardingFeedbackEmptyTitle =>
+      'Pengalaman kamu masih sedikit ya!';
 
   @override
   String get onboardingFeedbackEmptyMessage =>
-      'Kamu bisa explore dulu. Isi profilmu kapan aja di tab \'Master Profile\' biar kami bisa bantu maksimal.';
+      'Gapapa, kamu bisa explore dulu. Isi profilmu kapan aja di tab Profile tiap dapat pengalaman baru!';
 
   @override
   String get onboardingFeedbackGetSmarterHint =>
-      'Aplikasi makin pintar seiring kamu lengkapi data.';
+      'Clever adalah tools karir yang tumbuh bersama kamu.';
 
   @override
-  String get onboardingFeedbackCompleteFeatureTitle => 'Profil Terbaik';
+  String get onboardingFeedbackCompleteFeatureTitle => 'Luar biasa!';
 
   @override
   String get onboardingFeedbackCompleteFeatureSubtitle =>
-      'Kamu di antara kandidat paling siap.';
+      'Kamu udah siap banget buat nyobain clever!';
 
   @override
   String get onboardingHeadline1 => 'masih ngedit cv jam 1 pagi?';

@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../../core/theme/app_colors.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../common/widgets/animated_check_icon.dart';
 
 /// Displays contextual feedback based on profile completeness.
 /// Used in onboarding step 7/7 to provide personalized encouragement.
@@ -37,14 +38,16 @@ class OnboardingFeedbackState extends StatelessWidget {
 class _MorphingGraphic extends StatelessWidget {
   final Widget child;
   final Color backgroundColor;
-  final IconData icon;
+  final IconData? icon;
+  final Widget? customIcon;
   final Color iconColor;
   final bool hasGlow;
 
   const _MorphingGraphic({
     required this.child,
     required this.backgroundColor,
-    required this.icon,
+    this.icon,
+    this.customIcon,
     required this.iconColor,
     this.hasGlow = false,
   });
@@ -105,11 +108,16 @@ class _MorphingGraphic extends StatelessWidget {
                       ],
                     ),
                     alignment: Alignment.center,
-                    child: Icon(
-                      icon,
-                      color: iconColor,
-                      size: lerpDouble(24, 42, value),
-                    ),
+                    child: customIcon != null
+                        ? Transform.scale(
+                            scale: lerpDouble(0.6, 1.0, value),
+                            child: customIcon,
+                          )
+                        : Icon(
+                            icon,
+                            color: iconColor,
+                            size: lerpDouble(24, 42, value),
+                          ),
                   );
                 },
               ),
@@ -152,10 +160,14 @@ class _CompleteState extends StatelessWidget {
         // Morphing Hero
         _MorphingGraphic(
           backgroundColor: colorScheme.primaryContainer,
-          icon: Icons.celebration_rounded,
+          customIcon: AnimatedCheckIcon(
+            size: 42,
+            color: colorScheme.onPrimaryContainer,
+            strokeWidth: 5,
+          ),
           iconColor: colorScheme.onPrimaryContainer,
           hasGlow: true,
-          child: const SizedBox(), // The morphed container is built in the helper
+          child: const SizedBox(),
         ),
 
         const SizedBox(height: 48),

@@ -541,6 +541,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get importFromCV => 'import from cv';
 
   @override
+  String get importCVHeroSubtitle =>
+      'instantly organize your profile by importing your existing cv.';
+
+  @override
   String importSuccessMessage(
     Object eduCount,
     Object expCount,

@@ -1094,6 +1094,12 @@ abstract class AppLocalizations {
   /// **'import from cv'**
   String get importFromCV;
 
+  /// No description provided for @importCVHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'instantly organize your profile by importing your existing cv.'**
+  String get importCVHeroSubtitle;
+
   /// No description provided for @importSuccessMessage.
   ///
   /// In en, this message translates to:

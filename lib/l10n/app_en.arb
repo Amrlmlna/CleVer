@@ -173,6 +173,7 @@
   "importExistingCVDesc": "upload a pdf or take a photo — ai fills in the rest.",
   "importFailedMessage": "failed to import cv. please try again!",
   "importFromCV": "import from cv",
+  "importCVHeroSubtitle": "instantly organize your profile by importing your existing cv.",
   "importSuccessMessage": "cv imported successfully!\nadded: {expCount} experience, {eduCount} education, {skillsCount} skills",
   "importSuccessTitle": "import successful!",
   "importSuccessSubtitle": "here's what we found in your cv:",
