@@ -80,6 +80,9 @@ class _QuickActionCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -88,21 +91,20 @@ class _QuickActionCircle extends StatelessWidget {
             width: 64,
             height: 64,
             decoration: BoxDecoration(
-              color: Colors.grey.shade900,
+              color: colorScheme.surfaceContainer,
               shape: BoxShape.circle,
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.1),
+                color: colorScheme.outlineVariant,
                 width: 1,
               ),
             ),
-            child: Icon(icon, color: Colors.white, size: 28),
+            child: Icon(icon, color: colorScheme.onSurface, size: 28),
           ),
           const SizedBox(height: 8),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey.shade300,
+            style: textTheme.bodySmall?.copyWith(
+              color: colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w500,
             ),
           ),

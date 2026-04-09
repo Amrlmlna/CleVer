@@ -9,6 +9,9 @@ class LoginCTACard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     final isLoggedIn = ref.watch(isLoggedInProvider);
 
     if (isLoggedIn) return const SizedBox.shrink();
@@ -21,10 +24,10 @@ class LoginCTACard extends ConsumerWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Colors.grey.shade900, Colors.grey.shade800],
+            colors: [colorScheme.surfaceContainerHighest, colorScheme.surfaceContainer],
           ),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+          border: Border.all(color: colorScheme.outlineVariant),
         ),
         child: Row(
           children: [
@@ -32,12 +35,12 @@ class LoginCTACard extends ConsumerWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.1),
+                color: colorScheme.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.cloud_upload_outlined,
-                color: Colors.white,
+                color: colorScheme.primary,
                 size: 24,
               ),
             ),
@@ -50,16 +53,15 @@ class LoginCTACard extends ConsumerWidget {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.loginToSave,
-                    style: const TextStyle(
-                      fontSize: 15,
+                    style: textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     AppLocalizations.of(context)!.syncAnywhere,
-                    style: TextStyle(fontSize: 13, color: Colors.grey.shade400),
+                    style: textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant),
                   ),
                 ],
               ),
@@ -69,7 +71,7 @@ class LoginCTACard extends ConsumerWidget {
 
             Icon(
               Icons.arrow_forward_ios,
-              color: Colors.grey.shade400,
+              color: colorScheme.onSurfaceVariant,
               size: 16,
             ),
           ],

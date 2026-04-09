@@ -10,6 +10,9 @@ class HeroSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     final draftsAsync = ref.watch(draftsProvider);
     final hasDrafts = draftsAsync.maybeWhen(
       data: (drafts) => drafts.isNotEmpty,
@@ -20,14 +23,14 @@ class HeroSection extends ConsumerWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFFFFFFFF), Color(0xFFE0E0E0)],
+          colors: [colorScheme.primaryContainer, colorScheme.surfaceContainerHighest],
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: colorScheme.shadow.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -46,14 +49,13 @@ class HeroSection extends ConsumerWidget {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.05),
+                    color: colorScheme.onSurface.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     AppLocalizations.of(context)!.aiPowered,
-                    style: TextStyle(
-                      color: Colors.grey[800],
-                      fontSize: 12,
+                    style: textTheme.labelSmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.0,
                     ),
@@ -64,11 +66,9 @@ class HeroSection extends ConsumerWidget {
                   hasDrafts
                       ? AppLocalizations.of(context)!.createProfessionalCV
                       : AppLocalizations.of(context)!.createFirstCV,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 42,
+                  style: textTheme.displaySmall?.copyWith(
+                    color: colorScheme.onSurface,
                     fontWeight: FontWeight.w600,
-                    fontFamily: 'Outfit',
                     height: 1.0,
                     letterSpacing: -1.5,
                   ),
@@ -89,8 +89,8 @@ class HeroSection extends ConsumerWidget {
                       )!.authWallCreateCVDesc,
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
+                      backgroundColor: colorScheme.primary,
+                      foregroundColor: colorScheme.onPrimary,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -99,8 +99,7 @@ class HeroSection extends ConsumerWidget {
                     ),
                     child: Text(
                       AppLocalizations.of(context)!.startNow,
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),

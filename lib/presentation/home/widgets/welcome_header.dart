@@ -9,6 +9,9 @@ class WelcomeHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     final profile = ref.watch(masterProfileProvider);
     final displayName = ref.watch(userDisplayNameProvider);
 
@@ -22,19 +25,16 @@ class WelcomeHeader extends ConsumerWidget {
       children: [
         Text(
           AppLocalizations.of(context)!.helloName(name),
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-            fontWeight: FontWeight.w400,
+          style: textTheme.titleMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
           ),
         ),
         const SizedBox(height: 4),
         Text(
           AppLocalizations.of(context)!.readyToAchieve,
-          style: const TextStyle(
-            fontSize: 24,
+          style: textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.w700,
-            color: Colors.white,
+            color: colorScheme.onSurface,
             height: 1.2,
           ),
         ),

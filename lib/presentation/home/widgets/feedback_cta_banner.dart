@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:clever/core/services/review_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import '../providers/banner_provider.dart';
 
 class FeedbackCTABanner extends ConsumerWidget {
@@ -11,8 +11,9 @@ class FeedbackCTABanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context)!;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final isDismissed = ref.watch(feedbackBannerDismissedProvider);
 
     if (isDismissed) return const SizedBox.shrink();
@@ -21,9 +22,9 @@ class FeedbackCTABanner extends ConsumerWidget {
       margin: const EdgeInsets.symmetric(vertical: 8),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+        color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: isDark ? Colors.white24 : Colors.black12),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,14 +34,12 @@ class FeedbackCTABanner extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isDark
-                      ? Colors.white10
-                      : Colors.black.withValues(alpha: 0.05),
+                  color: colorScheme.onSurface.withValues(alpha: 0.05),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.star_rounded,
-                  color: isDark ? Colors.white : Colors.black,
+                  color: colorScheme.primary,
                   size: 28,
                 ),
               ).animate().scale(
@@ -52,8 +51,7 @@ class FeedbackCTABanner extends ConsumerWidget {
               Expanded(
                 child: Text(
                   l10n.feedbackTitle,
-                  style: GoogleFonts.inter(
-                    fontSize: 20,
+                  style: textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -63,9 +61,8 @@ class FeedbackCTABanner extends ConsumerWidget {
           const SizedBox(height: 16),
           Text(
             l10n.feedbackContent,
-            style: TextStyle(
-              fontSize: 15,
-              color: isDark ? Colors.white70 : Colors.black87,
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
               height: 1.5,
             ),
           ),
@@ -77,8 +74,8 @@ class FeedbackCTABanner extends ConsumerWidget {
                   // Opens the Play Store / App Store listing directly
                   onPressed: () => ReviewService().openStoreListing(),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isDark ? Colors.white : Colors.black,
-                    foregroundColor: isDark ? Colors.black : Colors.white,
+                    backgroundColor: colorScheme.primary,
+                    foregroundColor: colorScheme.onPrimary,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
@@ -105,8 +102,8 @@ class FeedbackCTABanner extends ConsumerWidget {
                 ),
                 child: Text(
                   l10n.later,
-                  style: TextStyle(
-                    color: isDark ? Colors.white60 : Colors.black54,
+                  style: textTheme.labelLarge?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
               ),

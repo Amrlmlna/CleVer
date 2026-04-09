@@ -16,8 +16,8 @@ class _CarouselBannerState extends ConsumerState<CarouselBanner> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final bannerAsync = ref.watch(bannerProvider);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return bannerAsync.when(
       data: (banners) {
@@ -55,9 +55,9 @@ class _CarouselBannerState extends ConsumerState<CarouselBanner> {
                     margin: const EdgeInsets.symmetric(horizontal: 5.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: isDark ? Colors.grey[900] : Colors.grey[200],
+                      color: colorScheme.surfaceContainerHighest,
                       border: Border.all(
-                        color: isDark ? Colors.white12 : Colors.black12,
+                        color: colorScheme.outlineVariant,
                         width: 1,
                       ),
                       image: DecorationImage(
@@ -80,7 +80,7 @@ class _CarouselBannerState extends ConsumerState<CarouselBanner> {
                     margin: const EdgeInsets.symmetric(horizontal: 4.0),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: (isDark ? Colors.white : Colors.black).withValues(
+                      color: colorScheme.onSurface.withValues(
                         alpha: _currentIndex == entry.key ? 0.9 : 0.2,
                       ),
                     ),
@@ -94,16 +94,14 @@ class _CarouselBannerState extends ConsumerState<CarouselBanner> {
         height: 180,
         margin: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
-          color: isDark
-              ? Colors.white.withValues(alpha: 0.05)
-              : Colors.black.withValues(alpha: 0.05),
+          color: colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Center(
           child: CircularProgressIndicator(
             strokeWidth: 2,
             valueColor: AlwaysStoppedAnimation<Color>(
-              isDark ? Colors.white54 : Colors.black54,
+              colorScheme.primary,
             ),
           ),
         ),

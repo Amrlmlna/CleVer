@@ -10,6 +10,9 @@ class PremiumBanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
@@ -17,17 +20,17 @@ class PremiumBanner extends ConsumerWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [const Color(0xFF1A1A1A), const Color(0xFF000000)],
+          colors: [colorScheme.surfaceContainerHighest, colorScheme.surfaceContainer],
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: colorScheme.shadow.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.1),
+          color: colorScheme.outlineVariant,
           width: 1,
         ),
       ),
@@ -55,12 +58,12 @@ class PremiumBanner extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.1),
+                    color: colorScheme.primary.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.account_balance_wallet_outlined,
-                    color: Colors.white,
+                    color: colorScheme.primary,
                     size: 20,
                   ),
                 ),
@@ -73,19 +76,17 @@ class PremiumBanner extends ConsumerWidget {
                     children: [
                       Text(
                         AppLocalizations.of(context)!.premiumBadge,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: textTheme.titleSmall?.copyWith(
+                          color: colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
-                          fontSize: 14,
                           letterSpacing: 1.0,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         AppLocalizations.of(context)!.unlockFeatures,
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.6),
-                          fontSize: 12,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -98,13 +99,13 @@ class PremiumBanner extends ConsumerWidget {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color: colorScheme.outline,
                     ),
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.arrow_forward,
-                    color: Colors.white,
+                    color: colorScheme.onSurface,
                     size: 16,
                   ),
                 ),
