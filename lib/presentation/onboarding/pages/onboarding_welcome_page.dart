@@ -114,7 +114,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
     final screens = _getScreens(context);
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           // Background Carousel

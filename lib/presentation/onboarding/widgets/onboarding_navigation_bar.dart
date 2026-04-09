@@ -97,8 +97,8 @@ class OnboardingNavigationBar extends StatelessWidget {
               onPressed: onNext,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 18),
-                backgroundColor: isLoading ? colorScheme.surfaceContainer : colorScheme.primary,
-                foregroundColor: isLoading ? colorScheme.onSurface : colorScheme.onPrimary,
+                backgroundColor: colorScheme.primary,
+                foregroundColor: colorScheme.onPrimary,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -114,7 +114,7 @@ class OnboardingNavigationBar extends StatelessWidget {
                           AppLocalizations.of(context)!.ready,
                         ],
                         style: textTheme.titleMedium?.copyWith(
-                          color: isLoading ? colorScheme.onSurface : colorScheme.onPrimary,
+                          color: colorScheme.onPrimary,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 1.0,
                         ),
@@ -128,7 +128,7 @@ class OnboardingNavigationBar extends StatelessWidget {
                       style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w900,
                         letterSpacing: 1.0,
-                        color: isLoading ? colorScheme.onSurface : colorScheme.onPrimary,
+                        color: colorScheme.onPrimary,
                       ),
                     ),
             ),
