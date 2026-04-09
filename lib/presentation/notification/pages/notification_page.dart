@@ -21,6 +21,9 @@ class NotificationPage extends ConsumerWidget {
   }
 
   Widget _buildEmptyState(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -28,12 +31,14 @@ class NotificationPage extends ConsumerWidget {
           Icon(
             Icons.notifications_none_outlined,
             size: 64,
-            color: Colors.grey[700],
+            color: colorScheme.onSurfaceVariant,
           ),
           const SizedBox(height: 16),
           Text(
             AppLocalizations.of(context)!.noNotifications,
-            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
@@ -45,6 +50,9 @@ class NotificationPage extends ConsumerWidget {
     WidgetRef ref,
     List notifications,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return ListView.builder(
       itemCount: notifications.length,
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -55,13 +63,13 @@ class NotificationPage extends ConsumerWidget {
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: notification.isRead
-                  ? Colors.white.withValues(alpha: 0.04)
-                  : Colors.blue.withValues(alpha: 0.1),
+                  ? colorScheme.surfaceContainerHighest
+                  : colorScheme.primary.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.notifications_active_outlined,
-              color: notification.isRead ? Colors.grey : Colors.blue,
+              color: notification.isRead ? colorScheme.onSurfaceVariant : colorScheme.primary,
               size: 20,
             ),
           ),
@@ -69,11 +77,11 @@ class NotificationPage extends ConsumerWidget {
             (notification.title == null || notification.title!.isEmpty)
                 ? AppLocalizations.of(context)!.notificationNew
                 : notification.title!,
-            style: TextStyle(
+            style: textTheme.bodyLarge?.copyWith(
               fontWeight: notification.isRead
                   ? FontWeight.normal
                   : FontWeight.bold,
-              color: Colors.white,
+              color: colorScheme.onSurface,
             ),
           ),
           subtitle: Column(
@@ -81,12 +89,16 @@ class NotificationPage extends ConsumerWidget {
             children: [
               Text(
                 notification.body,
-                style: TextStyle(color: Colors.grey[400], fontSize: 13),
+                style: textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
                 timeago.format(notification.timestamp),
-                style: TextStyle(color: Colors.grey[600], fontSize: 11),
+                style: textTheme.labelSmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
               ),
             ],
           ),
