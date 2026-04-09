@@ -15,6 +15,8 @@ class AppTheme {
       error: AppColors.error,
       onError: AppColors.white,
       surfaceContainerHighest: AppColors.grey100,
+      outlineVariant: AppColors.grey200,  // subtle border in light mode
+      outline: AppColors.grey400,
     );
 
     final textTheme = TextTheme(
@@ -140,6 +142,8 @@ class AppTheme {
       error: AppColors.error,
       onError: AppColors.black,
       surfaceContainerHighest: const Color(0xFF2C2C2C),
+      outlineVariant: AppColors.grey800,  // subtle border in dark mode
+      outline: AppColors.grey600,
     );
 
     final textTheme = TextTheme(
