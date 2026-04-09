@@ -4,6 +4,8 @@ import '../widgets/onboarding_carousel_screen.dart';
 import 'onboarding_page.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../core/services/analytics_service.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_theme.dart';
 
 class OnboardingWelcomePage extends StatefulWidget {
   const OnboardingWelcomePage({super.key});
@@ -245,18 +247,21 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
             left: 0,
             right: 0,
             child: Container(
-              decoration: BoxDecoration(
-                color: colorScheme.surfaceContainer,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+              decoration: const BoxDecoration(
+                color: AppColors.sheetSurface,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                 boxShadow: [
                   BoxShadow(
-                    color: colorScheme.shadow.withValues(alpha: 0.54),
+                    color: Color(0x66000000),
                     blurRadius: 40,
-                    offset: const Offset(0, -10),
+                    offset: Offset(0, -10),
                   ),
                 ],
               ),
-              child: const OnboardingPage(),
+              child: Theme(
+                data: AppTheme.sheetTheme,
+                child: const OnboardingPage(),
+              ),
             ),
           ),
 
@@ -271,8 +276,10 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                     _showForm = false;
                   });
                 },
-                icon: Icon(Icons.arrow_downward, color: colorScheme.onSurface),
-                style: IconButton.styleFrom(backgroundColor: colorScheme.scrim.withValues(alpha: 0.45)),
+                icon: const Icon(Icons.arrow_downward, color: AppColors.white),
+                style: IconButton.styleFrom(
+                  backgroundColor: AppColors.black.withValues(alpha: 0.55),
+                ),
               ),
             ),
         ],

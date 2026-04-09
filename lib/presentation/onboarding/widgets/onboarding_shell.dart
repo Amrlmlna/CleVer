@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../core/theme/app_colors.dart';
 
 class OnboardingShell extends StatelessWidget {
   final int currentPage;
@@ -82,9 +83,10 @@ class OnboardingShell extends StatelessWidget {
                 LinearProgressIndicator(
                   value: (currentPage + 1) / totalSteps,
                   backgroundColor: colorScheme.surfaceContainerHighest,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    colorScheme.primary,
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    AppColors.accentBlue,
                   ),
+                  borderRadius: BorderRadius.circular(4),
                 ),
               ],
             ),

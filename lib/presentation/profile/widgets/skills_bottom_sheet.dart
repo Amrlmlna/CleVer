@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../common/widgets/unsaved_changes_dialog.dart';
 import '../../common/widgets/custom_text_form_field.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_theme.dart';
 
 class SkillsBottomSheet extends StatefulWidget {
   final List<String> currentSkills;
@@ -16,15 +18,18 @@ class SkillsBottomSheet extends StatefulWidget {
       context: context,
       useRootNavigator: true,
       isScrollControlled: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: AppColors.sheetSurface,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (context) => Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+      builder: (context) => Theme(
+        data: AppTheme.sheetTheme,
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: SkillsBottomSheet(currentSkills: currentSkills),
         ),
-        child: SkillsBottomSheet(currentSkills: currentSkills),
       ),
     );
   }
@@ -78,7 +83,7 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
                         width: 40,
                         height: 4,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+                          color: AppColors.sheetHandle,
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),

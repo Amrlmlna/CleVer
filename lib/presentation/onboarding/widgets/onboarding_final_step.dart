@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../core/theme/app_colors.dart';
 
 class OnboardingFinalStep extends StatefulWidget {
   const OnboardingFinalStep({super.key});
@@ -59,14 +60,14 @@ class _OnboardingFinalStepState extends State<OnboardingFinalStep>
               child: Container(
                 width: 80,
                 height: 80,
-                decoration: BoxDecoration(
-                  color: colorScheme.primary,
+                decoration: const BoxDecoration(
+                  color: AppColors.accentBlue,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.check_rounded,
                   size: 44,
-                  color: colorScheme.onPrimary,
+                  color: AppColors.white,
                 ),
               ),
             ),

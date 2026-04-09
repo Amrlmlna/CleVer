@@ -277,4 +277,106 @@ class AppTheme {
       ),
     );
   }
+
+  // ─── Sheet / Modal Theme ──────────────────────────────────────────────────
+  // Light ThemeData for white bottom sheets and the onboarding form panel.
+  // Usage: Theme(data: AppTheme.sheetTheme, child: YourSheetContent())
+  // Change AppColors.sheet* tokens above to update ALL sheets in one place.
+  static ThemeData get sheetTheme {
+    const colorScheme = ColorScheme.light(
+      primary: AppColors.sheetOnSurface,        // Black button on white sheet
+      onPrimary: AppColors.white,               // White text on black button
+      secondary: AppColors.grey700,
+      onSecondary: AppColors.white,
+      surface: AppColors.sheetSurface,          // White sheet background
+      onSurface: AppColors.sheetOnSurface,      // Dark text
+      onSurfaceVariant: AppColors.sheetOnSurfaceVar, // Hint / secondary text
+      error: AppColors.error,
+      onError: AppColors.white,
+      surfaceContainerHighest: AppColors.sheetInputFill,
+      outlineVariant: AppColors.sheetDivider,
+      outline: AppColors.grey400,
+    );
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      colorScheme: colorScheme,
+
+      textTheme: TextTheme(
+        displayLarge:   AppTextStyles.h1.copyWith(color: colorScheme.onSurface),
+        displayMedium:  AppTextStyles.h2.copyWith(color: colorScheme.onSurface),
+        displaySmall:   AppTextStyles.h3.copyWith(color: colorScheme.onSurface),
+        headlineMedium: AppTextStyles.h4.copyWith(color: colorScheme.onSurface),
+        headlineSmall:  AppTextStyles.h4.copyWith(color: colorScheme.onSurface, fontSize: 20),
+        titleLarge:     AppTextStyles.bodyLarge.copyWith(color: colorScheme.onSurface, fontWeight: FontWeight.w700),
+        titleMedium:    AppTextStyles.body.copyWith(color: colorScheme.onSurface, fontWeight: FontWeight.w600),
+        titleSmall:     AppTextStyles.bodyMedium.copyWith(color: colorScheme.onSurface),
+        bodyLarge:      AppTextStyles.bodyLarge.copyWith(color: colorScheme.onSurface),
+        bodyMedium:     AppTextStyles.body.copyWith(color: colorScheme.onSurface),
+        bodySmall:      AppTextStyles.bodyMedium.copyWith(color: colorScheme.onSurfaceVariant),
+        labelLarge:     AppTextStyles.labelLarge.copyWith(color: colorScheme.onSurface),
+        labelMedium:    AppTextStyles.labelMedium.copyWith(color: colorScheme.onSurface),
+        labelSmall:     AppTextStyles.caption.copyWith(color: colorScheme.onSurfaceVariant),
+      ),
+
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.sheetInputFill,
+        hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.grey400),
+        labelStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.grey600),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: AppColors.sheetOnSurface, width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: AppColors.error, width: 1.5),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      ),
+
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          textStyle: AppTextStyles.labelLarge,
+        ),
+      ),
+
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: colorScheme.onSurfaceVariant,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          textStyle: AppTextStyles.labelLarge,
+        ),
+      ),
+
+      dividerTheme: const DividerThemeData(
+        color: AppColors.sheetDivider,
+        thickness: 1,
+      ),
+
+      chipTheme: ChipThemeData(
+        backgroundColor: AppColors.grey100,
+        labelStyle: AppTextStyles.bodyMedium.copyWith(color: colorScheme.onSurface),
+        secondarySelectedColor: colorScheme.primary,
+        secondaryLabelStyle: AppTextStyles.bodyMedium.copyWith(color: colorScheme.onPrimary),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        shape: StadiumBorder(side: BorderSide(color: AppColors.grey300)),
+      ),
+    );
+  }
 }
+
