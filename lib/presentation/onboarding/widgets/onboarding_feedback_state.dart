@@ -7,10 +7,8 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 /// Displays contextual feedback based on profile completeness.
 /// Used in onboarding step 7/7 to provide personalized encouragement.
 ///
-/// Three states:
-/// - **complete**: Celebration UI with confetti-like animation
-/// - **partial**: Progress indicator with "great start" message
-/// - **empty**: Relaxed, low-pressure UI for skippers
+/// Enhanced with "Hero Typography" and a "Morphing Entrance" for 
+/// a premium, alive feel.
 class OnboardingFeedbackState extends StatelessWidget {
   final UserProfile profile;
   final String completenessState; // 'complete' | 'partial' | 'empty'
@@ -35,112 +33,190 @@ class OnboardingFeedbackState extends StatelessWidget {
   }
 }
 
-class _CompleteState extends StatefulWidget {
-  final UserProfile profile;
+/// Helper widget to handle the "Pill to Circle" morphing entrance
+class _MorphingGraphic extends StatelessWidget {
+  final Widget child;
+  final Color backgroundColor;
+  final IconData icon;
+  final Color iconColor;
+  final bool hasGlow;
 
-  const _CompleteState({required this.profile});
+  const _MorphingGraphic({
+    required this.child,
+    required this.backgroundColor,
+    required this.icon,
+    required this.iconColor,
+    this.hasGlow = false,
+  });
 
   @override
-  State<_CompleteState> createState() => _CompleteStateState();
+  Widget build(BuildContext context) {
+    return Center(
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
+        children: [
+          // Background Glow (if enabled)
+          if (hasGlow)
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: backgroundColor.withValues(alpha: 0.2),
+                    blurRadius: 40,
+                    spreadRadius: 10,
+                  ),
+                ],
+              ),
+            ).animate().fadeIn(delay: 400.ms, duration: 800.ms).scale(begin: const Offset(0.5, 0.5)),
+
+          // The Morphing Container
+          // It starts as a "Pill" (Button shape) and grows into a large Circle/Rect
+          // Since it triggers on mount, we use flutter_animate to morph its geometry
+          child
+              .animate()
+              // Start from button position (approx bottom of screen - center)
+              .moveY(begin: 120, end: 0, curve: Curves.easeOutBack, duration: 800.ms)
+              // Grow size and adjust shape
+              .custom(
+                duration: 800.ms,
+                curve: Curves.easeOutCubic,
+                builder: (context, value, child) {
+                  // value 0 -> 1
+                  final width = lerpDouble(120, 100, value); // Start wider like a button
+                  final height = lerpDouble(52, 100, value); // Start short like a button
+                  final radius = lerpDouble(16, 50, value); // Start with btn radius
+
+                  return Container(
+                    width: width,
+                    height: height,
+                    decoration: BoxDecoration(
+                      color: backgroundColor,
+                      borderRadius: BorderRadius.circular(radius ?? 16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: backgroundColor.withValues(alpha: 0.15),
+                          blurRadius: 20 * value,
+                          offset: Offset(0, 10 * value),
+                        ),
+                      ],
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(
+                      icon,
+                      color: iconColor,
+                      size: lerpDouble(24, 42, value),
+                    ),
+                  );
+                },
+              ),
+              
+          // Extra Success Sparks (decorative)
+          if (hasGlow)
+            ...List.generate(4, (i) {
+              return Positioned(
+                left: 50 + (40 * (i % 2 == 0 ? 1 : -1)),
+                top: 50 + (40 * (i < 2 ? 1 : -1)),
+                child: Icon(Icons.auto_awesome, size: 14, color: backgroundColor)
+                    .animate(onPlay: (c) => c.repeat())
+                    .scale(duration: 1000.ms, begin: const Offset(0.5, 0.5))
+                    .fadeOut(delay: 500.ms),
+              );
+            }),
+        ],
+      ),
+    );
+  }
+
+  double? lerpDouble(num a, num b, double t) => a + (b - a) * t;
 }
 
-class _CompleteStateState extends State<_CompleteState>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnim;
-  late Animation<double> _fadeAnim;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 900),
-    );
-    _scaleAnim = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.elasticOut,
-    );
-    _fadeAnim = CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
-    );
-    Future.delayed(const Duration(milliseconds: 120), () {
-      if (mounted) _controller.forward();
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+class _CompleteState extends StatelessWidget {
+  final UserProfile profile;
+  const _CompleteState({required this.profile});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final firstName = profile.fullName.split(' ').first;
 
     return Column(
       children: [
-        // Animated celebration icon
-        FadeTransition(
-          opacity: _fadeAnim,
-          child: ScaleTransition(
-            scale: _scaleAnim,
-            child: Container(
-              width: 64,
-              height: 64,
-              decoration: BoxDecoration(
-                color: colorScheme.primaryContainer,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.celebration_rounded,
-                color: colorScheme.onPrimaryContainer,
-                size: 32,
-              ),
-            ),
-          ),
-        ).animate().fadeIn(duration: 600.ms).scale(delay: 200.ms),
+        const SizedBox(height: 10),
+        
+        // Morphing Hero
+        _MorphingGraphic(
+          backgroundColor: colorScheme.primaryContainer,
+          icon: Icons.celebration_rounded,
+          iconColor: colorScheme.onPrimaryContainer,
+          hasGlow: true,
+          child: const SizedBox(), // The morphed container is built in the helper
+        ),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: 48),
 
-        // Personalized headline
-        Text(
-          l10n.onboardingFeedbackCompleteTitle(
-            widget.profile.fullName.split(' ').first,
-          ),
+        // Hero Typography
+        RichText(
           textAlign: TextAlign.center,
-          style: textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w700,
-            color: colorScheme.onSurface,
-            letterSpacing: 0.5,
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Sangat Bagus,\n',
+                style: textTheme.displayMedium?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  color: colorScheme.onSurface,
+                  height: 1.1,
+                  letterSpacing: -1.5,
+                ),
+              ),
+              TextSpan(
+                text: firstName,
+                style: textTheme.displayMedium?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  color: AppColors.accentBlue,
+                  height: 1.1,
+                  letterSpacing: -1.5,
+                ),
+              ),
+              TextSpan(
+                text: '!',
+                style: textTheme.displayMedium?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  color: colorScheme.onSurface,
+                  height: 1.1,
+                  letterSpacing: -1.5,
+                ),
+              ),
+            ],
           ),
-        ).animate().fadeIn(delay: 400.ms, duration: 500.ms),
+        ).animate().fadeIn(delay: 300.ms, duration: 600.ms).slideY(begin: 0.1, end: 0),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
 
         // Success message
         Text(
           l10n.onboardingFeedbackCompleteMessage,
           textAlign: TextAlign.center,
-          style: textTheme.bodyMedium?.copyWith(
+          style: textTheme.bodyLarge?.copyWith(
             color: colorScheme.onSurfaceVariant,
-            height: 1.5,
+            height: 1.6,
           ),
-        ).animate().fadeIn(delay: 600.ms, duration: 500.ms),
+        ).animate().fadeIn(delay: 500.ms, duration: 600.ms),
 
-        const SizedBox(height: 20),
+        const SizedBox(height: 32),
 
-        // Feature highlights
+        // Feature highlight - bigger and centered
         _buildFeatureCard(
           context,
           icon: Icons.star_rounded,
-          title: AppLocalizations.of(context)!.onboardingFeedbackCompleteFeatureTitle,
-          subtitle: AppLocalizations.of(context)!.onboardingFeedbackCompleteFeatureSubtitle,
-        ).animate().fadeIn(delay: 800.ms, duration: 500.ms).slideY(begin: 0.2, end: 0),
+          title: l10n.onboardingFeedbackCompleteFeatureTitle,
+          subtitle: l10n.onboardingFeedbackCompleteFeatureSubtitle,
+        ).animate().fadeIn(delay: 800.ms, duration: 600.ms).scale(begin: const Offset(0.95, 0.95)),
       ],
     );
   }
@@ -155,39 +231,45 @@ class _CompleteStateState extends State<_CompleteState>
     final textTheme = Theme.of(context).textTheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(16),
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Row(
         children: [
           Container(
-            width: 42,
-            height: 42,
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: colorScheme.primary,
-              borderRadius: BorderRadius.circular(12),
+              color: AppColors.accentBlue,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.accentBlue.withValues(alpha: 0.3),
+                  blurRadius: 15,
+                  offset: const Offset(0, 5),
+                ),
+              ],
             ),
-            child: Icon(icon, color: colorScheme.onPrimary, size: 20),
+            child: Icon(icon, color: Colors.white, size: 24),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: 18),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
                     color: colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: textTheme.labelSmall?.copyWith(
+                  style: textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     height: 1.4,
                   ),
@@ -210,75 +292,68 @@ class _PartialState extends StatelessWidget {
 
     return Column(
       children: [
-        // Progress icon container
-        Container(
-          width: 64,
-          height: 64,
-          decoration: BoxDecoration(
-            color: colorScheme.primaryContainer,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            Icons.trending_up_rounded,
-            color: colorScheme.onPrimaryContainer,
-            size: 32,
-          ),
-        ).animate().fadeIn(duration: 600.ms).scale(delay: 100.ms),
+        const SizedBox(height: 10),
+        
+        // Morphing Hero
+        _MorphingGraphic(
+          backgroundColor: colorScheme.primaryContainer,
+          icon: Icons.auto_awesome_rounded,
+          iconColor: colorScheme.onPrimaryContainer,
+          hasGlow: true,
+          child: const SizedBox(),
+        ),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: 48),
 
         // Headline
         Text(
           l10n.onboardingFeedbackPartialTitle,
           textAlign: TextAlign.center,
-          style: textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w700,
+          style: textTheme.displaySmall?.copyWith(
+            fontWeight: FontWeight.w900,
             color: colorScheme.onSurface,
-            letterSpacing: 0.5,
+            letterSpacing: -1.0,
           ),
-        ).animate().fadeIn(delay: 300.ms, duration: 500.ms),
+        ).animate().fadeIn(delay: 300.ms, duration: 600.ms).slideY(begin: 0.1, end: 0),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
 
         // Message
         Text(
           l10n.onboardingFeedbackPartialMessage,
           textAlign: TextAlign.center,
-          style: textTheme.bodyMedium?.copyWith(
+          style: textTheme.bodyLarge?.copyWith(
             color: colorScheme.onSurfaceVariant,
-            height: 1.5,
+            height: 1.6,
           ),
-        ).animate().fadeIn(delay: 500.ms, duration: 500.ms),
+        ).animate().fadeIn(delay: 500.ms, duration: 600.ms),
 
-        const SizedBox(height: 20),
+        const SizedBox(height: 32),
 
         // Subtle hint
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-            borderRadius: BorderRadius.circular(12),
+            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: colorScheme.outlineVariant.withValues(alpha: 0.5)),
           ),
           child: Row(
             children: [
-              Icon(
-                Icons.lightbulb_outline,
-                size: 18,
-                color: colorScheme.onSurfaceVariant,
-              ),
-              const SizedBox(width: 8),
+              Icon(Icons.lightbulb_outline, size: 24, color: AppColors.accentBlue),
+              const SizedBox(width: 14),
               Expanded(
                 child: Text(
                   l10n.onboardingFeedbackGetSmarterHint,
-                  style: textTheme.labelSmall?.copyWith(
+                  style: textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
-                    height: 1.4,
+                    height: 1.5,
                   ),
                 ),
               ),
             ],
           ),
-        ).animate().fadeIn(delay: 700.ms, duration: 500.ms),
+        ).animate().fadeIn(delay: 800.ms, duration: 600.ms),
       ],
     );
   }
@@ -289,79 +364,72 @@ class _EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Column(
       children: [
-        // Relaxed icon - coffee cup vibe
-        Container(
-          width: 64,
-          height: 64,
-          decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerHighest,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            Icons.self_improvement_rounded,
-            color: colorScheme.onSurfaceVariant,
-            size: 32,
-          ),
-        ).animate().fadeIn(duration: 600.ms).shimmer(delay: 500.ms, duration: 1500.ms),
+        const SizedBox(height: 10),
+        
+        // Morphing Hero
+        _MorphingGraphic(
+          backgroundColor: colorScheme.surfaceContainerHighest,
+          icon: Icons.self_improvement_rounded,
+          iconColor: colorScheme.onSurfaceVariant,
+          child: const SizedBox(),
+        ),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: 48),
 
         // Relaxed headline
         Text(
-          AppLocalizations.of(context)!.onboardingFeedbackEmptyTitle,
+          l10n.onboardingFeedbackEmptyTitle,
           textAlign: TextAlign.center,
-          style: textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w700,
+          style: textTheme.displaySmall?.copyWith(
+            fontWeight: FontWeight.w900,
             color: colorScheme.onSurface,
-            letterSpacing: 0.5,
+            letterSpacing: -1.2,
           ),
-        ).animate().fadeIn(delay: 300.ms, duration: 500.ms),
+        ).animate().fadeIn(delay: 300.ms, duration: 600.ms),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
 
         // Low-pressure message
         Text(
-          AppLocalizations.of(context)!.onboardingFeedbackEmptyMessage,
+          l10n.onboardingFeedbackEmptyMessage,
           textAlign: TextAlign.center,
-          style: textTheme.bodyMedium?.copyWith(
+          style: textTheme.bodyLarge?.copyWith(
             color: colorScheme.onSurfaceVariant,
-            height: 1.5,
+            height: 1.6,
           ),
-        ).animate().fadeIn(delay: 500.ms, duration: 500.ms),
+        ).animate().fadeIn(delay: 500.ms, duration: 600.ms),
 
-        const SizedBox(height: 20),
+        const SizedBox(height: 32),
 
         // Friendly hint
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppColors.accentBlue.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.accentBlue.withValues(alpha: 0.2)),
+            color: AppColors.accentBlue.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: AppColors.accentBlue.withValues(alpha: 0.15)),
           ),
           child: Row(
             children: [
-              Icon(
-                Icons.info_outline_rounded,
-                size: 18,
-                color: AppColors.accentBlue,
-              ),
-              const SizedBox(width: 8),
+              Icon(Icons.auto_awesome_mosaic_rounded, size: 24, color: AppColors.accentBlue),
+              const SizedBox(width: 14),
               Expanded(
                 child: Text(
-                  AppLocalizations.of(context)!.onboardingFeedbackGetSmarterHint,
-                  style: textTheme.labelSmall?.copyWith(
+                  l10n.onboardingFeedbackGetSmarterHint,
+                  style: textTheme.bodyMedium?.copyWith(
                     color: AppColors.accentBlueDark,
-                    height: 1.4,
+                    height: 1.5,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
             ],
           ),
-        ).animate().fadeIn(delay: 700.ms, duration: 500.ms),
+        ).animate().fadeIn(delay: 800.ms, duration: 600.ms),
       ],
     );
   }
