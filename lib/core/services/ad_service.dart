@@ -7,27 +7,33 @@ class AdService {
   InterstitialAd? _interstitialAd;
   bool _isAdLoaded = false;
 
-  // Test Ad Unit IDs
-  static const String _androidTestAdUnitId =
-      'ca-app-pub-3940256099942544/1033173712';
-  static const String _iosTestAdUnitId =
-      'ca-app-pub-3940256099942544/4411468910';
+  bool get _isEnabled => dotenv.env['ENABLE_ADS'] == 'true';
 
   String get _adUnitId {
     if (Platform.isAndroid) {
-      return dotenv.env['ADMOB_INTERSTITIAL_ANDROID'] ?? _androidTestAdUnitId;
+      return dotenv.env['ADMOB_INTERSTITIAL_ANDROID'] ?? '';
     } else if (Platform.isIOS) {
-      return dotenv.env['ADMOB_INTERSTITIAL_IOS'] ?? _iosTestAdUnitId;
+      return dotenv.env['ADMOB_INTERSTITIAL_IOS'] ?? '';
     }
-    return _androidTestAdUnitId;
+    return '';
   }
 
   Future<void> init() async {
-    await MobileAds.instance.initialize();
-    _loadInterstitialAd();
+    if (!_isEnabled) {
+      debugPrint('Ads are disabled via .env');
+      return;
+    }
+    try {
+      await MobileAds.instance.initialize();
+      _loadInterstitialAd();
+    } catch (e) {
+      debugPrint('Error initializing MobileAds: $e');
+    }
   }
 
   void _loadInterstitialAd() {
+    if (!_isEnabled || _adUnitId.isEmpty) return;
+
     InterstitialAd.load(
       adUnitId: _adUnitId,
       request: const AdRequest(),
@@ -48,6 +54,7 @@ class AdService {
           );
         },
         onAdFailedToLoad: (error) {
+          debugPrint('InterstitialAd failed to load: $error');
           _isAdLoaded = false;
         },
       ),
@@ -58,6 +65,11 @@ class AdService {
     BuildContext context, {
     required VoidCallback onAdClosed,
   }) async {
+    if (!_isEnabled) {
+      onAdClosed();
+      return;
+    }
+
     if (_isAdLoaded && _interstitialAd != null) {
       _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
         onAdDismissedFullScreenContent: (ad) {
@@ -75,9 +87,11 @@ class AdService {
       await _interstitialAd!.show();
       _isAdLoaded = false;
     } else {
-      // If ad isn't ready, just proceed
+      // If ad isn't ready or failed, just proceed
       onAdClosed();
-      _loadInterstitialAd(); // Try loading again for next time
+      if (_isEnabled) {
+        _loadInterstitialAd(); // Try loading again for next time
+      }
     }
   }
 
