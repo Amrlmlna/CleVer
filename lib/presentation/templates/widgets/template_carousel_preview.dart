@@ -21,15 +21,17 @@ class TemplateCarouselPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return AspectRatio(
       aspectRatio: 0.7,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
+              color: colorScheme.shadow.withValues(alpha: 0.1),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),
@@ -56,10 +58,10 @@ class TemplateCarouselPreview extends StatelessWidget {
                         return CachedNetworkImage(
                           imageUrl: previewUrls[index],
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => const Center(
+                          placeholder: (context, url) => Center(
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color: Colors.black,
+                              color: colorScheme.primary,
                             ),
                           ),
                           errorWidget: (context, url, error) =>
@@ -81,8 +83,8 @@ class TemplateCarouselPreview extends StatelessWidget {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: (usePhoto ? (index == 1) : (index == 0))
-                                    ? Colors.black
-                                    : Colors.black.withValues(alpha: 0.2),
+                                    ? colorScheme.primary
+                                    : colorScheme.onSurface.withValues(alpha: 0.2),
                               ),
                             ),
                           ),

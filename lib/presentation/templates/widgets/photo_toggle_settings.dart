@@ -94,17 +94,18 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final hasPhoto = widget.photoUrl != null && widget.photoUrl!.isNotEmpty;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
       child: _isUploading
-          ? _buildUploadingState(l10n)
-          : (!hasPhoto ? _buildEmptyState(l10n) : _buildFilledState(l10n)),
+          ? _buildUploadingState(l10n, colorScheme)
+          : (!hasPhoto ? _buildEmptyState(l10n, colorScheme) : _buildFilledState(l10n, colorScheme)),
     );
   }
 
-  Widget _buildEmptyState(AppLocalizations l10n) {
-    final primaryColor = Theme.of(context).primaryColor;
+  Widget _buildEmptyState(AppLocalizations l10n, ColorScheme colorScheme) {
+    final primaryColor = colorScheme.primary;
     return InkWell(
       onTap: _pickAndUploadPhoto,
       borderRadius: BorderRadius.circular(16),
@@ -144,7 +145,7 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
             const SizedBox(height: 4),
             Text(
               l10n.uploadInstruction,
-              style: const TextStyle(fontSize: 12, color: Colors.white70),
+              style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
             ),
           ],
         ),
@@ -152,13 +153,13 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
     );
   }
 
-  Widget _buildUploadingState(AppLocalizations l10n) {
+  Widget _buildUploadingState(AppLocalizations l10n, ColorScheme colorScheme) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey[800]!),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Column(
         children: [
@@ -175,20 +176,20 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
           const SizedBox(height: 16),
           Text(
             l10n.uploadingPhoto,
-            style: const TextStyle(color: Colors.white70),
+            style: TextStyle(color: colorScheme.onSurfaceVariant),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFilledState(AppLocalizations l10n) {
-    final primaryColor = Theme.of(context).primaryColor;
+  Widget _buildFilledState(AppLocalizations l10n, ColorScheme colorScheme) {
+    final primaryColor = colorScheme.primary;
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey[800]!),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Column(
         children: [
@@ -245,7 +246,7 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
                       ),
                       Text(
                         l10n.usingMasterPhoto,
-                        style: TextStyle(fontSize: 12, color: Colors.grey[400]),
+                        style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
                       ),
                     ],
                   ),

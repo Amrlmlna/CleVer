@@ -29,6 +29,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final templatesAsync = ref.watch(templatesProvider);
     final downloadState = ref.watch(cvDownloadProvider);
 
@@ -79,7 +80,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              Icon(Icons.error_outline, size: 48, color: colorScheme.error),
               const SizedBox(height: 16),
               Text(
                 AppLocalizations.of(context)!.templateLoadError(err.toString()),

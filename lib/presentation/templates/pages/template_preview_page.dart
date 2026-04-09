@@ -10,7 +10,6 @@ import '../../../core/providers/locale_provider.dart';
 import '../../../../core/services/payment_service.dart';
 import '../../auth/utils/auth_guard.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/template_carousel_preview.dart';
 import '../widgets/language_selector.dart';
@@ -107,10 +106,11 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
         .watch(profileControllerProvider)
         .currentProfile
         .photoUrl;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF121212) : Colors.grey[50],
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.previewCV),
         centerTitle: true,
@@ -146,8 +146,7 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
 
                 Text(
                   AppLocalizations.of(context)!.cvLanguage,
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
                   ),
@@ -163,8 +162,7 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                 if (template.supportsPhoto) ...[
                   Text(
                     AppLocalizations.of(context)!.photoSettings,
-                    style: const TextStyle(
-                      fontSize: 14,
+                    style: textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1,
                     ),
@@ -198,7 +196,7 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              Icon(Icons.error_outline, size: 48, color: colorScheme.error),
               const SizedBox(height: 16),
               Text(
                 AppLocalizations.of(context)!.templateLoadError(err.toString()),
@@ -214,10 +212,10 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
       bottomSheet: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1A1A1A) : Colors.white,
+          color: colorScheme.surfaceContainerHighest,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
+              color: colorScheme.shadow.withValues(alpha: 0.1),
               offset: const Offset(0, -4),
               blurRadius: 10,
             ),
@@ -245,8 +243,8 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                           context,
                         )!.finalizingPdf.toUpperCase(),
                       ],
-                      style: GoogleFonts.inter(
-                        color: Colors.black,
+                      style: textTheme.labelLarge?.copyWith(
+                        color: colorScheme.onSurface,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 2.0,
                         fontSize: 13,
@@ -261,8 +259,8 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                             AppLocalizations.of(
                               context,
                             )!.exportPdf.toUpperCase(),
-                            style: GoogleFonts.inter(
-                              color: Colors.black,
+                            style: textTheme.labelLarge?.copyWith(
+                              color: colorScheme.onSurface,
                               fontWeight: FontWeight.w800,
                               letterSpacing: 2.0,
                               fontSize: 13,
@@ -296,8 +294,8 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                                               '',
                                             )
                                             .toUpperCase(),
-                                  style: GoogleFonts.inter(
-                                    color: Colors.black,
+                                  style: textTheme.labelLarge?.copyWith(
+                                    color: colorScheme.onSurface,
                                     fontWeight: FontWeight.w800,
                                     letterSpacing: 2.0,
                                     fontSize: 13,
@@ -310,15 +308,15 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                                     vertical: 4,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.black.withValues(alpha: 0.05),
+                                    color: colorScheme.onSurface.withValues(alpha: 0.05),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Text(
                                     currentTemplate.hasFreeGeneration
                                         ? "FREE"
                                         : "${currentTemplate.requiredCredits} CREDITS",
-                                    style: GoogleFonts.inter(
-                                      color: Colors.black54,
+                                    style: textTheme.labelSmall?.copyWith(
+                                      color: colorScheme.onSurfaceVariant,
                                       fontWeight: FontWeight.w700,
                                       letterSpacing: 1.0,
                                       fontSize: 11,
@@ -334,11 +332,11 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                                   AppLocalizations.of(context)!.freeExportsLeft(
                                     2 - currentTemplate.currentUsage,
                                   ),
-                                  style: TextStyle(
-                                    fontSize: 10,
+                                  style: textTheme.labelSmall?.copyWith(
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.black.withValues(alpha: 0.6),
+                                    color: colorScheme.onSurfaceVariant,
                                     letterSpacing: 0.5,
+                                    fontSize: 10,
                                   ),
                                 ),
                               ),

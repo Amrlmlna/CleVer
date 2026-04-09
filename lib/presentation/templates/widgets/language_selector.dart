@@ -15,11 +15,11 @@ class LanguageSelector extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final globalLocale = ref.watch(localeNotifierProvider).languageCode;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[900] : Colors.grey[200],
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(26),
       ),
       padding: const EdgeInsets.all(4),
@@ -39,7 +39,8 @@ class LanguageSelector extends ConsumerWidget {
     String globalLocale,
   ) {
     final isSelected = (manualLocaleOverride ?? globalLocale) == code;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Expanded(
       child: GestureDetector(
@@ -49,19 +50,18 @@ class LanguageSelector extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
             color: isSelected
-                ? (isDark ? Colors.white : Colors.black)
+                ? colorScheme.primary
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(22),
           ),
           child: Text(
             label,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: textTheme.labelLarge?.copyWith(
               color: isSelected
-                  ? (isDark ? Colors.black : Colors.white)
-                  : (isDark ? Colors.white54 : Colors.black54),
+                  ? colorScheme.onPrimary
+                  : colorScheme.onSurfaceVariant,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              fontSize: 13,
             ),
           ),
         ),

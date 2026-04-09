@@ -19,22 +19,23 @@ class StyleSelectionContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.surface,
         elevation: 0,
         centerTitle: true,
         title: Text(
           AppLocalizations.of(context)!.selectTemplate,
-          style: const TextStyle(
-            color: Colors.black,
+          style: textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w900,
             letterSpacing: 1.5,
-            fontSize: 16,
           ),
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: colorScheme.onSurface),
         actions: [
           if (templates.isNotEmpty)
             Padding(
@@ -46,27 +47,26 @@ class StyleSelectionContent extends StatelessWidget {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.05),
+                    color: colorScheme.onSurface.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: Colors.black.withValues(alpha: 0.1),
+                      color: colorScheme.onSurface.withValues(alpha: 0.1),
                     ),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.stars_rounded,
                         size: 14,
-                        color: Colors.black,
+                        color: colorScheme.onSurface,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         '${templates.first.userCredits}',
-                        style: const TextStyle(
-                          color: Colors.black,
+                        style: textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.w900,
-                          fontSize: 13,
+                          color: colorScheme.onSurface,
                         ),
                       ),
                     ],
@@ -105,7 +105,7 @@ class StyleSelectionContent extends StatelessWidget {
                               : EdgeInsets.zero,
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? (template.isPremium ? null : Colors.black)
+                                ? (template.isPremium ? null : colorScheme.onSurface)
                                 : Colors.transparent,
                             gradient: isSelected && template.isPremium
                                 ? const LinearGradient(
@@ -122,7 +122,7 @@ class StyleSelectionContent extends StatelessWidget {
                             boxShadow: isSelected
                                 ? [
                                     BoxShadow(
-                                      color: Colors.black.withValues(
+                                      color: colorScheme.shadow.withValues(
                                         alpha: 0.2,
                                       ),
                                       blurRadius: 15,
@@ -133,7 +133,7 @@ class StyleSelectionContent extends StatelessWidget {
                           ),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: const Color(0xFFF5F5F5),
+                              color: colorScheme.surfaceContainerHighest,
                               borderRadius: BorderRadius.circular(0),
                             ),
                             child: Stack(
@@ -148,16 +148,16 @@ class StyleSelectionContent extends StatelessWidget {
                                   fadeInDuration: const Duration(
                                     milliseconds: 200,
                                   ),
-                                  placeholder: (context, url) => const Center(
+                                  placeholder: (context, url) => Center(
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      color: Colors.black,
+                                      color: colorScheme.primary,
                                     ),
                                   ),
                                   errorWidget: (context, url, error) => Center(
                                     child: Icon(
                                       Icons.error_outline,
-                                      color: Colors.red.withValues(alpha: 0.5),
+                                      color: colorScheme.error.withValues(alpha: 0.5),
                                     ),
                                   ),
                                 ),
@@ -168,23 +168,23 @@ class StyleSelectionContent extends StatelessWidget {
                                     child: Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withValues(
+                                        color: colorScheme.surface.withValues(
                                           alpha: 0.9,
                                         ),
                                         shape: BoxShape.circle,
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withValues(
+                                            color: colorScheme.shadow.withValues(
                                               alpha: 0.1,
                                             ),
                                             blurRadius: 4,
                                           ),
                                         ],
                                       ),
-                                      child: const Icon(
+                                      child: Icon(
                                         Icons.add_a_photo_outlined,
                                         size: 10,
-                                        color: Colors.black,
+                                        color: colorScheme.onSurface,
                                       ),
                                     ),
                                   ),
@@ -232,14 +232,13 @@ class StyleSelectionContent extends StatelessWidget {
                               textAlign: TextAlign.center,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 11,
+                              style: textTheme.labelSmall?.copyWith(
                                 fontWeight: isSelected
                                     ? FontWeight.w900
                                     : FontWeight.w600,
                                 color: isSelected
-                                    ? Colors.black
-                                    : Colors.grey[800],
+                                    ? colorScheme.onSurface
+                                    : colorScheme.onSurfaceVariant,
                                 letterSpacing: 1.0,
                               ),
                             ),
@@ -270,8 +269,8 @@ class StyleSelectionContent extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: onExport,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
+                    backgroundColor: colorScheme.primary,
+                    foregroundColor: colorScheme.onPrimary,
                     elevation: 0,
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.zero,
@@ -279,7 +278,7 @@ class StyleSelectionContent extends StatelessWidget {
                   ),
                   child: Text(
                     AppLocalizations.of(context)!.previewTemplate,
-                    style: const TextStyle(
+                    style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w900,
                       letterSpacing: 1.5,
                     ),
