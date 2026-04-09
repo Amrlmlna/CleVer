@@ -84,6 +84,7 @@ class UnsavedChangesDialog extends StatelessWidget {
                   localization.save,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     fontWeight: FontWeight.w700,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                 ),
               ),

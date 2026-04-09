@@ -127,6 +127,7 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
                         localization.add,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.w700,
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
                     ),

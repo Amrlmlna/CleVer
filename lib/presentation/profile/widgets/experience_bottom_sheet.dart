@@ -335,6 +335,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                         localization.saveAllCaps,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.w700,
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
                     ),
