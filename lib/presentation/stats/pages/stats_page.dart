@@ -16,7 +16,7 @@ class StatsPage extends ConsumerWidget {
     final userLevelKey = ref.watch(userLevelProvider);
     final stats = ref.watch(profileStatsProvider);
     final weeklyActivity = ref.watch(weeklyActivityProvider);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textTheme = Theme.of(context).textTheme;
 
     String getLocalizedLevel(String key) {
       final l10n = AppLocalizations.of(context)!;
@@ -45,7 +45,6 @@ class StatsPage extends ConsumerWidget {
           children: [
             UserLevelCard(
                   level: getLocalizedLevel(userLevelKey),
-                  isDark: isDark,
                 )
                 .animate()
                 .fadeIn(duration: 600.ms, curve: Curves.easeOutQuad)
@@ -60,8 +59,7 @@ class StatsPage extends ConsumerWidget {
 
             Text(
                   AppLocalizations.of(context)!.activityOverview,
-                  style: const TextStyle(
-                    fontSize: 18,
+                  style: textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 )
@@ -70,7 +68,7 @@ class StatsPage extends ConsumerWidget {
                 .slideX(begin: -0.1, end: 0),
 
             const SizedBox(height: 16),
-            ActivityChart(isDark: isDark, weeklyActivity: weeklyActivity)
+            ActivityChart(weeklyActivity: weeklyActivity)
                 .animate()
                 .fadeIn(delay: 300.ms, duration: 600.ms)
                 .scale(
@@ -82,8 +80,7 @@ class StatsPage extends ConsumerWidget {
 
             Text(
                   AppLocalizations.of(context)!.keyMetrics,
-                  style: const TextStyle(
-                    fontSize: 18,
+                  style: textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 )
@@ -92,7 +89,7 @@ class StatsPage extends ConsumerWidget {
                 .slideX(begin: -0.1, end: 0),
 
             const SizedBox(height: 16),
-            StatsGrid(stats: stats, isDark: isDark)
+            StatsGrid(stats: stats)
                 .animate()
                 .fadeIn(delay: 500.ms, duration: 600.ms)
                 .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),

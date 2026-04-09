@@ -3,12 +3,14 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 
 class StatsGrid extends StatelessWidget {
   final Map<String, int> stats;
-  final bool isDark;
 
-  const StatsGrid({super.key, required this.stats, required this.isDark});
+  const StatsGrid({super.key, required this.stats});
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     final items = [
       {
         'label': AppLocalizations.of(context)!.totalCVs,
@@ -47,10 +49,10 @@ class StatsGrid extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+            color: colorScheme.surfaceContainer,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: isDark ? Colors.white10 : Colors.grey.shade200,
+              color: colorScheme.outlineVariant,
             ),
           ),
           child: Column(
@@ -60,23 +62,21 @@ class StatsGrid extends StatelessWidget {
               Icon(
                 item['icon'] as IconData,
                 size: 24,
-                color: isDark ? Colors.white70 : Colors.black54,
+                color: colorScheme.onSurfaceVariant,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     item['value'] as String,
-                    style: const TextStyle(
-                      fontSize: 24,
+                    style: textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     item['label'] as String,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: isDark ? Colors.white54 : Colors.grey,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],

@@ -3,17 +3,17 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class ActivityChart extends StatelessWidget {
-  final bool isDark;
   final List<int> weeklyActivity;
 
   const ActivityChart({
     super.key,
-    required this.isDark,
     required this.weeklyActivity,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     final maxY =
         (weeklyActivity.isNotEmpty
                 ? weeklyActivity.reduce(
@@ -27,10 +27,10 @@ class ActivityChart extends StatelessWidget {
       height: 220,
       padding: const EdgeInsets.only(right: 16, top: 24, bottom: 12),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+        color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: isDark ? Colors.white10 : Colors.grey.shade200,
+          color: colorScheme.outlineVariant,
         ),
       ),
       child: LineChart(
@@ -43,7 +43,7 @@ class ActivityChart extends StatelessWidget {
             horizontalInterval: 1,
             getDrawingHorizontalLine: (value) {
               return FlLine(
-                color: isDark ? Colors.white10 : Colors.grey.shade200,
+                color: colorScheme.outlineVariant,
                 strokeWidth: 1,
               );
             },
@@ -77,9 +77,8 @@ class ActivityChart extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
                         titles[index],
-                        style: TextStyle(
-                          color: isDark ? Colors.white54 : Colors.grey,
-                          fontSize: 12,
+                        style: textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
                         ),
                       ),
                     );
@@ -96,9 +95,8 @@ class ActivityChart extends StatelessWidget {
                 getTitlesWidget: (value, meta) {
                   return Text(
                     value.toInt().toString(),
-                    style: TextStyle(
-                      color: isDark ? Colors.white54 : Colors.grey,
-                      fontSize: 12,
+                    style: textTheme.labelSmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   );
                 },
@@ -120,9 +118,7 @@ class ActivityChart extends StatelessWidget {
               }),
               isCurved: true,
               gradient: LinearGradient(
-                colors: isDark
-                    ? [Colors.blueAccent, Colors.purpleAccent]
-                    : [Colors.blue, Colors.purple],
+                colors: [colorScheme.primary, colorScheme.tertiary],
               ),
               barWidth: 4,
               isStrokeCapRound: true,
@@ -130,15 +126,10 @@ class ActivityChart extends StatelessWidget {
               belowBarData: BarAreaData(
                 show: true,
                 gradient: LinearGradient(
-                  colors: isDark
-                      ? [
-                          Colors.blueAccent.withValues(alpha: 0.2),
-                          Colors.purpleAccent.withValues(alpha: 0.0),
-                        ]
-                      : [
-                          Colors.blue.withValues(alpha: 0.2),
-                          Colors.purple.withValues(alpha: 0.0),
-                        ],
+                  colors: [
+                    colorScheme.primary.withValues(alpha: 0.2),
+                    colorScheme.tertiary.withValues(alpha: 0.0),
+                  ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),

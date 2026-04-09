@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class UserLevelCard extends StatelessWidget {
   final String level;
-  final bool isDark;
 
-  const UserLevelCard({super.key, required this.level, required this.isDark});
+  const UserLevelCard({super.key, required this.level});
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: isDark
-              ? [const Color(0xFF2C3E50), const Color(0xFF000000)]
-              : [const Color(0xFF2C3E50), const Color(0xFF4CA1AF)],
+          colors: [
+            colorScheme.primary,
+            colorScheme.tertiary,
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: colorScheme.shadow.withValues(alpha: 0.2),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -35,14 +37,15 @@ class UserLevelCard extends StatelessWidget {
         children: [
           Text(
             AppLocalizations.of(context)!.currentLevel,
-            style: GoogleFonts.inter(color: Colors.white70, fontSize: 14),
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onPrimary.withValues(alpha: 0.8),
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             level,
-            style: GoogleFonts.inter(
-              color: Colors.white,
-              fontSize: 28,
+            style: textTheme.headlineSmall?.copyWith(
+              color: colorScheme.onPrimary,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -51,7 +54,7 @@ class UserLevelCard extends StatelessWidget {
             height: 6,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.2),
+              color: colorScheme.onPrimary.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(3),
             ),
             child: FractionallySizedBox(
@@ -59,7 +62,7 @@ class UserLevelCard extends StatelessWidget {
               widthFactor: 0.7,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: colorScheme.onPrimary,
                   borderRadius: BorderRadius.circular(3),
                 ),
               ),
@@ -68,7 +71,9 @@ class UserLevelCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.keepBuilding,
-            style: GoogleFonts.inter(color: Colors.white70, fontSize: 12),
+            style: textTheme.bodySmall?.copyWith(
+              color: colorScheme.onPrimary.withValues(alpha: 0.8),
+            ),
           ),
         ],
       ),
