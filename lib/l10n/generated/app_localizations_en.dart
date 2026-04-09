@@ -783,6 +783,33 @@ class AppLocalizationsEn extends AppLocalizations {
       'master profile safe. now just quickly create your cv.';
 
   @override
+  String onboardingFeedbackCompleteTitle(String name) {
+    return 'Amazing work, $name!';
+  }
+
+  @override
+  String get onboardingFeedbackCompleteMessage =>
+      'Your profile is 90% ready. You\'re now in the top tier to get noticed by recruiters!';
+
+  @override
+  String get onboardingFeedbackPartialTitle => 'Great start!';
+
+  @override
+  String get onboardingFeedbackPartialMessage =>
+      'We\'ve lined up some initial recommendations for you. Don\'t forget to fill in the rest later to unlock even better matches.';
+
+  @override
+  String get onboardingFeedbackEmptyTitle => 'No worries!';
+
+  @override
+  String get onboardingFeedbackEmptyMessage =>
+      'You can explore first. Spruce up your profile anytime in the \'Master Profile\' tab so we can work our magic for you.';
+
+  @override
+  String get onboardingFeedbackGetSmarterHint =>
+      'The app gets smarter as you add more info.';
+
+  @override
   String get onboardingHeadline1 => 'still editing your cv at 1am?';
 
   @override

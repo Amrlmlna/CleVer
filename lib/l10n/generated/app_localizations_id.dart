@@ -786,6 +786,33 @@ class AppLocalizationsId extends AppLocalizations {
       'master profile aman. sekarang tinggal sat-set bikin cv.';
 
   @override
+  String onboardingFeedbackCompleteTitle(String name) {
+    return 'Luar biasa, $name!';
+  }
+
+  @override
+  String get onboardingFeedbackCompleteMessage =>
+      'Profilmu 90% siap. Kamu sekarang di tier atas untuk dilirik recruiter!';
+
+  @override
+  String get onboardingFeedbackPartialTitle => 'Awal yang bagus!';
+
+  @override
+  String get onboardingFeedbackPartialMessage =>
+      'Kami sudah siapkan rekomendasi awal. Lengkapi nanti di tab \'Master Profile\' untuk match lebih baik.';
+
+  @override
+  String get onboardingFeedbackEmptyTitle => 'Gapapa!';
+
+  @override
+  String get onboardingFeedbackEmptyMessage =>
+      'Kamu bisa explore dulu. Isi profilmu kapan aja di tab \'Master Profile\' biar kami bisa bantu maksimal.';
+
+  @override
+  String get onboardingFeedbackGetSmarterHint =>
+      'Aplikasi makin pintar seiring kamu lengkapi data.';
+
+  @override
   String get onboardingHeadline1 => 'masih ngedit cv jam 1 pagi?';
 
   @override

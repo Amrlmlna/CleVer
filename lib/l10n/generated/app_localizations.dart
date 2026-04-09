@@ -1536,6 +1536,48 @@ abstract class AppLocalizations {
   /// **'master profile safe. now just quickly create your cv.'**
   String get onboardingFinalMessage;
 
+  /// No description provided for @onboardingFeedbackCompleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Amazing work, {name}!'**
+  String onboardingFeedbackCompleteTitle(String name);
+
+  /// No description provided for @onboardingFeedbackCompleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is 90% ready. You\'re now in the top tier to get noticed by recruiters!'**
+  String get onboardingFeedbackCompleteMessage;
+
+  /// No description provided for @onboardingFeedbackPartialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Great start!'**
+  String get onboardingFeedbackPartialTitle;
+
+  /// No description provided for @onboardingFeedbackPartialMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve lined up some initial recommendations for you. Don\'t forget to fill in the rest later to unlock even better matches.'**
+  String get onboardingFeedbackPartialMessage;
+
+  /// No description provided for @onboardingFeedbackEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No worries!'**
+  String get onboardingFeedbackEmptyTitle;
+
+  /// No description provided for @onboardingFeedbackEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You can explore first. Spruce up your profile anytime in the \'Master Profile\' tab so we can work our magic for you.'**
+  String get onboardingFeedbackEmptyMessage;
+
+  /// No description provided for @onboardingFeedbackGetSmarterHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The app gets smarter as you add more info.'**
+  String get onboardingFeedbackGetSmarterHint;
+
   /// No description provided for @onboardingHeadline1.
   ///
   /// In en, this message translates to:

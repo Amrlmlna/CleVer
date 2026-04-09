@@ -45,6 +45,27 @@ int calculateProfileCompletion(UserProfile? profile) {
   return ((completed / total) * 100).round();
 }
 
+/// Classifies profile completeness into 3 states for feedback purposes.
+/// Used primarily in onboarding step 7/7 to provide contextual feedback.
+///
+/// - **complete**: 3+ core sections filled (experience, education, skills, certifications)
+/// - **partial**: 1-2 core sections filled
+/// - **empty**: No core sections filled (only name/email from step 1)
+String classifyProfileCompleteness(UserProfile? profile) {
+  if (profile == null) return 'empty';
+
+  int coreSectionsFilled = 0;
+
+  if (profile.experience.isNotEmpty) coreSectionsFilled++;
+  if (profile.education.isNotEmpty) coreSectionsFilled++;
+  if (profile.skills.isNotEmpty) coreSectionsFilled++;
+  if (profile.certifications.isNotEmpty) coreSectionsFilled++;
+
+  if (coreSectionsFilled >= 3) return 'complete';
+  if (coreSectionsFilled >= 1) return 'partial';
+  return 'empty';
+}
+
 final userLevelProvider = Provider<String>((ref) {
   final profile = ref.watch(masterProfileProvider);
   final draftsAsync = ref.watch(draftsProvider);

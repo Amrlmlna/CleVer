@@ -281,6 +281,20 @@
   "notifications": "notifikasi",
   "ocrScanning": "pemindaian ocr",
   "onboardingFinalMessage": "master profile aman. sekarang tinggal sat-set bikin cv.",
+  "onboardingFeedbackCompleteTitle": "Luar biasa, {name}!",
+  "@onboardingFeedbackCompleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingFeedbackCompleteMessage": "Profilmu 90% siap. Kamu sekarang di tier atas untuk dilirik recruiter!",
+  "onboardingFeedbackPartialTitle": "Awal yang bagus!",
+  "onboardingFeedbackPartialMessage": "Kami sudah siapkan rekomendasi awal. Lengkapi nanti di tab 'Master Profile' untuk match lebih baik.",
+  "onboardingFeedbackEmptyTitle": "Gapapa!",
+  "onboardingFeedbackEmptyMessage": "Kamu bisa explore dulu. Isi profilmu kapan aja di tab 'Master Profile' biar kami bisa bantu maksimal.",
+  "onboardingFeedbackGetSmarterHint": "Aplikasi makin pintar seiring kamu lengkapi data.",
   "onboardingHeadline1": "masih ngedit cv jam 1 pagi?",
   "onboardingHeadline2": "kualifikasi pas, tapi sering ditolak?",
   "onboardingHeadline3": "gak perlu mulai dari nol lagi.",
