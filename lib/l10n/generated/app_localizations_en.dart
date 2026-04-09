@@ -1169,7 +1169,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get termsAgreePrefix => 'by tapping \"start now\", you agree to our ';
+  String get termsAgreePrefix => 'by continuing, you agree to our';
 
   @override
   String get termsAgreeSuffix => '.';

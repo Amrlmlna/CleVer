@@ -1174,8 +1174,7 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get termsAgreePrefix =>
-      'dengan menekan \"mulai sekarang\", kamu setuju dengan ';
+  String get termsAgreePrefix => 'dengan lanjut, kamu setuju dengan';
 
   @override
   String get termsAgreeSuffix => ' kami.';

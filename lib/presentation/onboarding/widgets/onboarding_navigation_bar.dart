@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../legal/pages/legal_page.dart';
@@ -37,56 +36,66 @@ class OnboardingNavigationBar extends StatelessWidget {
         children: [
           if (isLastPage) ...[
             Padding(
-              padding: const EdgeInsets.only(bottom: 12.0),
-              child: RichText(
-                textAlign: TextAlign.center,
-
-                text: TextSpan(
-                  style: textTheme.labelSmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: Column(
+                children: [
+                  // Soft helper line
+                  Text(
+                    AppLocalizations.of(context)!.termsAgreePrefix,
+                    textAlign: TextAlign.center,
+                    style: textTheme.labelSmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant.withValues(
+                        alpha: 0.6,
+                      ),
+                      height: 1.5,
+                    ),
                   ),
-                  children: [
-                    TextSpan(
-                      text: AppLocalizations.of(context)!.termsAgreePrefix,
-                    ),
-                    TextSpan(
-                      text: AppLocalizations.of(context)!.termsOfService,
-                      style: TextStyle(
-                        color: colorScheme.onSurface,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
+
+                  const SizedBox(height: 6),
+
+                  // Pill chip row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _LegalChip(
+                        label: AppLocalizations.of(context)!.termsOfService,
+                        onTap: () => OnboardingLegalModal.show(
+                          context,
+                          title: 'Terms of Service',
+                          content: kTermsOfService,
+                        ),
+                        colorScheme: colorScheme,
+                        textTheme: textTheme,
                       ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          OnboardingLegalModal.show(
-                            context,
-                            title: 'Terms of Service',
-                            content: kTermsOfService,
-                          );
-                        },
-                    ),
-                    TextSpan(text: AppLocalizations.of(context)!.and),
-                    TextSpan(
-                      text: AppLocalizations.of(context)!.privacyPolicy,
-                      style: TextStyle(
-                        color: colorScheme.onSurface,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
+
+                      // Separator dot
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Container(
+                          width: 3,
+                          height: 3,
+                          decoration: BoxDecoration(
+                            color: colorScheme.onSurfaceVariant.withValues(
+                              alpha: 0.35,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
                       ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          OnboardingLegalModal.show(
-                            context,
-                            title: 'Privacy Policy',
-                            content: kPrivacyPolicy,
-                          );
-                        },
-                    ),
-                    TextSpan(
-                      text: AppLocalizations.of(context)!.termsAgreeSuffix,
-                    ),
-                  ],
-                ),
+
+                      _LegalChip(
+                        label: AppLocalizations.of(context)!.privacyPolicy,
+                        onTap: () => OnboardingLegalModal.show(
+                          context,
+                          title: 'Privacy Policy',
+                          content: kPrivacyPolicy,
+                        ),
+                        colorScheme: colorScheme,
+                        textTheme: textTheme,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
@@ -193,6 +202,46 @@ class OnboardingNavigationBar extends StatelessWidget {
             const SizedBox(height: 24),
           ],
         ],
+      ),
+    );
+  }
+}
+
+class _LegalChip extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+  final ColorScheme colorScheme;
+  final TextTheme textTheme;
+
+  const _LegalChip({
+    required this.label,
+    required this.onTap,
+    required this.colorScheme,
+    required this.textTheme,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+          decoration: BoxDecoration(
+            color: colorScheme.onSurface.withValues(alpha: 0.06),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(
+            label,
+            style: textTheme.labelSmall?.copyWith(
+              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.85),
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.1,
+            ),
+          ),
+        ),
       ),
     );
   }

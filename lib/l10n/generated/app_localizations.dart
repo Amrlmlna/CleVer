@@ -2253,7 +2253,7 @@ abstract class AppLocalizations {
   /// No description provided for @termsAgreePrefix.
   ///
   /// In en, this message translates to:
-  /// **'by tapping \"start now\", you agree to our '**
+  /// **'by continuing, you agree to our'**
   String get termsAgreePrefix;
 
   /// No description provided for @termsAgreeSuffix.

@@ -414,7 +414,7 @@
   "targetPosition": "target posisi",
   "technicalDetails": "detail teknis",
   "templateLoadError": "gagal memuat template: {error}",
-  "termsAgreePrefix": "dengan menekan \"mulai sekarang\", kamu setuju dengan ",
+  "termsAgreePrefix": "dengan lanjut, kamu setuju dengan",
   "termsAgreeSuffix": " kami.",
   "termsOfService": "syarat & ketentuan",
   "thankYou": "terima kasih!",

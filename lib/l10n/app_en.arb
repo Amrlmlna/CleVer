@@ -414,7 +414,7 @@
   "targetPosition": "target position",
   "technicalDetails": "technical details",
   "templateLoadError": "error loading templates: {error}",
-  "termsAgreePrefix": "by tapping \"start now\", you agree to our ",
+  "termsAgreePrefix": "by continuing, you agree to our",
   "termsAgreeSuffix": ".",
   "termsOfService": "terms of service",
   "thankYou": "thank you!",
