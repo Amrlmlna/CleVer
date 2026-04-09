@@ -176,6 +176,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
 
     showModalBottomSheet(
       context: context,
+      useRootNavigator: true,
       backgroundColor: colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),

@@ -16,6 +16,7 @@ class CreditPurchaseBottomSheet extends ConsumerStatefulWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final result = await showModalBottomSheet<bool>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       barrierColor: colorScheme.scrim.withValues(alpha: 0.6),

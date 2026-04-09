@@ -23,6 +23,7 @@ class ExperienceBottomSheet extends ConsumerStatefulWidget {
   }) {
     return showModalBottomSheet<Experience>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       isDismissible: false,

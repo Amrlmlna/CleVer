@@ -15,6 +15,7 @@ class JobPreviewBottomSheet extends StatelessWidget {
   static void show(BuildContext context, JobPosting job) {
     showModalBottomSheet(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => JobPreviewBottomSheet(job: job),

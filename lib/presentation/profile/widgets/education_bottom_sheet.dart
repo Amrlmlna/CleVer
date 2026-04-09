@@ -16,6 +16,7 @@ class EducationBottomSheet extends StatefulWidget {
   static Future<Education?> show(BuildContext context, {Education? existing}) {
     return showModalBottomSheet<Education>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       isDismissible: false,

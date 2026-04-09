@@ -9,6 +9,7 @@ class FirstCvUpsellBottomSheet extends StatelessWidget {
   static Future<void> show(BuildContext context) {
     return showModalBottomSheet(
       context: context,
+      useRootNavigator: true,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (_) => const FirstCvUpsellBottomSheet(),

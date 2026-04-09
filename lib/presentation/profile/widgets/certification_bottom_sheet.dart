@@ -16,6 +16,7 @@ class CertificationBottomSheet extends StatefulWidget {
   }) {
     return showModalBottomSheet<Certification>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       isDismissible: false,
