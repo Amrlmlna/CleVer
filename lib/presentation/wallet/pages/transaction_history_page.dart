@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/transaction_provider.dart';
 import '../../../domain/entities/wallet_transaction.dart';
@@ -95,9 +94,10 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
   Widget build(BuildContext context) {
     final transactionAsync = ref.watch(transactionHistoryProvider);
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: Colors.black,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,22 +108,21 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                 children: [
                   IconButton(
                     onPressed: () => context.pop(),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_ios_new_rounded,
-                      color: Colors.white70,
+                      color: colorScheme.onSurfaceVariant,
                       size: 20,
                     ),
                     style: IconButton.styleFrom(
-                      backgroundColor: Colors.white.withValues(alpha: 0.05),
+                      backgroundColor: colorScheme.onSurface.withValues(alpha: 0.05),
                     ),
                   ),
                   const SizedBox(width: 16),
                   Text(
                     l10n.transactionHistory.toUpperCase(),
-                    style: GoogleFonts.inter(
-                      fontSize: 20,
+                    style: textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w900,
-                      color: Colors.white,
+                      color: colorScheme.onSurface,
                       letterSpacing: 1.5,
                     ),
                   ),
@@ -136,29 +135,27 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
               child: Container(
                 height: 44,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.05),
+                  color: colorScheme.onSurface.withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: TabBar(
                   controller: _tabController,
                   indicator: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.1),
+                    color: colorScheme.onSurface.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.05),
+                      color: colorScheme.onSurface.withValues(alpha: 0.05),
                     ),
                   ),
                   indicatorSize: TabBarIndicatorSize.tab,
                   dividerColor: Colors.transparent,
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.white38,
-                  labelStyle: GoogleFonts.inter(
-                    fontSize: 13,
+                  labelColor: colorScheme.onSurface,
+                  unselectedLabelColor: colorScheme.onSurfaceVariant,
+                  labelStyle: textTheme.labelLarge?.copyWith(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0.5,
                   ),
-                  unselectedLabelStyle: GoogleFonts.inter(
-                    fontSize: 13,
+                  unselectedLabelStyle: textTheme.labelLarge?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
                   padding: const EdgeInsets.all(4),
@@ -189,6 +186,8 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                         _exportTopFade,
                         _exportBottomFade,
                         l10n,
+                        colorScheme,
+                        textTheme,
                       ),
                       _buildTransactionList(
                         topUps,
@@ -196,17 +195,19 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                         _topUpTopFade,
                         _topUpBottomFade,
                         l10n,
+                        colorScheme,
+                        textTheme,
                       ),
                     ],
                   );
                 },
-                loading: () => const Center(
-                  child: CircularProgressIndicator(color: Colors.white24),
+                loading: () => Center(
+                  child: CircularProgressIndicator(color: colorScheme.primary),
                 ),
                 error: (err, _) => Center(
                   child: Text(
                     l10n.failedToLoadTransactions,
-                    style: const TextStyle(color: Colors.white38),
+                    style: textTheme.bodyMedium?.copyWith(color: colorScheme.error),
                   ),
                 ),
               ),
@@ -223,6 +224,8 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
     double topFade,
     double bottomFade,
     AppLocalizations l10n,
+    ColorScheme colorScheme,
+    TextTheme textTheme,
   ) {
     if (items.isEmpty) {
       return Center(
@@ -232,12 +235,14 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
             Icon(
               Icons.receipt_long_rounded,
               size: 48,
-              color: Colors.white.withValues(alpha: 0.05),
+              color: colorScheme.onSurface.withValues(alpha: 0.05),
             ),
             const SizedBox(height: 16),
             Text(
               l10n.noTransactionsYet,
-              style: GoogleFonts.inter(color: Colors.white24, fontSize: 14),
+              style: textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),
@@ -251,7 +256,7 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           itemCount: items.length,
           separatorBuilder: (_, __) =>
-              Divider(color: Colors.white.withValues(alpha: 0.03), height: 32),
+              Divider(color: colorScheme.onSurface.withValues(alpha: 0.03), height: 32),
           itemBuilder: (context, index) {
             final txn = items[index];
             final isAdd = txn.isAddition;
@@ -263,12 +268,12 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                   decoration: BoxDecoration(
                     color: isAdd
                         ? Colors.green.withValues(alpha: 0.08)
-                        : Colors.white.withValues(alpha: 0.05),
+                        : colorScheme.onSurface.withValues(alpha: 0.05),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     isAdd ? Icons.add_rounded : Icons.file_upload_outlined,
-                    color: isAdd ? Colors.greenAccent : Colors.white70,
+                    color: isAdd ? Colors.green : colorScheme.onSurfaceVariant,
                     size: 18,
                   ),
                 ),
@@ -279,10 +284,9 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                     children: [
                       Text(
                         isAdd ? l10n.topUp : l10n.cvExport,
-                        style: GoogleFonts.inter(
-                          fontSize: 15,
+                        style: textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: Colors.white.withValues(alpha: 0.9),
+                          color: colorScheme.onSurface.withValues(alpha: 0.9),
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -290,9 +294,8 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                         DateFormat(
                           'MMMM d, yyyy • HH:mm',
                         ).format(txn.timestamp),
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          color: Colors.white38,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -300,10 +303,9 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                 ),
                 Text(
                   '${isAdd ? '+' : '-'}${txn.amount}',
-                  style: GoogleFonts.spaceGrotesk(
-                    fontSize: 18,
+                  style: textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: isAdd ? Colors.greenAccent : Colors.white,
+                    color: isAdd ? Colors.green : colorScheme.onSurface,
                   ),
                 ),
               ],
@@ -323,7 +325,7 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.black, Colors.black.withValues(alpha: 0)],
+                    colors: [colorScheme.surface, colorScheme.surface.withValues(alpha: 0)],
                   ),
                 ),
               ),
@@ -343,7 +345,7 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                   gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                    colors: [Colors.black, Colors.black.withValues(alpha: 0)],
+                    colors: [colorScheme.surface, colorScheme.surface.withValues(alpha: 0)],
                   ),
                 ),
               ),

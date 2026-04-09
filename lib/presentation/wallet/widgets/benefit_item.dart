@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class BenefitItem extends StatelessWidget {
   final IconData icon;
@@ -15,6 +14,9 @@ class BenefitItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -22,14 +24,14 @@ class BenefitItem extends StatelessWidget {
           margin: const EdgeInsets.only(top: 2),
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.05),
+            color: colorScheme.onSurface.withValues(alpha: 0.05),
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+            border: Border.all(color: colorScheme.onSurface.withValues(alpha: 0.08)),
           ),
           child: Icon(
             icon,
             size: 14,
-            color: Colors.white.withValues(alpha: 0.8),
+            color: colorScheme.onSurface.withValues(alpha: 0.8),
           ),
         ),
         const SizedBox(width: 12),
@@ -39,19 +41,17 @@ class BenefitItem extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: GoogleFonts.inter(
-                  fontSize: 14,
+                style: textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: Colors.white.withValues(alpha: 0.95),
+                  color: colorScheme.onSurface.withValues(alpha: 0.95),
                   letterSpacing: -0.2,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 description,
-                style: GoogleFonts.inter(
-                  fontSize: 12,
-                  color: Colors.white.withValues(alpha: 0.6),
+                style: textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
                   height: 1.4,
                 ),
               ),

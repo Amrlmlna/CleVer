@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../models/credit_package.dart';
 
@@ -23,6 +22,8 @@ class PackageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final price = isIdr ? package.priceIdr : package.priceUsd;
     final perCredit = isIdr ? package.perCreditIdr : package.perCreditUsd;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return GestureDetector(
       onTap: onTap,
@@ -31,13 +32,13 @@ class PackageCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
           color: isSelected
-              ? Colors.white.withValues(alpha: 0.05)
+              ? colorScheme.onSurface.withValues(alpha: 0.05)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isSelected
-                ? Colors.white.withValues(alpha: 0.3)
-                : Colors.white.withValues(alpha: 0.05),
+                ? colorScheme.onSurface.withValues(alpha: 0.3)
+                : colorScheme.onSurface.withValues(alpha: 0.05),
             width: isSelected ? 1.5 : 1,
           ),
         ),
@@ -49,16 +50,16 @@ class PackageCard extends StatelessWidget {
               height: 20,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isSelected ? Colors.white : Colors.transparent,
+                color: isSelected ? colorScheme.onSurface : Colors.transparent,
                 border: Border.all(
                   color: isSelected
-                      ? Colors.white
-                      : Colors.white.withValues(alpha: 0.15),
+                      ? colorScheme.onSurface
+                      : colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
                   width: 1.5,
                 ),
               ),
               child: isSelected
-                  ? const Icon(Icons.check, size: 12, color: Colors.black)
+                  ? Icon(Icons.check, size: 12, color: colorScheme.surface)
                   : null,
             ),
             const SizedBox(width: 16),
@@ -71,10 +72,9 @@ class PackageCard extends StatelessWidget {
                     children: [
                       Text(
                         l10n.creditsCount(package.credits),
-                        style: GoogleFonts.inter(
-                          fontSize: 15,
+                        style: textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                          color: colorScheme.onSurface,
                         ),
                       ),
                       if (package.isPopular) ...[
@@ -85,15 +85,15 @@ class PackageCard extends StatelessWidget {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.15),
+                            color: colorScheme.primary.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
                             l10n.popularBadge.toUpperCase(),
-                            style: GoogleFonts.inter(
+                            style: textTheme.labelSmall?.copyWith(
                               fontSize: 8,
                               fontWeight: FontWeight.w700,
-                              color: Colors.white.withValues(alpha: 0.9),
+                              color: colorScheme.primary,
                               letterSpacing: 0.5,
                             ),
                           ),
@@ -106,19 +106,18 @@ class PackageCard extends StatelessWidget {
                     children: [
                       Text(
                         '$perCredit${l10n.perCredit}',
-                        style: GoogleFonts.inter(
-                          fontSize: 11,
-                          color: Colors.white.withValues(alpha: 0.5),
+                        style: textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
                         ),
                       ),
                       if (package.savingsPercent != null) ...[
                         const SizedBox(width: 8),
                         Text(
                           l10n.savePercent(package.savingsPercent!),
-                          style: GoogleFonts.inter(
+                          style: textTheme.labelSmall?.copyWith(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
-                            color: Colors.white.withValues(alpha: 0.7),
+                            color: colorScheme.primary,
                           ),
                         ),
                       ],
@@ -130,10 +129,9 @@ class PackageCard extends StatelessWidget {
 
             Text(
               price,
-              style: GoogleFonts.inter(
-                fontSize: 15,
+              style: textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w600,
-                color: Colors.white,
+                color: colorScheme.onSurface,
               ),
             ),
           ],

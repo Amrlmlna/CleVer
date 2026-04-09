@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class LiquidGlassSheetPainter extends CustomPainter {
+  final ColorScheme colorScheme;
+
+  LiquidGlassSheetPainter({required this.colorScheme});
+
   @override
   void paint(Canvas canvas, Size size) {
     final rect = Offset.zero & size;
@@ -15,8 +19,8 @@ class LiquidGlassSheetPainter extends CustomPainter {
         center: const Alignment(0.0, -1.2),
         radius: 1.5,
         colors: [
-          Colors.white.withValues(alpha: 0.2),
-          Colors.white.withValues(alpha: 0.04),
+          colorScheme.onSurface.withValues(alpha: 0.2),
+          colorScheme.onSurface.withValues(alpha: 0.04),
           Colors.transparent,
         ],
         stops: const [0.0, 0.4, 1.0],
@@ -29,9 +33,9 @@ class LiquidGlassSheetPainter extends CustomPainter {
         end: const Alignment(1, 0),
         colors: [
           Colors.transparent,
-          Colors.white.withValues(alpha: 0.25),
-          Colors.white.withValues(alpha: 0.35),
-          Colors.white.withValues(alpha: 0.25),
+          colorScheme.onSurface.withValues(alpha: 0.25),
+          colorScheme.onSurface.withValues(alpha: 0.35),
+          colorScheme.onSurface.withValues(alpha: 0.25),
           Colors.transparent,
         ],
         stops: const [0.0, 0.2, 0.5, 0.8, 1.0],
@@ -53,13 +57,14 @@ class LiquidGlassSheetPainter extends CustomPainter {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          Colors.white.withValues(alpha: 0.3),
-          Colors.white.withValues(alpha: 0.05),
+          colorScheme.onSurface.withValues(alpha: 0.3),
+          colorScheme.onSurface.withValues(alpha: 0.05),
         ],
       ).createShader(rect);
     canvas.drawRRect(rrect, borderPaint);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant LiquidGlassSheetPainter oldDelegate) =>
+      oldDelegate.colorScheme != colorScheme;
 }

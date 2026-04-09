@@ -8,7 +8,6 @@ import '../../home/widgets/premium_banner.dart';
 import '../widgets/wallet_card.dart';
 import '../providers/transaction_provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 
 class WalletPage extends ConsumerWidget {
@@ -21,6 +20,8 @@ class WalletPage extends ConsumerWidget {
     final transactionAsync = ref.watch(transactionHistoryProvider);
     final cardHolder = profile?.fullName.toUpperCase() ?? "CLEVER MEMBER";
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -36,21 +37,20 @@ class WalletPage extends ConsumerWidget {
                 children: [
                   Text(
                     l10n.wallet,
-                    style: GoogleFonts.inter(
-                      fontSize: 32,
+                    style: textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.w900,
-                      color: Colors.white,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                   IconButton(
                     onPressed: () => context.push('/wallet/history'),
                     icon: Icon(
                       Icons.history_rounded,
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: colorScheme.onSurface.withValues(alpha: 0.7),
                       size: 24,
                     ),
                     style: IconButton.styleFrom(
-                      backgroundColor: Colors.white.withValues(alpha: 0.1),
+                      backgroundColor: colorScheme.onSurface.withValues(alpha: 0.1),
                     ),
                   ),
                 ],
@@ -95,17 +95,16 @@ class WalletPage extends ConsumerWidget {
                 children: [
                   Text(
                     l10n.recentTransactions,
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
+                    style: textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: Colors.white.withValues(alpha: 0.95),
+                      color: colorScheme.onSurface.withValues(alpha: 0.95),
                     ),
                   ),
                   IconButton(
                     onPressed: () => context.push('/wallet/history'),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.chevron_right_rounded,
-                      color: Colors.white54,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],
@@ -117,10 +116,10 @@ class WalletPage extends ConsumerWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.all(32),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.03),
+                        color: colorScheme.onSurface.withValues(alpha: 0.03),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.05),
+                          color: colorScheme.onSurface.withValues(alpha: 0.05),
                         ),
                       ),
                       child: Column(
@@ -128,15 +127,14 @@ class WalletPage extends ConsumerWidget {
                           Icon(
                             Icons.receipt_long_rounded,
                             size: 48,
-                            color: Colors.white.withValues(alpha: 0.1),
+                            color: colorScheme.onSurface.withValues(alpha: 0.1),
                           ),
                           const SizedBox(height: 16),
                           Text(
                             l10n.noTransactionsYet,
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              color: Colors.white.withValues(alpha: 0.4),
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurface.withValues(alpha: 0.4),
                             ),
                           ),
                         ],
@@ -153,7 +151,7 @@ class WalletPage extends ConsumerWidget {
                     separatorBuilder: (_, __) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Divider(
-                        color: Colors.white.withValues(alpha: 0.05),
+                        color: colorScheme.onSurface.withValues(alpha: 0.05),
                         height: 1,
                       ),
                     ),
@@ -168,14 +166,14 @@ class WalletPage extends ConsumerWidget {
                             decoration: BoxDecoration(
                               color: isAdd
                                   ? Colors.green.withValues(alpha: 0.1)
-                                  : Colors.red.withValues(alpha: 0.1),
+                                  : colorScheme.error.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
                               isAdd
                                   ? Icons.arrow_downward_rounded
                                   : Icons.arrow_upward_rounded,
-                              color: isAdd ? Colors.green : Colors.red,
+                              color: isAdd ? Colors.green : colorScheme.error,
                               size: 16,
                             ),
                           ),
@@ -188,10 +186,9 @@ class WalletPage extends ConsumerWidget {
                                   txn.type == 'credit_add'
                                       ? l10n.topUp
                                       : l10n.cvExport,
-                                  style: GoogleFonts.inter(
-                                    fontSize: 15,
+                                  style: textTheme.titleSmall?.copyWith(
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.white,
+                                    color: colorScheme.onSurface,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -199,9 +196,8 @@ class WalletPage extends ConsumerWidget {
                                   DateFormat(
                                     'MMM d, yyyy • h:mm a',
                                   ).format(txn.timestamp),
-                                  style: GoogleFonts.inter(
-                                    fontSize: 12,
-                                    color: Colors.white.withValues(alpha: 0.5),
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                               ],
@@ -209,10 +205,9 @@ class WalletPage extends ConsumerWidget {
                           ),
                           Text(
                             '${isAdd ? '+' : '-'}${txn.amount}',
-                            style: GoogleFonts.inter(
-                              fontSize: 16,
+                            style: textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: isAdd ? Colors.green : Colors.white,
+                              color: isAdd ? Colors.green : colorScheme.onSurface,
                             ),
                           ),
                         ],
@@ -220,10 +215,10 @@ class WalletPage extends ConsumerWidget {
                     },
                   );
                 },
-                loading: () => const Center(
+                loading: () => Center(
                   child: Padding(
-                    padding: EdgeInsets.all(32.0),
-                    child: CircularProgressIndicator(color: Colors.amber),
+                    padding: const EdgeInsets.all(32.0),
+                    child: CircularProgressIndicator(color: colorScheme.primary),
                   ),
                 ),
                 error: (err, _) => Padding(

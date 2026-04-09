@@ -18,6 +18,8 @@ class WalletCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return AnimatedContainer(
           duration: const Duration(milliseconds: 500),
@@ -25,19 +27,23 @@ class WalletCard extends StatelessWidget {
           height: 220,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(28),
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFF1A1A1A), Color(0xFF0D0D0D), Color(0xFF000000)],
+              colors: [
+                colorScheme.inverseSurface,
+                colorScheme.inverseSurface.withValues(alpha: 0.9),
+                colorScheme.inverseSurface.withValues(alpha: 0.8),
+              ],
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.5),
+                color: colorScheme.shadow.withValues(alpha: 0.5),
                 blurRadius: 30,
                 offset: const Offset(0, 15),
               ),
               BoxShadow(
-                color: Colors.white.withValues(alpha: 0.05),
+                color: colorScheme.onInverseSurface.withValues(alpha: 0.05),
                 blurRadius: 1,
                 spreadRadius: 1,
               ),
@@ -56,7 +62,7 @@ class WalletCard extends StatelessWidget {
                     height: 150,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: 0.03),
+                      color: colorScheme.onInverseSurface.withValues(alpha: 0.03),
                     ),
                   ),
                 ),
@@ -68,7 +74,7 @@ class WalletCard extends StatelessWidget {
                     height: 100,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: 0.02),
+                      color: colorScheme.onInverseSurface.withValues(alpha: 0.02),
                     ),
                   ),
                 ),
@@ -83,8 +89,8 @@ class WalletCard extends StatelessWidget {
                         children: [
                           Text(
                             'CleVer',
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
+                            style: textTheme.titleLarge?.copyWith(
+                              color: colorScheme.onInverseSurface,
                               fontWeight: FontWeight.bold,
                               fontSize: 22,
                               letterSpacing: 1.2,
@@ -94,17 +100,10 @@ class WalletCard extends StatelessWidget {
                             width: 45,
                             height: 35,
                             decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.amber.shade200,
-                                  Colors.amber.shade700,
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
+                              color: colorScheme.tertiary,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: CustomPaint(painter: ChipPainter()),
+                            child: CustomPaint(painter: ChipPainter(colorScheme: colorScheme)),
                           ),
                         ],
                       ),
@@ -114,20 +113,18 @@ class WalletCard extends StatelessWidget {
                         children: [
                           Text(
                             l10n.creditBalance.toUpperCase(),
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.4),
-                              fontSize: 11,
+                            style: textTheme.labelSmall?.copyWith(
+                              color: colorScheme.onInverseSurface.withValues(alpha: 0.4),
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.5,
                             ),
                           ),
                           const SizedBox(height: 4),
                           if (isLoading)
-                            const Text(
+                            Text(
                               '...',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 40,
+                              style: textTheme.displaySmall?.copyWith(
+                                color: colorScheme.onInverseSurface,
                               ),
                             )
                           else
@@ -137,19 +134,17 @@ class WalletCard extends StatelessWidget {
                               children: [
                                 Text(
                                   '$totalCredits',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 48,
+                                  style: textTheme.displayMedium?.copyWith(
                                     fontWeight: FontWeight.w900,
-                                    color: Colors.white,
+                                    color: colorScheme.onInverseSurface,
                                   ),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
                                   l10n.credits.toUpperCase(),
-                                  style: const TextStyle(
-                                    fontSize: 16,
+                                  style: textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.amber,
+                                    color: colorScheme.tertiary,
                                     letterSpacing: 1.0,
                                   ),
                                 ),
@@ -165,36 +160,35 @@ class WalletCard extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  l10n.member.toUpperCase(),
-                                  style: TextStyle(
-                                    color: Colors.white.withValues(alpha: 0.4),
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.0,
+                                  Text(
+                                    l10n.member.toUpperCase(),
+                                    style: textTheme.labelSmall?.copyWith(
+                                      color: colorScheme.onInverseSurface.withValues(alpha: 0.4),
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.0,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  cardHolder,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 0.5,
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    cardHolder,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: textTheme.titleSmall?.copyWith(
+                                      color: colorScheme.onInverseSurface,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.5,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          const Icon(
-                            Icons.contactless_outlined,
-                            color: Colors.white38,
-                            size: 24,
-                          ),
-                        ],
+                            Icon(
+                              Icons.contactless_outlined,
+                              color: colorScheme.onInverseSurface.withValues(alpha: 0.4),
+                              size: 24,
+                            ),
+                          ],
                       ),
                     ],
                   ),
@@ -210,10 +204,14 @@ class WalletCard extends StatelessWidget {
 }
 
 class ChipPainter extends CustomPainter {
+  final ColorScheme colorScheme;
+
+  ChipPainter({required this.colorScheme});
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.black.withValues(alpha: 0.2)
+      ..color = colorScheme.onTertiary.withValues(alpha: 0.2)
       ..strokeWidth = 0.5
       ..style = PaintingStyle.stroke;
 
@@ -225,7 +223,7 @@ class ChipPainter extends CustomPainter {
     canvas.drawLine(Offset(0, h * 0.5), Offset(w, h * 0.5), paint);
 
     final centerPaint = Paint()
-      ..color = Colors.black.withValues(alpha: 0.1)
+      ..color = colorScheme.onTertiary.withValues(alpha: 0.1)
       ..style = PaintingStyle.fill;
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -241,5 +239,6 @@ class ChipPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant ChipPainter oldDelegate) => 
+      oldDelegate.colorScheme != colorScheme;
 }

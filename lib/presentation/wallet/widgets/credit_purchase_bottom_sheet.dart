@@ -14,11 +14,12 @@ class CreditPurchaseBottomSheet extends ConsumerStatefulWidget {
   const CreditPurchaseBottomSheet({super.key});
 
   static Future<bool> show(BuildContext context) async {
+    final colorScheme = Theme.of(context).colorScheme;
     final result = await showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withValues(alpha: 0.6),
+      barrierColor: colorScheme.scrim.withValues(alpha: 0.6),
       builder: (_) => const CreditPurchaseBottomSheet(),
     );
     return result ?? false;
@@ -93,6 +94,8 @@ class _CreditPurchaseBottomSheetState
     final l10n = AppLocalizations.of(context)!;
     final locale = ref.watch(localeNotifierProvider);
     final isIdr = locale.languageCode == 'id';
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
 
     return ClipRRect(
@@ -100,7 +103,7 @@ class _CreditPurchaseBottomSheetState
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
         child: CustomPaint(
-          painter: LiquidGlassSheetPainter(),
+          painter: LiquidGlassSheetPainter(colorScheme: colorScheme),
           child: SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.fromLTRB(
@@ -110,7 +113,7 @@ class _CreditPurchaseBottomSheetState
                 24 + MediaQuery.of(context).padding.bottom,
               ),
               decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.35),
+                color: colorScheme.surface.withValues(alpha: 0.8),
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(28),
                 ),
@@ -123,17 +126,16 @@ class _CreditPurchaseBottomSheetState
                     height: 4,
                     margin: const EdgeInsets.only(bottom: 28),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.3),
+                      color: colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
 
                   Text(
                     l10n.getCredits,
-                    style: GoogleFonts.inter(
-                      fontSize: 20,
+                    style: textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                      color: colorScheme.onSurface,
                       letterSpacing: -0.5,
                     ),
                   ),
@@ -183,9 +185,9 @@ class _CreditPurchaseBottomSheetState
                     child: FilledButton(
                       onPressed: _isPurchasing ? null : _handlePurchase,
                       style: FilledButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
-                        disabledBackgroundColor: Colors.white.withValues(
+                        backgroundColor: colorScheme.primary,
+                        foregroundColor: colorScheme.onPrimary,
+                        disabledBackgroundColor: colorScheme.primary.withValues(
                           alpha: 0.3,
                         ),
                         padding: const EdgeInsets.symmetric(vertical: 16),
@@ -194,18 +196,17 @@ class _CreditPurchaseBottomSheetState
                         ),
                       ),
                       child: _isPurchasing
-                          ? const SizedBox(
+                          ? SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: Colors.black,
+                                color: colorScheme.onPrimary,
                               ),
                             )
                           : Text(
                               l10n.getCredits,
-                              style: GoogleFonts.inter(
-                                fontSize: 16,
+                              style: textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -222,9 +223,8 @@ class _CreditPurchaseBottomSheetState
                       ),
                       child: Text(
                         l10n.skipForNow,
-                        style: GoogleFonts.inter(
-                          fontSize: 15,
-                          color: Colors.white.withValues(alpha: 0.4),
+                        style: textTheme.titleSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -239,14 +239,13 @@ class _CreditPurchaseBottomSheetState
                       Icon(
                         Icons.lock_outline_rounded,
                         size: 12,
-                        color: Colors.white.withValues(alpha: 0.25),
+                        color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
                       ),
                       const SizedBox(width: 6),
                       Text(
                         l10n.securePayment,
-                        style: GoogleFonts.inter(
-                          fontSize: 11,
-                          color: Colors.white.withValues(alpha: 0.25),
+                        style: textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
                         ),
                       ),
                     ],
