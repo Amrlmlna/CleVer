@@ -101,11 +101,11 @@ class StyleSelectionContent extends StatelessWidget {
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
                           padding: isSelected
-                              ? const EdgeInsets.all(3)
+                              ? const EdgeInsets.all(4)
                               : EdgeInsets.zero,
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? (template.isPremium ? null : colorScheme.onSurface)
+                                ? (template.isPremium ? null : colorScheme.primary)
                                 : Colors.transparent,
                             gradient: isSelected && template.isPremium
                                 ? const LinearGradient(

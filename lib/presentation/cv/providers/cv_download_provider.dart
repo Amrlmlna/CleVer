@@ -111,6 +111,8 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       orElse: () => templates.first,
     );
 
+    debugPrint('[CVDownload] Credits - User: ${template.userCredits}, Required: ${template.requiredCredits}, FreeGen: ${template.hasFreeGeneration}');
+
     if (template.hasFreeGeneration ||
         template.userCredits >= template.requiredCredits) {
       if (template.userCredits > 0) {
