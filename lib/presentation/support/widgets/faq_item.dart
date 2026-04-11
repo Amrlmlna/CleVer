@@ -32,9 +32,7 @@ class FAQItem extends StatelessWidget {
           collapsedIconColor: colorScheme.onSurfaceVariant,
           title: Text(
             question,
-            style: textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           childrenPadding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
           children: [

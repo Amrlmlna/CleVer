@@ -97,7 +97,6 @@ class _CreditPurchaseBottomSheetState
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
       child: BackdropFilter(
@@ -126,7 +125,9 @@ class _CreditPurchaseBottomSheetState
                     height: 4,
                     margin: const EdgeInsets.only(bottom: 28),
                     decoration: BoxDecoration(
-                      color: colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
+                      color: colorScheme.onSurfaceVariant.withValues(
+                        alpha: 0.3,
+                      ),
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -225,7 +226,9 @@ class _CreditPurchaseBottomSheetState
                       child: Text(
                         l10n.skipForNow,
                         style: textTheme.titleSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                          color: colorScheme.onSurfaceVariant.withValues(
+                            alpha: 0.6,
+                          ),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -240,13 +243,17 @@ class _CreditPurchaseBottomSheetState
                       Icon(
                         Icons.lock_outline_rounded,
                         size: 12,
-                        color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                        color: colorScheme.onSurfaceVariant.withValues(
+                          alpha: 0.5,
+                        ),
                       ),
                       const SizedBox(width: 6),
                       Text(
                         l10n.securePayment,
                         style: textTheme.labelSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                          color: colorScheme.onSurfaceVariant.withValues(
+                            alpha: 0.5,
+                          ),
                         ),
                       ),
                     ],

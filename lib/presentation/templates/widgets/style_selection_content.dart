@@ -105,7 +105,9 @@ class StyleSelectionContent extends StatelessWidget {
                               : EdgeInsets.zero,
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? (template.isPremium ? null : colorScheme.primary)
+                                ? (template.isPremium
+                                      ? null
+                                      : colorScheme.primary)
                                 : Colors.transparent,
                             gradient: isSelected && template.isPremium
                                 ? const LinearGradient(
@@ -157,7 +159,9 @@ class StyleSelectionContent extends StatelessWidget {
                                   errorWidget: (context, url, error) => Center(
                                     child: Icon(
                                       Icons.error_outline,
-                                      color: colorScheme.error.withValues(alpha: 0.5),
+                                      color: colorScheme.error.withValues(
+                                        alpha: 0.5,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -174,9 +178,8 @@ class StyleSelectionContent extends StatelessWidget {
                                         shape: BoxShape.circle,
                                         boxShadow: [
                                           BoxShadow(
-                                            color: colorScheme.shadow.withValues(
-                                              alpha: 0.1,
-                                            ),
+                                            color: colorScheme.shadow
+                                                .withValues(alpha: 0.1),
                                             blurRadius: 4,
                                           ),
                                         ],

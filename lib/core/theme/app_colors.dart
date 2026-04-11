@@ -23,7 +23,9 @@ class AppColors {
   static const Color accentBlue = Color(0xFF3B82F6);
   static const Color accentBlueDark = Color(0xFF1D4ED8);
   static const Color accentBlueLight = Color(0xFF93C5FD);
-  static const Color accentCyan = Color(0xFF5EEAD4); // Teal for subtle highlights
+  static const Color accentCyan = Color(
+    0xFF5EEAD4,
+  ); // Teal for subtle highlights
 
   // Semantic Colors
   static const Color success = Color(0xFF10B981);
@@ -43,10 +45,10 @@ class AppColors {
   // ─── Modal / Sheet surfaces ───────────────────────────────────────────────
   // White sheets over a dark app — the high-contrast "action mode" pattern.
   // Change sheetSurface here and every bottom sheet + onboarding panel updates.
-  static const Color sheetSurface      = white;         // Sheet background
-  static const Color sheetOnSurface    = grey900;       // Primary text on sheet
-  static const Color sheetOnSurfaceVar = grey500;       // Hint / secondary text
-  static const Color sheetInputFill    = grey100;       // Input field fill
-  static const Color sheetDivider      = grey200;       // Dividers & outlineVariant
-  static const Color sheetHandle       = grey300;       // Drag handle pill
+  static const Color sheetSurface = white; // Sheet background
+  static const Color sheetOnSurface = grey900; // Primary text on sheet
+  static const Color sheetOnSurfaceVar = grey500; // Hint / secondary text
+  static const Color sheetInputFill = grey100; // Input field fill
+  static const Color sheetDivider = grey200; // Dividers & outlineVariant
+  static const Color sheetHandle = grey300; // Drag handle pill
 }

@@ -8,7 +8,7 @@ import '../../common/widgets/animated_check_icon.dart';
 /// Displays contextual feedback based on profile completeness.
 /// Used in onboarding step 7/7 to provide personalized encouragement.
 ///
-/// Enhanced with "Hero Typography" and a "Morphing Entrance" for 
+/// Enhanced with "Hero Typography" and a "Morphing Entrance" for
 /// a premium, alive feel.
 class OnboardingFeedbackState extends StatelessWidget {
   final UserProfile profile;
@@ -62,19 +62,22 @@ class _MorphingGraphic extends StatelessWidget {
           // Background Glow (if enabled)
           if (hasGlow)
             Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: backgroundColor.withValues(alpha: 0.2),
-                    blurRadius: 40,
-                    spreadRadius: 10,
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: backgroundColor.withValues(alpha: 0.2),
+                        blurRadius: 40,
+                        spreadRadius: 10,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ).animate().fadeIn(delay: 400.ms, duration: 800.ms).scale(begin: const Offset(0.5, 0.5)),
+                )
+                .animate()
+                .fadeIn(delay: 400.ms, duration: 800.ms)
+                .scale(begin: const Offset(0.5, 0.5)),
 
           // The Morphing Container
           // It starts as a "Pill" (Button shape) and grows into a large Circle/Rect
@@ -82,16 +85,33 @@ class _MorphingGraphic extends StatelessWidget {
           child
               .animate()
               // Start from button position (approx bottom of screen - center)
-              .moveY(begin: 120, end: 0, curve: Curves.easeOutBack, duration: 800.ms)
+              .moveY(
+                begin: 120,
+                end: 0,
+                curve: Curves.easeOutBack,
+                duration: 800.ms,
+              )
               // Grow size and adjust shape
               .custom(
                 duration: 800.ms,
                 curve: Curves.easeOutCubic,
                 builder: (context, value, child) {
                   // value 0 -> 1
-                  final width = lerpDouble(120, 100, value); // Start wider like a button
-                  final height = lerpDouble(52, 100, value); // Start short like a button
-                  final radius = lerpDouble(16, 50, value); // Start with btn radius
+                  final width = lerpDouble(
+                    120,
+                    100,
+                    value,
+                  ); // Start wider like a button
+                  final height = lerpDouble(
+                    52,
+                    100,
+                    value,
+                  ); // Start short like a button
+                  final radius = lerpDouble(
+                    16,
+                    50,
+                    value,
+                  ); // Start with btn radius
 
                   return Container(
                     width: width,
@@ -121,17 +141,18 @@ class _MorphingGraphic extends StatelessWidget {
                   );
                 },
               ),
-              
+
           // Extra Success Sparks (decorative)
           if (hasGlow)
             ...List.generate(4, (i) {
               return Positioned(
                 left: 50 + (40 * (i % 2 == 0 ? 1 : -1)),
                 top: 50 + (40 * (i < 2 ? 1 : -1)),
-                child: Icon(Icons.auto_awesome, size: 14, color: backgroundColor)
-                    .animate(onPlay: (c) => c.repeat())
-                    .scale(duration: 1000.ms, begin: const Offset(0.5, 0.5))
-                    .fadeOut(delay: 500.ms),
+                child:
+                    Icon(Icons.auto_awesome, size: 14, color: backgroundColor)
+                        .animate(onPlay: (c) => c.repeat())
+                        .scale(duration: 1000.ms, begin: const Offset(0.5, 0.5))
+                        .fadeOut(delay: 500.ms),
               );
             }),
         ],
@@ -156,7 +177,7 @@ class _CompleteState extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 10),
-        
+
         // Morphing Hero
         _MorphingGraphic(
           backgroundColor: colorScheme.primaryContainer,
@@ -174,39 +195,42 @@ class _CompleteState extends StatelessWidget {
 
         // Hero Typography
         RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'Sangat Bagus,\n',
-                style: textTheme.displayMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: colorScheme.onSurface,
-                  height: 1.1,
-                  letterSpacing: -1.5,
-                ),
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Sangat Bagus,\n',
+                    style: textTheme.displayMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      color: colorScheme.onSurface,
+                      height: 1.1,
+                      letterSpacing: -1.5,
+                    ),
+                  ),
+                  TextSpan(
+                    text: firstName,
+                    style: textTheme.displayMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.accentBlue,
+                      height: 1.1,
+                      letterSpacing: -1.5,
+                    ),
+                  ),
+                  TextSpan(
+                    text: '!',
+                    style: textTheme.displayMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      color: colorScheme.onSurface,
+                      height: 1.1,
+                      letterSpacing: -1.5,
+                    ),
+                  ),
+                ],
               ),
-              TextSpan(
-                text: firstName,
-                style: textTheme.displayMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.accentBlue,
-                  height: 1.1,
-                  letterSpacing: -1.5,
-                ),
-              ),
-              TextSpan(
-                text: '!',
-                style: textTheme.displayMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: colorScheme.onSurface,
-                  height: 1.1,
-                  letterSpacing: -1.5,
-                ),
-              ),
-            ],
-          ),
-        ).animate().fadeIn(delay: 300.ms, duration: 600.ms).slideY(begin: 0.1, end: 0),
+            )
+            .animate()
+            .fadeIn(delay: 300.ms, duration: 600.ms)
+            .slideY(begin: 0.1, end: 0),
 
         const SizedBox(height: 16),
 
@@ -224,11 +248,14 @@ class _CompleteState extends StatelessWidget {
 
         // Feature highlight - bigger and centered
         _buildFeatureCard(
-          context,
-          icon: Icons.star_rounded,
-          title: l10n.onboardingFeedbackCompleteFeatureTitle,
-          subtitle: l10n.onboardingFeedbackCompleteFeatureSubtitle,
-        ).animate().fadeIn(delay: 800.ms, duration: 600.ms).scale(begin: const Offset(0.95, 0.95)),
+              context,
+              icon: Icons.star_rounded,
+              title: l10n.onboardingFeedbackCompleteFeatureTitle,
+              subtitle: l10n.onboardingFeedbackCompleteFeatureSubtitle,
+            )
+            .animate()
+            .fadeIn(delay: 800.ms, duration: 600.ms)
+            .scale(begin: const Offset(0.95, 0.95)),
       ],
     );
   }
@@ -305,7 +332,7 @@ class _PartialState extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 10),
-        
+
         // Morphing Hero
         _MorphingGraphic(
           backgroundColor: colorScheme.primaryContainer,
@@ -319,14 +346,17 @@ class _PartialState extends StatelessWidget {
 
         // Headline
         Text(
-          l10n.onboardingFeedbackPartialTitle,
-          textAlign: TextAlign.center,
-          style: textTheme.displaySmall?.copyWith(
-            fontWeight: FontWeight.w900,
-            color: colorScheme.onSurface,
-            letterSpacing: -1.0,
-          ),
-        ).animate().fadeIn(delay: 300.ms, duration: 600.ms).slideY(begin: 0.1, end: 0),
+              l10n.onboardingFeedbackPartialTitle,
+              textAlign: TextAlign.center,
+              style: textTheme.displaySmall?.copyWith(
+                fontWeight: FontWeight.w900,
+                color: colorScheme.onSurface,
+                letterSpacing: -1.0,
+              ),
+            )
+            .animate()
+            .fadeIn(delay: 300.ms, duration: 600.ms)
+            .slideY(begin: 0.1, end: 0),
 
         const SizedBox(height: 16),
 
@@ -348,11 +378,17 @@ class _PartialState extends StatelessWidget {
           decoration: BoxDecoration(
             color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: colorScheme.outlineVariant.withValues(alpha: 0.5)),
+            border: Border.all(
+              color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+            ),
           ),
           child: Row(
             children: [
-              Icon(Icons.lightbulb_outline, size: 24, color: AppColors.accentBlue),
+              Icon(
+                Icons.lightbulb_outline,
+                size: 24,
+                color: AppColors.accentBlue,
+              ),
               const SizedBox(width: 14),
               Expanded(
                 child: Text(
@@ -381,7 +417,7 @@ class _EmptyState extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 10),
-        
+
         // Morphing Hero
         _MorphingGraphic(
           backgroundColor: colorScheme.surfaceContainerHighest,
@@ -423,11 +459,17 @@ class _EmptyState extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.accentBlue.withValues(alpha: 0.08),
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: AppColors.accentBlue.withValues(alpha: 0.15)),
+            border: Border.all(
+              color: AppColors.accentBlue.withValues(alpha: 0.15),
+            ),
           ),
           child: Row(
             children: [
-              Icon(Icons.auto_awesome_mosaic_rounded, size: 24, color: AppColors.accentBlue),
+              Icon(
+                Icons.auto_awesome_mosaic_rounded,
+                size: 24,
+                color: AppColors.accentBlue,
+              ),
               const SizedBox(width: 14),
               Expanded(
                 child: Text(

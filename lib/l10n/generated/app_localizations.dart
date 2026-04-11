@@ -152,6 +152,12 @@ abstract class AppLocalizations {
   /// **'ai analysis'**
   String get aiAnalysisTitle;
 
+  /// No description provided for @aiTailoringOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'ai tailoring options'**
+  String get aiTailoringOptions;
+
   /// No description provided for @aiAnalyzingProfile.
   ///
   /// In en, this message translates to:
@@ -181,6 +187,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'testing against ats constraints...'**
   String get aiTestingConstraints;
+
+  /// No description provided for @maxSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'max skills'**
+  String get maxSkills;
+
+  /// No description provided for @honestAiFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'honest ai feedback'**
+  String get honestAiFeedback;
+
+  /// No description provided for @honestAiFeedbackDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'get strict & critical advice'**
+  String get honestAiFeedbackDesc;
+
+  /// No description provided for @conciseFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'concise format'**
+  String get conciseFormat;
+
+  /// No description provided for @conciseFormatDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'focus on brevity & impact'**
+  String get conciseFormatDesc;
 
   /// No description provided for @almostThere.
   ///

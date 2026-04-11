@@ -26,7 +26,9 @@ class BenefitItem extends StatelessWidget {
           decoration: BoxDecoration(
             color: colorScheme.onSurface.withValues(alpha: 0.05),
             shape: BoxShape.circle,
-            border: Border.all(color: colorScheme.onSurface.withValues(alpha: 0.08)),
+            border: Border.all(
+              color: colorScheme.onSurface.withValues(alpha: 0.08),
+            ),
           ),
           child: Icon(
             icon,

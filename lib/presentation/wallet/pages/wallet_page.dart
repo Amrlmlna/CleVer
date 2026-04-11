@@ -50,7 +50,9 @@ class WalletPage extends ConsumerWidget {
                       size: 24,
                     ),
                     style: IconButton.styleFrom(
-                      backgroundColor: colorScheme.onSurface.withValues(alpha: 0.1),
+                      backgroundColor: colorScheme.onSurface.withValues(
+                        alpha: 0.1,
+                      ),
                     ),
                   ),
                 ],
@@ -134,7 +136,9 @@ class WalletPage extends ConsumerWidget {
                             l10n.noTransactionsYet,
                             textAlign: TextAlign.center,
                             style: textTheme.bodyMedium?.copyWith(
-                              color: colorScheme.onSurface.withValues(alpha: 0.4),
+                              color: colorScheme.onSurface.withValues(
+                                alpha: 0.4,
+                              ),
                             ),
                           ),
                         ],
@@ -207,7 +211,9 @@ class WalletPage extends ConsumerWidget {
                             '${isAdd ? '+' : '-'}${txn.amount}',
                             style: textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: isAdd ? Colors.green : colorScheme.onSurface,
+                              color: isAdd
+                                  ? Colors.green
+                                  : colorScheme.onSurface,
                             ),
                           ),
                         ],
@@ -218,7 +224,9 @@ class WalletPage extends ConsumerWidget {
                 loading: () => Center(
                   child: Padding(
                     padding: const EdgeInsets.all(32.0),
-                    child: CircularProgressIndicator(color: colorScheme.primary),
+                    child: CircularProgressIndicator(
+                      color: colorScheme.primary,
+                    ),
                   ),
                 ),
                 error: (err, _) => Padding(

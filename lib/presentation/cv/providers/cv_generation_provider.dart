@@ -4,6 +4,7 @@ import '../../../domain/entities/user_profile.dart';
 import '../../../domain/repositories/cv_repository.dart';
 import '../../../data/repositories/cv_repository_impl.dart';
 import '../../../domain/entities/job_input.dart';
+import '../../../domain/entities/tailoring_options.dart';
 
 final remoteCVDataSourceProvider = Provider<RemoteCVDataSource>((ref) {
   return RemoteCVDataSource();
@@ -20,6 +21,7 @@ class CVCreationState {
   final String? summary;
   final String selectedStyle;
   final String? currentDraftId;
+  final TailoringOptions tailoringOptions;
 
   const CVCreationState({
     this.jobInput,
@@ -27,6 +29,7 @@ class CVCreationState {
     this.summary,
     this.selectedStyle = 'ATS',
     this.currentDraftId,
+    this.tailoringOptions = const TailoringOptions(),
   });
 
   CVCreationState copyWith({
@@ -35,6 +38,7 @@ class CVCreationState {
     String? summary,
     String? selectedStyle,
     String? currentDraftId,
+    TailoringOptions? tailoringOptions,
   }) {
     return CVCreationState(
       jobInput: jobInput ?? this.jobInput,
@@ -42,6 +46,7 @@ class CVCreationState {
       summary: summary ?? this.summary,
       selectedStyle: selectedStyle ?? this.selectedStyle,
       currentDraftId: currentDraftId ?? this.currentDraftId,
+      tailoringOptions: tailoringOptions ?? this.tailoringOptions,
     );
   }
 }
@@ -70,6 +75,10 @@ class CVCreationNotifier extends Notifier<CVCreationState> {
 
   void setCurrentDraftId(String id) {
     state = state.copyWith(currentDraftId: id);
+  }
+
+  void setTailoringOptions(TailoringOptions options) {
+    state = state.copyWith(tailoringOptions: options);
   }
 }
 

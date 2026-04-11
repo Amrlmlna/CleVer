@@ -122,9 +122,7 @@ class _ForgotPasswordBottomSheetState
                 fillColor: colorScheme.onSurface.withValues(alpha: 0.03),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
-                    color: colorScheme.outlineVariant,
-                  ),
+                  borderSide: BorderSide(color: colorScheme.outlineVariant),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),

@@ -27,7 +27,9 @@ class AdService {
       // Register this specific device as a test device to avoid Error 0 / JavascriptEngine crash
       // This ID was retrieved from the user's console logs
       await MobileAds.instance.updateRequestConfiguration(
-        RequestConfiguration(testDeviceIds: ['C02FA2EAD35709DDBBC81E7F501323C1']),
+        RequestConfiguration(
+          testDeviceIds: ['C02FA2EAD35709DDBBC81E7F501323C1'],
+        ),
       );
 
       await MobileAds.instance.initialize();
@@ -69,7 +71,9 @@ class AdService {
           );
         },
         onAdFailedToLoad: (LoadAdError error) {
-          debugPrint('[AdService] InterstitialAd FAILED to load: ${error.code} - ${error.message}');
+          debugPrint(
+            '[AdService] InterstitialAd FAILED to load: ${error.code} - ${error.message}',
+          );
           debugPrint('[AdService] Domain: ${error.domain}');
           _isAdLoaded = false;
         },
@@ -97,7 +101,9 @@ class AdService {
           onAdClosed(); // Execute callback when ad is closed
         },
         onAdFailedToShowFullScreenContent: (ad, error) {
-          debugPrint('[AdService] Ad failed to show, triggering callback anyway');
+          debugPrint(
+            '[AdService] Ad failed to show, triggering callback anyway',
+          );
           ad.dispose();
           _loadInterstitialAd();
           onAdClosed(); // Proceed even if ad fails
@@ -108,7 +114,9 @@ class AdService {
       _isAdLoaded = false;
     } else {
       // If ad isn't ready or failed, just proceed
-      debugPrint('[AdService] showInterstitialAd: Ad NOT ready yet, skipping to PDF');
+      debugPrint(
+        '[AdService] showInterstitialAd: Ad NOT ready yet, skipping to PDF',
+      );
       onAdClosed();
       if (_isEnabled) {
         _loadInterstitialAd(); // Try loading again for next time

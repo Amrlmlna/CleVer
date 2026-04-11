@@ -7,6 +7,7 @@ import '../../domain/repositories/cv_repository.dart';
 import '../datasources/remote_cv_datasource.dart';
 import '../utils/cv_data_parser.dart';
 import '../utils/data_error_mapper.dart';
+import '../../domain/entities/tailoring_options.dart';
 
 class CVRepositoryImpl implements CVRepository {
   final RemoteCVDataSource remoteDataSource;
@@ -55,12 +56,14 @@ class CVRepositoryImpl implements CVRepository {
     required UserProfile masterProfile,
     required JobInput jobInput,
     String? locale,
+    TailoringOptions? options,
   }) async {
     try {
       final responseData = await remoteDataSource.tailorProfile(
         masterProfileJson: masterProfile.toJson(),
         jobInputJson: jobInput.toJson(),
         locale: locale,
+        tailoringOptionsJson: options?.toJson(),
       );
 
       final profileJson =

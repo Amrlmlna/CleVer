@@ -78,9 +78,7 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
         child: Column(
           children: [
             if (widget.tailoredResult?.analysis != null)
-              RequirementChecklist(
-                analysis: widget.tailoredResult!.analysis!,
-              ),
+              RequirementChecklist(analysis: widget.tailoredResult!.analysis!),
 
             ReviewSectionCard(
               title: AppLocalizations.of(context)!.personalInfo,
@@ -105,9 +103,7 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
               isExpanded: _isSummaryExpanded,
               onExpansionChanged: (val) =>
                   setState(() => _isSummaryExpanded = val),
-              child: SummarySection(
-                controller: widget.summaryController,
-              ),
+              child: SummarySection(controller: widget.summaryController),
             ),
             const SizedBox(height: 16),
 

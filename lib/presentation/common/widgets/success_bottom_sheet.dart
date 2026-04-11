@@ -49,7 +49,11 @@ class SuccessBottomSheet extends StatelessWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Theme.of(context).dividerTheme.color ?? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
+                color:
+                    Theme.of(context).dividerTheme.color ??
+                    Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -79,7 +83,9 @@ class SuccessBottomSheet extends StatelessWidget {
             Text(
               message,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
                 height: 1.5,
               ),
               textAlign: TextAlign.center,
@@ -103,9 +109,9 @@ class SuccessBottomSheet extends StatelessWidget {
                 ),
                 child: Text(
                   buttonText,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
                 ),
               ),
             ),

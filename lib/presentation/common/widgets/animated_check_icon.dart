@@ -27,10 +27,7 @@ class _AnimatedCheckIconState extends State<AnimatedCheckIcon>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: widget.duration,
-    );
+    _controller = AnimationController(vsync: this, duration: widget.duration);
 
     _animation = CurvedAnimation(
       parent: _controller,
@@ -88,7 +85,7 @@ class _CheckPainter extends CustomPainter {
       ..strokeJoin = StrokeJoin.round;
 
     final path = Path();
-    
+
     // Starting point of the checkmark
     final start = Offset(size.width * 0.2, size.height * 0.5);
     // Middle junction
@@ -108,7 +105,7 @@ class _CheckPainter extends CustomPainter {
     } else {
       // First segment is done
       path.lineTo(mid.dx, mid.dy);
-      
+
       // Drawing the second segment
       final segmentProgress = (progress - 0.4) / 0.6;
       path.lineTo(

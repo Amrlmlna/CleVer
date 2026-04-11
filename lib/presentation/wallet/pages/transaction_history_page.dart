@@ -114,7 +114,9 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                       size: 20,
                     ),
                     style: IconButton.styleFrom(
-                      backgroundColor: colorScheme.onSurface.withValues(alpha: 0.05),
+                      backgroundColor: colorScheme.onSurface.withValues(
+                        alpha: 0.05,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -207,7 +209,9 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                 error: (err, _) => Center(
                   child: Text(
                     l10n.failedToLoadTransactions,
-                    style: textTheme.bodyMedium?.copyWith(color: colorScheme.error),
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.error,
+                    ),
                   ),
                 ),
               ),
@@ -255,8 +259,10 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
           controller: controller,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           itemCount: items.length,
-          separatorBuilder: (_, __) =>
-              Divider(color: colorScheme.onSurface.withValues(alpha: 0.03), height: 32),
+          separatorBuilder: (_, __) => Divider(
+            color: colorScheme.onSurface.withValues(alpha: 0.03),
+            height: 32,
+          ),
           itemBuilder: (context, index) {
             final txn = items[index];
             final isAdd = txn.isAddition;
@@ -325,7 +331,10 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [colorScheme.surface, colorScheme.surface.withValues(alpha: 0)],
+                    colors: [
+                      colorScheme.surface,
+                      colorScheme.surface.withValues(alpha: 0),
+                    ],
                   ),
                 ),
               ),
@@ -345,7 +354,10 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                   gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                    colors: [colorScheme.surface, colorScheme.surface.withValues(alpha: 0)],
+                    colors: [
+                      colorScheme.surface,
+                      colorScheme.surface.withValues(alpha: 0),
+                    ],
                   ),
                 ),
               ),

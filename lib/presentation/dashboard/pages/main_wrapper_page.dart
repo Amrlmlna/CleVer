@@ -27,7 +27,6 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
     with TickerProviderStateMixin {
   bool _sheetShowing = false;
 
-
   @override
   void initState() {
     super.initState();
@@ -89,8 +88,6 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
         }
       }
     }
-
-
 
     widget.navigationShell.goBranch(
       index,
@@ -177,7 +174,11 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 4,
         shape: const CircleBorder(),
-        child: Icon(Icons.add, color: Theme.of(context).colorScheme.onPrimary, size: 28),
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).colorScheme.onPrimary,
+          size: 28,
+        ),
       ),
     );
   }
@@ -200,7 +201,11 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
           children: [
             Icon(
               isSelected ? activeIcon : icon,
-              color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38),
+              color: isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.38),
               size: 22,
             ),
             const SizedBox(height: 4),
@@ -208,7 +213,11 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
               label,
               style: TextStyle(
                 fontSize: 10,
-                color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38),
+                color: isSelected
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.38),
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
               ),
               overflow: TextOverflow.ellipsis,

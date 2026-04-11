@@ -308,7 +308,9 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                                     vertical: 4,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: colorScheme.onSurface.withValues(alpha: 0.05),
+                                    color: colorScheme.onSurface.withValues(
+                                      alpha: 0.05,
+                                    ),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Text(

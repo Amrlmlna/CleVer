@@ -107,7 +107,9 @@ class PackageCard extends StatelessWidget {
                       Text(
                         '$perCredit${l10n.perCredit}',
                         style: textTheme.labelSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                          color: colorScheme.onSurfaceVariant.withValues(
+                            alpha: 0.8,
+                          ),
                         ),
                       ),
                       if (package.savingsPercent != null) ...[

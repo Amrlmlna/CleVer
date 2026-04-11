@@ -61,7 +61,9 @@ class _SwipeToConfirmButtonState extends State<SwipeToConfirmButton> {
                   width: _dragPosition + _buttonHeight,
                   height: _buttonHeight,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(_buttonHeight / 2),
                   ),
                 ),
@@ -126,7 +128,9 @@ class _SwipeToConfirmButtonState extends State<SwipeToConfirmButton> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(context).shadowColor.withValues(alpha: 0.2),
+                              color: Theme.of(
+                                context,
+                              ).shadowColor.withValues(alpha: 0.2),
                               blurRadius: 8,
                               offset: const Offset(2, 0),
                             ),
@@ -135,7 +139,9 @@ class _SwipeToConfirmButtonState extends State<SwipeToConfirmButton> {
                         child:
                             Icon(
                                   Icons.arrow_forward_ios_rounded,
-                                  color: Theme.of(context).colorScheme.onPrimary,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
                                   size: 18,
                                 )
                                 .animate(

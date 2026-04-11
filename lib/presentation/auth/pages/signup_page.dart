@@ -215,8 +215,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   AppLocalizations.of(context)!.createAccountSubtitle,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                      ),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
                 ),
                 const SizedBox(height: 32),
 
@@ -302,8 +304,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                       child: Text(
                         AppLocalizations.of(context)!.or,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                            ),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.6),
+                        ),
                       ),
                     ),
                     Expanded(

@@ -29,9 +29,7 @@ class JobDescriptionField extends StatelessWidget {
           child: TextFormField(
             controller: controller,
             maxLines: 5,
-            style: textTheme.bodyMedium?.copyWith(
-              color: colorScheme.onSurface,
-            ),
+            style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface),
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context)!.jobDetailHint,
               hintStyle: textTheme.bodyMedium?.copyWith(

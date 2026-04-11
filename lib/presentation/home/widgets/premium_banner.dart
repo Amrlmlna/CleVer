@@ -20,7 +20,10 @@ class PremiumBanner extends ConsumerWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [colorScheme.surfaceContainerHighest, colorScheme.surfaceContainer],
+          colors: [
+            colorScheme.surfaceContainerHighest,
+            colorScheme.surfaceContainer,
+          ],
         ),
         boxShadow: [
           BoxShadow(
@@ -29,10 +32,7 @@ class PremiumBanner extends ConsumerWidget {
             offset: const Offset(0, 4),
           ),
         ],
-        border: Border.all(
-          color: colorScheme.outlineVariant,
-          width: 1,
-        ),
+        border: Border.all(color: colorScheme.outlineVariant, width: 1),
       ),
       child: Material(
         color: Colors.transparent,
@@ -98,9 +98,7 @@ class PremiumBanner extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: colorScheme.outline,
-                    ),
+                    border: Border.all(color: colorScheme.outline),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Icon(

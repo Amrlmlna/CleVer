@@ -91,15 +91,20 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader>
         animation: _shimmerController,
         builder: (context, child) {
           // Resolve effective style from parent (e.g. ElevatedButton, Card) or ambient default
-          final effectiveStyle = DefaultTextStyle.of(context).style.merge(widget.style);
-          final textColor = effectiveStyle.color ?? Theme.of(context).colorScheme.onSurface;
-          
+          final effectiveStyle = DefaultTextStyle.of(
+            context,
+          ).style.merge(widget.style);
+          final textColor =
+              effectiveStyle.color ?? Theme.of(context).colorScheme.onSurface;
+
           // Auto-generate shimmer colors if not explicitly provided
-          final colors = widget.shimmerColors ?? [
-            textColor.withValues(alpha: 0.3),
-            textColor,
-            textColor.withValues(alpha: 0.3),
-          ];
+          final colors =
+              widget.shimmerColors ??
+              [
+                textColor.withValues(alpha: 0.3),
+                textColor,
+                textColor.withValues(alpha: 0.3),
+              ];
 
           return ShaderMask(
             shaderCallback: (bounds) {

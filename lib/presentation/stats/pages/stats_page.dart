@@ -43,9 +43,7 @@ class StatsPage extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            UserLevelCard(
-                  level: getLocalizedLevel(userLevelKey),
-                )
+            UserLevelCard(level: getLocalizedLevel(userLevelKey))
                 .animate()
                 .fadeIn(duration: 600.ms, curve: Curves.easeOutQuad)
                 .slideX(

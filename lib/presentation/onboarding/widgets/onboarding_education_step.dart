@@ -39,10 +39,7 @@ class OnboardingEducationStep extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32),
-          EducationListForm(
-            education: education,
-            onChanged: onChanged,
-          ),
+          EducationListForm(education: education, onChanged: onChanged),
         ],
       ),
     );

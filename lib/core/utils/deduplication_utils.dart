@@ -4,7 +4,7 @@ class DeduplicationUtils {
   /// Normalizes text by removing special characters, multiple spaces, and lowercasing.
   static String normalizeText(String? text) {
     if (text == null || text.isEmpty) return '';
-    
+
     // Normalize abbreviations
     String result = text.toLowerCase();
     result = result.replaceAll(RegExp(r'\bsr\b\.?'), 'senior');
@@ -13,7 +13,7 @@ class DeduplicationUtils {
     result = result.replaceAll(RegExp(r'\bllc\b\.?'), '');
     result = result.replaceAll(RegExp(r'\bltd\b\.?'), '');
     result = result.replaceAll(RegExp(r'\bcorp\b\.?'), '');
-    
+
     return result
         .replaceAll(RegExp(r'[^a-z0-9\s]'), '')
         .replaceAll(RegExp(r'\s+'), ' ')

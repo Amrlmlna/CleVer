@@ -31,12 +31,18 @@ class CompletedCVsGrid extends ConsumerWidget {
                 const SizedBox(height: 16),
                 Text(
                   AppLocalizations.of(context)!.noCompletedCVs,
-                  style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   AppLocalizations.of(context)!.generateCVFirst,
-                  style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),
@@ -74,8 +80,12 @@ class _CompletedCVCard extends ConsumerWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-          color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outlineVariant,
+          ),
+          color: Theme.of(
+            context,
+          ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -112,14 +122,18 @@ class _CompletedCVCard extends ConsumerWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           cv.templateId,
                           style: TextStyle(
                             fontSize: 9,
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -127,7 +141,10 @@ class _CompletedCVCard extends ConsumerWidget {
                       const Spacer(),
                       Text(
                         timeago.format(cv.generatedAt),
-                        style: TextStyle(fontSize: 9, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                        style: TextStyle(
+                          fontSize: 9,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
@@ -154,7 +171,9 @@ class _CompletedCVCard extends ConsumerWidget {
 
   Widget _placeholderThumbnail(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+      color: Theme.of(
+        context,
+      ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
       child: Center(
         child: Icon(
           Icons.picture_as_pdf_rounded,
@@ -196,10 +215,15 @@ class _CompletedCVCard extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               ListTile(
-                leading: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
+                leading: Icon(
+                  Icons.open_in_new,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 title: Text(
                   AppLocalizations.of(context)!.openPDF,
-                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 onTap: () {
                   Navigator.pop(context);
@@ -207,7 +231,10 @@ class _CompletedCVCard extends ConsumerWidget {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.error),
+                leading: Icon(
+                  Icons.delete_outline,
+                  color: Theme.of(context).colorScheme.error,
+                ),
                 title: Text(
                   AppLocalizations.of(context)!.delete,
                   style: TextStyle(color: Theme.of(context).colorScheme.error),

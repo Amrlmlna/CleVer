@@ -69,7 +69,9 @@ class NotificationPage extends ConsumerWidget {
             ),
             child: Icon(
               Icons.notifications_active_outlined,
-              color: notification.isRead ? colorScheme.onSurfaceVariant : colorScheme.primary,
+              color: notification.isRead
+                  ? colorScheme.onSurfaceVariant
+                  : colorScheme.primary,
               size: 20,
             ),
           ),

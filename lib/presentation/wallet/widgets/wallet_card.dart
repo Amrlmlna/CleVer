@@ -61,7 +61,9 @@ class WalletCard extends StatelessWidget {
                     height: 150,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: colorScheme.onInverseSurface.withValues(alpha: 0.03),
+                      color: colorScheme.onInverseSurface.withValues(
+                        alpha: 0.03,
+                      ),
                     ),
                   ),
                 ),
@@ -73,7 +75,9 @@ class WalletCard extends StatelessWidget {
                     height: 100,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: colorScheme.onInverseSurface.withValues(alpha: 0.02),
+                      color: colorScheme.onInverseSurface.withValues(
+                        alpha: 0.02,
+                      ),
                     ),
                   ),
                 ),
@@ -102,7 +106,9 @@ class WalletCard extends StatelessWidget {
                               color: colorScheme.tertiary,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: CustomPaint(painter: ChipPainter(colorScheme: colorScheme)),
+                            child: CustomPaint(
+                              painter: ChipPainter(colorScheme: colorScheme),
+                            ),
                           ),
                         ],
                       ),
@@ -113,7 +119,9 @@ class WalletCard extends StatelessWidget {
                           Text(
                             l10n.creditBalance.toUpperCase(),
                             style: textTheme.labelSmall?.copyWith(
-                              color: colorScheme.onInverseSurface.withValues(alpha: 0.4),
+                              color: colorScheme.onInverseSurface.withValues(
+                                alpha: 0.4,
+                              ),
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.5,
                             ),
@@ -159,35 +167,38 @@ class WalletCard extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                  Text(
-                                    l10n.member.toUpperCase(),
-                                    style: textTheme.labelSmall?.copyWith(
-                                      color: colorScheme.onInverseSurface.withValues(alpha: 0.4),
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1.0,
-                                    ),
+                                Text(
+                                  l10n.member.toUpperCase(),
+                                  style: textTheme.labelSmall?.copyWith(
+                                    color: colorScheme.onInverseSurface
+                                        .withValues(alpha: 0.4),
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.0,
                                   ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    cardHolder,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: textTheme.titleSmall?.copyWith(
-                                      color: colorScheme.onInverseSurface,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 0.5,
-                                    ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  cardHolder,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: textTheme.titleSmall?.copyWith(
+                                    color: colorScheme.onInverseSurface,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0.5,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            Icon(
-                              Icons.contactless_outlined,
-                              color: colorScheme.onInverseSurface.withValues(alpha: 0.4),
-                              size: 24,
+                          ),
+                          Icon(
+                            Icons.contactless_outlined,
+                            color: colorScheme.onInverseSurface.withValues(
+                              alpha: 0.4,
                             ),
-                          ],
+                            size: 24,
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -238,6 +249,6 @@ class ChipPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant ChipPainter oldDelegate) => 
+  bool shouldRepaint(covariant ChipPainter oldDelegate) =>
       oldDelegate.colorScheme != colorScheme;
 }

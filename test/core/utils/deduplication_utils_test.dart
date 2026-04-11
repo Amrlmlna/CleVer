@@ -30,8 +30,17 @@ void main() {
     });
 
     test('isFuzzyMatch should detect similar strings', () {
-      expect(DeduplicationUtils.isFuzzyMatch('Senior Software Engineer', 'Sr. Software Engineer'), isTrue);
-      expect(DeduplicationUtils.isFuzzyMatch('Google Inc.', 'Google LLC'), isTrue);
+      expect(
+        DeduplicationUtils.isFuzzyMatch(
+          'Senior Software Engineer',
+          'Sr. Software Engineer',
+        ),
+        isTrue,
+      );
+      expect(
+        DeduplicationUtils.isFuzzyMatch('Google Inc.', 'Google LLC'),
+        isTrue,
+      );
       expect(DeduplicationUtils.isFuzzyMatch('Apple', 'Orange'), isFalse);
     });
   });

@@ -5,10 +5,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 class LocationPicker extends StatefulWidget {
   final TextEditingController controller;
 
-  const LocationPicker({
-    super.key,
-    required this.controller,
-  });
+  const LocationPicker({super.key, required this.controller});
 
   @override
   State<LocationPicker> createState() => _LocationPickerState();
@@ -91,10 +88,14 @@ class _LocationPickerState extends State<LocationPicker> {
                             leading: Icon(
                               Icons.place,
                               size: 16,
-                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
                             onTap: () => onSelected(option),
-                            hoverColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05),
+                            hoverColor: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.05),
                           );
                         },
                       ),

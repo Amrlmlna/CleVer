@@ -85,9 +85,15 @@ class _InAppNotificationWidgetState extends State<_InAppNotificationWidget>
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
+                color: Theme.of(
+                  context,
+                ).colorScheme.surface.withValues(alpha: 0.9),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.1)),
+                border: Border.all(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.outline.withValues(alpha: 0.1),
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: Theme.of(context).shadowColor.withValues(alpha: 0.3),
@@ -127,7 +133,9 @@ class _InAppNotificationWidgetState extends State<_InAppNotificationWidget>
                         Text(
                           widget.body,
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontSize: 12,
                           ),
                           maxLines: 2,

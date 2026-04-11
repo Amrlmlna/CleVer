@@ -114,10 +114,7 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
         }
 
         // 3. Fuzzy Match (Similarity > 85%)
-        if (DeduplicationUtils.isFuzzyMatch(
-              oldExp.jobTitle,
-              newExp.jobTitle,
-            ) &&
+        if (DeduplicationUtils.isFuzzyMatch(oldExp.jobTitle, newExp.jobTitle) &&
             DeduplicationUtils.isFuzzyMatch(
               oldExp.companyName,
               newExp.companyName,
@@ -203,20 +200,23 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
             DeduplicationUtils.normalizeText(oldCert.issuer) ==
                 DeduplicationUtils.normalizeText(newCert.issuer) &&
             DeduplicationUtils.normalizeDate(oldCert.date.toIso8601String()) ==
-                DeduplicationUtils.normalizeDate(newCert.date.toIso8601String())) {
+                DeduplicationUtils.normalizeDate(
+                  newCert.date.toIso8601String(),
+                )) {
           exists = true;
           break;
         }
 
         // 3. Fuzzy Match (Name + Issuer)
         if (DeduplicationUtils.isFuzzyMatch(oldCert.name, newCert.name) &&
-            DeduplicationUtils.isFuzzyMatch(
-              oldCert.issuer,
-              newCert.issuer,
-            )) {
+            DeduplicationUtils.isFuzzyMatch(oldCert.issuer, newCert.issuer)) {
           // If names are fuzzy matches, also check if dates are close
-          if (DeduplicationUtils.normalizeDate(oldCert.date.toIso8601String()) ==
-              DeduplicationUtils.normalizeDate(newCert.date.toIso8601String())) {
+          if (DeduplicationUtils.normalizeDate(
+                oldCert.date.toIso8601String(),
+              ) ==
+              DeduplicationUtils.normalizeDate(
+                newCert.date.toIso8601String(),
+              )) {
             exists = true;
             break;
           }
@@ -468,10 +468,7 @@ class ProfileController extends StateNotifier<ProfileState> {
           exists = true;
           break;
         }
-        if (DeduplicationUtils.isFuzzyMatch(
-              oldExp.jobTitle,
-              newExp.jobTitle,
-            ) &&
+        if (DeduplicationUtils.isFuzzyMatch(oldExp.jobTitle, newExp.jobTitle) &&
             DeduplicationUtils.isFuzzyMatch(
               oldExp.companyName,
               newExp.companyName,
@@ -529,17 +526,20 @@ class ProfileController extends StateNotifier<ProfileState> {
             DeduplicationUtils.normalizeText(oldCert.issuer) ==
                 DeduplicationUtils.normalizeText(newCert.issuer) &&
             DeduplicationUtils.normalizeDate(oldCert.date.toIso8601String()) ==
-                DeduplicationUtils.normalizeDate(newCert.date.toIso8601String())) {
+                DeduplicationUtils.normalizeDate(
+                  newCert.date.toIso8601String(),
+                )) {
           exists = true;
           break;
         }
         if (DeduplicationUtils.isFuzzyMatch(oldCert.name, newCert.name) &&
-            DeduplicationUtils.isFuzzyMatch(
-              oldCert.issuer,
-              newCert.issuer,
-            )) {
-          if (DeduplicationUtils.normalizeDate(oldCert.date.toIso8601String()) ==
-              DeduplicationUtils.normalizeDate(newCert.date.toIso8601String())) {
+            DeduplicationUtils.isFuzzyMatch(oldCert.issuer, newCert.issuer)) {
+          if (DeduplicationUtils.normalizeDate(
+                oldCert.date.toIso8601String(),
+              ) ==
+              DeduplicationUtils.normalizeDate(
+                newCert.date.toIso8601String(),
+              )) {
             exists = true;
             break;
           }

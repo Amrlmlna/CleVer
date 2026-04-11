@@ -92,7 +92,6 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
       return;
     }
 
-
     UnsavedChangesDialog.show(
       context,
       onSave: _save,
@@ -124,10 +123,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
       firstDate: DateTime(2000),
       lastDate: DateTime.now(),
       builder: (context, child) {
-        return Theme(
-          data: Theme.of(context),
-          child: child!,
-        );
+        return Theme(data: Theme.of(context), child: child!);
       },
     );
     if (picked != null) {
@@ -282,10 +278,13 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                                   localization.rephrasing,
                                   localization.polishing,
                                 ],
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                 interval: const Duration(milliseconds: 800),
                               ),
                             )
@@ -298,10 +297,13 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                               ),
                               label: Text(
                                 localization.rewriteAI,
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                               style: TextButton.styleFrom(
                                 padding: EdgeInsets.zero,
@@ -328,7 +330,9 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                       onPressed: _save,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        foregroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),

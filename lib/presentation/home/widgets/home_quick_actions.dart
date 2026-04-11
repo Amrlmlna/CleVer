@@ -93,10 +93,7 @@ class _QuickActionCircle extends StatelessWidget {
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainer,
               shape: BoxShape.circle,
-              border: Border.all(
-                color: colorScheme.outlineVariant,
-                width: 1,
-              ),
+              border: Border.all(color: colorScheme.outlineVariant, width: 1),
             ),
             child: Icon(icon, color: colorScheme.onSurface, size: 28),
           ),

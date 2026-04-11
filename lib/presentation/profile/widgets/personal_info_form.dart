@@ -95,12 +95,20 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                   onTap: _pickAndUploadImage,
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHighest,
                     backgroundImage: photoUrl != null
                         ? NetworkImage(photoUrl)
                         : null,
                     child: photoUrl == null && !_isUploading
-                        ? Icon(Icons.person, size: 50, color: Theme.of(context).colorScheme.onSurfaceVariant)
+                        ? Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
+                          )
                         : null,
                   ),
                 ),
@@ -207,7 +215,9 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                 isExpanded: true,
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.gender,
-                  labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                   prefixIcon: Icon(
                     Icons.person_search_outlined,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -228,15 +238,21 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                     ),
                   ),
                   filled: true,
-                  fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                  fillColor: Theme.of(
+                    context,
+                  ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 16,
                   ),
                 ),
                 dropdownColor: Theme.of(context).cardTheme.color,
-                style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-                iconEnabledColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                iconEnabledColor: Theme.of(
+                  context,
+                ).colorScheme.onSurfaceVariant,
                 items: [
                   DropdownMenuItem(
                     value: 'Male',

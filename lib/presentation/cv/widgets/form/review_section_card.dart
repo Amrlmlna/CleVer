@@ -30,7 +30,9 @@ class ReviewSectionCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
         side: colorScheme.brightness == Brightness.dark
-            ? BorderSide(color: colorScheme.outlineVariant.withValues(alpha: 0.3))
+            ? BorderSide(
+                color: colorScheme.outlineVariant.withValues(alpha: 0.3),
+              )
             : BorderSide.none,
       ),
       clipBehavior: Clip.antiAlias,
@@ -45,11 +47,7 @@ class ReviewSectionCard extends StatelessWidget {
             color: colorScheme.onSurface.withValues(alpha: 0.07),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(
-            icon,
-            color: colorScheme.onSurface,
-            size: 20,
-          ),
+          child: Icon(icon, color: colorScheme.onSurface, size: 20),
         ),
         title: Text(
           title,

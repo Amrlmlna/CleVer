@@ -84,7 +84,9 @@ class TemplateCarouselPreview extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 color: (usePhoto ? (index == 1) : (index == 0))
                                     ? colorScheme.primary
-                                    : colorScheme.onSurface.withValues(alpha: 0.2),
+                                    : colorScheme.onSurface.withValues(
+                                        alpha: 0.2,
+                                      ),
                               ),
                             ),
                           ),

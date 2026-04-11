@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 
-
 void main() {
   testWidgets('Trigger Analytics Events', (tester) async {
     // Note: PostHog initialization typically happens natively or on app start.

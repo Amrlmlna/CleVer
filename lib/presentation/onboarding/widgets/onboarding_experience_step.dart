@@ -39,10 +39,7 @@ class OnboardingExperienceStep extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32),
-          ExperienceListForm(
-            experiences: experiences,
-            onChanged: onChanged,
-          ),
+          ExperienceListForm(experiences: experiences, onChanged: onChanged),
         ],
       ),
     );

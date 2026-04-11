@@ -55,12 +55,12 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
               ),
               label: Text(
                 l10n.add,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
               style: TextButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -74,7 +74,9 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               l10n.noSkills,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           )
         else
@@ -90,7 +92,10 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
-                    backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                    backgroundColor: Theme.of(context)
+                        .colorScheme
+                        .surfaceContainerHighest
+                        .withValues(alpha: 0.3),
                     side: BorderSide.none,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),

@@ -190,9 +190,7 @@ class JobPreviewBottomSheet extends StatelessWidget {
                   onPressed: () => _launchSourceUrl(context),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    side: BorderSide(
-                      color: colorScheme.outline,
-                    ),
+                    side: BorderSide(color: colorScheme.outline),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

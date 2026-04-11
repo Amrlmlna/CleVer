@@ -100,9 +100,7 @@ class _CarouselBannerState extends ConsumerState<CarouselBanner> {
         child: Center(
           child: CircularProgressIndicator(
             strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              colorScheme.primary,
-            ),
+            valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
           ),
         ),
       ),

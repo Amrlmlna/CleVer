@@ -36,12 +36,15 @@ class CVImportRepository {
         }
       }
 
-      if (data.containsKey('certifications') && data['certifications'] is List) {
+      if (data.containsKey('certifications') &&
+          data['certifications'] is List) {
         for (var c in data['certifications']) {
           if (c is Map<String, dynamic>) {
             final rawDate = c['date'];
-            final dateStr = rawDate is String ? rawDate : rawDate?.toString() ?? '';
-            
+            final dateStr = rawDate is String
+                ? rawDate
+                : rawDate?.toString() ?? '';
+
             c['fingerprint'] = DeduplicationUtils.generateFingerprint(
               titleOrDegree: c['name'] ?? '',
               companyOrSchool: c['issuer'] ?? '',

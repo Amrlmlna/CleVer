@@ -110,7 +110,10 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   value: 'sync',
                   child: Row(
                     children: [
-                      Icon(Icons.sync, color: Theme.of(context).colorScheme.primary),
+                      Icon(
+                        Icons.sync,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                       const SizedBox(width: 8),
                       Text(AppLocalizations.of(context)!.syncData),
                     ],
@@ -120,7 +123,10 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   value: 'logout',
                   child: Row(
                     children: [
-                      Icon(Icons.logout, color: Theme.of(context).colorScheme.primary),
+                      Icon(
+                        Icons.logout,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                       const SizedBox(width: 8),
                       Text(AppLocalizations.of(context)!.logOut),
                     ],
@@ -137,7 +143,9 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                       const SizedBox(width: 8),
                       Text(
                         AppLocalizations.of(context)!.deleteAccount,
-                        style: TextStyle(color: Theme.of(context).colorScheme.error),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
                       ),
                     ],
                   ),
@@ -147,12 +155,18 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: CircleAvatar(
                   radius: 16,
-                  backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.surfaceContainerHighest,
                   backgroundImage: photoUrl != null
                       ? NetworkImage(photoUrl)
                       : null,
                   child: photoUrl == null
-                      ? Icon(Icons.person, size: 20, color: Theme.of(context).colorScheme.onSurfaceVariant)
+                      ? Icon(
+                          Icons.person,
+                          size: 20,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        )
                       : null,
                 ),
               ),

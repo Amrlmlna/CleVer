@@ -131,7 +131,9 @@ class _HelpPageState extends State<HelpPage> {
                   const SizedBox(height: 12),
                   Text(
                     'CV Master $_appVersion',
-                    style: textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant),
+                    style: textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Row(

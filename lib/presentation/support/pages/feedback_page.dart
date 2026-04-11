@@ -109,7 +109,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
             const SizedBox(height: 8),
             Text(
               AppLocalizations.of(context)!.feedbackSubtitle,
-              style: textTheme.bodyLarge?.copyWith(color: colorScheme.onSurfaceVariant),
+              style: textTheme.bodyLarge?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: 32),
 
@@ -129,97 +131,93 @@ class _FeedbackPageState extends State<FeedbackPage> {
               child: Form(
                 key: _formKey,
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.category,
-                        style: textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.category,
+                      style: textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
-                      const SizedBox(height: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: colorScheme.outlineVariant),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: _feedbackType,
-                            isExpanded: true,
-                            dropdownColor: colorScheme.surfaceContainerHigh,
-                            style: textTheme.bodyLarge?.copyWith(
-                              color: colorScheme.onSurface,
-                            ),
-                            items: _types
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e,
-                                    child: Text(e),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (val) =>
-                                setState(() => _feedbackType = val!),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: colorScheme.outlineVariant),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: _feedbackType,
+                          isExpanded: true,
+                          dropdownColor: colorScheme.surfaceContainerHigh,
+                          style: textTheme.bodyLarge?.copyWith(
+                            color: colorScheme.onSurface,
                           ),
+                          items: _types
+                              .map(
+                                (e) =>
+                                    DropdownMenuItem(value: e, child: Text(e)),
+                              )
+                              .toList(),
+                          onChanged: (val) =>
+                              setState(() => _feedbackType = val!),
                         ),
                       ),
-                      const SizedBox(height: 24),
+                    ),
+                    const SizedBox(height: 24),
 
-                      CustomTextFormField(
-                        controller: _msgController,
-                        labelText: AppLocalizations.of(context)!.messageDetail,
-                        maxLines: 5,
-                        validator: (v) => v!.isEmpty
-                            ? AppLocalizations.of(context)!.writeSomething
-                            : null,
-                      ),
-                      const SizedBox(height: 24),
+                    CustomTextFormField(
+                      controller: _msgController,
+                      labelText: AppLocalizations.of(context)!.messageDetail,
+                      maxLines: 5,
+                      validator: (v) => v!.isEmpty
+                          ? AppLocalizations.of(context)!.writeSomething
+                          : null,
+                    ),
+                    const SizedBox(height: 24),
 
-                      CustomTextFormField(
-                        controller: _contactController,
-                        labelText: AppLocalizations.of(
-                          context,
-                        )!.contactOptional,
-                        hintText: AppLocalizations.of(context)!.contactHint,
-                      ),
+                    CustomTextFormField(
+                      controller: _contactController,
+                      labelText: AppLocalizations.of(context)!.contactOptional,
+                      hintText: AppLocalizations.of(context)!.contactHint,
+                    ),
 
-                      const SizedBox(height: 32),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _isLoading ? null : _submit,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: colorScheme.primary,
-                            foregroundColor: colorScheme.onPrimary,
-                            padding: const EdgeInsets.symmetric(vertical: 18),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            elevation: 0,
+                    const SizedBox(height: 32),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _isLoading ? null : _submit,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: colorScheme.primary,
+                          foregroundColor: colorScheme.onPrimary,
+                          padding: const EdgeInsets.symmetric(vertical: 18),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          child: _isLoading
-                              ? SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    color: colorScheme.onPrimary,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : Text(
-                                  AppLocalizations.of(context)!.sendFeedback,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          elevation: 0,
+                        ),
+                        child: _isLoading
+                            ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: colorScheme.onPrimary,
+                                  strokeWidth: 2,
                                 ),
-                        ),
+                              )
+                            : Text(
+                                AppLocalizations.of(context)!.sendFeedback,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
+            ),
           ],
         ),
       ),

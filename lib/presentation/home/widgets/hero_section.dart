@@ -26,7 +26,10 @@ class HeroSection extends ConsumerWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [colorScheme.primaryContainer, colorScheme.surfaceContainerHighest],
+          colors: [
+            colorScheme.primaryContainer,
+            colorScheme.surfaceContainerHighest,
+          ],
         ),
         boxShadow: [
           BoxShadow(

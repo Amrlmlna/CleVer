@@ -38,6 +38,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get aiAnalysisTitle => 'analisis ai';
 
   @override
+  String get aiTailoringOptions => 'opsi penyesuaian ai';
+
+  @override
   String get aiAnalyzingProfile => 'ai sedang menganalisis profilmu...';
 
   @override
@@ -52,6 +55,21 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get aiTestingConstraints => 'menguji terhadap batasan ats...';
+
+  @override
+  String get maxSkills => 'maksimal skill';
+
+  @override
+  String get honestAiFeedback => 'feedback ai jujur';
+
+  @override
+  String get honestAiFeedbackDesc => 'dapatkan saran yang tegas & kritis';
+
+  @override
+  String get conciseFormat => 'format ringkas';
+
+  @override
+  String get conciseFormatDesc => 'fokus pada singkat & dampak';
 
   @override
   String get almostThere => 'sesaat lagi...';

@@ -39,6 +39,7 @@ class RemoteCVDataSource {
     required Map<String, dynamic> masterProfileJson,
     required Map<String, dynamic> jobInputJson,
     String? locale,
+    Map<String, dynamic>? tailoringOptionsJson,
   }) async {
     final response = await _httpClient.post(
       Uri.parse('$_cvBaseUrl/tailor'),
@@ -47,6 +48,8 @@ class RemoteCVDataSource {
         'masterProfile': masterProfileJson,
         'jobInput': jobInputJson,
         if (locale != null) 'locale': locale,
+        if (tailoringOptionsJson != null)
+          'tailoringOptions': tailoringOptionsJson,
       }),
     );
 

@@ -73,7 +73,9 @@ class ErrorPage extends StatelessWidget {
                 args.message,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
                   height: 1.5,
                 ),
               ),
@@ -84,10 +86,14 @@ class ErrorPage extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: Theme.of(context).dividerTheme.color ?? Theme.of(context).dividerColor,
+                      color:
+                          Theme.of(context).dividerTheme.color ??
+                          Theme.of(context).dividerColor,
                     ),
                   ),
                   child: Column(
@@ -102,7 +108,9 @@ class ErrorPage extends StatelessWidget {
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.5,
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                             ),
                           ),
                           InkWell(
@@ -110,7 +118,9 @@ class ErrorPage extends StatelessWidget {
                             child: Icon(
                               Icons.copy,
                               size: 14,
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ],
@@ -146,12 +156,16 @@ class ErrorPage extends StatelessWidget {
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         side: BorderSide(
-                          color: Theme.of(context).dividerTheme.color ?? Theme.of(context).dividerColor,
+                          color:
+                              Theme.of(context).dividerTheme.color ??
+                              Theme.of(context).dividerColor,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        foregroundColor: Theme.of(context).colorScheme.onSurface,
+                        foregroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onSurface,
                       ),
                       child: Text(AppLocalizations.of(context)!.goHome),
                     ),

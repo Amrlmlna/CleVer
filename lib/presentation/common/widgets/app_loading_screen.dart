@@ -76,7 +76,8 @@ class AppLoadingScreen extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       badge!,
-                      style: badgeStyle ??
+                      style:
+                          badgeStyle ??
                           Theme.of(context).textTheme.labelSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.5,
@@ -93,7 +94,8 @@ class AppLoadingScreen extends StatelessWidget {
               height: 40,
               child: SpinningTextLoader(
                 texts: messages,
-                style: messageStyle ??
+                style:
+                    messageStyle ??
                     Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w300,
                       color: colorScheme.onSurface,

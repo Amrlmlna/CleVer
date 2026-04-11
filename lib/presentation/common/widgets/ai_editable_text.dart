@@ -122,7 +122,9 @@ class _AIEditableTextState extends State<AIEditableText> {
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -181,7 +183,9 @@ class _AIEditableTextState extends State<AIEditableText> {
                       AppLocalizations.of(context)!.rewrite,
                       style: const TextStyle(fontSize: 12),
                     ),
-                    style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.primary),
+                    style: TextButton.styleFrom(
+                      foregroundColor: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
               ],
             ),
@@ -263,7 +267,11 @@ class _AIEditableTextState extends State<AIEditableText> {
             const SizedBox(width: 8),
             Opacity(
               opacity: 0.5,
-              child: Icon(Icons.edit, size: 14, color: Theme.of(context).colorScheme.onSurfaceVariant),
+              child: Icon(
+                Icons.edit,
+                size: 14,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),

@@ -100,7 +100,9 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
       duration: const Duration(milliseconds: 300),
       child: _isUploading
           ? _buildUploadingState(l10n, colorScheme)
-          : (!hasPhoto ? _buildEmptyState(l10n, colorScheme) : _buildFilledState(l10n, colorScheme)),
+          : (!hasPhoto
+                ? _buildEmptyState(l10n, colorScheme)
+                : _buildFilledState(l10n, colorScheme)),
     );
   }
 
@@ -145,7 +147,10 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
             const SizedBox(height: 4),
             Text(
               l10n.uploadInstruction,
-              style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+              style: TextStyle(
+                fontSize: 12,
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),
@@ -246,7 +251,10 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
                       ),
                       Text(
                         l10n.usingMasterPhoto,
-                        style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),

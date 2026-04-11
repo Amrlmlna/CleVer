@@ -5,10 +5,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 class UniversityPicker extends StatefulWidget {
   final TextEditingController controller;
 
-  const UniversityPicker({
-    super.key,
-    required this.controller,
-  });
+  const UniversityPicker({super.key, required this.controller});
 
   @override
   State<UniversityPicker> createState() => _UniversityPickerState();
@@ -93,10 +90,14 @@ class _UniversityPickerState extends State<UniversityPicker> {
                             leading: Icon(
                               Icons.school_outlined,
                               size: 16,
-                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
                             onTap: () => onSelected(option),
-                            hoverColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05),
+                            hoverColor: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.05),
                           );
                         },
                       ),

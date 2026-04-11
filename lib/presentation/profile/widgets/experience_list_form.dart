@@ -108,12 +108,12 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
               ),
               label: Text(
                 AppLocalizations.of(context)!.add,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
               style: TextButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -157,7 +157,10 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
                 ),
                 isThreeLine: true,
                 trailing: IconButton(
-                  icon: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.error),
+                  icon: Icon(
+                    Icons.delete_outline,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
                   onPressed: () => _removeExperience(index),
                 ),
                 onTap: () => _editExperience(existing: exp, index: index),

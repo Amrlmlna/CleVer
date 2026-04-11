@@ -99,7 +99,9 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
           decoration: BoxDecoration(
             color: _currentPage == index
                 ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
+                : Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(4),
           ),
         ),
@@ -173,12 +175,12 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                                       ),
                                     ),
                                     const SizedBox(height: 16),
-                                      Text(
-                                        l10n.takesLessThan3Min,
-                                        style: textTheme.titleSmall?.copyWith(
-                                          color: colorScheme.onSurfaceVariant,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                    Text(
+                                      l10n.takesLessThan3Min,
+                                      style: textTheme.titleSmall?.copyWith(
+                                        color: colorScheme.onSurfaceVariant,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ],
                                 )
@@ -211,8 +213,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
 
                                     // Next — white pill with arrow, clearly primary
                                     ElevatedButton(
-                                      onPressed: () =>
-                                          _onNext(screens.length),
+                                      onPressed: () => _onNext(screens.length),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.white,
                                         foregroundColor: Colors.black,
@@ -223,8 +224,9 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                                           bottom: 16,
                                         ),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(32),
+                                          borderRadius: BorderRadius.circular(
+                                            32,
+                                          ),
                                         ),
                                         elevation: 0,
                                       ),
@@ -235,9 +237,9 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                                             l10n.next,
                                             style: textTheme.titleMedium
                                                 ?.copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.black,
-                                            ),
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.black,
+                                                ),
                                           ),
                                           const SizedBox(width: 8),
                                           const Icon(

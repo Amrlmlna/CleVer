@@ -51,8 +51,13 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)!.jobListSearchTagsHint,
-                  hintStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
-                  prefixIcon: Icon(Icons.search, color: colorScheme.onSurfaceVariant),
+                  hintStyle: textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                   filled: true,
                   fillColor: colorScheme.surfaceContainerHighest,
                   border: OutlineInputBorder(
@@ -61,7 +66,9 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
                   ),
                   contentPadding: const EdgeInsets.symmetric(vertical: 0),
                 ),
-                style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface),
+                style: textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurface,
+                ),
                 onChanged: (val) {
                   setState(() {
                     _searchQuery = val;

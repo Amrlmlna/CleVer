@@ -6,10 +6,7 @@ import '../../../common/widgets/spinning_text_loader.dart';
 class RequirementChecklist extends StatefulWidget {
   final TailorAnalysis analysis;
 
-  const RequirementChecklist({
-    super.key,
-    required this.analysis,
-  });
+  const RequirementChecklist({super.key, required this.analysis});
 
   @override
   State<RequirementChecklist> createState() => _RequirementChecklistState();
@@ -134,9 +131,7 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
               decoration: BoxDecoration(
                 color: colorScheme.onSurface.withValues(alpha: 0.04),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: colorScheme.outlineVariant,
-                ),
+                border: Border.all(color: colorScheme.outlineVariant),
               ),
               child: Text(
                 widget.analysis.naturalResponse,
@@ -186,7 +181,9 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
         side: colorScheme.brightness == Brightness.dark
-            ? BorderSide(color: colorScheme.outlineVariant.withValues(alpha: 0.3))
+            ? BorderSide(
+                color: colorScheme.outlineVariant.withValues(alpha: 0.3),
+              )
             : BorderSide.none,
       ),
       clipBehavior: Clip.antiAlias,
@@ -236,4 +233,3 @@ class _RequirementChecklistState extends State<RequirementChecklist> {
     );
   }
 }
-

@@ -24,7 +24,10 @@ class LoginCTACard extends ConsumerWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [colorScheme.surfaceContainerHighest, colorScheme.surfaceContainer],
+            colors: [
+              colorScheme.surfaceContainerHighest,
+              colorScheme.surfaceContainer,
+            ],
           ),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: colorScheme.outlineVariant),
@@ -61,7 +64,9 @@ class LoginCTACard extends ConsumerWidget {
                   const SizedBox(height: 4),
                   Text(
                     AppLocalizations.of(context)!.syncAnywhere,
-                    style: textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant),
+                    style: textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),

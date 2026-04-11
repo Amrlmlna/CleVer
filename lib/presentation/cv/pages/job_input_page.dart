@@ -140,10 +140,13 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
 
         final repository = ref.read(cvRepositoryProvider);
         final locale = ref.read(localeNotifierProvider);
+        final creationState = ref.read(cvCreationProvider);
+
         final tailoredResult = await repository.tailorProfile(
           masterProfile: masterProfile,
           jobInput: jobInput,
           locale: locale.languageCode,
+          options: creationState.tailoringOptions,
         );
 
         if (mounted) {
@@ -220,7 +223,9 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
                         decoration: BoxDecoration(
                           border: Border.all(color: colorScheme.outlineVariant),
                           borderRadius: BorderRadius.circular(14),
-                          color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.1),
+                          color: colorScheme.surfaceContainerHighest.withValues(
+                            alpha: 0.1,
+                          ),
                         ),
                         child: Column(
                           children: [
@@ -256,7 +261,9 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
                         decoration: BoxDecoration(
                           border: Border.all(color: colorScheme.outlineVariant),
                           borderRadius: BorderRadius.circular(14),
-                          color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.1),
+                          color: colorScheme.surfaceContainerHighest.withValues(
+                            alpha: 0.1,
+                          ),
                         ),
                         child: Column(
                           children: [

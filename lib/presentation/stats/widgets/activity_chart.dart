@@ -5,10 +5,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 class ActivityChart extends StatelessWidget {
   final List<int> weeklyActivity;
 
-  const ActivityChart({
-    super.key,
-    required this.weeklyActivity,
-  });
+  const ActivityChart({super.key, required this.weeklyActivity});
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +26,7 @@ class ActivityChart extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: colorScheme.outlineVariant,
-        ),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: LineChart(
         duration: const Duration(milliseconds: 500),
@@ -42,10 +37,7 @@ class ActivityChart extends StatelessWidget {
             drawVerticalLine: false,
             horizontalInterval: 1,
             getDrawingHorizontalLine: (value) {
-              return FlLine(
-                color: colorScheme.outlineVariant,
-                strokeWidth: 1,
-              );
+              return FlLine(color: colorScheme.outlineVariant, strokeWidth: 1);
             },
           ),
           titlesData: FlTitlesData(

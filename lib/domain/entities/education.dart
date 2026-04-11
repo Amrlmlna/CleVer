@@ -60,5 +60,12 @@ class Education extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, degree, schoolName, startDate, endDate, fingerprint];
+  List<Object?> get props => [
+    id,
+    degree,
+    schoolName,
+    startDate,
+    endDate,
+    fingerprint,
+  ];
 }

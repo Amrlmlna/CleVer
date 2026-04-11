@@ -106,12 +106,12 @@ class _CertificationListFormState extends State<CertificationListForm> {
               ),
               label: Text(
                 AppLocalizations.of(context)!.add,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
               style: TextButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -154,7 +154,10 @@ class _CertificationListFormState extends State<CertificationListForm> {
                   ),
                 ),
                 trailing: IconButton(
-                  icon: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.error),
+                  icon: Icon(
+                    Icons.delete_outline,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
                   onPressed: () => _removeCertification(index),
                 ),
                 onTap: () => _editCertification(existing: cert, index: index),
