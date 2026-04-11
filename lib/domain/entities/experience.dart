@@ -7,6 +7,7 @@ class Experience extends Equatable {
   final String startDate;
   final String? endDate;
   final String description;
+  final String? fingerprint;
 
   const Experience({
     required this.id,
@@ -15,6 +16,7 @@ class Experience extends Equatable {
     required this.startDate,
     this.endDate,
     required this.description,
+    this.fingerprint,
   });
 
   Experience copyWith({
@@ -24,6 +26,7 @@ class Experience extends Equatable {
     String? startDate,
     String? endDate,
     String? description,
+    String? fingerprint,
   }) {
     return Experience(
       id: id ?? this.id,
@@ -32,6 +35,7 @@ class Experience extends Equatable {
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       description: description ?? this.description,
+      fingerprint: fingerprint ?? this.fingerprint,
     );
   }
 
@@ -43,6 +47,7 @@ class Experience extends Equatable {
       'startDate': startDate,
       'endDate': endDate,
       'description': description,
+      'fingerprint': fingerprint,
     };
   }
 
@@ -56,6 +61,7 @@ class Experience extends Equatable {
       startDate: json['startDate'] as String,
       endDate: json['endDate'] as String?,
       description: json['description'] as String,
+      fingerprint: json['fingerprint'] as String?,
     );
   }
 
@@ -66,6 +72,6 @@ class Experience extends Equatable {
     companyName,
     startDate,
     endDate,
-    description,
+    fingerprint,
   ];
 }

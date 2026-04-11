@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../domain/entities/user_profile.dart';
+import '../../../core/utils/deduplication_utils.dart';
 import '../../auth/providers/auth_state_provider.dart';
 
 final masterProfileProvider =
@@ -89,13 +90,42 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
 
     final List<Experience> mergedExperience = List.from(current.experience);
     for (final newExp in newProfile.experience) {
-      final exists = mergedExperience.any(
-        (oldExp) =>
-            oldExp.jobTitle.toLowerCase() == newExp.jobTitle.toLowerCase() &&
-            oldExp.companyName.toLowerCase() ==
-                newExp.companyName.toLowerCase() &&
-            oldExp.startDate == newExp.startDate,
-      );
+      bool exists = false;
+
+      for (final oldExp in mergedExperience) {
+        // 1. Fingerprint Match (Immutable Identity)
+        if (newExp.fingerprint != null &&
+            oldExp.fingerprint != null &&
+            newExp.fingerprint == oldExp.fingerprint) {
+          exists = true;
+          break;
+        }
+
+        // 2. Identity Match (Normalized Company + Title + Date)
+        // Strengthened to include title to prevent merging promotions
+        if (DeduplicationUtils.normalizeText(oldExp.companyName) ==
+                DeduplicationUtils.normalizeText(newExp.companyName) &&
+            DeduplicationUtils.normalizeText(oldExp.jobTitle) ==
+                DeduplicationUtils.normalizeText(newExp.jobTitle) &&
+            DeduplicationUtils.normalizeDate(oldExp.startDate) ==
+                DeduplicationUtils.normalizeDate(newExp.startDate)) {
+          exists = true;
+          break;
+        }
+
+        // 3. Fuzzy Match (Similarity > 85%)
+        if (DeduplicationUtils.isFuzzyMatch(
+              oldExp.jobTitle,
+              newExp.jobTitle,
+            ) &&
+            DeduplicationUtils.isFuzzyMatch(
+              oldExp.companyName,
+              newExp.companyName,
+            )) {
+          exists = true;
+          break;
+        }
+      }
 
       if (!exists) {
         mergedExperience.add(newExp);
@@ -105,12 +135,38 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
 
     final List<Education> mergedEducation = List.from(current.education);
     for (final newEdu in newProfile.education) {
-      final exists = mergedEducation.any(
-        (oldEdu) =>
-            oldEdu.schoolName.toLowerCase() ==
-                newEdu.schoolName.toLowerCase() &&
-            oldEdu.degree.toLowerCase() == newEdu.degree.toLowerCase(),
-      );
+      bool exists = false;
+
+      for (final oldEdu in mergedEducation) {
+        // 1. Fingerprint Match
+        if (newEdu.fingerprint != null &&
+            oldEdu.fingerprint != null &&
+            newEdu.fingerprint == oldEdu.fingerprint) {
+          exists = true;
+          break;
+        }
+
+        // 2. Identity Match (School + Degree + Date)
+        if (DeduplicationUtils.normalizeText(oldEdu.schoolName) ==
+                DeduplicationUtils.normalizeText(newEdu.schoolName) &&
+            DeduplicationUtils.normalizeText(oldEdu.degree) ==
+                DeduplicationUtils.normalizeText(newEdu.degree) &&
+            DeduplicationUtils.normalizeDate(oldEdu.startDate) ==
+                DeduplicationUtils.normalizeDate(newEdu.startDate)) {
+          exists = true;
+          break;
+        }
+
+        // 3. Fuzzy Match (Degree + School)
+        if (DeduplicationUtils.isFuzzyMatch(oldEdu.degree, newEdu.degree) &&
+            DeduplicationUtils.isFuzzyMatch(
+              oldEdu.schoolName,
+              newEdu.schoolName,
+            )) {
+          exists = true;
+          break;
+        }
+      }
 
       if (!exists) {
         mergedEducation.add(newEdu);
@@ -130,11 +186,42 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
       current.certifications,
     );
     for (final newCert in newProfile.certifications) {
-      final exists = mergedCertifications.any(
-        (oldCert) =>
-            oldCert.name.toLowerCase() == newCert.name.toLowerCase() &&
-            oldCert.issuer.toLowerCase() == newCert.issuer.toLowerCase(),
-      );
+      bool exists = false;
+
+      for (final oldCert in mergedCertifications) {
+        // 1. Fingerprint Match
+        if (newCert.fingerprint != null &&
+            oldCert.fingerprint != null &&
+            newCert.fingerprint == oldCert.fingerprint) {
+          exists = true;
+          break;
+        }
+
+        // 2. Identity Match (Name + Issuer + Date)
+        if (DeduplicationUtils.normalizeText(oldCert.name) ==
+                DeduplicationUtils.normalizeText(newCert.name) &&
+            DeduplicationUtils.normalizeText(oldCert.issuer) ==
+                DeduplicationUtils.normalizeText(newCert.issuer) &&
+            DeduplicationUtils.normalizeDate(oldCert.date.toIso8601String()) ==
+                DeduplicationUtils.normalizeDate(newCert.date.toIso8601String())) {
+          exists = true;
+          break;
+        }
+
+        // 3. Fuzzy Match (Name + Issuer)
+        if (DeduplicationUtils.isFuzzyMatch(oldCert.name, newCert.name) &&
+            DeduplicationUtils.isFuzzyMatch(
+              oldCert.issuer,
+              newCert.issuer,
+            )) {
+          // If names are fuzzy matches, also check if dates are close
+          if (DeduplicationUtils.normalizeDate(oldCert.date.toIso8601String()) ==
+              DeduplicationUtils.normalizeDate(newCert.date.toIso8601String())) {
+            exists = true;
+            break;
+          }
+        }
+      }
 
       if (!exists) {
         mergedCertifications.add(newCert);
@@ -364,34 +451,100 @@ class ProfileController extends StateNotifier<ProfileState> {
 
     final List<Experience> dedupedExp = List.from(current.experience);
     for (final newExp in importedProfile.experience) {
-      final exists = dedupedExp.any(
-        (oldExp) =>
-            oldExp.jobTitle.toLowerCase() == newExp.jobTitle.toLowerCase() &&
-            oldExp.companyName.toLowerCase() ==
-                newExp.companyName.toLowerCase() &&
-            oldExp.startDate == newExp.startDate,
-      );
+      bool exists = false;
+      for (final oldExp in dedupedExp) {
+        if (newExp.fingerprint != null &&
+            oldExp.fingerprint != null &&
+            newExp.fingerprint == oldExp.fingerprint) {
+          exists = true;
+          break;
+        }
+        if (DeduplicationUtils.normalizeText(oldExp.companyName) ==
+                DeduplicationUtils.normalizeText(newExp.companyName) &&
+            DeduplicationUtils.normalizeText(oldExp.jobTitle) ==
+                DeduplicationUtils.normalizeText(newExp.jobTitle) &&
+            DeduplicationUtils.normalizeDate(oldExp.startDate) ==
+                DeduplicationUtils.normalizeDate(newExp.startDate)) {
+          exists = true;
+          break;
+        }
+        if (DeduplicationUtils.isFuzzyMatch(
+              oldExp.jobTitle,
+              newExp.jobTitle,
+            ) &&
+            DeduplicationUtils.isFuzzyMatch(
+              oldExp.companyName,
+              newExp.companyName,
+            )) {
+          exists = true;
+          break;
+        }
+      }
       if (!exists) dedupedExp.add(newExp);
     }
 
     final List<Education> dedupedEdu = List.from(current.education);
     for (final newEdu in importedProfile.education) {
-      final exists = dedupedEdu.any(
-        (oldEdu) =>
-            oldEdu.schoolName.toLowerCase() ==
-                newEdu.schoolName.toLowerCase() &&
-            oldEdu.degree.toLowerCase() == newEdu.degree.toLowerCase(),
-      );
+      bool exists = false;
+      for (final oldEdu in dedupedEdu) {
+        if (newEdu.fingerprint != null &&
+            oldEdu.fingerprint != null &&
+            newEdu.fingerprint == oldEdu.fingerprint) {
+          exists = true;
+          break;
+        }
+        if (DeduplicationUtils.normalizeText(oldEdu.schoolName) ==
+                DeduplicationUtils.normalizeText(newEdu.schoolName) &&
+            DeduplicationUtils.normalizeText(oldEdu.degree) ==
+                DeduplicationUtils.normalizeText(newEdu.degree) &&
+            DeduplicationUtils.normalizeDate(oldEdu.startDate) ==
+                DeduplicationUtils.normalizeDate(newEdu.startDate)) {
+          exists = true;
+          break;
+        }
+        if (DeduplicationUtils.isFuzzyMatch(oldEdu.degree, newEdu.degree) &&
+            DeduplicationUtils.isFuzzyMatch(
+              oldEdu.schoolName,
+              newEdu.schoolName,
+            )) {
+          exists = true;
+          break;
+        }
+      }
       if (!exists) dedupedEdu.add(newEdu);
     }
 
     final List<Certification> dedupedCert = List.from(current.certifications);
     for (final newCert in importedProfile.certifications) {
-      final exists = dedupedCert.any(
-        (oldCert) =>
-            oldCert.name.toLowerCase() == newCert.name.toLowerCase() &&
-            oldCert.issuer.toLowerCase() == newCert.issuer.toLowerCase(),
-      );
+      bool exists = false;
+      for (final oldCert in dedupedCert) {
+        if (newCert.fingerprint != null &&
+            oldCert.fingerprint != null &&
+            newCert.fingerprint == oldCert.fingerprint) {
+          exists = true;
+          break;
+        }
+        if (DeduplicationUtils.normalizeText(oldCert.name) ==
+                DeduplicationUtils.normalizeText(newCert.name) &&
+            DeduplicationUtils.normalizeText(oldCert.issuer) ==
+                DeduplicationUtils.normalizeText(newCert.issuer) &&
+            DeduplicationUtils.normalizeDate(oldCert.date.toIso8601String()) ==
+                DeduplicationUtils.normalizeDate(newCert.date.toIso8601String())) {
+          exists = true;
+          break;
+        }
+        if (DeduplicationUtils.isFuzzyMatch(oldCert.name, newCert.name) &&
+            DeduplicationUtils.isFuzzyMatch(
+              oldCert.issuer,
+              newCert.issuer,
+            )) {
+          if (DeduplicationUtils.normalizeDate(oldCert.date.toIso8601String()) ==
+              DeduplicationUtils.normalizeDate(newCert.date.toIso8601String())) {
+            exists = true;
+            break;
+          }
+        }
+      }
       if (!exists) dedupedCert.add(newCert);
     }
 
@@ -431,17 +584,13 @@ class ProfileController extends StateNotifier<ProfileState> {
       await ref
           .read(masterProfileProvider.notifier)
           .saveProfile(state.currentProfile);
-      if (mounted) {
-        state = state.copyWith(
-          initialProfile: state.currentProfile,
-          isSaving: false,
-        );
-      }
+      state = state.copyWith(
+        initialProfile: state.currentProfile,
+        isSaving: false,
+      );
       return true;
     } catch (e) {
-      if (mounted) {
-        state = state.copyWith(isSaving: false);
-      }
+      state = state.copyWith(isSaving: false);
       rethrow;
     }
   }
@@ -455,25 +604,21 @@ class ProfileController extends StateNotifier<ProfileState> {
         await ref.read(masterProfileProvider.notifier).clearProfile();
       }
 
-      if (mounted) {
-        state = state.copyWith(
-          initialProfile: keepLocalData ? state.initialProfile : null,
-          currentProfile: keepLocalData
-              ? state.currentProfile
-              : const UserProfile(
-                  fullName: '',
-                  email: '',
-                  experience: [],
-                  education: [],
-                  skills: [],
-                  certifications: [],
-                ),
-        );
-      }
+      state = state.copyWith(
+        initialProfile: keepLocalData ? state.initialProfile : null,
+        currentProfile: keepLocalData
+            ? state.currentProfile
+            : const UserProfile(
+                fullName: '',
+                email: '',
+                experience: [],
+                education: [],
+                skills: [],
+                certifications: [],
+              ),
+      );
     } finally {
-      if (mounted) {
-        state = state.copyWith(isSaving: false);
-      }
+      state = state.copyWith(isSaving: false);
     }
   }
 

@@ -6,6 +6,7 @@ class Education extends Equatable {
   final String schoolName;
   final String startDate;
   final String? endDate;
+  final String? fingerprint;
 
   const Education({
     required this.id,
@@ -13,6 +14,7 @@ class Education extends Equatable {
     required this.schoolName,
     required this.startDate,
     this.endDate,
+    this.fingerprint,
   });
 
   Education copyWith({
@@ -21,6 +23,7 @@ class Education extends Equatable {
     String? schoolName,
     String? startDate,
     String? endDate,
+    String? fingerprint,
   }) {
     return Education(
       id: id ?? this.id,
@@ -28,6 +31,7 @@ class Education extends Equatable {
       schoolName: schoolName ?? this.schoolName,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
+      fingerprint: fingerprint ?? this.fingerprint,
     );
   }
 
@@ -38,6 +42,7 @@ class Education extends Equatable {
       'schoolName': schoolName,
       'startDate': startDate,
       'endDate': endDate,
+      'fingerprint': fingerprint,
     };
   }
 
@@ -50,9 +55,10 @@ class Education extends Equatable {
       schoolName: json['schoolName'] as String,
       startDate: json['startDate'] as String,
       endDate: json['endDate'] as String?,
+      fingerprint: json['fingerprint'] as String?,
     );
   }
 
   @override
-  List<Object?> get props => [id, degree, schoolName, startDate, endDate];
+  List<Object?> get props => [id, degree, schoolName, startDate, endDate, fingerprint];
 }

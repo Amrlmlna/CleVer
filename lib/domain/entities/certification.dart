@@ -6,6 +6,7 @@ class Certification extends Equatable {
   final String issuer;
   final DateTime date;
   final String? description;
+  final String? fingerprint;
 
   const Certification({
     required this.id,
@@ -13,6 +14,7 @@ class Certification extends Equatable {
     required this.issuer,
     required this.date,
     this.description,
+    this.fingerprint,
   });
 
   factory Certification.fromJson(Map<String, dynamic> json) {
@@ -24,6 +26,7 @@ class Certification extends Equatable {
       issuer: json['issuer'] as String,
       date: DateTime.tryParse(json['date'] as String? ?? '') ?? DateTime.now(),
       description: json['description'] as String?,
+      fingerprint: json['fingerprint'] as String?,
     );
   }
 
@@ -34,6 +37,7 @@ class Certification extends Equatable {
       'issuer': issuer,
       'date': date.toIso8601String(),
       'description': description,
+      'fingerprint': fingerprint,
     };
   }
 
@@ -43,6 +47,7 @@ class Certification extends Equatable {
     String? issuer,
     DateTime? date,
     String? description,
+    String? fingerprint,
   }) {
     return Certification(
       id: id ?? this.id,
@@ -50,9 +55,10 @@ class Certification extends Equatable {
       issuer: issuer ?? this.issuer,
       date: date ?? this.date,
       description: description ?? this.description,
+      fingerprint: fingerprint ?? this.fingerprint,
     );
   }
 
   @override
-  List<Object?> get props => [id, name, issuer, date, description];
+  List<Object?> get props => [id, name, issuer, date, description, fingerprint];
 }
