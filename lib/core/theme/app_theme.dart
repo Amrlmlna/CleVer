@@ -20,16 +20,16 @@ class AppTheme {
     );
 
     final textTheme = TextTheme(
-      displayLarge: AppTextStyles.h1.copyWith(color: colorScheme.onSurface),
-      displayMedium: AppTextStyles.h2.copyWith(color: colorScheme.onSurface),
-      displaySmall: AppTextStyles.h3.copyWith(color: colorScheme.onSurface),
-      headlineMedium: AppTextStyles.h4.copyWith(color: colorScheme.onSurface),
-      bodyLarge: AppTextStyles.bodyLarge.copyWith(color: colorScheme.onSurface),
-      bodyMedium: AppTextStyles.body.copyWith(color: colorScheme.onSurface),
-      bodySmall: AppTextStyles.bodyMedium.copyWith(color: colorScheme.onSurface),
-      labelLarge: AppTextStyles.labelLarge.copyWith(color: colorScheme.onSurface),
-      labelMedium: AppTextStyles.labelMedium.copyWith(color: colorScheme.onSurface),
-      labelSmall: AppTextStyles.caption.copyWith(color: colorScheme.onSurface),
+      displayLarge: AppTextStyles.h1,
+      displayMedium: AppTextStyles.h2,
+      displaySmall: AppTextStyles.h3,
+      headlineMedium: AppTextStyles.h4,
+      bodyLarge: AppTextStyles.bodyLarge,
+      bodyMedium: AppTextStyles.body,
+      bodySmall: AppTextStyles.bodyMedium,
+      labelLarge: AppTextStyles.labelLarge,
+      labelMedium: AppTextStyles.labelMedium,
+      labelSmall: AppTextStyles.caption,
     );
 
     return ThemeData(
@@ -147,16 +147,16 @@ class AppTheme {
     );
 
     final textTheme = TextTheme(
-      displayLarge: AppTextStyles.h1.copyWith(color: colorScheme.onSurface),
-      displayMedium: AppTextStyles.h2.copyWith(color: colorScheme.onSurface),
-      displaySmall: AppTextStyles.h3.copyWith(color: colorScheme.onSurface),
-      headlineMedium: AppTextStyles.h4.copyWith(color: colorScheme.onSurface),
-      bodyLarge: AppTextStyles.bodyLarge.copyWith(color: colorScheme.onSurface),
-      bodyMedium: AppTextStyles.body.copyWith(color: colorScheme.onSurface),
-      bodySmall: AppTextStyles.bodyMedium.copyWith(color: colorScheme.onSurface),
-      labelLarge: AppTextStyles.labelLarge.copyWith(color: colorScheme.onSurface),
-      labelMedium: AppTextStyles.labelMedium.copyWith(color: colorScheme.onSurface),
-      labelSmall: AppTextStyles.caption.copyWith(color: colorScheme.onSurface),
+      displayLarge: AppTextStyles.h1,
+      displayMedium: AppTextStyles.h2,
+      displaySmall: AppTextStyles.h3,
+      headlineMedium: AppTextStyles.h4,
+      bodyLarge: AppTextStyles.bodyLarge,
+      bodyMedium: AppTextStyles.body,
+      bodySmall: AppTextStyles.bodyMedium,
+      labelLarge: AppTextStyles.labelLarge,
+      labelMedium: AppTextStyles.labelMedium,
+      labelSmall: AppTextStyles.caption,
     );
 
     return ThemeData(
@@ -304,20 +304,20 @@ class AppTheme {
       colorScheme: colorScheme,
 
       textTheme: TextTheme(
-        displayLarge:   AppTextStyles.h1.copyWith(color: colorScheme.onSurface),
-        displayMedium:  AppTextStyles.h2.copyWith(color: colorScheme.onSurface),
-        displaySmall:   AppTextStyles.h3.copyWith(color: colorScheme.onSurface),
-        headlineMedium: AppTextStyles.h4.copyWith(color: colorScheme.onSurface),
-        headlineSmall:  AppTextStyles.h4.copyWith(color: colorScheme.onSurface, fontSize: 20),
-        titleLarge:     AppTextStyles.bodyLarge.copyWith(color: colorScheme.onSurface, fontWeight: FontWeight.w700),
-        titleMedium:    AppTextStyles.body.copyWith(color: colorScheme.onSurface, fontWeight: FontWeight.w600),
-        titleSmall:     AppTextStyles.bodyMedium.copyWith(color: colorScheme.onSurface),
-        bodyLarge:      AppTextStyles.bodyLarge.copyWith(color: colorScheme.onSurface),
-        bodyMedium:     AppTextStyles.body.copyWith(color: colorScheme.onSurface),
-        bodySmall:      AppTextStyles.bodyMedium.copyWith(color: colorScheme.onSurfaceVariant),
-        labelLarge:     AppTextStyles.labelLarge.copyWith(color: colorScheme.onSurface),
-        labelMedium:    AppTextStyles.labelMedium.copyWith(color: colorScheme.onSurface),
-        labelSmall:     AppTextStyles.caption.copyWith(color: colorScheme.onSurfaceVariant),
+        displayLarge:   AppTextStyles.h1,
+        displayMedium:  AppTextStyles.h2,
+        displaySmall:   AppTextStyles.h3,
+        headlineMedium: AppTextStyles.h4,
+        headlineSmall:  AppTextStyles.h4.copyWith(fontSize: 20),
+        titleLarge:     AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w700),
+        titleMedium:    AppTextStyles.body.copyWith(fontWeight: FontWeight.w600),
+        titleSmall:     AppTextStyles.bodyMedium,
+        bodyLarge:      AppTextStyles.bodyLarge,
+        bodyMedium:     AppTextStyles.body,
+        bodySmall:      AppTextStyles.bodyMedium,
+        labelLarge:     AppTextStyles.labelLarge,
+        labelMedium:    AppTextStyles.labelMedium,
+        labelSmall:     AppTextStyles.caption,
       ),
 
       inputDecorationTheme: InputDecorationTheme(

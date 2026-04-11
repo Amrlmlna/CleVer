@@ -281,6 +281,7 @@ class StyleSelectionContent extends StatelessWidget {
                     style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w900,
                       letterSpacing: 1.5,
+                      color: colorScheme.onPrimary,
                     ),
                   ),
                 ),

@@ -166,7 +166,10 @@ class ImportSuccessBottomSheet extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: onContinue,
+                onPressed: () {
+                  Navigator.pop(context);
+                  onContinue();
+                },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -181,6 +184,7 @@ class ImportSuccessBottomSheet extends StatelessWidget {
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 0.5,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                 ),

@@ -208,6 +208,7 @@ class _CreditPurchaseBottomSheetState
                               l10n.getCredits,
                               style: textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w700,
+                                color: colorScheme.onPrimary,
                               ),
                             ),
                     ),

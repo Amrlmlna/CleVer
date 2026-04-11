@@ -229,10 +229,7 @@ class CVImportHandler {
           ImportSuccessBottomSheet.show(
             context: context,
             extractedProfile: result.extractedProfile!,
-            onContinue: () {
-              Navigator.pop(context);
-              onImportSuccess(result.extractedProfile!);
-            },
+            onContinue: () => onImportSuccess(result.extractedProfile!),
           );
         }
         break;
