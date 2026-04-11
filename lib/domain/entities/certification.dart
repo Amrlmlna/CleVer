@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../core/utils/format_utils.dart';
 
 class Certification extends Equatable {
   final String id;
@@ -22,10 +23,10 @@ class Certification extends Equatable {
       id:
           json['id'] as String? ??
           DateTime.now().millisecondsSinceEpoch.toString(),
-      name: json['name'] as String,
-      issuer: json['issuer'] as String,
+      name: FormatUtils.ensureString(json['name'], fallback: 'Certification'),
+      issuer: FormatUtils.ensureString(json['issuer'], fallback: 'Organization'),
       date: DateTime.tryParse(json['date'] as String? ?? '') ?? DateTime.now(),
-      description: json['description'] as String?,
+      description: FormatUtils.ensureString(json['description']),
       fingerprint: json['fingerprint'] as String?,
     );
   }

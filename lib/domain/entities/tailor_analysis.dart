@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../core/utils/format_utils.dart';
 
 class RequirementCheck extends Equatable {
   final String field;
@@ -13,9 +14,9 @@ class RequirementCheck extends Equatable {
 
   factory RequirementCheck.fromJson(Map<String, dynamic> json) {
     return RequirementCheck(
-      field: json['field'] as String? ?? 'Requirement',
+      field: FormatUtils.ensureString(json['field'], fallback: 'Requirement'),
       isMet: json['isMet'] as bool? ?? false,
-      message: json['message'] as String? ?? '',
+      message: FormatUtils.ensureString(json['message']),
     );
   }
 
@@ -38,7 +39,7 @@ class TailorAnalysis extends Equatable {
 
   factory TailorAnalysis.fromJson(Map<String, dynamic> json) {
     return TailorAnalysis(
-      naturalResponse: json['naturalResponse'] as String? ?? '',
+      naturalResponse: FormatUtils.ensureString(json['naturalResponse']),
       requirementChecks:
           (json['requirementChecks'] as List<dynamic>?)
               ?.map((e) => RequirementCheck.fromJson(e as Map<String, dynamic>))

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../core/utils/format_utils.dart';
 
 class Education extends Equatable {
   final String id;
@@ -6,6 +7,7 @@ class Education extends Equatable {
   final String schoolName;
   final String startDate;
   final String? endDate;
+  final String description;
   final String? fingerprint;
 
   const Education({
@@ -14,6 +16,7 @@ class Education extends Equatable {
     required this.schoolName,
     required this.startDate,
     this.endDate,
+    this.description = '',
     this.fingerprint,
   });
 
@@ -23,6 +26,7 @@ class Education extends Equatable {
     String? schoolName,
     String? startDate,
     String? endDate,
+    String? description,
     String? fingerprint,
   }) {
     return Education(
@@ -31,6 +35,7 @@ class Education extends Equatable {
       schoolName: schoolName ?? this.schoolName,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
+      description: description ?? this.description,
       fingerprint: fingerprint ?? this.fingerprint,
     );
   }
@@ -42,6 +47,7 @@ class Education extends Equatable {
       'schoolName': schoolName,
       'startDate': startDate,
       'endDate': endDate,
+      'description': description,
       'fingerprint': fingerprint,
     };
   }
@@ -51,10 +57,11 @@ class Education extends Equatable {
       id:
           json['id'] as String? ??
           DateTime.now().millisecondsSinceEpoch.toString(),
-      degree: json['degree'] as String,
-      schoolName: json['schoolName'] as String,
-      startDate: json['startDate'] as String,
+      degree: FormatUtils.ensureString(json['degree'], fallback: 'Degree'),
+      schoolName: FormatUtils.ensureString(json['schoolName'], fallback: 'University'),
+      startDate: json['startDate'] as String? ?? '2000-01',
       endDate: json['endDate'] as String?,
+      description: FormatUtils.ensureString(json['description']),
       fingerprint: json['fingerprint'] as String?,
     );
   }
