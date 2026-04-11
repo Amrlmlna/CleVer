@@ -73,6 +73,7 @@ class Experience extends Equatable {
     companyName,
     startDate,
     endDate,
+    description,
     fingerprint,
   ];
 }

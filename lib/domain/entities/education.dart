@@ -73,6 +73,7 @@ class Education extends Equatable {
     schoolName,
     startDate,
     endDate,
+    description,
     fingerprint,
   ];
 }

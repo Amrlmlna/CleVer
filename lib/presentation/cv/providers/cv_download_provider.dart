@@ -111,6 +111,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       orElse: () => templates.first,
     );
 
+    state = state.copyWith(status: DownloadStatus.generating);
     debugPrint(
       '[CVDownload] Credits - User: ${template.userCredits}, Required: ${template.requiredCredits}, FreeGen: ${template.hasFreeGeneration}',
     );

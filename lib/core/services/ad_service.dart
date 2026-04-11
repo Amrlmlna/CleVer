@@ -4,8 +4,9 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AdService {
-  InterstitialAd? _interstitialAd;
+  RewardedInterstitialAd? _rewardedInterstitialAd;
   bool _isAdLoaded = false;
+  bool _isLoading = false;
 
   bool get _isEnabled => dotenv.env['ENABLE_ADS'] == 'true';
 
@@ -24,8 +25,7 @@ class AdService {
       return;
     }
     try {
-      // Register this specific device as a test device to avoid Error 0 / JavascriptEngine crash
-      // This ID was retrieved from the user's console logs
+      // Register test device
       await MobileAds.instance.updateRequestConfiguration(
         RequestConfiguration(
           testDeviceIds: ['C02FA2EAD35709DDBBC81E7F501323C1'],
@@ -34,48 +34,47 @@ class AdService {
 
       await MobileAds.instance.initialize();
       debugPrint('[AdService] SDK Initialized successfully');
-      _loadInterstitialAd();
+      _loadRewardedInterstitialAd();
     } catch (e) {
       debugPrint('[AdService] Error initializing MobileAds: $e');
     }
   }
 
-  void _loadInterstitialAd() {
-    if (!_isEnabled || _adUnitId.isEmpty) {
-      debugPrint('[AdService] Skipping load: Ads disabled or Unit ID missing');
-      return;
-    }
+  void _loadRewardedInterstitialAd() {
+    if (!_isEnabled || _adUnitId.isEmpty || _isLoading) return;
 
-    debugPrint('[AdService] Attempting to load Interstitial Ad: $_adUnitId');
+    _isLoading = true;
+    debugPrint('[AdService] Attempting to load Rewarded Interstitial Ad: $_adUnitId');
 
-    InterstitialAd.load(
+    RewardedInterstitialAd.load(
       adUnitId: _adUnitId,
       request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
+      rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
         onAdLoaded: (ad) {
-          debugPrint('[AdService] Ad LOADED successfully');
-          _interstitialAd = ad;
+          debugPrint('[AdService] Rewarded Interstitial Ad LOADED');
+          _rewardedInterstitialAd = ad;
           _isAdLoaded = true;
+          _isLoading = false;
 
           ad.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (ad) {
-              debugPrint('[AdService] Ad dismissed by user');
+              debugPrint('[AdService] Ad dismissed');
               ad.dispose();
-              _loadInterstitialAd(); // Preload the next ad
+              _isAdLoaded = false;
+              _loadRewardedInterstitialAd();
             },
             onAdFailedToShowFullScreenContent: (ad, error) {
               debugPrint('[AdService] Ad failed to show: ${error.message}');
               ad.dispose();
-              _loadInterstitialAd();
+              _isAdLoaded = false;
+              _loadRewardedInterstitialAd();
             },
           );
         },
         onAdFailedToLoad: (LoadAdError error) {
-          debugPrint(
-            '[AdService] InterstitialAd FAILED to load: ${error.code} - ${error.message}',
-          );
-          debugPrint('[AdService] Domain: ${error.domain}');
+          debugPrint('[AdService] Rewarded Interstitial FAILED to load: ${error.code} - ${error.message}');
           _isAdLoaded = false;
+          _isLoading = false;
         },
       ),
     );
@@ -86,46 +85,49 @@ class AdService {
     required VoidCallback onAdClosed,
   }) async {
     if (!_isEnabled) {
-      debugPrint('[AdService] showInterstitialAd skipped: Ads disabled');
       onAdClosed();
       return;
     }
 
-    if (_isAdLoaded && _interstitialAd != null) {
-      debugPrint('[AdService] SHOWING ad...');
-      _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+    // --- Wait Mechanic ---
+    int retryCount = 0;
+    while (!_isAdLoaded && _isLoading && retryCount < 10) {
+      debugPrint('[AdService] Ad is still loading, waiting... ($retryCount)');
+      await Future.delayed(const Duration(milliseconds: 500));
+      retryCount++;
+    }
+
+    if (_isAdLoaded && _rewardedInterstitialAd != null) {
+      debugPrint('[AdService] SHOWING Rewarded Interstitial...');
+      _rewardedInterstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
         onAdDismissedFullScreenContent: (ad) {
-          debugPrint('[AdService] Ad closed, triggering callback');
           ad.dispose();
-          _loadInterstitialAd();
-          onAdClosed(); // Execute callback when ad is closed
+          _isAdLoaded = false;
+          _loadRewardedInterstitialAd();
+          onAdClosed();
         },
         onAdFailedToShowFullScreenContent: (ad, error) {
-          debugPrint(
-            '[AdService] Ad failed to show, triggering callback anyway',
-          );
           ad.dispose();
-          _loadInterstitialAd();
-          onAdClosed(); // Proceed even if ad fails
+          _isAdLoaded = false;
+          _loadRewardedInterstitialAd();
+          onAdClosed();
         },
       );
 
-      await _interstitialAd!.show();
-      _isAdLoaded = false;
-    } else {
-      // If ad isn't ready or failed, just proceed
-      debugPrint(
-        '[AdService] showInterstitialAd: Ad NOT ready yet, skipping to PDF',
+      await _rewardedInterstitialAd!.show(
+        onUserEarnedReward: (ad, reward) {
+          debugPrint('[AdService] User earned reward: ${reward.amount} ${reward.type}');
+        },
       );
+    } else {
+      debugPrint('[AdService] Ad not ready after waiting, skipping to PDF');
       onAdClosed();
-      if (_isEnabled) {
-        _loadInterstitialAd(); // Try loading again for next time
-      }
+      _loadRewardedInterstitialAd();
     }
   }
 
   void dispose() {
-    _interstitialAd?.dispose();
+    _rewardedInterstitialAd?.dispose();
   }
 }
 
