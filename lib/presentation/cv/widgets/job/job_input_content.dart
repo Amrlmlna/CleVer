@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../../presentation/cv/widgets/job/job_input_hero_card.dart';
 import '../../../../presentation/cv/widgets/job/job_description_field.dart';
-import '../providers/cv_generation_provider.dart';
+import '../../providers/cv_generation_provider.dart';
 
 class JobInputContent extends ConsumerStatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -291,7 +291,7 @@ class _JobInputContentState extends ConsumerState<JobInputContent> {
                                   ),
                                 ),
                                 value: tailoringOptions.strictMode,
-                                activeColor: colorScheme.primary,
+                                activeThumbColor: colorScheme.primary,
                                 onChanged: (val) {
                                   ref
                                       .read(cvCreationProvider.notifier)
@@ -328,7 +328,7 @@ class _JobInputContentState extends ConsumerState<JobInputContent> {
                                   ),
                                 ),
                                 value: tailoringOptions.conciseMode,
-                                activeColor: colorScheme.primary,
+                                activeThumbColor: colorScheme.primary,
                                 onChanged: (val) {
                                   ref
                                       .read(cvCreationProvider.notifier)

@@ -18,7 +18,6 @@ class _CarouselBannerState extends ConsumerState<CarouselBanner> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final bannerAsync = ref.watch(bannerProvider);
 
     return bannerAsync.when(
