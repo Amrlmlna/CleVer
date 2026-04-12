@@ -1698,12 +1698,6 @@ abstract class AppLocalizations {
   /// **'swap between pro-templates instantly. no expensive designers needed.'**
   String get onboardingSubtext6;
 
-  /// No description provided for @onboardingSubtext7.
-  ///
-  /// In en, this message translates to:
-  /// **'you\'ll never have to write a cv from scratch again. ready to get hired?'**
-  String get onboardingSubtext7;
-
   /// No description provided for @onboardingSubtitle.
   ///
   /// In en, this message translates to:
@@ -2825,12 +2819,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Achieve 2X more focus and clarity with CleVer'**
   String get onboardingComparisonTitle;
-
-  /// No description provided for @onboardingComparisonSub.
-  ///
-  /// In en, this message translates to:
-  /// **'CleVer transforms raw intent into structured growth, ensuring you never lose momentum.'**
-  String get onboardingComparisonSub;
 
   /// No description provided for @onboardingComparisonLabelLeft.
   ///

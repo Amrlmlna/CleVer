@@ -21,7 +21,6 @@ class StepComparison extends StatelessWidget {
     return OnboardingStepScreen(
       key: const ValueKey('step5'),
       title: l10n.onboardingComparisonTitle,
-      subtitle: l10n.onboardingComparisonSub,
       isLargeHeader: true,
       animateChildren: false,
       children: [

@@ -117,19 +117,131 @@ class OnboardingDiagnosisScreen extends StatelessWidget {
           
           const SizedBox(height: 48),
           
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            child: Text(
-              l10n.onboardingDiagnosisSub(timeSpent, burnoutCause),
-              style: AppTextStyles.bodyLarge.copyWith(
-                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-                height: 1.6,
-                letterSpacing: -0.2,
+          // The Polished Diagnostic Card
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: colorScheme.surface,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: colorScheme.onSurface.withValues(alpha: 0.08),
+                width: 1,
               ),
-              textAlign: TextAlign.left,
-            ).animate(delay: 400.ms).fadeIn(),
-          ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.03),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 4,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        colorScheme.primary,
+                        colorScheme.primary.withValues(alpha: 0.2),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.auto_awesome,
+                            size: 16,
+                            color: colorScheme.primary.withValues(alpha: 0.6),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'ANALYSIS COMPLETE',
+                            style: textTheme.labelSmall?.copyWith(
+                              color: colorScheme.primary.withValues(alpha: 0.7),
+                              letterSpacing: 1.2,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      _buildHighlightedText(
+                        l10n.onboardingDiagnosisSub(timeSpent, burnoutCause),
+                        [timeSpent, burnoutCause],
+                        colorScheme,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ).animate(delay: 400.ms).fadeIn().slideY(begin: 0.05, end: 0),
         ],
+      ),
+    );
+  }
+
+  Widget _buildHighlightedText(
+    String fullText,
+    List<String> toHighlight,
+    ColorScheme colorScheme,
+  ) {
+    List<TextSpan> spans = [];
+    String remaining = fullText;
+
+    while (remaining.isNotEmpty) {
+      int earliestIndex = -1;
+      String? foundKeyword;
+
+      for (final keyword in toHighlight) {
+        final index = remaining.indexOf(keyword);
+        if (index != -1 && (earliestIndex == -1 || index < earliestIndex)) {
+          earliestIndex = index;
+          foundKeyword = keyword;
+        }
+      }
+
+      if (earliestIndex == -1) {
+        spans.add(TextSpan(text: remaining));
+        break;
+      }
+
+      if (earliestIndex > 0) {
+        spans.add(TextSpan(text: remaining.substring(0, earliestIndex)));
+      }
+
+      spans.add(TextSpan(
+        text: foundKeyword,
+        style: TextStyle(
+          fontWeight: FontWeight.w900,
+          color: colorScheme.primary,
+        ),
+      ));
+
+      remaining = remaining.substring(earliestIndex + foundKeyword!.length);
+    }
+
+    return RichText(
+      textAlign: TextAlign.justify,
+      text: TextSpan(
+        style: AppTextStyles.bodyMedium.copyWith(
+          color: colorScheme.onSurfaceVariant.withValues(alpha: 0.9),
+          height: 1.8,
+          letterSpacing: 0, // Better for justified text
+        ),
+        children: spans,
       ),
     );
   }

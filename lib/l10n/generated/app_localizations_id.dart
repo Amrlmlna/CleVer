@@ -504,7 +504,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get generatingPdfBadge => 'membuat pdf';
 
   @override
-  String get getStarted => 'mulai sekarang';
+  String get getStarted => 'masukkan data';
 
   @override
   String get goHome => 'ke beranda';
@@ -880,10 +880,6 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get onboardingSubtext6 =>
       'ganti template profesional dalam sekali klik. gak perlu jasa desain mahal.';
-
-  @override
-  String get onboardingSubtext7 =>
-      'kamu gak akan pernah ngetik cv dari nol lagi. siap buat direkrut?';
 
   @override
   String get onboardingSubtitle =>
@@ -1404,38 +1400,38 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get onboardingTweetContent1 =>
-      'Udah 5 jam edit layout CV, pas di-save PDF malah berantakan. Capek banget asli... 😭 #CVRelatable';
+      'udah 5 jam edit layout cv, pas di-save pdf malah berantakan. capek banget asli... 😭 #cvrelatable';
 
   @override
   String get onboardingTweetHandle2 => '@anak_magang';
 
   @override
   String get onboardingTweetContent2 =>
-      'Kenapa ya tiap mau apply kerja, yang paling bikin males itu \'Update CV\'. Padahal cuma beda tipis tapi harus copy-paste dari nol.';
+      'kenapa ya tiap mau apply kerja, yang paling bikin males itu \'update cv\'. padahal cuma beda tipis tapi harus copy-paste dari nol.';
 
   @override
   String get onboardingTweetHandle3 => '@freshgrad_stres';
 
   @override
   String get onboardingTweetContent3 =>
-      'Dapet loker bagus, giliran buka file CV malah pusing sendiri liat formatnya. Akhirnya nggak jadi apply karena telanjur capek duluan.';
+      'dapet loker bagus, giliran buka file cv malah pusing sendiri liat formatnya. akhirnya nggak jadi apply karena telanjur capek duluan.';
 
   @override
   String get onboardingBurnoutTitle =>
-      'Apa bagian yang paling bikin kamu burnout tiap bikin CV?';
+      'apa bagian yang paling bikin kamu burnout tiap bikin cv?';
 
   @override
-  String get onboardingBurnout1 => 'Copy paste dari nol';
+  String get onboardingBurnout1 => 'copy paste dari nol';
 
   @override
-  String get onboardingBurnout2 => 'Analisis keyword manual';
+  String get onboardingBurnout2 => 'analisis keyword manual';
 
   @override
-  String get onboardingBurnout3 => 'Perbaiki layout di Canva';
+  String get onboardingBurnout3 => 'perbaiki layout di canva';
 
   @override
   String get onboardingTimeSpentTitle =>
-      'Berapa lama rata-rata waktu yang kamu butuhkan untuk bikin CV?';
+      'berapa lama rata-rata waktu yang kamu butuhkan untuk bikin cv?';
 
   @override
   String get onboardingTime1 => '1 jam';
@@ -1451,23 +1447,23 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get onboardingProcrastinationTitle =>
-      'Seberapa sering kamu menunda bikin CV karena prosesnya yang melelahkan?';
+      'seberapa sering kamu menunda bikin cv karena prosesnya yang melelahkan?';
 
   @override
-  String get onboardingProcrastination1 => 'Sering banget, bikin stres';
+  String get onboardingProcrastination1 => 'sering banget, bikin stres';
 
   @override
-  String get onboardingProcrastination2 => 'Lumayan, tiap kali mau apply';
+  String get onboardingProcrastination2 => 'lumayan, tiap kali mau apply';
 
   @override
-  String get onboardingProcrastination3 => 'Jarang, tapi malas mulainya';
+  String get onboardingProcrastination3 => 'jarang, tapi malas mulainya';
 
   @override
-  String get onboardingDiagnosisTitle => 'Diagnosis: Terjebak dalam Rutinitas';
+  String get onboardingDiagnosisTitle => 'diagnosis: terjebak dalam rutinitas';
 
   @override
   String onboardingDiagnosisSub(String time, String burnout) {
-    return 'Menghabiskan $time cuma buat $burnout itu buang-buang potensi. Clever beresin ini dalam sekejap, biar kamu fokus raih mimpi.';
+    return 'menghabiskan $time cuma buat $burnout itu buang-buang potensi. Clever beresin ini dalam sekejap, biar kamu fokus raih mimpi.';
   }
 
   @override
@@ -1476,28 +1472,24 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get onboardingSolutionHeadline =>
-      'Serahkan pada CleVer.\nBeres dalam sekejap.';
+      'serahkan pada clever.\nberes dalam sekejap.';
 
   @override
-  String get onboardingStepWallTitle => 'Kamu tidak sendirian.';
+  String get onboardingStepWallTitle => 'kamu tidak sendirian.';
 
   @override
   String get onboardingStepWallSub =>
-      'Jutaan orang merasakan kelelahan yang sama.';
+      'jutaan orang merasakan kelelahan yang sama.';
 
   @override
   String get onboardingComparisonTitle =>
-      'Capai fokus dan kejelasan 2X lebih baik dengan CleVer';
+      'capai fokus dan kejelasan 2X lebih baik dengan clever';
 
   @override
-  String get onboardingComparisonSub =>
-      'CleVer mengubah niat mentah menjadi pertumbuhan terstruktur, memastikan Anda tidak kehilangan momentum.';
+  String get onboardingComparisonLabelLeft => 'tanpa clever';
 
   @override
-  String get onboardingComparisonLabelLeft => 'Tanpa CleVer';
-
-  @override
-  String get onboardingComparisonLabelRight => 'Dengan CleVer';
+  String get onboardingComparisonLabelRight => 'dengan clever';
 
   @override
   String get onboardingComparisonValueLeft => '20%';
@@ -1510,8 +1502,8 @@ class AppLocalizationsId extends AppLocalizations {
       'CleVer memudahkan segalanya dan menjagamu tetap akuntabel.';
 
   @override
-  String get onboardingViewSolution => 'Lihat Solusi';
+  String get onboardingViewSolution => 'lihat solusi';
 
   @override
-  String get showMeTheWay => 'Tunjukkan Jalannya';
+  String get showMeTheWay => 'mulai sekarang';
 }

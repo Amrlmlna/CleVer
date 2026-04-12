@@ -877,10 +877,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'swap between pro-templates instantly. no expensive designers needed.';
 
   @override
-  String get onboardingSubtext7 =>
-      'you\'ll never have to write a cv from scratch again. ready to get hired?';
-
-  @override
   String get onboardingSubtitle =>
       'fill in data once, generate thousands of cvs without retyping. save time, focus on \"grinding\".';
 
@@ -1481,10 +1477,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get onboardingComparisonTitle =>
       'Achieve 2X more focus and clarity with CleVer';
-
-  @override
-  String get onboardingComparisonSub =>
-      'CleVer transforms raw intent into structured growth, ensuring you never lose momentum.';
 
   @override
   String get onboardingComparisonLabelLeft => 'Without CleVer';

@@ -19,7 +19,6 @@ class StepFinalReveal extends StatelessWidget {
     return OnboardingCarouselScreen(
       key: const ValueKey('step6'),
       headline: l10n.onboardingHeadline7,
-      subtext: l10n.onboardingSubtext7,
       imageAsset: 'assets/images/onboarding_screen_6.png',
       isCentered: true,
       footer: Column(

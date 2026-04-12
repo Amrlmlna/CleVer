@@ -12,6 +12,8 @@ class OnboardingStepScreen extends StatelessWidget {
   final bool useShaderMask;
   final bool isLargeHeader;
   final bool animateChildren;
+  final TextStyle? subtitleStyle;
+  final TextAlign? subtitleTextAlign;
 
   const OnboardingStepScreen({
     super.key,
@@ -23,6 +25,8 @@ class OnboardingStepScreen extends StatelessWidget {
     this.useShaderMask = false,
     this.isLargeHeader = true,
     this.animateChildren = true,
+    this.subtitleStyle,
+    this.subtitleTextAlign,
   });
 
   @override
@@ -50,12 +54,12 @@ class OnboardingStepScreen extends StatelessWidget {
           if (subtitle != null)
             Text(
               subtitle!,
-              style: AppTextStyles.bodyLarge.copyWith(
+              style: subtitleStyle ?? AppTextStyles.bodyLarge.copyWith(
                 color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
                 height: 1.5,
                 letterSpacing: -0.2,
               ),
-              textAlign: TextAlign.left,
+              textAlign: subtitleTextAlign ?? TextAlign.left,
             ).animate().fadeIn(duration: 800.ms, delay: 400.ms).slideY(begin: 0.1, end: 0, curve: Curves.easeOutCubic),
           
           const SizedBox(height: 48),
@@ -84,6 +88,7 @@ class OnboardingStepScreen extends StatelessWidget {
                   ),
                 )
               : Column(
+                  mainAxisAlignment: isContentCentered ? MainAxisAlignment.center : MainAxisAlignment.start,
                   children: children.asMap().entries.map((entry) {
                     final child = entry.value;
                     if (!animateChildren) return child;

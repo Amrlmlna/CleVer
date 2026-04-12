@@ -3,7 +3,7 @@ import '../../../core/theme/app_text_styles.dart';
 
 class OnboardingCarouselScreen extends StatelessWidget {
   final String headline;
-  final String subtext;
+  final String? subtext;
   final String? imageAsset;
   final Widget? footer;
   final bool isCentered;
@@ -11,7 +11,7 @@ class OnboardingCarouselScreen extends StatelessWidget {
   const OnboardingCarouselScreen({
     super.key,
     required this.headline,
-    required this.subtext,
+    this.subtext,
     this.imageAsset,
     this.footer,
     this.isCentered = false,
@@ -108,16 +108,18 @@ class OnboardingCarouselScreen extends StatelessWidget {
                 ),
                 textAlign: isCentered ? TextAlign.center : TextAlign.left,
               ),
-              const SizedBox(height: 16),
-              Text(
-                subtext,
-                style: AppTextStyles.bodyLarge.copyWith(
-                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-                  height: 1.5,
-                  letterSpacing: -0.2,
+              if (subtext != null) ...[
+                const SizedBox(height: 16),
+                Text(
+                  subtext!,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                    height: 1.5,
+                    letterSpacing: -0.2,
+                  ),
+                  textAlign: isCentered ? TextAlign.center : TextAlign.left,
                 ),
-                textAlign: isCentered ? TextAlign.center : TextAlign.left,
-              ),
+              ],
             ],
           ),
         ),
