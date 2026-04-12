@@ -1392,4 +1392,119 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get topUps => 'top ups';
+
+  @override
+  String get onboardingTweetHandle1 => '@career_warrior';
+
+  @override
+  String get onboardingTweetContent1 =>
+      'Spent 5 hours editing my CV layout, only for it to fall apart when saving as PDF. I\'m so done... 😭 #CVRelatable';
+
+  @override
+  String get onboardingTweetHandle2 => '@intern_life';
+
+  @override
+  String get onboardingTweetContent2 =>
+      'Why is \'Updating CV\' the worst part of job hunting? It\'s just tiny changes but I have to copy-paste everything from scratch.';
+
+  @override
+  String get onboardingTweetHandle3 => '@stressed_grad';
+
+  @override
+  String get onboardingTweetContent3 =>
+      'Found a great job post, but looking at my messy CV format gave me a headache. Ended up not applying because I was too tired. Ugh.';
+
+  @override
+  String get onboardingBurnoutTitle =>
+      'What part makes you burnout most when making a CV?';
+
+  @override
+  String get onboardingBurnout1 => 'Copy paste from scratch';
+
+  @override
+  String get onboardingBurnout2 => 'Manual keyword analysis';
+
+  @override
+  String get onboardingBurnout3 => 'Fixing layout in Canva';
+
+  @override
+  String get onboardingTimeSpentTitle =>
+      'How much time on average do you need to make a CV?';
+
+  @override
+  String get onboardingTime1 => '1 hour';
+
+  @override
+  String get onboardingTime2 => '2 hours';
+
+  @override
+  String get onboardingTime3 => '1 day';
+
+  @override
+  String get onboardingTime4 => '1 week';
+
+  @override
+  String get onboardingProcrastinationTitle =>
+      'How often do you postpone making a CV because the process is exhausting?';
+
+  @override
+  String get onboardingProcrastination1 => 'Always, it\'s so stressful';
+
+  @override
+  String get onboardingProcrastination2 => 'Quite often, whenever I apply';
+
+  @override
+  String get onboardingProcrastination3 => 'Rarely, but I hate starting it';
+
+  @override
+  String get onboardingDiagnosisTitle =>
+      'Diagnosis: You\'re Trapped in Routine';
+
+  @override
+  String onboardingDiagnosisSub(String time, String burnout) {
+    return 'Spending $time purely on $burnout is draining your potential. Clever automates this in seconds, so you can focus on winning.';
+  }
+
+  @override
+  String get onboardingSocialProof =>
+      '1,240+ people are optimizing their CVs right now.';
+
+  @override
+  String get onboardingSolutionHeadline => 'Leave it to CleVer.\nIn seconds.';
+
+  @override
+  String get onboardingStepWallTitle => 'You are not alone.';
+
+  @override
+  String get onboardingStepWallSub => 'Millions feel the same exhaustion.';
+
+  @override
+  String get onboardingComparisonTitle =>
+      'Achieve 2X more focus and clarity with CleVer';
+
+  @override
+  String get onboardingComparisonSub =>
+      'CleVer transforms raw intent into structured growth, ensuring you never lose momentum.';
+
+  @override
+  String get onboardingComparisonLabelLeft => 'Without CleVer';
+
+  @override
+  String get onboardingComparisonLabelRight => 'With CleVer';
+
+  @override
+  String get onboardingComparisonValueLeft => '20%';
+
+  @override
+  String get onboardingComparisonValueRight => '2X';
+
+  @override
+  String get onboardingComparisonFooter =>
+      'CleVer makes it easy and holds you accountable.';
+
+  @override
+  String get onboardingViewSolution => 'View Solution';
+
+  @override
+  String get showMeTheWay => 'Show Me The Way';
 }

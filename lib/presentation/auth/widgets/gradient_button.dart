@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import '../../../core/theme/app_text_styles.dart';
 
 class GradientButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -73,7 +74,7 @@ class GradientButton extends StatelessWidget {
                         ],
                         Text(
                           text,
-                          style: const TextStyle(
+                          style: AppTextStyles.button.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,

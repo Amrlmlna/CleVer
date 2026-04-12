@@ -513,5 +513,49 @@
   "freeExportsLeft": "sisa {count} ekspor gratis",
   "transactionHistory": "riwayat transaksi",
   "exports": "ekspor",
-  "topUps": "top up"
+  "topUps": "top ups",
+  "onboardingTweetHandle1": "@pejuang_karir",
+  "onboardingTweetContent1": "Udah 5 jam edit layout CV, pas di-save PDF malah berantakan. Capek banget asli... 😭 #CVRelatable",
+  "onboardingTweetHandle2": "@anak_magang",
+  "onboardingTweetContent2": "Kenapa ya tiap mau apply kerja, yang paling bikin males itu 'Update CV'. Padahal cuma beda tipis tapi harus copy-paste dari nol.",
+  "onboardingTweetHandle3": "@freshgrad_stres",
+  "onboardingTweetContent3": "Dapet loker bagus, giliran buka file CV malah pusing sendiri liat formatnya. Akhirnya nggak jadi apply karena telanjur capek duluan.",
+  "onboardingBurnoutTitle": "Apa bagian yang paling bikin kamu burnout tiap bikin CV?",
+  "onboardingBurnout1": "Copy paste dari nol",
+  "onboardingBurnout2": "Analisis keyword manual",
+  "onboardingBurnout3": "Perbaiki layout di Canva",
+  "onboardingTimeSpentTitle": "Berapa lama rata-rata waktu yang kamu butuhkan untuk bikin CV?",
+  "onboardingTime1": "1 jam",
+  "onboardingTime2": "12 jam",
+  "onboardingTime3": "1 hari",
+  "onboardingTime4": "1 minggu",
+  "onboardingProcrastinationTitle": "Seberapa sering kamu menunda bikin CV karena prosesnya yang melelahkan?",
+  "onboardingProcrastination1": "Sering banget, bikin stres",
+  "onboardingProcrastination2": "Lumayan, tiap kali mau apply",
+  "onboardingProcrastination3": "Jarang, tapi malas mulainya",
+  "onboardingDiagnosisTitle": "Diagnosis: Terjebak dalam Rutinitas",
+  "onboardingDiagnosisSub": "Menghabiskan {time} cuma buat {burnout} itu buang-buang potensi. Clever beresin ini dalam sekejap, biar kamu fokus raih mimpi.",
+  "@onboardingDiagnosisSub": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "burnout": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingSocialProof": "1,240+ orang sedang mengoptimasi CV mereka saat ini.",
+  "onboardingSolutionHeadline": "Serahkan pada CleVer.\nBeres dalam sekejap.",
+  "onboardingStepWallTitle": "Kamu tidak sendirian.",
+  "onboardingStepWallSub": "Jutaan orang merasakan kelelahan yang sama.",
+  "onboardingComparisonTitle": "Capai fokus dan kejelasan 2X lebih baik dengan CleVer",
+  "onboardingComparisonSub": "CleVer mengubah niat mentah menjadi pertumbuhan terstruktur, memastikan Anda tidak kehilangan momentum.",
+  "onboardingComparisonLabelLeft": "Tanpa CleVer",
+  "onboardingComparisonLabelRight": "Dengan CleVer",
+  "onboardingComparisonValueLeft": "20%",
+  "onboardingComparisonValueRight": "2X",
+  "onboardingComparisonFooter": "CleVer memudahkan segalanya dan menjagamu tetap akuntabel.",
+  "onboardingViewSolution": "Lihat Solusi",
+  "showMeTheWay": "Tunjukkan Jalannya"
 }

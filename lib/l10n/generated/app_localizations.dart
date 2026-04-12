@@ -2669,6 +2669,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'top ups'**
   String get topUps;
+
+  /// No description provided for @onboardingTweetHandle1.
+  ///
+  /// In en, this message translates to:
+  /// **'@career_warrior'**
+  String get onboardingTweetHandle1;
+
+  /// No description provided for @onboardingTweetContent1.
+  ///
+  /// In en, this message translates to:
+  /// **'Spent 5 hours editing my CV layout, only for it to fall apart when saving as PDF. I\'m so done... 😭 #CVRelatable'**
+  String get onboardingTweetContent1;
+
+  /// No description provided for @onboardingTweetHandle2.
+  ///
+  /// In en, this message translates to:
+  /// **'@intern_life'**
+  String get onboardingTweetHandle2;
+
+  /// No description provided for @onboardingTweetContent2.
+  ///
+  /// In en, this message translates to:
+  /// **'Why is \'Updating CV\' the worst part of job hunting? It\'s just tiny changes but I have to copy-paste everything from scratch.'**
+  String get onboardingTweetContent2;
+
+  /// No description provided for @onboardingTweetHandle3.
+  ///
+  /// In en, this message translates to:
+  /// **'@stressed_grad'**
+  String get onboardingTweetHandle3;
+
+  /// No description provided for @onboardingTweetContent3.
+  ///
+  /// In en, this message translates to:
+  /// **'Found a great job post, but looking at my messy CV format gave me a headache. Ended up not applying because I was too tired. Ugh.'**
+  String get onboardingTweetContent3;
+
+  /// No description provided for @onboardingBurnoutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What part makes you burnout most when making a CV?'**
+  String get onboardingBurnoutTitle;
+
+  /// No description provided for @onboardingBurnout1.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy paste from scratch'**
+  String get onboardingBurnout1;
+
+  /// No description provided for @onboardingBurnout2.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual keyword analysis'**
+  String get onboardingBurnout2;
+
+  /// No description provided for @onboardingBurnout3.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixing layout in Canva'**
+  String get onboardingBurnout3;
+
+  /// No description provided for @onboardingTimeSpentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How much time on average do you need to make a CV?'**
+  String get onboardingTimeSpentTitle;
+
+  /// No description provided for @onboardingTime1.
+  ///
+  /// In en, this message translates to:
+  /// **'1 hour'**
+  String get onboardingTime1;
+
+  /// No description provided for @onboardingTime2.
+  ///
+  /// In en, this message translates to:
+  /// **'2 hours'**
+  String get onboardingTime2;
+
+  /// No description provided for @onboardingTime3.
+  ///
+  /// In en, this message translates to:
+  /// **'1 day'**
+  String get onboardingTime3;
+
+  /// No description provided for @onboardingTime4.
+  ///
+  /// In en, this message translates to:
+  /// **'1 week'**
+  String get onboardingTime4;
+
+  /// No description provided for @onboardingProcrastinationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How often do you postpone making a CV because the process is exhausting?'**
+  String get onboardingProcrastinationTitle;
+
+  /// No description provided for @onboardingProcrastination1.
+  ///
+  /// In en, this message translates to:
+  /// **'Always, it\'s so stressful'**
+  String get onboardingProcrastination1;
+
+  /// No description provided for @onboardingProcrastination2.
+  ///
+  /// In en, this message translates to:
+  /// **'Quite often, whenever I apply'**
+  String get onboardingProcrastination2;
+
+  /// No description provided for @onboardingProcrastination3.
+  ///
+  /// In en, this message translates to:
+  /// **'Rarely, but I hate starting it'**
+  String get onboardingProcrastination3;
+
+  /// No description provided for @onboardingDiagnosisTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnosis: You\'re Trapped in Routine'**
+  String get onboardingDiagnosisTitle;
+
+  /// No description provided for @onboardingDiagnosisSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Spending {time} purely on {burnout} is draining your potential. Clever automates this in seconds, so you can focus on winning.'**
+  String onboardingDiagnosisSub(String time, String burnout);
+
+  /// No description provided for @onboardingSocialProof.
+  ///
+  /// In en, this message translates to:
+  /// **'1,240+ people are optimizing their CVs right now.'**
+  String get onboardingSocialProof;
+
+  /// No description provided for @onboardingSolutionHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave it to CleVer.\nIn seconds.'**
+  String get onboardingSolutionHeadline;
+
+  /// No description provided for @onboardingStepWallTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not alone.'**
+  String get onboardingStepWallTitle;
+
+  /// No description provided for @onboardingStepWallSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Millions feel the same exhaustion.'**
+  String get onboardingStepWallSub;
+
+  /// No description provided for @onboardingComparisonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Achieve 2X more focus and clarity with CleVer'**
+  String get onboardingComparisonTitle;
+
+  /// No description provided for @onboardingComparisonSub.
+  ///
+  /// In en, this message translates to:
+  /// **'CleVer transforms raw intent into structured growth, ensuring you never lose momentum.'**
+  String get onboardingComparisonSub;
+
+  /// No description provided for @onboardingComparisonLabelLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Without CleVer'**
+  String get onboardingComparisonLabelLeft;
+
+  /// No description provided for @onboardingComparisonLabelRight.
+  ///
+  /// In en, this message translates to:
+  /// **'With CleVer'**
+  String get onboardingComparisonLabelRight;
+
+  /// No description provided for @onboardingComparisonValueLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'20%'**
+  String get onboardingComparisonValueLeft;
+
+  /// No description provided for @onboardingComparisonValueRight.
+  ///
+  /// In en, this message translates to:
+  /// **'2X'**
+  String get onboardingComparisonValueRight;
+
+  /// No description provided for @onboardingComparisonFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'CleVer makes it easy and holds you accountable.'**
+  String get onboardingComparisonFooter;
+
+  /// No description provided for @onboardingViewSolution.
+  ///
+  /// In en, this message translates to:
+  /// **'View Solution'**
+  String get onboardingViewSolution;
+
+  /// No description provided for @showMeTheWay.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Me The Way'**
+  String get showMeTheWay;
 }
 
 class _AppLocalizationsDelegate

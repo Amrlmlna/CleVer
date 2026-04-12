@@ -1397,5 +1397,121 @@ class AppLocalizationsId extends AppLocalizations {
   String get exports => 'ekspor';
 
   @override
-  String get topUps => 'top up';
+  String get topUps => 'top ups';
+
+  @override
+  String get onboardingTweetHandle1 => '@pejuang_karir';
+
+  @override
+  String get onboardingTweetContent1 =>
+      'Udah 5 jam edit layout CV, pas di-save PDF malah berantakan. Capek banget asli... 😭 #CVRelatable';
+
+  @override
+  String get onboardingTweetHandle2 => '@anak_magang';
+
+  @override
+  String get onboardingTweetContent2 =>
+      'Kenapa ya tiap mau apply kerja, yang paling bikin males itu \'Update CV\'. Padahal cuma beda tipis tapi harus copy-paste dari nol.';
+
+  @override
+  String get onboardingTweetHandle3 => '@freshgrad_stres';
+
+  @override
+  String get onboardingTweetContent3 =>
+      'Dapet loker bagus, giliran buka file CV malah pusing sendiri liat formatnya. Akhirnya nggak jadi apply karena telanjur capek duluan.';
+
+  @override
+  String get onboardingBurnoutTitle =>
+      'Apa bagian yang paling bikin kamu burnout tiap bikin CV?';
+
+  @override
+  String get onboardingBurnout1 => 'Copy paste dari nol';
+
+  @override
+  String get onboardingBurnout2 => 'Analisis keyword manual';
+
+  @override
+  String get onboardingBurnout3 => 'Perbaiki layout di Canva';
+
+  @override
+  String get onboardingTimeSpentTitle =>
+      'Berapa lama rata-rata waktu yang kamu butuhkan untuk bikin CV?';
+
+  @override
+  String get onboardingTime1 => '1 jam';
+
+  @override
+  String get onboardingTime2 => '12 jam';
+
+  @override
+  String get onboardingTime3 => '1 hari';
+
+  @override
+  String get onboardingTime4 => '1 minggu';
+
+  @override
+  String get onboardingProcrastinationTitle =>
+      'Seberapa sering kamu menunda bikin CV karena prosesnya yang melelahkan?';
+
+  @override
+  String get onboardingProcrastination1 => 'Sering banget, bikin stres';
+
+  @override
+  String get onboardingProcrastination2 => 'Lumayan, tiap kali mau apply';
+
+  @override
+  String get onboardingProcrastination3 => 'Jarang, tapi malas mulainya';
+
+  @override
+  String get onboardingDiagnosisTitle => 'Diagnosis: Terjebak dalam Rutinitas';
+
+  @override
+  String onboardingDiagnosisSub(String time, String burnout) {
+    return 'Menghabiskan $time cuma buat $burnout itu buang-buang potensi. Clever beresin ini dalam sekejap, biar kamu fokus raih mimpi.';
+  }
+
+  @override
+  String get onboardingSocialProof =>
+      '1,240+ orang sedang mengoptimasi CV mereka saat ini.';
+
+  @override
+  String get onboardingSolutionHeadline =>
+      'Serahkan pada CleVer.\nBeres dalam sekejap.';
+
+  @override
+  String get onboardingStepWallTitle => 'Kamu tidak sendirian.';
+
+  @override
+  String get onboardingStepWallSub =>
+      'Jutaan orang merasakan kelelahan yang sama.';
+
+  @override
+  String get onboardingComparisonTitle =>
+      'Capai fokus dan kejelasan 2X lebih baik dengan CleVer';
+
+  @override
+  String get onboardingComparisonSub =>
+      'CleVer mengubah niat mentah menjadi pertumbuhan terstruktur, memastikan Anda tidak kehilangan momentum.';
+
+  @override
+  String get onboardingComparisonLabelLeft => 'Tanpa CleVer';
+
+  @override
+  String get onboardingComparisonLabelRight => 'Dengan CleVer';
+
+  @override
+  String get onboardingComparisonValueLeft => '20%';
+
+  @override
+  String get onboardingComparisonValueRight => '2X';
+
+  @override
+  String get onboardingComparisonFooter =>
+      'CleVer memudahkan segalanya dan menjagamu tetap akuntabel.';
+
+  @override
+  String get onboardingViewSolution => 'Lihat Solusi';
+
+  @override
+  String get showMeTheWay => 'Tunjukkan Jalannya';
 }

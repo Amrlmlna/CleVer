@@ -513,5 +513,49 @@
   "freeExportsLeft": "{count} free exports left",
   "transactionHistory": "transaction history",
   "exports": "exports",
-  "topUps": "top ups"
+  "topUps": "top ups",
+  "onboardingTweetHandle1": "@career_warrior",
+  "onboardingTweetContent1": "Spent 5 hours editing my CV layout, only for it to fall apart when saving as PDF. I'm so done... 😭 #CVRelatable",
+  "onboardingTweetHandle2": "@intern_life",
+  "onboardingTweetContent2": "Why is 'Updating CV' the worst part of job hunting? It's just tiny changes but I have to copy-paste everything from scratch.",
+  "onboardingTweetHandle3": "@stressed_grad",
+  "onboardingTweetContent3": "Found a great job post, but looking at my messy CV format gave me a headache. Ended up not applying because I was too tired. Ugh.",
+  "onboardingBurnoutTitle": "What part makes you burnout most when making a CV?",
+  "onboardingBurnout1": "Copy paste from scratch",
+  "onboardingBurnout2": "Manual keyword analysis",
+  "onboardingBurnout3": "Fixing layout in Canva",
+  "onboardingTimeSpentTitle": "How much time on average do you need to make a CV?",
+  "onboardingTime1": "1 hour",
+  "onboardingTime2": "2 hours",
+  "onboardingTime3": "1 day",
+  "onboardingTime4": "1 week",
+  "onboardingProcrastinationTitle": "How often do you postpone making a CV because the process is exhausting?",
+  "onboardingProcrastination1": "Always, it's so stressful",
+  "onboardingProcrastination2": "Quite often, whenever I apply",
+  "onboardingProcrastination3": "Rarely, but I hate starting it",
+  "onboardingDiagnosisTitle": "Diagnosis: You're Trapped in Routine",
+  "onboardingDiagnosisSub": "Spending {time} purely on {burnout} is draining your potential. Clever automates this in seconds, so you can focus on winning.",
+  "@onboardingDiagnosisSub": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "burnout": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingSocialProof": "1,240+ people are optimizing their CVs right now.",
+  "onboardingSolutionHeadline": "Leave it to CleVer.\nIn seconds.",
+  "onboardingStepWallTitle": "You are not alone.",
+  "onboardingStepWallSub": "Millions feel the same exhaustion.",
+  "onboardingComparisonTitle": "Achieve 2X more focus and clarity with CleVer",
+  "onboardingComparisonSub": "CleVer transforms raw intent into structured growth, ensuring you never lose momentum.",
+  "onboardingComparisonLabelLeft": "Without CleVer",
+  "onboardingComparisonLabelRight": "With CleVer",
+  "onboardingComparisonValueLeft": "20%",
+  "onboardingComparisonValueRight": "2X",
+  "onboardingComparisonFooter": "CleVer makes it easy and holds you accountable.",
+  "onboardingViewSolution": "View Solution",
+  "showMeTheWay": "Show Me The Way"
 }
