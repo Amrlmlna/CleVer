@@ -134,10 +134,6 @@
   "featureRequest": "saran fitur",
   "feedback": "masukan",
   "feedbackSubtitle": "ceritakan pengalamanmu atau laporkan masalah.",
-  "feedbackTitle": "terbantu dengan clever?",
-  "feedbackContent": "masukanmu sangat berarti buat bikin clever jadi lebih baik. boleh minta tolong kasih rating di play store?",
-  "rateNow": "kasih rating",
-  "later": "nanti aja",
   "male": "laki-laki",
   "female": "perempuan",
   "gender": "jenis kelamin",
@@ -555,5 +551,9 @@
   "onboardingComparisonValueRight": "2X",
   "onboardingComparisonFooter": "CleVer memudahkan segalanya dan menjagamu tetap akuntabel.",
   "onboardingViewSolution": "lihat solusi",
-  "showMeTheWay": "mulai sekarang"
+  "showMeTheWay": "mulai sekarang",
+  "reviewPromptTitle": "suka dengan hasilnya?",
+  "reviewPromptContent": "masukanmu membantu kami membuat clever jadi lebih baik untuk semua orang.",
+  "reviewPromptPositive": "ya, saya suka",
+  "reviewPromptNegative": "mungkin nanti"
 }

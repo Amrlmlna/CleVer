@@ -860,30 +860,6 @@ abstract class AppLocalizations {
   /// **'share your experience or report an issue.'**
   String get feedbackSubtitle;
 
-  /// No description provided for @feedbackTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'enjoying clever?'**
-  String get feedbackTitle;
-
-  /// No description provided for @feedbackContent.
-  ///
-  /// In en, this message translates to:
-  /// **'your feedback helps us make clever better for everyone. would you mind rating us on the play store?'**
-  String get feedbackContent;
-
-  /// No description provided for @rateNow.
-  ///
-  /// In en, this message translates to:
-  /// **'rate now'**
-  String get rateNow;
-
-  /// No description provided for @later.
-  ///
-  /// In en, this message translates to:
-  /// **'later'**
-  String get later;
-
   /// No description provided for @male.
   ///
   /// In en, this message translates to:
@@ -2861,6 +2837,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show Me The Way'**
   String get showMeTheWay;
+
+  /// No description provided for @reviewPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoying the results?'**
+  String get reviewPromptTitle;
+
+  /// No description provided for @reviewPromptContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your feedback helps us make CleVer even better for everyone.'**
+  String get reviewPromptContent;
+
+  /// No description provided for @reviewPromptPositive.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, I love it!'**
+  String get reviewPromptPositive;
+
+  /// No description provided for @reviewPromptNegative.
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe later'**
+  String get reviewPromptNegative;
 }
 
 class _AppLocalizationsDelegate

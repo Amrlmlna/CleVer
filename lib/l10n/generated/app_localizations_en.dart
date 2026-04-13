@@ -415,19 +415,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feedbackSubtitle => 'share your experience or report an issue.';
 
   @override
-  String get feedbackTitle => 'enjoying clever?';
-
-  @override
-  String get feedbackContent =>
-      'your feedback helps us make clever better for everyone. would you mind rating us on the play store?';
-
-  @override
-  String get rateNow => 'rate now';
-
-  @override
-  String get later => 'later';
-
-  @override
   String get male => 'male';
 
   @override
@@ -1499,4 +1486,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get showMeTheWay => 'Show Me The Way';
+
+  @override
+  String get reviewPromptTitle => 'Enjoying the results?';
+
+  @override
+  String get reviewPromptContent =>
+      'Your feedback helps us make CleVer even better for everyone.';
+
+  @override
+  String get reviewPromptPositive => 'Yes, I love it!';
+
+  @override
+  String get reviewPromptNegative => 'Maybe later';
 }

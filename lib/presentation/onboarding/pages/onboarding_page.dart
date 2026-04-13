@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../providers/onboarding_provider.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../../auth/utils/auth_guard.dart';
 import '../../../core/router/app_routes.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -153,9 +154,21 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   Future<void> _finishOnboarding() async {
     await ref.read(onboardingFormProvider.notifier).submit();
     if (mounted) {
-      context.go(AppRoutes.createJobInput);
+      // 1. Move to Home first to set the base stack (prevents app closing on back)
+      context.go(AppRoutes.home);
+
+      // 2. Trigger Protected logic.
+      // If logged in: pushes Create CV page immediately.
+      // If not: shows the Auth Wall. Dismissing it leaves user safely on HomePage.
+      AuthGuard.protected(
+        context,
+        () => context.push(AppRoutes.createJobInput),
+        featureTitle: AppLocalizations.of(context)!.authWallCreateCV,
+        featureDescription: AppLocalizations.of(context)!.authWallCreateCVDesc,
+      )();
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

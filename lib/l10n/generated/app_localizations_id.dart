@@ -419,19 +419,6 @@ class AppLocalizationsId extends AppLocalizations {
       'ceritakan pengalamanmu atau laporkan masalah.';
 
   @override
-  String get feedbackTitle => 'terbantu dengan clever?';
-
-  @override
-  String get feedbackContent =>
-      'masukanmu sangat berarti buat bikin clever jadi lebih baik. boleh minta tolong kasih rating di play store?';
-
-  @override
-  String get rateNow => 'kasih rating';
-
-  @override
-  String get later => 'nanti aja';
-
-  @override
   String get male => 'laki-laki';
 
   @override
@@ -1506,4 +1493,17 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get showMeTheWay => 'mulai sekarang';
+
+  @override
+  String get reviewPromptTitle => 'suka dengan hasilnya?';
+
+  @override
+  String get reviewPromptContent =>
+      'masukanmu membantu kami membuat clever jadi lebih baik untuk semua orang.';
+
+  @override
+  String get reviewPromptPositive => 'ya, saya suka';
+
+  @override
+  String get reviewPromptNegative => 'mungkin nanti';
 }

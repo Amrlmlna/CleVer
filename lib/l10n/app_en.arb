@@ -134,10 +134,6 @@
   "featureRequest": "feature request",
   "feedback": "feedback",
   "feedbackSubtitle": "share your experience or report an issue.",
-  "feedbackTitle": "enjoying clever?",
-  "feedbackContent": "your feedback helps us make clever better for everyone. would you mind rating us on the play store?",
-  "rateNow": "rate now",
-  "later": "later",
   "male": "male",
   "female": "female",
   "secure": "secure",
@@ -555,5 +551,10 @@
   "onboardingComparisonValueRight": "2X",
   "onboardingComparisonFooter": "CleVer makes it easy and holds you accountable.",
   "onboardingViewSolution": "View Solution",
-  "showMeTheWay": "Show Me The Way"
+  "showMeTheWay": "Show Me The Way",
+  "reviewPromptTitle": "Enjoying the results?",
+  "reviewPromptContent": "Your feedback helps us make CleVer even better for everyone.",
+  "reviewPromptPositive": "Yes, I love it!",
+  "reviewPromptNegative": "Maybe later"
 }
+

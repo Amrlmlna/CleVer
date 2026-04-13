@@ -4,9 +4,7 @@ import '../../../../domain/entities/banner_ad.dart';
 import '../../../../data/datasources/remote_banner_datasource.dart';
 import '../../../../data/repositories/banner_repository_impl.dart';
 
-// Tracks whether the feedback CTA banner has been dismissed by the user.
-// Resets to false on app restart (in-memory only, no persistence needed).
-final feedbackBannerDismissedProvider = StateProvider<bool>((ref) => false);
+
 
 final bannerRepositoryProvider = Provider<BannerRepositoryImpl>((ref) {
   return BannerRepositoryImpl(
