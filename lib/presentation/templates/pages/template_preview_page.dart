@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../cv/providers/cv_download_provider.dart';
 import '../../wallet/widgets/credit_purchase_bottom_sheet.dart';
-import '../../../core/services/review_service.dart';
 import '../providers/template_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../../core/providers/locale_provider.dart';
@@ -26,10 +26,12 @@ class TemplatePreviewPage extends ConsumerStatefulWidget {
       _TemplatePreviewPageState();
 }
 
-class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
+class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage>
+    with WidgetsBindingObserver {
   String? _manualLocaleOverride;
   bool _usePhoto = true;
   bool _isUploading = false;
+  bool _isWaitingForPaywall = false;
 
   late PageController _pageController;
 
@@ -37,12 +39,24 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
   void initState() {
     super.initState();
     _pageController = PageController();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
     _pageController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && _isWaitingForPaywall) {
+      _isWaitingForPaywall = false;
+      if (mounted) {
+        CreditPurchaseBottomSheet.show(context);
+      }
+    }
   }
 
   Future<void> _handleDownload() async {
@@ -83,18 +97,17 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
           styleId: selectedStyleId,
           locale: effectiveLocale,
           usePhoto: _usePhoto,
+          onSuccess: () async {
+            if (mounted) {
+              setState(() {
+                _isWaitingForPaywall = true;
+              });
+              // Set the success flag for ReviewService to pick up later on HomePage
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setBool('has_generated_at_least_one_cv', true);
+            }
+          },
         );
-
-    if (mounted) {
-      final downloadResult = ref.read(cvDownloadProvider);
-      if (downloadResult.status == DownloadStatus.success) {
-        await CreditPurchaseBottomSheet.show(context);
-        
-        if (mounted) {
-          await ReviewService().requestReviewWithBlur(context);
-        }
-      }
-    }
   }
 
   @override

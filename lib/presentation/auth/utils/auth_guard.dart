@@ -8,6 +8,7 @@ class AuthGuard {
     String? featureTitle,
     String? featureDescription,
     VoidCallback? onAuthenticated,
+    VoidCallback? onDismiss,
   }) {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
@@ -16,6 +17,7 @@ class AuthGuard {
         featureTitle: featureTitle,
         featureDescription: featureDescription,
         onAuthenticated: onAuthenticated,
+        onDismiss: onDismiss,
       );
       return false;
     }
@@ -27,6 +29,7 @@ class AuthGuard {
     VoidCallback action, {
     String? featureTitle,
     String? featureDescription,
+    VoidCallback? onDismiss,
   }) {
     return () {
       final user = FirebaseAuth.instance.currentUser;
@@ -38,6 +41,7 @@ class AuthGuard {
           featureTitle: featureTitle,
           featureDescription: featureDescription,
           onAuthenticated: action,
+          onDismiss: onDismiss,
         );
       }
     };

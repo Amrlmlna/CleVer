@@ -8,11 +8,14 @@ import '../../profile/providers/profile_provider.dart';
 import '../../common/widgets/unsaved_changes_dialog.dart';
 
 import '../../auth/widgets/email_verification_bottom_sheet.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb;
+import '../../../core/router/app_routes.dart';
+import '../../onboarding/providers/onboarding_auth_capture_provider.dart';
+import '../../auth/widgets/auth_wall_bottom_sheet.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import '../../../domain/entities/app_user.dart';
 import '../../../core/services/notification_controller.dart';
 import '../../common/widgets/in_app_notification.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fb;
 
 class MainWrapperPage extends ConsumerStatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -99,6 +102,31 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
   Widget build(BuildContext context) {
     ref.listen(authStateProvider, (previous, next) {
       _checkVerification(next.value);
+    });
+
+    ref.listen(onboardingAuthCaptureProvider, (previous, next) {
+      if (next == true) {
+        ref.read(onboardingAuthCaptureProvider.notifier).state = false;
+
+        final user = ref.read(authStateProvider).value;
+
+        if (user == null) {
+          AuthWallBottomSheet.show(
+            context,
+            featureTitle: AppLocalizations.of(context)!.authWallCreateCV,
+            featureDescription: AppLocalizations.of(context)!.authWallCreateCVDesc,
+            onAuthenticated: () {
+              if (mounted) {
+                context.push(AppRoutes.createJobInput);
+              }
+            },
+            onDismiss: () {
+            },
+          );
+        } else {
+          context.push(AppRoutes.createJobInput);
+        }
+      }
     });
 
     final currentIndex = widget.navigationShell.currentIndex;

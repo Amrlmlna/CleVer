@@ -82,6 +82,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     required String styleId,
     String? locale,
     bool usePhoto = false,
+    VoidCallback? onSuccess,
   }) async {
     if (state.status == DownloadStatus.generating) {
       debugPrint('Download already in progress. Ignoring request.');
@@ -101,6 +102,15 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       if (await file.exists()) {
         debugPrint('Opening cached PDF from: ${file.path}');
         await OpenFilex.open(file.path);
+
+        state = state.copyWith(status: DownloadStatus.success);
+        onSuccess?.call();
+
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (state.status == DownloadStatus.success) {
+            state = state.copyWith(status: DownloadStatus.idle);
+          }
+        });
         return;
       }
     }
@@ -124,6 +134,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
           styleId,
           locale: locale,
           usePhoto: usePhoto,
+          onSuccess: onSuccess,
         );
       } else {
         await adService.showInterstitialAd(
@@ -134,6 +145,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
               styleId,
               locale: locale,
               usePhoto: usePhoto,
+              onSuccess: onSuccess,
             );
           },
         );
@@ -147,6 +159,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     String styleId, {
     String? locale,
     bool usePhoto = false,
+    VoidCallback? onSuccess,
   }) async {
     state = state.copyWith(status: DownloadStatus.generating);
     final effectiveLocale =
@@ -237,7 +250,11 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
 
       final result = await OpenFilex.open(pdfFile.path);
 
-      _localCache[_buildCacheKey(styleId, effectiveLocale)] = pdfFile.path;
+      _localCache[_buildCacheKey(
+        styleId,
+        effectiveLocale,
+        usePhoto: usePhoto,
+      )] = pdfFile.path;
 
       AnalyticsService().trackEvent(
         'cv_generation_completed',
@@ -250,6 +267,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
 
       ref.invalidate(templatesProvider);
       state = state.copyWith(status: DownloadStatus.success);
+      onSuccess?.call();
 
       if (context.mounted) {
         NotificationService.showSimpleNotification(

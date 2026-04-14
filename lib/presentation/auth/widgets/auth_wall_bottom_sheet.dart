@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../../../../core/router/app_routes.dart';
 import '../../profile/providers/profile_sync_provider.dart';
 import '../providers/auth_state_provider.dart';
 import '../widgets/gradient_button.dart';
@@ -13,12 +14,14 @@ class AuthWallBottomSheet extends ConsumerStatefulWidget {
   final String? featureTitle;
   final String? featureDescription;
   final VoidCallback? onAuthenticated;
+  final VoidCallback? onDismiss;
 
   const AuthWallBottomSheet({
     super.key,
     this.featureTitle,
     this.featureDescription,
     this.onAuthenticated,
+    this.onDismiss,
   });
 
   static Future<void> show(
@@ -26,8 +29,9 @@ class AuthWallBottomSheet extends ConsumerStatefulWidget {
     String? featureTitle,
     String? featureDescription,
     VoidCallback? onAuthenticated,
-  }) {
-    return showModalBottomSheet(
+    VoidCallback? onDismiss,
+  }) async {
+    final result = await showModalBottomSheet<bool>(
       context: context,
       useRootNavigator: true,
       isScrollControlled: true,
@@ -37,8 +41,13 @@ class AuthWallBottomSheet extends ConsumerStatefulWidget {
         featureTitle: featureTitle,
         featureDescription: featureDescription,
         onAuthenticated: onAuthenticated,
+        onDismiss: onDismiss,
       ),
     );
+
+    if (result == null) {
+      onDismiss?.call();
+    }
   }
 
   @override
@@ -64,7 +73,7 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
         }
 
         if (mounted) {
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(true);
           widget.onAuthenticated?.call();
         }
       }
@@ -175,8 +184,8 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                   onPressed: _isLoading
                       ? null
                       : () {
-                          Navigator.of(context).pop();
-                          context.push('/login');
+                          Navigator.of(context).pop(false);
+                          context.push(AppRoutes.login);
                         },
                   text: AppLocalizations.of(context)!.login,
                   icon: const Icon(Icons.email_outlined, color: Colors.white),
@@ -195,8 +204,8 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
-                        context.push('/signup');
+                        Navigator.of(context).pop(false);
+                        context.push(AppRoutes.signup);
                       },
                       child: Text(
                         AppLocalizations.of(context)!.signUp,

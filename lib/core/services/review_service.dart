@@ -10,13 +10,20 @@ class ReviewService {
 
   final InAppReview _inAppReview = InAppReview.instance;
   static const String _reviewFlagKey = 'has_prompted_native_review_v1';
+  static const String _successFlagKey = 'has_generated_at_least_one_cv';
 
   Future<void> requestReviewWithBlur(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     final hasPrompted = prefs.getBool(_reviewFlagKey) ?? false;
+    final hasGenerated = prefs.getBool(_successFlagKey) ?? false;
 
     if (hasPrompted) {
       debugPrint('[ReviewService] Native review already prompted before. Skipping.');
+      return;
+    }
+
+    if (!hasGenerated) {
+      debugPrint('[ReviewService] No successful generation detected yet. skipping.');
       return;
     }
 
