@@ -5,12 +5,6 @@ import '../entities/tailored_cv_result.dart';
 import '../entities/tailoring_options.dart';
 
 abstract class CVRepository {
-  Future<CVData> generateCV({
-    required UserProfile profile,
-    required JobInput jobInput,
-    required String styleId,
-    String? locale,
-  });
 
   Future<String> rewriteContent(String originalText, {String? locale});
 

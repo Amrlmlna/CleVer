@@ -10,30 +10,6 @@ class RemoteCVDataSource {
 
   static String get _cvBaseUrl => '${ApiConfig.baseUrl}/cv';
 
-  Future<Map<String, dynamic>> generateCV({
-    required Map<String, dynamic> profileJson,
-    required Map<String, dynamic> jobInputJson,
-    String? locale,
-  }) async {
-    final response = await _httpClient.post(
-      Uri.parse('$_cvBaseUrl/generate'),
-      headers: await ApiConfig.getAuthHeaders(),
-      body: jsonEncode({
-        'profile': profileJson,
-        'jobInput': jobInputJson,
-        if (locale != null) 'locale': locale,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw http.ClientException(
-        'Failed to generate CV: ${response.statusCode}',
-        response.request?.url,
-      );
-    }
-  }
 
   Future<Map<String, dynamic>> tailorProfile({
     required Map<String, dynamic> masterProfileJson,

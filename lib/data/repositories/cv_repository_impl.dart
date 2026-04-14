@@ -5,7 +5,7 @@ import '../../domain/entities/tailored_cv_result.dart';
 import '../../domain/entities/tailor_analysis.dart';
 import '../../domain/repositories/cv_repository.dart';
 import '../datasources/remote_cv_datasource.dart';
-import '../utils/cv_data_parser.dart';
+
 import '../utils/data_error_mapper.dart';
 import '../../domain/entities/tailoring_options.dart';
 
@@ -14,30 +14,6 @@ class CVRepositoryImpl implements CVRepository {
 
   CVRepositoryImpl({required this.remoteDataSource});
 
-  @override
-  Future<CVData> generateCV({
-    required UserProfile profile,
-    required JobInput jobInput,
-    required String styleId,
-    String? locale,
-  }) async {
-    try {
-      final responseData = await remoteDataSource.generateCV(
-        profileJson: profile.toJson(),
-        jobInputJson: jobInput.toJson(),
-        locale: locale,
-      );
-
-      return CVDataParser.parseGenerateResponse(
-        data: responseData,
-        profile: profile,
-        jobInput: jobInput,
-        styleId: styleId,
-      );
-    } catch (e) {
-      throw DataErrorMapper.map(e);
-    }
-  }
 
   @override
   Future<String> rewriteContent(String originalText, {String? locale}) async {
