@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NotificationController {
   static final StreamController<ReceivedAction> actionStreamController =
@@ -40,5 +41,33 @@ class NotificationController {
   ) async {
     debugPrint('Notification action received: ${receivedAction.id}');
     actionStreamController.add(receivedAction);
+
+    // Check for a URL in the payload and launch it
+    final payload = receivedAction.payload;
+    final url = payload?['url'] ?? payload?['route'];
+    if (url != null && url.isNotEmpty) {
+      await _launchUrl(url);
+    }
+  }
+
+  /// Opens a URL externally (browser or Play Store app)
+  static Future<void> _launchUrl(String urlString) async {
+    final uri = Uri.tryParse(urlString);
+    if (uri == null) return;
+    try {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      }
+    } catch (e) {
+      debugPrint('Could not launch URL: $urlString — $e');
+    }
+  }
+
+  /// Call this from onMessageOpenedApp (FCM tap when app was killed/background)
+  static Future<void> handleFcmTap(Map<String, dynamic> data) async {
+    final url = data['url'] ?? data['route'];
+    if (url != null && url.toString().isNotEmpty) {
+      await _launchUrl(url.toString());
+    }
   }
 }

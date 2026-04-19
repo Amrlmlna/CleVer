@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'notification_controller.dart';
 
 class NotificationService {
@@ -94,8 +96,14 @@ class NotificationService {
 
     debugPrint('User granted FCM permission: ${settings.authorizationStatus}');
 
+    // Save token to Firestore so Firebase Console campaigns reach this device
     String? token = await messaging.getToken();
     debugPrint('FCM Token: $token');
+    await _saveFcmToken(token);
+
+    // Listen for token refresh (tokens can rotate periodically)
+    messaging.onTokenRefresh.listen(_saveFcmToken);
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       debugPrint('Got a message whilst in the foreground!');
       debugPrint('Message data: ${message.data}');
@@ -114,7 +122,29 @@ class NotificationService {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       debugPrint('A new onMessageOpenedApp event was published!');
+      NotificationController.handleFcmTap(message.data);
     });
+  }
+
+  /// Saves the FCM token to Firestore under users/{uid}/fcmToken.
+  /// This allows Firebase Console to send targeted or broadcast notifications.
+  static Future<void> _saveFcmToken(String? token) async {
+    if (token == null) return;
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(uid).set(
+        {
+          'fcmToken': token,
+          'fcmUpdatedAt': FieldValue.serverTimestamp(),
+          'platform': 'android',
+        },
+        SetOptions(merge: true), // never overwrites other user fields
+      );
+      debugPrint('FCM token saved to Firestore for user $uid');
+    } catch (e) {
+      debugPrint('Failed to save FCM token: $e');
+    }
   }
 
   @pragma('vm:entry-point')
@@ -122,6 +152,40 @@ class NotificationService {
     RemoteMessage message,
   ) async {
     debugPrint("Handling a background message: ${message.messageId}");
+
+    // Background/terminated: we must show the notification manually
+    // AwesomeNotifications needs initialization first
+    await AwesomeNotifications().initialize(
+      'resource://drawable/notification_icon',
+      [
+        NotificationChannel(
+          channelKey: 'general_alerts',
+          channelName: 'General Alerts',
+          channelDescription: 'General app notifications',
+          defaultColor: const Color(0xFF1E1E1E),
+          importance: NotificationImportance.High,
+          channelShowBadge: true,
+          playSound: true,
+        ),
+      ],
+    );
+
+    final String? title =
+        message.notification?.title ?? message.data['title'];
+    final String? body =
+        message.notification?.body ?? message.data['body'];
+
+    if (title != null || body != null) {
+      await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: DateTime.now().millisecondsSinceEpoch.remainder(100000),
+          channelKey: 'general_alerts',
+          title: title,
+          body: body,
+          notificationLayout: NotificationLayout.Default,
+        ),
+      );
+    }
   }
 
   static Future<void> showSimpleNotification({
