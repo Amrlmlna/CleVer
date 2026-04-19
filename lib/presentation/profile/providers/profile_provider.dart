@@ -171,11 +171,15 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
       }
     }
 
-    final Set<String> uniqueSkills = Set.from(current.skills);
-    final initialSkillCount = uniqueSkills.length;
-    uniqueSkills.addAll(newProfile.skills);
+    final Map<String, Skill> uniqueSkillsMap = {
+      for (final s in current.skills) s.name.toLowerCase(): s,
+    };
+    final initialSkillCount = uniqueSkillsMap.length;
+    for (final s in newProfile.skills) {
+      uniqueSkillsMap.putIfAbsent(s.name.toLowerCase(), () => s);
+    }
 
-    if (uniqueSkills.length != initialSkillCount) {
+    if (uniqueSkillsMap.length != initialSkillCount) {
       hasChanges = true;
     }
 
@@ -233,7 +237,7 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
       final finalProfile = updatedInfo.copyWith(
         experience: mergedExperience,
         education: mergedEducation,
-        skills: uniqueSkills.toList(),
+        skills: uniqueSkillsMap.values.toList(),
         certifications: mergedCertifications,
       );
       await saveProfile(finalProfile);
@@ -279,7 +283,7 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     saveProfile(updated);
   }
 
-  void updateSkills(List<String> skills) {
+  void updateSkills(List<Skill> skills) {
     if (state == null) return;
     final updated = state!.copyWith(skills: skills);
     saveProfile(updated);
@@ -426,7 +430,7 @@ class ProfileController extends StateNotifier<ProfileState> {
     );
   }
 
-  void updateSkills(List<String> skills) {
+  void updateSkills(List<Skill> skills) {
     state = state.copyWith(
       currentProfile: state.currentProfile.copyWith(skills: skills),
     );

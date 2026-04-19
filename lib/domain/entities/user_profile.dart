@@ -2,10 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'experience.dart';
 import 'education.dart';
 import 'certification.dart';
+import 'skill.dart';
 
 export 'experience.dart';
 export 'education.dart';
 export 'certification.dart';
+export 'skill.dart';
 
 class UserProfile extends Equatable {
   final String fullName;
@@ -14,7 +16,7 @@ class UserProfile extends Equatable {
   final String? location;
   final List<Experience> experience;
   final List<Education> education;
-  final List<String> skills;
+  final List<Skill> skills;
   final List<Certification> certifications;
   final String? photoUrl;
   final String? birthDate;
@@ -41,7 +43,7 @@ class UserProfile extends Equatable {
     String? location,
     List<Experience>? experience,
     List<Education>? education,
-    List<String>? skills,
+    List<Skill>? skills,
     List<Certification>? certifications,
     String? photoUrl,
     String? birthDate,
@@ -70,7 +72,7 @@ class UserProfile extends Equatable {
       'location': location,
       'experience': experience.map((e) => e.toJson()).toList(),
       'education': education.map((e) => e.toJson()).toList(),
-      'skills': skills,
+      'skills': skills.map((s) => s.toJson()).toList(),
       'certifications': certifications.map((e) => e.toJson()).toList(),
       'photoUrl': photoUrl,
       'birthDate': birthDate,
@@ -96,7 +98,11 @@ class UserProfile extends Equatable {
           const [],
       skills:
           (json['skills'] as List<dynamic>?)
-              ?.map((e) => e as String)
+              ?.map((e) {
+                if (e is String) return Skill.fromString(e);
+                if (e is Map<String, dynamic>) return Skill.fromJson(e);
+                return Skill.fromString(e.toString());
+              })
               .toList() ??
           const [],
       certifications:

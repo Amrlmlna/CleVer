@@ -4,17 +4,18 @@ import '../../common/widgets/unsaved_changes_dialog.dart';
 import '../../common/widgets/custom_text_form_field.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../domain/entities/skill.dart';
 
 class SkillsBottomSheet extends StatefulWidget {
-  final List<String> currentSkills;
+  final List<Skill> currentSkills;
 
   const SkillsBottomSheet({super.key, required this.currentSkills});
 
-  static Future<String?> show(
+  static Future<Skill?> show(
     BuildContext context,
-    List<String> currentSkills,
+    List<Skill> currentSkills,
   ) {
-    return showModalBottomSheet<String>(
+    return showModalBottomSheet<Skill>(
       context: context,
       useRootNavigator: true,
       isScrollControlled: true,
@@ -41,6 +42,7 @@ class SkillsBottomSheet extends StatefulWidget {
 class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
   final _controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  SkillCategory _selectedCategory = SkillCategory.technical;
 
   bool get _isDirty => _controller.text.trim().isNotEmpty;
 
@@ -52,13 +54,17 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      Navigator.pop(context, _controller.text.trim());
+      Navigator.pop(
+        context,
+        Skill(name: _controller.text.trim(), category: _selectedCategory),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final isId = Localizations.localeOf(context).languageCode == 'id';
 
     return PopScope(
       canPop: false,
@@ -98,6 +104,49 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
                     ),
                   ),
                   const SizedBox(height: 24),
+
+                  // Category Selector
+                  Text(
+                    isId ? 'Kategori' : 'Category',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: SkillCategory.values.map((category) {
+                      final isSelected = _selectedCategory == category;
+                      return ChoiceChip(
+                        label: Text(
+                          isId ? category.displayNameId : category.displayName,
+                        ),
+                        selected: isSelected,
+                        onSelected: (_) {
+                          setState(() => _selectedCategory = category);
+                        },
+                        selectedColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.15),
+                        labelStyle: TextStyle(
+                          color: isSelected
+                              ? Theme.of(context).colorScheme.primary
+                              : Theme.of(context).colorScheme.onSurface,
+                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            color: isSelected
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).colorScheme.outlineVariant,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 20),
+
                   CustomTextFormField(
                     controller: _controller,
                     labelText: localization.skills,
@@ -108,7 +157,7 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
                         return localization.requiredField;
                       }
                       if (widget.currentSkills.any(
-                        (s) => s.toLowerCase() == v.trim().toLowerCase(),
+                        (s) => s.name.toLowerCase() == v.trim().toLowerCase(),
                       )) {
                         return localization.cvDataExists;
                       }

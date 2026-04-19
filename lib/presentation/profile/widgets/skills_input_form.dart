@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../domain/entities/skill.dart';
 import 'skills_bottom_sheet.dart';
 
 class SkillsInputForm extends StatefulWidget {
-  final List<String> skills;
-  final Function(List<String>) onChanged;
+  final List<Skill> skills;
+  final Function(List<Skill>) onChanged;
 
   const SkillsInputForm({
     super.key,
@@ -19,20 +20,31 @@ class SkillsInputForm extends StatefulWidget {
 class _SkillsInputFormState extends State<SkillsInputForm> {
   void _showAddSkill() async {
     final result = await SkillsBottomSheet.show(context, widget.skills);
-    if (result != null && result.isNotEmpty) {
-      final newList = List<String>.from(widget.skills)..add(result);
+    if (result != null) {
+      final newList = List<Skill>.from(widget.skills)..add(result);
       widget.onChanged(newList);
     }
   }
 
-  void _removeSkill(String skill) {
-    final newList = List<String>.from(widget.skills)..remove(skill);
+  void _removeSkill(Skill skill) {
+    final newList = List<Skill>.from(widget.skills)..remove(skill);
     widget.onChanged(newList);
+  }
+
+  /// Group skills by category for organized display.
+  Map<SkillCategory, List<Skill>> get _groupedSkills {
+    final grouped = <SkillCategory, List<Skill>>{};
+    for (final skill in widget.skills) {
+      grouped.putIfAbsent(skill.category, () => []).add(skill);
+    }
+    return grouped;
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isId = Localizations.localeOf(context).languageCode == 'id';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -80,36 +92,57 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
             ),
           )
         else
-          Wrap(
-            spacing: 8.0,
-            runSpacing: 8.0,
-            children: widget.skills
-                .map(
-                  (skill) => Chip(
-                    label: Text(
-                      skill,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                    backgroundColor: Theme.of(context)
-                        .colorScheme
-                        .surfaceContainerHighest
-                        .withValues(alpha: 0.3),
-                    side: BorderSide.none,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    onDeleted: () => _removeSkill(skill),
-                    deleteIcon: Icon(
-                      Icons.cancel,
-                      size: 18,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ..._groupedSkills.entries.map((entry) {
+            final category = entry.key;
+            final skills = entry.value;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    isId ? category.displayNameId : category.displayName,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                )
-                .toList(),
-          ),
+                  const SizedBox(height: 6),
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: skills
+                        .map(
+                          (skill) => Chip(
+                            label: Text(
+                              skill.name,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                            ),
+                            backgroundColor: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest
+                                .withValues(alpha: 0.3),
+                            side: BorderSide.none,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            onDeleted: () => _removeSkill(skill),
+                            deleteIcon: Icon(
+                              Icons.cancel,
+                              size: 18,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ],
+              ),
+            );
+          }),
       ],
     );
   }

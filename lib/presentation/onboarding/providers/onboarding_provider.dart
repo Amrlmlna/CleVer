@@ -114,7 +114,7 @@ class OnboardingFormNotifier extends StateNotifier<OnboardingState> {
     );
   }
 
-  void updateSkills(List<String> skills) {
+  void updateSkills(List<Skill> skills) {
     state = state.copyWith(formData: state.formData.copyWith(skills: skills));
   }
 

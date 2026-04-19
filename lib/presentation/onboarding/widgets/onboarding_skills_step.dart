@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../domain/entities/skill.dart';
 import '../../profile/widgets/skills_input_form.dart';
 
 class OnboardingSkillsStep extends StatelessWidget {
-  final List<String> skills;
-  final ValueChanged<List<String>> onChanged;
+  final List<Skill> skills;
+  final ValueChanged<List<Skill>> onChanged;
 
   const OnboardingSkillsStep({
     super.key,

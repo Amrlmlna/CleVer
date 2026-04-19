@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../domain/entities/education.dart';
 import '../../../../domain/entities/experience.dart';
 import '../../../../domain/entities/certification.dart';
+import '../../../../domain/entities/skill.dart';
 import '../../../profile/widgets/education_list_form.dart';
 import '../../../profile/widgets/experience_list_form.dart';
 import '../../../profile/widgets/certification_list_form.dart';
@@ -28,12 +29,12 @@ class UserDataFormContent extends StatefulWidget {
 
   final List<Experience> experience;
   final List<Education> education;
-  final List<String> skills;
+  final List<Skill> skills;
   final List<Certification> certifications;
 
   final ValueChanged<List<Experience>> onExperienceChanged;
   final ValueChanged<List<Education>> onEducationChanged;
-  final ValueChanged<List<String>> onSkillsChanged;
+  final ValueChanged<List<Skill>> onSkillsChanged;
   final ValueChanged<List<Certification>> onCertificationsChanged;
 
   const UserDataFormContent({

@@ -33,7 +33,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
 
   List<Experience> _experience = [];
   List<Education> _education = [];
-  List<String> _skills = [];
+  List<Skill> _skills = [];
   List<Certification> _certifications = [];
 
   @override
@@ -59,7 +59,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
 
           _experience = List<Experience>.from(profileToUse.experience);
           _education = List<Education>.from(profileToUse.education);
-          _skills = List<String>.from(profileToUse.skills);
+          _skills = List<Skill>.from(profileToUse.skills);
           _certifications = List<Certification>.from(
             profileToUse.certifications,
           );
@@ -104,7 +104,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         gender: _genderController.text,
         experience: _experience,
         education: _education,
-        skills: _skills.isNotEmpty ? _skills : ['Leadership', 'Communication'],
+        skills: _skills.isNotEmpty ? _skills : [const Skill(name: 'Leadership', category: SkillCategory.soft), const Skill(name: 'Communication', category: SkillCategory.soft)],
         certifications: _certifications,
       );
 
