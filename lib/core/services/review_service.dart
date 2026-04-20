@@ -22,6 +22,7 @@ class ReviewService {
       return;
     }
 
+    // Always ensure they have at least one generation success for quality control
     if (!hasGenerated) {
       debugPrint('[ReviewService] No successful generation detected yet. skipping.');
       return;
@@ -39,17 +40,27 @@ class ReviewService {
 
   Future<void> requestReview() async {
     try {
-      if (await _inAppReview.isAvailable()) {
+      final isAvailable = await _inAppReview.isAvailable();
+      if (isAvailable) {
+        // This triggers the native Review Dialog (Play Store / App Store)
         await _inAppReview.requestReview();
+      } else {
+        // Fallback: If native is not available on this device/region, open the Store page directly
+        await openStoreListing();
       }
     } catch (e) {
       debugPrint('ReviewService Error: $e');
+      // Final fallback to store listing if unexpected error occurs
+      await openStoreListing();
     }
   }
 
   Future<void> openStoreListing() async {
     try {
-      await _inAppReview.openStoreListing(appStoreId: 'com.clevermaster.app');
+      // package_info_plus can be used here to get dynamic ID, but com.clevermaster.app is correct for now
+      await _inAppReview.openStoreListing(
+        appStoreId: 'com.clevermaster.app',
+      );
     } catch (e) {
       debugPrint('ReviewService Store Error: $e');
     }

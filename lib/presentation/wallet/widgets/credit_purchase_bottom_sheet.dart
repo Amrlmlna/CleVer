@@ -7,7 +7,6 @@ import '../../../core/services/payment_service.dart';
 import '../models/credit_package.dart';
 import 'benefit_item.dart';
 import 'package_card.dart';
-import 'liquid_glass_sheet_painter.dart';
 
 class CreditPurchaseBottomSheet extends ConsumerStatefulWidget {
   const CreditPurchaseBottomSheet({super.key});
@@ -97,70 +96,64 @@ class _CreditPurchaseBottomSheetState
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    return ClipRRect(
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
-        child: CustomPaint(
-          painter: LiquidGlassSheetPainter(colorScheme: colorScheme),
-          child: SingleChildScrollView(
-            child: Container(
+    return Container(
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(24),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 32,
+            height: 4,
+            margin: const EdgeInsets.symmetric(vertical: 12),
+            decoration: BoxDecoration(
+              color: colorScheme.onSurface.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          Flexible(
+            child: SingleChildScrollView(
               padding: EdgeInsets.fromLTRB(
                 24,
-                16,
+                8,
                 24,
                 24 + MediaQuery.of(context).padding.bottom,
               ),
-              decoration: BoxDecoration(
-                color: colorScheme.surface.withValues(alpha: 0.8),
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(28),
-                ),
-              ),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    width: 40,
-                    height: 4,
-                    margin: const EdgeInsets.only(bottom: 28),
-                    decoration: BoxDecoration(
-                      color: colorScheme.onSurfaceVariant.withValues(
-                        alpha: 0.3,
-                      ),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-
                   Text(
-                    l10n.getCredits,
-                    style: textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
+                    l10n.getCredits.toUpperCase(),
+                    style: textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w900,
                       color: colorScheme.onSurface,
-                      letterSpacing: -0.5,
+                      letterSpacing: -1.0,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 32),
 
                   BenefitItem(
-                    icon: Icons.description_outlined,
+                    icon: Icons.auto_awesome_outlined,
                     title: l10n.benefitRegularTitle,
                     description: l10n.benefitRegularDesc,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                   BenefitItem(
-                    icon: Icons.workspace_premium_outlined,
+                    icon: Icons.verified_outlined,
                     title: l10n.benefitPremiumTitle,
                     description: l10n.benefitPremiumDesc,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                   BenefitItem(
-                    icon: Icons.block_outlined,
+                    icon: Icons.bolt_outlined,
                     title: l10n.benefitSkipAdsTitle,
                     description: l10n.benefitSkipAdsDesc,
                   ),
 
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 40),
 
                   ..._packages.asMap().entries.map((entry) {
                     final index = entry.key;
@@ -179,81 +172,75 @@ class _CreditPurchaseBottomSheetState
                     );
                   }),
 
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 32),
 
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton(
                       onPressed: _isPurchasing ? null : _handlePurchase,
                       style: FilledButton.styleFrom(
-                        backgroundColor: colorScheme.primary,
-                        foregroundColor: colorScheme.onPrimary,
-                        disabledBackgroundColor: colorScheme.primary.withValues(
+                        backgroundColor: colorScheme.onSurface,
+                        foregroundColor: colorScheme.surface,
+                        disabledBackgroundColor: colorScheme.onSurface.withValues(
                           alpha: 0.3,
                         ),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 20),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(12),
                         ),
+                        elevation: 0,
                       ),
                       child: _isPurchasing
                           ? SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: colorScheme.onPrimary,
+                                strokeWidth: 3,
+                                color: colorScheme.surface,
                               ),
                             )
                           : Text(
-                              l10n.getCredits,
+                              l10n.getCredits.toUpperCase(),
                               style: textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: colorScheme.onPrimary,
+                                fontWeight: FontWeight.w900,
+                                color: colorScheme.surface,
+                                letterSpacing: 1.0,
                               ),
                             ),
                     ),
                   ),
                   const SizedBox(height: 12),
 
-                  SizedBox(
-                    width: double.infinity,
-                    child: TextButton(
-                      onPressed: () => Navigator.of(context).pop(false),
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      child: Text(
-                        l10n.skipForNow,
-                        style: textTheme.titleSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant.withValues(
-                            alpha: 0.6,
-                          ),
-                          fontWeight: FontWeight.w500,
-                        ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    child: Text(
+                      l10n.skipForNow,
+                      style: textTheme.labelLarge?.copyWith(
+                        color: colorScheme.onSurface.withValues(alpha: 0.4),
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.lock_outline_rounded,
-                        size: 12,
-                        color: colorScheme.onSurfaceVariant.withValues(
-                          alpha: 0.5,
-                        ),
+                        Icons.shield_outlined,
+                        size: 14,
+                        color: colorScheme.onSurface.withValues(alpha: 0.3),
                       ),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: 8),
                       Text(
                         l10n.securePayment,
                         style: textTheme.labelSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant.withValues(
-                            alpha: 0.5,
-                          ),
+                          color: colorScheme.onSurface.withValues(alpha: 0.3),
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
@@ -262,7 +249,7 @@ class _CreditPurchaseBottomSheetState
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

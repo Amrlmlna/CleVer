@@ -22,38 +22,36 @@ class BenefitItem extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.only(top: 2),
-          padding: const EdgeInsets.all(5),
+          padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: colorScheme.onSurface.withValues(alpha: 0.05),
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: colorScheme.onSurface.withValues(alpha: 0.08),
-            ),
+            color: colorScheme.onSurface.withValues(alpha: 0.03),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
-            size: 14,
-            color: colorScheme.onSurface.withValues(alpha: 0.8),
+            size: 16,
+            color: colorScheme.onSurface,
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 14),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
-                style: textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: colorScheme.onSurface.withValues(alpha: 0.95),
+                style: textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: colorScheme.onSurface,
                   letterSpacing: -0.2,
                 ),
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: 1),
               Text(
                 description,
                 style: textTheme.bodySmall?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
+                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                  fontSize: 12,
                   height: 1.4,
                 ),
               ),

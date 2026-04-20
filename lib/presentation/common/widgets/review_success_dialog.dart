@@ -45,36 +45,31 @@ class ReviewSuccessDialog extends StatelessWidget {
                       decoration: BoxDecoration(
                         // Semi-transparent surface for glass effect
                         color: AppColors.sheetSurface.withValues(alpha: 0.85),
-                        borderRadius: BorderRadius.circular(28),
+                        borderRadius: BorderRadius.circular(24),
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Icon with Premium Glow
+                          // Icon: Minimalist Solid Black
                           Container(
-                            width: 80,
-                            height: 80,
+                            width: 72,
+                            height: 72,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: AppColors.accentCyan.withValues(alpha: 0.1),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.accentCyan
-                                      .withValues(alpha: 0.15),
-                                  blurRadius: 20,
-                                  spreadRadius: 2,
-                                ),
-                              ],
+                              border: Border.all(
+                                color: AppColors.black.withValues(alpha: 0.1),
+                                width: 1.5,
+                              ),
                             ),
                             child: const Center(
                               child: Icon(
                                 Icons.star_rounded,
-                                color: AppColors.accentCyan,
-                                size: 48,
+                                color: AppColors.black,
+                                size: 42,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 28),
 
                           // Title
                           Text(
@@ -99,7 +94,7 @@ class ReviewSuccessDialog extends StatelessWidget {
                           ),
                           const SizedBox(height: 32),
 
-                          // Buttons
+                          // Buttons: High-Contrast Monochromatic
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
@@ -107,31 +102,39 @@ class ReviewSuccessDialog extends StatelessWidget {
                                 onPressed: () =>
                                     Navigator.of(context).pop(true),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.accentBlue,
+                                  backgroundColor: AppColors.black,
                                   foregroundColor: AppColors.white,
+                                  elevation: 0,
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 18,
                                   ),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
+                                    borderRadius: BorderRadius.circular(14),
                                   ),
                                 ),
                                 child: Text(
                                   l10n.reviewPromptPositive,
                                   style: AppTextStyles.labelLarge.copyWith(
                                     fontSize: 16,
+                                    fontWeight: FontWeight.w700,
                                     color: AppColors.white,
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 12),
                               TextButton(
                                 onPressed: () =>
                                     Navigator.of(context).pop(false),
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
+                                ),
                                 child: Text(
                                   l10n.reviewPromptNegative,
-                                  style: AppTextStyles.labelLarge.copyWith(
-                                    color: colorScheme.onSurfaceVariant,
+                                  style: AppTextStyles.labelMedium.copyWith(
+                                    color: AppColors.grey500,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
@@ -157,7 +160,7 @@ class _LiquidGlassDialogPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final rect = Offset.zero & size;
-    final rrect = RRect.fromRectAndRadius(rect, const Radius.circular(28));
+    final rrect = RRect.fromRectAndRadius(rect, const Radius.circular(24));
 
     // Specular highlight from top-left
     final specularPaint = Paint()

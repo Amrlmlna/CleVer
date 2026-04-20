@@ -36,6 +36,11 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkVerification(ref.read(authStateProvider).value);
+      
+      // Handle "missed" onboarding success trigger from navigation
+      if (ref.read(onboardingAuthCaptureProvider)) {
+        _handleOnboardingSuccess();
+      }
     });
 
     NotificationController.displayStreamController.stream.listen((
@@ -98,6 +103,29 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
     );
   }
 
+  void _handleOnboardingSuccess() {
+    // Reset state immediately to avoid duplicate triggers
+    ref.read(onboardingAuthCaptureProvider.notifier).state = false;
+
+    final user = ref.read(authStateProvider).value;
+
+    if (user == null) {
+      AuthWallBottomSheet.show(
+        context,
+        featureTitle: AppLocalizations.of(context)!.authWallCreateCV,
+        featureDescription: AppLocalizations.of(context)!.authWallCreateCVDesc,
+        onAuthenticated: () {
+          if (mounted) {
+            context.push(AppRoutes.createJobInput);
+          }
+        },
+        onDismiss: () {},
+      );
+    } else {
+      context.push(AppRoutes.createJobInput);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen(authStateProvider, (previous, next) {
@@ -106,26 +134,7 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
 
     ref.listen(onboardingAuthCaptureProvider, (previous, next) {
       if (next == true) {
-        ref.read(onboardingAuthCaptureProvider.notifier).state = false;
-
-        final user = ref.read(authStateProvider).value;
-
-        if (user == null) {
-          AuthWallBottomSheet.show(
-            context,
-            featureTitle: AppLocalizations.of(context)!.authWallCreateCV,
-            featureDescription: AppLocalizations.of(context)!.authWallCreateCVDesc,
-            onAuthenticated: () {
-              if (mounted) {
-                context.push(AppRoutes.createJobInput);
-              }
-            },
-            onDismiss: () {
-            },
-          );
-        } else {
-          context.push(AppRoutes.createJobInput);
-        }
+        _handleOnboardingSuccess();
       }
     });
 

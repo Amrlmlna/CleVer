@@ -29,41 +29,21 @@ class PackageCard extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: BoxDecoration(
           color: isSelected
               ? colorScheme.onSurface.withValues(alpha: 0.05)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(16),
+              : colorScheme.surface,
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
-                ? colorScheme.onSurface.withValues(alpha: 0.3)
-                : colorScheme.onSurface.withValues(alpha: 0.05),
-            width: isSelected ? 1.5 : 1,
+                ? colorScheme.onSurface
+                : colorScheme.onSurface.withValues(alpha: 0.1),
+            width: isSelected ? 2.0 : 1.0,
           ),
         ),
         child: Row(
           children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isSelected ? colorScheme.onSurface : Colors.transparent,
-                border: Border.all(
-                  color: isSelected
-                      ? colorScheme.onSurface
-                      : colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
-                  width: 1.5,
-                ),
-              ),
-              child: isSelected
-                  ? Icon(Icons.check, size: 12, color: colorScheme.surface)
-                  : null,
-            ),
-            const SizedBox(width: 16),
-
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,44 +52,44 @@ class PackageCard extends StatelessWidget {
                     children: [
                       Text(
                         l10n.creditsCount(package.credits),
-                        style: textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
+                        style: textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
                           color: colorScheme.onSurface,
+                          letterSpacing: -0.5,
                         ),
                       ),
                       if (package.isPopular) ...[
                         const SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 6,
-                            vertical: 2,
+                            horizontal: 8,
+                            vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color: colorScheme.primary.withValues(alpha: 0.15),
+                            color: colorScheme.onSurface,
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
                             l10n.popularBadge.toUpperCase(),
                             style: textTheme.labelSmall?.copyWith(
-                              fontSize: 8,
-                              fontWeight: FontWeight.w700,
-                              color: colorScheme.primary,
-                              letterSpacing: 0.5,
+                              fontSize: 9,
+                              fontWeight: FontWeight.w900,
+                              color: colorScheme.surface,
+                              letterSpacing: 1.0,
                             ),
                           ),
                         ),
                       ],
                     ],
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
                       Text(
                         '$perCredit${l10n.perCredit}',
-                        style: textTheme.labelSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant.withValues(
-                            alpha: 0.8,
-                          ),
+                        style: textTheme.labelMedium?.copyWith(
+                          color: colorScheme.onSurface.withValues(alpha: 0.5),
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       if (package.savingsPercent != null) ...[
@@ -118,8 +98,8 @@ class PackageCard extends StatelessWidget {
                           l10n.savePercent(package.savingsPercent!),
                           style: textTheme.labelSmall?.copyWith(
                             fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                            color: colorScheme.primary,
+                            fontWeight: FontWeight.w700,
+                            color: colorScheme.onSurface,
                           ),
                         ),
                       ],
@@ -128,13 +108,26 @@ class PackageCard extends StatelessWidget {
                 ],
               ),
             ),
-
-            Text(
-              price,
-              style: textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: colorScheme.onSurface,
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  price,
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+                if (isSelected) 
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Icon(
+                      Icons.check_circle_rounded,
+                      size: 18,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+              ],
             ),
           ],
         ),
