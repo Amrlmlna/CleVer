@@ -90,41 +90,51 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
 
     final List<Experience> mergedExperience = List.from(current.experience);
     for (final newExp in newProfile.experience) {
-      bool exists = false;
-
-      for (final oldExp in mergedExperience) {
-        // 1. Fingerprint Match (Immutable Identity)
+      int existsIndex = -1;
+      for (int i = 0; i < mergedExperience.length; i++) {
+        final oldExp = mergedExperience[i];
+        // 1. Fingerprint Match
         if (newExp.fingerprint != null &&
             oldExp.fingerprint != null &&
             newExp.fingerprint == oldExp.fingerprint) {
-          exists = true;
+          existsIndex = i;
           break;
         }
 
-        // 2. Identity Match (Normalized Company + Title + Date)
-        // Strengthened to include title to prevent merging promotions
+        // 2. Identity Match
         if (DeduplicationUtils.normalizeText(oldExp.companyName) ==
                 DeduplicationUtils.normalizeText(newExp.companyName) &&
             DeduplicationUtils.normalizeText(oldExp.jobTitle) ==
                 DeduplicationUtils.normalizeText(newExp.jobTitle) &&
             DeduplicationUtils.normalizeDate(oldExp.startDate) ==
                 DeduplicationUtils.normalizeDate(newExp.startDate)) {
-          exists = true;
+          existsIndex = i;
           break;
         }
 
-        // 3. Fuzzy Match (Similarity > 85%)
+        // 3. Fuzzy Match
         if (DeduplicationUtils.isFuzzyMatch(oldExp.jobTitle, newExp.jobTitle) &&
             DeduplicationUtils.isFuzzyMatch(
               oldExp.companyName,
               newExp.companyName,
             )) {
-          exists = true;
+          existsIndex = i;
           break;
         }
       }
 
-      if (!exists) {
+      if (existsIndex != -1) {
+        final oldExp = mergedExperience[existsIndex];
+        final updatedExp = oldExp.copyWith(
+          description: (newExp.description?.length ?? 0) > (oldExp.description?.length ?? 0)
+              ? newExp.description
+              : oldExp.description,
+        );
+        if (updatedExp != oldExp) {
+          mergedExperience[existsIndex] = updatedExp;
+          hasChanges = true;
+        }
+      } else {
         mergedExperience.add(newExp);
         hasChanges = true;
       }
@@ -132,40 +142,53 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
 
     final List<Education> mergedEducation = List.from(current.education);
     for (final newEdu in newProfile.education) {
-      bool exists = false;
-
-      for (final oldEdu in mergedEducation) {
+      int existsIndex = -1;
+      for (int i = 0; i < mergedEducation.length; i++) {
+        final oldEdu = mergedEducation[i];
         // 1. Fingerprint Match
         if (newEdu.fingerprint != null &&
             oldEdu.fingerprint != null &&
             newEdu.fingerprint == oldEdu.fingerprint) {
-          exists = true;
+          existsIndex = i;
           break;
         }
 
-        // 2. Identity Match (School + Degree + Date)
+        // 2. Identity Match
         if (DeduplicationUtils.normalizeText(oldEdu.schoolName) ==
                 DeduplicationUtils.normalizeText(newEdu.schoolName) &&
             DeduplicationUtils.normalizeText(oldEdu.degree) ==
                 DeduplicationUtils.normalizeText(newEdu.degree) &&
             DeduplicationUtils.normalizeDate(oldEdu.startDate) ==
                 DeduplicationUtils.normalizeDate(newEdu.startDate)) {
-          exists = true;
+          existsIndex = i;
           break;
         }
 
-        // 3. Fuzzy Match (Degree + School)
+        // 3. Fuzzy Match
         if (DeduplicationUtils.isFuzzyMatch(oldEdu.degree, newEdu.degree) &&
             DeduplicationUtils.isFuzzyMatch(
               oldEdu.schoolName,
               newEdu.schoolName,
             )) {
-          exists = true;
+          existsIndex = i;
           break;
         }
       }
 
-      if (!exists) {
+      if (existsIndex != -1) {
+        final oldEdu = mergedEducation[existsIndex];
+        final updatedEdu = oldEdu.copyWith(
+          gpa: newEdu.gpa ?? oldEdu.gpa,
+          subjects: newEdu.subjects.length > oldEdu.subjects.length ? newEdu.subjects : oldEdu.subjects,
+          description: (newEdu.description?.length ?? 0) > (oldEdu.description?.length ?? 0)
+              ? newEdu.description
+              : oldEdu.description,
+        );
+        if (updatedEdu != oldEdu) {
+          mergedEducation[existsIndex] = updatedEdu;
+          hasChanges = true;
+        }
+      } else {
         mergedEducation.add(newEdu);
         hasChanges = true;
       }

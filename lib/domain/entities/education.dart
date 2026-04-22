@@ -77,6 +77,7 @@ class Education extends Equatable {
           json['startDate'] as String? ?? json['start_date'] as String? ?? '2000-01',
       endDate: json['endDate'] as String? ?? json['end_date'] as String?,
       description: FormatUtils.ensureString(json['description']),
+      gpa: json['gpa'] as String?,
       subjects:
           (json['subjects'] as List<dynamic>?)
               ?.map((s) => Subject.fromJson(s as Map<String, dynamic>))
