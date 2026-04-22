@@ -478,12 +478,13 @@ class ProfileController extends StateNotifier<ProfileState> {
 
     final List<Experience> dedupedExp = List.from(current.experience);
     for (final newExp in importedProfile.experience) {
-      bool exists = false;
-      for (final oldExp in dedupedExp) {
+      int existsIndex = -1;
+      for (int i = 0; i < dedupedExp.length; i++) {
+        final oldExp = dedupedExp[i];
         if (newExp.fingerprint != null &&
             oldExp.fingerprint != null &&
             newExp.fingerprint == oldExp.fingerprint) {
-          exists = true;
+          existsIndex = i;
           break;
         }
         if (DeduplicationUtils.normalizeText(oldExp.companyName) ==
@@ -492,7 +493,7 @@ class ProfileController extends StateNotifier<ProfileState> {
                 DeduplicationUtils.normalizeText(newExp.jobTitle) &&
             DeduplicationUtils.normalizeDate(oldExp.startDate) ==
                 DeduplicationUtils.normalizeDate(newExp.startDate)) {
-          exists = true;
+          existsIndex = i;
           break;
         }
         if (DeduplicationUtils.isFuzzyMatch(oldExp.jobTitle, newExp.jobTitle) &&
@@ -500,21 +501,34 @@ class ProfileController extends StateNotifier<ProfileState> {
               oldExp.companyName,
               newExp.companyName,
             )) {
-          exists = true;
+          existsIndex = i;
           break;
         }
       }
-      if (!exists) dedupedExp.add(newExp);
+      if (existsIndex != -1) {
+        final oldExp = dedupedExp[existsIndex];
+        final updatedExp = oldExp.copyWith(
+          description: (newExp.description?.length ?? 0) > (oldExp.description?.length ?? 0)
+              ? newExp.description
+              : oldExp.description,
+        );
+        if (updatedExp != oldExp) {
+          dedupedExp[existsIndex] = updatedExp;
+        }
+      } else {
+        dedupedExp.add(newExp);
+      }
     }
 
     final List<Education> dedupedEdu = List.from(current.education);
     for (final newEdu in importedProfile.education) {
-      bool exists = false;
-      for (final oldEdu in dedupedEdu) {
+      int existsIndex = -1;
+      for (int i = 0; i < dedupedEdu.length; i++) {
+        final oldEdu = dedupedEdu[i];
         if (newEdu.fingerprint != null &&
             oldEdu.fingerprint != null &&
             newEdu.fingerprint == oldEdu.fingerprint) {
-          exists = true;
+          existsIndex = i;
           break;
         }
         if (DeduplicationUtils.normalizeText(oldEdu.schoolName) ==
@@ -523,7 +537,7 @@ class ProfileController extends StateNotifier<ProfileState> {
                 DeduplicationUtils.normalizeText(newEdu.degree) &&
             DeduplicationUtils.normalizeDate(oldEdu.startDate) ==
                 DeduplicationUtils.normalizeDate(newEdu.startDate)) {
-          exists = true;
+          existsIndex = i;
           break;
         }
         if (DeduplicationUtils.isFuzzyMatch(oldEdu.degree, newEdu.degree) &&
@@ -531,11 +545,25 @@ class ProfileController extends StateNotifier<ProfileState> {
               oldEdu.schoolName,
               newEdu.schoolName,
             )) {
-          exists = true;
+          existsIndex = i;
           break;
         }
       }
-      if (!exists) dedupedEdu.add(newEdu);
+      if (existsIndex != -1) {
+        final oldEdu = dedupedEdu[existsIndex];
+        final updatedEdu = oldEdu.copyWith(
+          gpa: newEdu.gpa ?? oldEdu.gpa,
+          subjects: newEdu.subjects.length > oldEdu.subjects.length ? newEdu.subjects : oldEdu.subjects,
+          description: (newEdu.description?.length ?? 0) > (oldEdu.description?.length ?? 0)
+              ? newEdu.description
+              : oldEdu.description,
+        );
+        if (updatedEdu != oldEdu) {
+          dedupedEdu[existsIndex] = updatedEdu;
+        }
+      } else {
+        dedupedEdu.add(newEdu);
+      }
     }
 
     final List<Certification> dedupedCert = List.from(current.certifications);
