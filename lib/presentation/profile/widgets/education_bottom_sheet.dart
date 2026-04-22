@@ -274,8 +274,10 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
         showLoading();
         text = await ocrService.extractTextFromFilePath(file.path);
       } else {
+        final file = await ocrService.pickPDFFile();
+        if (file == null) return;
         showLoading();
-        text = await ocrService.extractTextFromPDF();
+        text = await ocrService.extractTextFromPDFFile(file);
       }
 
       if (text == null || text.isEmpty) {

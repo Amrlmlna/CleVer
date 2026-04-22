@@ -52,10 +52,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     bool usePhoto = false,
   }) {
     final creationState = ref.read(cvCreationProvider);
-    final photoUrl = ref
-        .read(profileControllerProvider)
-        .currentProfile
-        .photoUrl;
+    final photoUrl = ref.read(profileControllerProvider).currentProfile.photoUrl;
 
     final payload = {
       'cvData': {
@@ -63,11 +60,9 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
         'summary': creationState.summary,
         'jobTitle': creationState.jobInput?.jobTitle,
         'jobDescription': creationState.jobInput?.jobDescription,
-        // BACKWARD COMPATIBILITY: Preserve styleId and jobInput nested for older templates
         'styleId': styleId,
         'jobInput': creationState.jobInput?.toJson(),
       },
-      // Backend controller requires templateId at root for wallet/cache lookups
       'templateId': styleId,
       'locale': locale,
       'usePhoto': usePhoto,
@@ -77,20 +72,14 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     return md5.convert(utf8.encode(raw)).toString();
   }
 
-  Future<void> attemptDownload({
-    required BuildContext context,
-    required String styleId,
+  Future<void> downloadPDF(
+    BuildContext context,
+    String styleId, {
     String? locale,
     bool usePhoto = false,
     VoidCallback? onSuccess,
   }) async {
-    if (state.status == DownloadStatus.generating) {
-      debugPrint('Download already in progress. Ignoring request.');
-      return;
-    }
-
-    final effectiveLocale =
-        locale ?? ref.read(localeNotifierProvider).languageCode;
+    final effectiveLocale = locale ?? ref.read(localeNotifierProvider).languageCode;
     final cacheKey = _buildCacheKey(
       styleId,
       effectiveLocale,
@@ -98,19 +87,10 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     );
 
     if (_localCache.containsKey(cacheKey)) {
-      final file = File(_localCache[cacheKey]!);
-      if (await file.exists()) {
-        debugPrint('Opening cached PDF from: ${file.path}');
-        await OpenFilex.open(file.path);
-
-        state = state.copyWith(status: DownloadStatus.success);
-        onSuccess?.call();
-
-        Future.delayed(const Duration(milliseconds: 100), () {
-          if (state.status == DownloadStatus.success) {
-            state = state.copyWith(status: DownloadStatus.idle);
-          }
-        });
+      final path = _localCache[cacheKey]!;
+      if (await File(path).exists()) {
+        await OpenFilex.open(path);
+        if (onSuccess != null) onSuccess();
         return;
       }
     }
@@ -121,199 +101,151 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       orElse: () => templates.first,
     );
 
-    state = state.copyWith(status: DownloadStatus.generating);
-    debugPrint(
-      '[CVDownload] Credits - User: ${template.userCredits}, Required: ${template.requiredCredits}, FreeGen: ${template.hasFreeGeneration}',
+    final adService = ref.read(adServiceProvider);
+    final creationState = ref.read(cvCreationProvider);
+    
+    // 1. Prepare Data
+    final cvId = const Uuid().v4();
+    final cvData = CVData(
+      id: cvId,
+      userProfile: creationState.userProfile!,
+      summary: creationState.summary!,
+      styleId: styleId,
+      createdAt: DateTime.now(),
+      jobTitle: creationState.jobInput!.jobTitle,
+      jobDescription: creationState.jobInput!.jobDescription ?? '',
+    );
+    final photoUrl = ref.read(profileControllerProvider).currentProfile.photoUrl;
+
+    // 2. Save Draft Immediately
+    await ref.read(draftsProvider.notifier).saveFromState(creationState);
+
+    // 3. START CONCURRENT GENERATION (Runs while Ad plays)
+    final Future<List<int>> pdfFuture = ref.read(cvRepositoryProvider).downloadPDF(
+      cvData: cvData,
+      templateId: styleId,
+      locale: effectiveLocale,
+      usePhoto: usePhoto,
+      photoUrl: photoUrl,
     );
 
-    if (template.hasFreeGeneration ||
-        template.userCredits >= template.requiredCredits) {
+    if (template.hasFreeGeneration || template.userCredits >= template.requiredCredits) {
       if (template.userCredits > 0) {
-        await _generateAndOpenPDF(
-          context,
-          styleId,
-          locale: locale,
-          usePhoto: usePhoto,
-          onSuccess: onSuccess,
-        );
+        state = state.copyWith(status: DownloadStatus.generating);
+        try {
+          final bytes = await pdfFuture;
+          final path = await _finalizePDFExport(context, bytes, cvData, styleId, effectiveLocale, onSuccess);
+          _localCache[cacheKey] = path;
+        } catch (e) {
+          _handleError(context, e, effectiveLocale, styleId);
+        }
       } else {
+        // Show Ad, but PDF is already generating!
         await adService.showInterstitialAd(
           context,
-          onAdClosed: () {
-            _generateAndOpenPDF(
-              context,
-              styleId,
-              locale: locale,
-              usePhoto: usePhoto,
-              onSuccess: onSuccess,
-            );
+          onAdClosed: () async {
+            await Future.delayed(const Duration(milliseconds: 300));
+            if (context.mounted) {
+              state = state.copyWith(status: DownloadStatus.generating);
+              try {
+                final bytes = await pdfFuture;
+                final path = await _finalizePDFExport(context, bytes, cvData, styleId, effectiveLocale, onSuccess);
+                _localCache[cacheKey] = path;
+              } catch (e) {
+                _handleError(context, e, effectiveLocale, styleId);
+              }
+            }
           },
         );
       }
-      return;
     }
   }
 
-  Future<void> _generateAndOpenPDF(
+  Future<String> _finalizePDFExport(
     BuildContext context,
-    String styleId, {
-    String? locale,
-    bool usePhoto = false,
+    List<int> pdfBytes,
+    CVData cvData,
+    String styleId,
+    String locale,
     VoidCallback? onSuccess,
-  }) async {
-    state = state.copyWith(status: DownloadStatus.generating);
-    final effectiveLocale =
-        locale ?? ref.read(localeNotifierProvider).languageCode;
-    AnalyticsService().trackEvent(
-      'cv_generation_started',
-      properties: {'template_id': styleId, 'locale': effectiveLocale},
+  ) async {
+    if (pdfBytes.length < 1000) {
+      throw Exception('Downloaded PDF is too small (${pdfBytes.length} bytes).');
+    }
+
+    final cvDir = await CompletedCVNotifier.getStorageDir();
+    final safeId = styleId.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_').toLowerCase();
+    final fileName = 'cv_${safeId}_${DateTime.now().millisecondsSinceEpoch}.pdf';
+    final pdfFile = File('${cvDir.path}/$fileName');
+    await pdfFile.writeAsBytes(pdfBytes, flush: true);
+
+    String? thumbnailPath;
+    try {
+      final thumbDir = await CompletedCVNotifier.getThumbnailDir();
+      final thumbFile = File('${thumbDir.path}/${cvData.id}_thumb.png');
+
+      final document = await PdfDocument.openData(Uint8List.fromList(pdfBytes));
+      final page = await document.getPage(1);
+      final pageImage = await page.render(
+        width: page.width * 0.5,
+        height: page.height * 0.5,
+        format: PdfPageImageFormat.png,
+        backgroundColor: '#FFFFFF',
+      );
+      if (pageImage != null) {
+        await thumbFile.writeAsBytes(pageImage.bytes);
+        thumbnailPath = thumbFile.path;
+      }
+      await page.close();
+      await document.close();
+    } catch (e) {
+      debugPrint('Thumbnail generation failed: $e');
+    }
+
+    final completedCV = CompletedCV(
+      id: cvData.id,
+      jobTitle: cvData.jobTitle,
+      templateId: styleId,
+      pdfPath: pdfFile.path,
+      thumbnailPath: thumbnailPath,
+      generatedAt: DateTime.now(),
     );
 
-    try {
-      final creationState = ref.read(cvCreationProvider);
-
-      await ref.read(draftsProvider.notifier).saveFromState(creationState);
-
-      final cvId = const Uuid().v4();
-      final cvData = CVData(
-        id: cvId,
-        userProfile: creationState.userProfile!,
-        summary: creationState.summary!,
-        styleId: styleId,
-        createdAt: DateTime.now(),
-        jobTitle: creationState.jobInput!.jobTitle,
-        jobDescription: creationState.jobInput!.jobDescription ?? '',
+    await ref.read(completedCVProvider.notifier).addCompletedCV(completedCV);
+    
+    ref.invalidate(templatesProvider);
+    state = state.copyWith(status: DownloadStatus.success);
+    
+    if (context.mounted) {
+      NotificationService.showSimpleNotification(
+        title: AppLocalizations.of(context)!.cvGeneratedSuccess,
+        body: AppLocalizations.of(context)!.cvReadyMessage(cvData.jobTitle),
+        payload: {'route': '/drafts'},
       );
-      final photoUrl = ref
-          .read(profileControllerProvider)
-          .currentProfile
-          .photoUrl;
+    }
 
-      final pdfBytes = await ref
-          .read(cvRepositoryProvider)
-          .downloadPDF(
-            cvData: cvData,
-            templateId: styleId,
-            locale: effectiveLocale,
-            usePhoto: usePhoto,
-            photoUrl: photoUrl,
-          );
-      if (pdfBytes.length < 1000) {
-        throw Exception(
-          'Downloaded PDF is too small (${pdfBytes.length} bytes). It might be an error message.',
-        );
-      }
-
-      final cvDir = await CompletedCVNotifier.getStorageDir();
-      final safeId = styleId
-          .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_')
-          .toLowerCase();
-      final fileName =
-          'cv_${safeId}_${DateTime.now().millisecondsSinceEpoch}.pdf';
-      final pdfFile = File('${cvDir.path}/$fileName');
-      await pdfFile.writeAsBytes(pdfBytes, flush: true);
-
-      String? thumbnailPath;
-      try {
-        final thumbDir = await CompletedCVNotifier.getThumbnailDir();
-        final thumbFile = File('${thumbDir.path}/${cvId}_thumb.png');
-
-        final document = await PdfDocument.openData(
-          Uint8List.fromList(pdfBytes),
-        );
-        final page = await document.getPage(1);
-        final pageImage = await page.render(
-          width: page.width * 0.5,
-          height: page.height * 0.5,
-          format: PdfPageImageFormat.png,
-          backgroundColor: '#FFFFFF',
-        );
-        if (pageImage != null) {
-          await thumbFile.writeAsBytes(pageImage.bytes);
-          thumbnailPath = thumbFile.path;
-        }
-        await page.close();
-        await document.close();
-      } catch (e) {
-        debugPrint('Thumbnail generation failed: $e');
-      }
-
-      final completedCV = CompletedCV(
-        id: cvId,
-        jobTitle: cvData.jobTitle,
-        templateId: styleId,
-        pdfPath: pdfFile.path,
-        thumbnailPath: thumbnailPath,
-        generatedAt: DateTime.now(),
-      );
-      await ref.read(completedCVProvider.notifier).addCompletedCV(completedCV);
-
-      final result = await OpenFilex.open(pdfFile.path);
-
-      _localCache[_buildCacheKey(
-        styleId,
-        effectiveLocale,
-        usePhoto: usePhoto,
-      )] = pdfFile.path;
-
-      AnalyticsService().trackEvent(
-        'cv_generation_completed',
-        properties: {
-          'template_id': styleId,
-          'locale': effectiveLocale,
-          'use_photo': usePhoto,
-        },
-      );
-
-      ref.invalidate(templatesProvider);
-      state = state.copyWith(status: DownloadStatus.success);
-      onSuccess?.call();
-
-      if (context.mounted) {
-        NotificationService.showSimpleNotification(
-          title: AppLocalizations.of(context)!.cvGeneratedSuccess,
-          body: AppLocalizations.of(context)!.cvReadyMessage(cvData.jobTitle),
-          payload: {'route': '/drafts'},
-        );
-      }
-
-      if (result.type != ResultType.done) {
-        if (context.mounted) {
-          CustomSnackBar.showError(
-            context,
-            AppLocalizations.of(context)!.pdfOpenError(result.message),
-          );
-        }
-      }
-    } catch (e) {
-      final effectiveLocale =
-          locale ?? ref.read(localeNotifierProvider).languageCode;
-      AnalyticsService().trackEvent(
-        'cv_generation_failed',
-        properties: {
-          'template_id': styleId,
-          'locale': effectiveLocale,
-          'error': e.toString(),
-        },
-      );
-
-      state = state.copyWith(
-        status: DownloadStatus.error,
-        errorMessage: e.toString(),
-      );
-      if (context.mounted) {
-        CustomSnackBar.showError(
-          context,
-          AppLocalizations.of(context)!.pdfGenerateError(e.toString()),
-        );
-      }
-    } finally {
+    await OpenFilex.open(pdfFile.path);
+    if (onSuccess != null) onSuccess();
+    
+    Future.delayed(const Duration(seconds: 1), () {
       state = state.copyWith(status: DownloadStatus.idle);
+    });
+
+    return pdfFile.path;
+  }
+
+  void _handleError(BuildContext context, dynamic e, String locale, String styleId) {
+    AnalyticsService().trackEvent(
+      'cv_generation_failed',
+      properties: {'template_id': styleId, 'error': e.toString(), 'locale': locale},
+    );
+    state = state.copyWith(status: DownloadStatus.error, errorMessage: e.toString());
+    if (context.mounted) {
+      CustomSnackBar.showError(context, e.toString());
     }
   }
 }
 
-final cvDownloadProvider =
-    NotifierProvider<CVDownloadNotifier, CVDownloadState>(
-      CVDownloadNotifier.new,
-    );
+final cvDownloadProvider = NotifierProvider<CVDownloadNotifier, CVDownloadState>(
+  CVDownloadNotifier.new,
+);

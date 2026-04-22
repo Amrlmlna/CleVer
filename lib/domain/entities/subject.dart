@@ -35,7 +35,7 @@ class Subject extends Equatable {
     return Subject(
       name: json['name'] as String? ?? '',
       description: json['description'] as String?,
-      grade: json['grade'] as String?,
+      grade: json['grade']?.toString(),
     );
   }
 

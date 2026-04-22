@@ -38,7 +38,7 @@ class OCRDataSource {
     }
   }
 
-  Future<String?> extractTextFromPDF() async {
+  Future<File?> pickPDFFile() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -46,8 +46,15 @@ class OCRDataSource {
       );
 
       if (result == null || result.files.single.path == null) return null;
+      return File(result.files.single.path!);
+    } catch (e) {
+      debugPrint('[OCRDataSource] PDF picking error: $e');
+      return null;
+    }
+  }
 
-      final file = File(result.files.single.path!);
+  Future<String?> extractTextFromPDFFile(File file) async {
+    try {
       final PdfDocument document = PdfDocument(
         inputBytes: file.readAsBytesSync(),
       );
@@ -60,6 +67,12 @@ class OCRDataSource {
       debugPrint('[OCRDataSource] PDF extraction error: $e');
       return null;
     }
+  }
+
+  Future<String?> extractTextFromPDF() async {
+    final file = await pickPDFFile();
+    if (file == null) return null;
+    return extractTextFromPDFFile(file);
   }
 
   void dispose() {
