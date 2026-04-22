@@ -1488,15 +1488,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get showMeTheWay => 'Show Me The Way';
 
   @override
-  String get reviewPromptTitle => 'Enjoying the results?';
+  String get reviewPromptTitle => 'Loving your new CV?';
 
   @override
   String get reviewPromptContent =>
-      'Your feedback helps us make CleVer even better for everyone.';
+      'Your support keeps CleVer running. If you\'re happy, a quick review means the world to us!';
 
   @override
-  String get reviewPromptPositive => 'Yes, I love it!';
+  String get reviewPromptPositive => 'I love it!';
 
   @override
-  String get reviewPromptNegative => 'Maybe later';
+  String get reviewPromptNegative => 'Needs improvement';
+
+  @override
+  String get feedbackEmailSubject => 'CleVer CV Feedback';
+
+  @override
+  String get feedbackEmailBody =>
+      'Hi Clever Team,\n\nI have some feedback regarding the app:\n\n';
+
+  @override
+  String get tutorialJobOcrTitle => 'Scan Job Postings';
+
+  @override
+  String get tutorialJobOcrDesc =>
+      'Did you know you can screenshot a job posting? We\'ll extract the details for you instantly!';
+
+  @override
+  String get tutorialDraftsTitle => 'Your Drafts';
+
+  @override
+  String get tutorialDraftsDesc =>
+      'You can edit your drafts here and export them with different designs anytime.';
+
+  @override
+  String get tutorialProfileTitle => 'Master Profile';
+
+  @override
+  String get tutorialProfileDesc =>
+      'Manage your Master Profile here to keep your base CV data up to date.';
+
+  @override
+  String get tutorialNext => 'Next';
+
+  @override
+  String get tutorialFinish => 'Got it!';
 }

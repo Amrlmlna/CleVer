@@ -273,7 +273,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
         NotificationService.showSimpleNotification(
           title: AppLocalizations.of(context)!.cvGeneratedSuccess,
           body: AppLocalizations.of(context)!.cvReadyMessage(cvData.jobTitle),
-          payload: '/drafts',
+          payload: {'route': '/drafts'},
         );
       }
 

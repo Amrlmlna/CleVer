@@ -552,8 +552,19 @@
   "onboardingComparisonFooter": "CleVer memudahkan segalanya dan menjagamu tetap akuntabel.",
   "onboardingViewSolution": "lihat solusi",
   "showMeTheWay": "mulai sekarang",
-  "reviewPromptTitle": "suka dengan hasilnya?",
-  "reviewPromptContent": "masukanmu membantu kami membuat clever jadi lebih baik untuk semua orang.",
-  "reviewPromptPositive": "ya, saya suka",
-  "reviewPromptNegative": "mungkin nanti"
+  "reviewPromptTitle": "suka dengan CV barumu?",
+  "reviewPromptContent": "dukunganmu bikin Clever tetap hidup. kalau kamu senang, ulasan singkat darimu sangat berarti buat kami!",
+  "reviewPromptPositive": "ya, saya suka!",
+  "reviewPromptNegative": "perlu diperbaiki",
+  "feedbackEmailSubject": "Masukan untuk CleVer CV",
+  "feedbackEmailBody": "Halo Tim Clever,\n\nSaya ingin memberikan masukan untuk aplikasi ini:\n\n",
+  "tutorialJobOcrTitle": "scan lowongan kerja",
+  "tutorialJobOcrDesc": "tau gak? kamu bisa screenshot lowongan kerja dan kami akan ambil detailnya secara otomatis!",
+  "tutorialDraftsTitle": "draft kamu",
+  "tutorialDraftsDesc": "kamu bisa edit draft kamu di sini dan export dengan desain lain kapan saja.",
+  "tutorialProfileTitle": "profil master",
+  "tutorialProfileDesc": "kelola profil master kamu di sini agar data dasar cv kamu selalu terupdate.",
+  "tutorialNext": "lanjut",
+  "tutorialFinish": "siap!"
 }
+

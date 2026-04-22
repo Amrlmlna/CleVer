@@ -44,7 +44,11 @@ class NotificationController {
 
     // Check for a URL in the payload and launch it
     final payload = receivedAction.payload;
-    final url = payload?['url'] ?? payload?['route'];
+    final url = payload?['url'] ?? 
+                payload?['route'] ?? 
+                payload?['link'] ?? 
+                payload?['target_url'];
+                
     if (url != null && url.isNotEmpty) {
       await _launchUrl(url);
     }
@@ -65,7 +69,11 @@ class NotificationController {
 
   /// Call this from onMessageOpenedApp (FCM tap when app was killed/background)
   static Future<void> handleFcmTap(Map<String, dynamic> data) async {
-    final url = data['url'] ?? data['route'];
+    final url = data['url'] ?? 
+                data['route'] ?? 
+                data['link'] ?? 
+                data['target_url'];
+                
     if (url != null && url.toString().isNotEmpty) {
       await _launchUrl(url.toString());
     }

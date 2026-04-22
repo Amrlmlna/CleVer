@@ -4,6 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import '../../../core/services/tutorial_service.dart';
+
 import '../../../domain/entities/job_input.dart';
 
 import '../../../core/utils/custom_snackbar.dart';
@@ -28,6 +31,9 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
   final _titleController = TextEditingController();
   final _companyController = TextEditingController();
   final _descController = TextEditingController();
+  final GlobalKey _scanButtonKey = GlobalKey();
+  late TutorialCoachMark _tutorialCoachMark;
+
 
   static const String _kDraftTitleKey = 'draft_job_title';
   static const String _kDraftCompanyKey = 'draft_job_company';
@@ -48,7 +54,95 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
     _titleController.addListener(_onTextChanged);
     _companyController.addListener(_onTextChanged);
     _descController.addListener(_onTextChanged);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showTutorial();
+    });
   }
+
+  void _initTutorial() {
+    final List<TargetFocus> targets = [
+
+      TargetFocus(
+        identify: "scan_button",
+        keyTarget: _scanButtonKey,
+        alignSkip: Alignment.topRight,
+        contents: [
+
+
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.tutorialJobOcrTitle,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    AppLocalizations.of(context)!.tutorialJobOcrDesc,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      onPressed: () => controller.next(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(AppLocalizations.of(context)!.tutorialFinish),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    ];
+
+    _tutorialCoachMark = TutorialCoachMark(
+      targets: targets,
+      onClickTarget: (target) {
+        if (target.identify == "scan_button") {
+          _showImageSourceDialog();
+        }
+      },
+
+      colorShadow: Colors.black,
+      textSkip: AppLocalizations.of(context)!.skipIntro,
+      paddingFocus: 10,
+      opacityShadow: 0.8,
+      onFinish: () => TutorialService().markJobOcrAsShown(),
+      onSkip: () {
+        TutorialService().markJobOcrAsShown();
+        return true;
+      },
+    );
+  }
+
+  void _showTutorial() async {
+    final hasShown = await TutorialService().hasShownJobOcr();
+    if (!hasShown) {
+      if (mounted) {
+        _initTutorial();
+        _tutorialCoachMark.show(context: context);
+      }
+    }
+  }
+
 
   Future<void> _loadDrafts() async {
     final prefs = await SharedPreferences.getInstance();
@@ -363,10 +457,12 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
         title: Text(AppLocalizations.of(context)!.targetPosition),
         actions: [
           IconButton(
+            key: _scanButtonKey,
             icon: const Icon(Icons.document_scanner_outlined),
             tooltip: AppLocalizations.of(context)!.scanJobPosting,
             onPressed: _showImageSourceDialog,
           ),
+
         ],
       ),
       extendBodyBehindAppBar: true,

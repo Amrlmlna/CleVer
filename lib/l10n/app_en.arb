@@ -552,9 +552,20 @@
   "onboardingComparisonFooter": "CleVer makes it easy and holds you accountable.",
   "onboardingViewSolution": "View Solution",
   "showMeTheWay": "Show Me The Way",
-  "reviewPromptTitle": "Enjoying the results?",
-  "reviewPromptContent": "Your feedback helps us make CleVer even better for everyone.",
-  "reviewPromptPositive": "Yes, I love it!",
-  "reviewPromptNegative": "Maybe later"
+  "reviewPromptTitle": "Loving your new CV?",
+  "reviewPromptContent": "Your support keeps CleVer running. If you're happy, a quick review means the world to us!",
+  "reviewPromptPositive": "I love it!",
+  "reviewPromptNegative": "Needs improvement",
+  "feedbackEmailSubject": "CleVer CV Feedback",
+  "feedbackEmailBody": "Hi Clever Team,\n\nI have some feedback regarding the app:\n\n",
+  "tutorialJobOcrTitle": "Scan Job Postings",
+  "tutorialJobOcrDesc": "Did you know you can screenshot a job posting? We'll extract the details for you instantly!",
+  "tutorialDraftsTitle": "Your Drafts",
+  "tutorialDraftsDesc": "You can edit your drafts here and export them with different designs anytime.",
+  "tutorialProfileTitle": "Master Profile",
+  "tutorialProfileDesc": "Manage your Master Profile here to keep your base CV data up to date.",
+  "tutorialNext": "Next",
+  "tutorialFinish": "Got it!"
 }
+
 

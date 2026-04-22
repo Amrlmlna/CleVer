@@ -2841,26 +2841,86 @@ abstract class AppLocalizations {
   /// No description provided for @reviewPromptTitle.
   ///
   /// In en, this message translates to:
-  /// **'Enjoying the results?'**
+  /// **'Loving your new CV?'**
   String get reviewPromptTitle;
 
   /// No description provided for @reviewPromptContent.
   ///
   /// In en, this message translates to:
-  /// **'Your feedback helps us make CleVer even better for everyone.'**
+  /// **'Your support keeps CleVer running. If you\'re happy, a quick review means the world to us!'**
   String get reviewPromptContent;
 
   /// No description provided for @reviewPromptPositive.
   ///
   /// In en, this message translates to:
-  /// **'Yes, I love it!'**
+  /// **'I love it!'**
   String get reviewPromptPositive;
 
   /// No description provided for @reviewPromptNegative.
   ///
   /// In en, this message translates to:
-  /// **'Maybe later'**
+  /// **'Needs improvement'**
   String get reviewPromptNegative;
+
+  /// No description provided for @feedbackEmailSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'CleVer CV Feedback'**
+  String get feedbackEmailSubject;
+
+  /// No description provided for @feedbackEmailBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi Clever Team,\n\nI have some feedback regarding the app:\n\n'**
+  String get feedbackEmailBody;
+
+  /// No description provided for @tutorialJobOcrTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan Job Postings'**
+  String get tutorialJobOcrTitle;
+
+  /// No description provided for @tutorialJobOcrDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Did you know you can screenshot a job posting? We\'ll extract the details for you instantly!'**
+  String get tutorialJobOcrDesc;
+
+  /// No description provided for @tutorialDraftsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Drafts'**
+  String get tutorialDraftsTitle;
+
+  /// No description provided for @tutorialDraftsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You can edit your drafts here and export them with different designs anytime.'**
+  String get tutorialDraftsDesc;
+
+  /// No description provided for @tutorialProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Master Profile'**
+  String get tutorialProfileTitle;
+
+  /// No description provided for @tutorialProfileDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your Master Profile here to keep your base CV data up to date.'**
+  String get tutorialProfileDesc;
+
+  /// No description provided for @tutorialNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get tutorialNext;
+
+  /// No description provided for @tutorialFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it!'**
+  String get tutorialFinish;
 }
 
 class _AppLocalizationsDelegate

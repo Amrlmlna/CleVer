@@ -104,6 +104,13 @@ class NotificationService {
     // Listen for token refresh (tokens can rotate periodically)
     messaging.onTokenRefresh.listen(_saveFcmToken);
 
+    // Check if the app was opened via a notification when it was terminated
+    RemoteMessage? initialMessage = await messaging.getInitialMessage();
+    if (initialMessage != null) {
+      debugPrint('App opened from terminated state via FCM: ${initialMessage.data}');
+      NotificationController.handleFcmTap(initialMessage.data);
+    }
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       debugPrint('Got a message whilst in the foreground!');
       debugPrint('Message data: ${message.data}');
@@ -115,7 +122,7 @@ class NotificationService {
         showSimpleNotification(
           title: title ?? '',
           body: body ?? '',
-          payload: message.data['route'],
+          payload: message.data,
         );
       }
     });
@@ -182,6 +189,7 @@ class NotificationService {
           channelKey: 'general_alerts',
           title: title,
           body: body,
+          payload: message.data.map((key, value) => MapEntry(key, value.toString())),
           notificationLayout: NotificationLayout.Default,
         ),
       );
@@ -191,7 +199,7 @@ class NotificationService {
   static Future<void> showSimpleNotification({
     String? title,
     required String body,
-    String? payload,
+    Map<String, dynamic>? payload,
     String channelKey = 'general_alerts',
   }) async {
     await AwesomeNotifications().createNotification(
@@ -200,7 +208,7 @@ class NotificationService {
         channelKey: channelKey,
         title: title,
         body: body,
-        payload: payload != null ? {'route': payload} : null,
+        payload: payload?.map((key, value) => MapEntry(key, value.toString())),
         notificationLayout: NotificationLayout.Default,
       ),
     );

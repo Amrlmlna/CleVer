@@ -127,20 +127,41 @@ class ReviewSuccessDialog extends StatelessWidget {
                                     Navigator.of(context).pop(false),
                                 style: TextButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(
-                                    vertical: 12,
+                                    vertical: 16,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    side: BorderSide(
+                                      color: AppColors.black.withValues(alpha: 0.1),
+                                      width: 1.5,
+                                    ),
                                   ),
                                 ),
                                 child: Text(
                                   l10n.reviewPromptNegative,
-                                  style: AppTextStyles.labelMedium.copyWith(
-                                    color: AppColors.grey500,
-                                    fontWeight: FontWeight.w500,
+                                  style: AppTextStyles.labelLarge.copyWith(
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
                             ],
                           ),
                         ],
+                      ),
+                    ),
+                  ),
+
+                  // Close Button
+                  Positioned(
+                    top: 12,
+                    right: 12,
+                    child: IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(
+                        Icons.close_rounded,
+                        color: AppColors.black.withValues(alpha: 0.4),
+                        size: 20,
                       ),
                     ),
                   ),

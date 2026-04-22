@@ -4,6 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/widgets/custom_app_bar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import '../../../core/services/tutorial_service.dart';
+import '../providers/dashboard_tutorial_provider.dart';
+
 import '../../profile/providers/profile_provider.dart';
 import '../../common/widgets/unsaved_changes_dialog.dart';
 
@@ -29,6 +33,10 @@ class MainWrapperPage extends ConsumerStatefulWidget {
 class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
     with TickerProviderStateMixin {
   bool _sheetShowing = false;
+  final GlobalKey _draftsKey = GlobalKey();
+  final GlobalKey _profileKey = GlobalKey();
+  TutorialCoachMark? _navTutorialCoachMark;
+
 
   @override
   void initState() {
@@ -127,6 +135,138 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
   }
 
   @override
+  void dispose() {
+    _navTutorialCoachMark?.finish();
+    super.dispose();
+  }
+
+  void _initNavTutorial() {
+    final List<TargetFocus> targets = [
+
+      TargetFocus(
+        identify: "nav_drafts",
+        keyTarget: _draftsKey,
+        contents: [
+
+
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.tutorialDraftsTitle,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    AppLocalizations.of(context)!.tutorialDraftsDesc,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      onPressed: () => controller.next(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(AppLocalizations.of(context)!.tutorialNext),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+      TargetFocus(
+        identify: "nav_profile",
+        keyTarget: _profileKey,
+        contents: [
+
+
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.tutorialProfileTitle,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    AppLocalizations.of(context)!.tutorialProfileDesc,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      onPressed: () => controller.next(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(AppLocalizations.of(context)!.tutorialFinish),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    ];
+
+    _navTutorialCoachMark = TutorialCoachMark(
+      targets: targets,
+      onClickTarget: (target) {
+        if (target.identify == "nav_drafts") {
+          _onTabTap(1);
+        } else if (target.identify == "nav_profile") {
+          _onTabTap(3);
+        }
+      },
+
+      colorShadow: Colors.black,
+      textSkip: AppLocalizations.of(context)!.skipIntro,
+      paddingFocus: 10,
+      opacityShadow: 0.8,
+      onFinish: () {
+        TutorialService().markNavTutorialAsShown();
+        ref.read(navigationTutorialPendingProvider.notifier).state = false;
+      },
+      onSkip: () {
+        TutorialService().markNavTutorialAsShown();
+        ref.read(navigationTutorialPendingProvider.notifier).state = false;
+        return true;
+      },
+    );
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     ref.listen(authStateProvider, (previous, next) {
       _checkVerification(next.value);
@@ -137,6 +277,14 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
         _handleOnboardingSuccess();
       }
     });
+
+    ref.listen(navigationTutorialPendingProvider, (previous, next) {
+      if (next == true) {
+        _initNavTutorial();
+        _navTutorialCoachMark?.show(context: context);
+      }
+    });
+
 
     final currentIndex = widget.navigationShell.currentIndex;
 
@@ -169,7 +317,9 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
               Icons.description_rounded,
               AppLocalizations.of(context)!.myDrafts,
               currentIndex,
+              itemKey: _draftsKey,
             ),
+
             const SizedBox(width: 64),
             _buildNavItem(
               context,
@@ -186,7 +336,9 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
               Icons.person_rounded,
               AppLocalizations.of(context)!.profile,
               currentIndex,
+              itemKey: _profileKey,
             ),
+
           ],
         ),
       ),
@@ -226,13 +378,16 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
     IconData icon,
     IconData activeIcon,
     String label,
-    int currentIndex,
-  ) {
+    int currentIndex, {
+    Key? itemKey,
+  }) {
     final isSelected = currentIndex == index;
 
     return Expanded(
       child: InkWell(
+        key: itemKey,
         onTap: () => _onTabTap(index),
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
