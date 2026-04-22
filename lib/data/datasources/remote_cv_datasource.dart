@@ -77,6 +77,23 @@ class RemoteCVDataSource {
     }
   }
 
+  Future<Map<String, dynamic>> parseStudyCard(String text) async {
+    final response = await _httpClient.post(
+      Uri.parse('${ApiConfig.baseUrl}/education/parse-study-card'),
+      headers: await ApiConfig.getAuthHeaders(),
+      body: jsonEncode({'text': text}),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw http.ClientException(
+        'Failed to parse Study Card: ${response.statusCode}',
+        response.request?.url,
+      );
+    }
+  }
+
   Future<List<int>> downloadPDF({
     required Map<String, dynamic> cvDataJson,
     required String templateId,

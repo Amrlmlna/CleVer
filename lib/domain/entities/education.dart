@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../core/utils/format_utils.dart';
+import 'subject.dart';
 
 class Education extends Equatable {
   final String id;
@@ -7,7 +8,9 @@ class Education extends Equatable {
   final String schoolName;
   final String startDate;
   final String? endDate;
-  final String description;
+  final String? description;
+  final String? gpa;
+  final List<Subject> subjects;
   final String? fingerprint;
 
   const Education({
@@ -17,6 +20,8 @@ class Education extends Equatable {
     required this.startDate,
     this.endDate,
     this.description = '',
+    this.gpa,
+    this.subjects = const [],
     this.fingerprint,
   });
 
@@ -27,6 +32,8 @@ class Education extends Equatable {
     String? startDate,
     String? endDate,
     String? description,
+    String? gpa,
+    List<Subject>? subjects,
     String? fingerprint,
   }) {
     return Education(
@@ -36,6 +43,8 @@ class Education extends Equatable {
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       description: description ?? this.description,
+      gpa: gpa ?? this.gpa,
+      subjects: subjects ?? this.subjects,
       fingerprint: fingerprint ?? this.fingerprint,
     );
   }
@@ -48,6 +57,8 @@ class Education extends Equatable {
       'startDate': startDate,
       'endDate': endDate,
       'description': description,
+      'gpa': gpa,
+      'subjects': subjects.map((s) => s.toJson()).toList(),
       'fingerprint': fingerprint,
     };
   }
@@ -58,10 +69,19 @@ class Education extends Equatable {
           json['id'] as String? ??
           DateTime.now().millisecondsSinceEpoch.toString(),
       degree: FormatUtils.ensureString(json['degree'], fallback: 'Degree'),
-      schoolName: FormatUtils.ensureString(json['schoolName'], fallback: 'University'),
-      startDate: json['startDate'] as String? ?? '2000-01',
-      endDate: json['endDate'] as String?,
+      schoolName: FormatUtils.ensureString(
+        json['schoolName'] ?? json['school_name'],
+        fallback: 'University',
+      ),
+      startDate:
+          json['startDate'] as String? ?? json['start_date'] as String? ?? '2000-01',
+      endDate: json['endDate'] as String? ?? json['end_date'] as String?,
       description: FormatUtils.ensureString(json['description']),
+      subjects:
+          (json['subjects'] as List<dynamic>?)
+              ?.map((s) => Subject.fromJson(s as Map<String, dynamic>))
+              .toList() ??
+          const [],
       fingerprint: json['fingerprint'] as String?,
     );
   }
@@ -74,6 +94,8 @@ class Education extends Equatable {
     startDate,
     endDate,
     description,
+    gpa,
+    subjects,
     fingerprint,
   ];
 }

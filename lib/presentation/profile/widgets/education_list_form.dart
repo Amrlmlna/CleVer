@@ -145,13 +145,72 @@ class _EducationListFormState extends State<EducationListForm> {
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
-                subtitle: Text(
-                  '${edu.degree}\n${edu.startDate} - ${edu.endDate ?? AppLocalizations.of(context)!.present}',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${edu.degree} | ${edu.startDate} - ${edu.endDate ?? AppLocalizations.of(context)!.present}${edu.gpa != null ? " | GPA: ${edu.gpa}" : ""}',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontSize: 13,
+                      ),
+                    ),
+                    if (edu.description.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        edu.description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                    if (edu.subjects.isNotEmpty) ...[
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 4,
+                        runSpacing: 4,
+                        children: edu.subjects.take(5).map((subject) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+                              ),
+                            ),
+                            child: Text(
+                              subject.name,
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      if (edu.subjects.length > 5)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4, left: 2),
+                          child: Text(
+                            '+${edu.subjects.length - 5} more subjects',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ],
                 ),
-                isThreeLine: true,
                 trailing: IconButton(
                   icon: Icon(
                     Icons.delete_outline,

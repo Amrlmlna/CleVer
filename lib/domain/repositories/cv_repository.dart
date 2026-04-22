@@ -3,6 +3,7 @@ import '../entities/job_input.dart';
 import '../entities/user_profile.dart';
 import '../entities/tailored_cv_result.dart';
 import '../entities/tailoring_options.dart';
+import '../entities/subject.dart';
 
 abstract class CVRepository {
 
@@ -22,4 +23,6 @@ abstract class CVRepository {
     bool usePhoto = false,
     String? photoUrl,
   });
+
+  Future<({List<Subject> subjects, String? gpa})> parseStudyCard(String text);
 }

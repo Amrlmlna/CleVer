@@ -8,12 +8,29 @@ import '../datasources/remote_cv_datasource.dart';
 
 import '../utils/data_error_mapper.dart';
 import '../../domain/entities/tailoring_options.dart';
+import '../../domain/entities/subject.dart';
 
 class CVRepositoryImpl implements CVRepository {
   final RemoteCVDataSource remoteDataSource;
 
   CVRepositoryImpl({required this.remoteDataSource});
 
+  @override
+  Future<({List<Subject> subjects, String? gpa})> parseStudyCard(String text) async {
+    try {
+      final responseData = await remoteDataSource.parseStudyCard(text);
+      final subjectsJson = responseData['subjects'] as List<dynamic>? ?? [];
+      final gpa = responseData['gpa'] as String?;
+      
+      final subjects = subjectsJson
+          .map((s) => Subject.fromJson(s as Map<String, dynamic>))
+          .toList();
+          
+      return (subjects: subjects, gpa: gpa);
+    } catch (e) {
+      throw DataErrorMapper.map(e);
+    }
+  }
 
   @override
   Future<String> rewriteContent(String originalText, {String? locale}) async {
