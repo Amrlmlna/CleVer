@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/services/review_service.dart';
 import '../../../core/services/tutorial_service.dart';
+import '../providers/review_check_provider.dart';
 import '../../dashboard/providers/dashboard_tutorial_provider.dart';
 
 import '../widgets/carousel_banner.dart';
@@ -9,7 +10,6 @@ import '../widgets/welcome_header.dart';
 import '../widgets/home_quick_actions.dart';
 import '../widgets/login_cta_card.dart';
 import '../widgets/premium_banner.dart';
-
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -34,11 +34,31 @@ class _HomePageState extends ConsumerState<HomePage> {
         }
       }
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
+    // WATCH: This ensures HomePage rebuilds as soon as generation is successful.
+    // When the user pops back from Preview, this rebuild is what triggers the check.
+    final reviewSignal = ref.watch(reviewCheckProvider);
+
+    // REACTIVE SIGNAL: Listen for the ping from TemplatePreviewPage
+    ref.listen(reviewCheckProvider, (previous, next) {
+      if (next > 0 && mounted) {
+        // Only trigger if we are currently visible on the Home route
+        // This prevents the dialog from popping up on top of the Preview Page
+        ReviewService().requestReviewWithBlur(context);
+
+        // Also check for pending tutorials now that we have a generation success
+        ReviewService().hasGeneratedAtLeastOneCv().then((hasGenerated) async {
+          final hasShown = await TutorialService().hasShownNavTutorial();
+          if (hasGenerated && !hasShown && mounted) {
+            ref.read(navigationTutorialPendingProvider.notifier).state = true;
+          }
+        });
+      }
+    });
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -62,7 +82,6 @@ class _HomePageState extends ConsumerState<HomePage> {
 
               const PremiumBanner(),
               const SizedBox(height: 24),
-
 
               const SizedBox(height: 100),
             ],

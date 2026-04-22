@@ -10,7 +10,6 @@ class RemoteCVDataSource {
 
   static String get _cvBaseUrl => '${ApiConfig.baseUrl}/cv';
 
-
   Future<Map<String, dynamic>> tailorProfile({
     required Map<String, dynamic> masterProfileJson,
     required Map<String, dynamic> jobInputJson,

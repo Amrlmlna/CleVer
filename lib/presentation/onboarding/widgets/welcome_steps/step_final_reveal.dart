@@ -6,10 +6,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 class StepFinalReveal extends StatelessWidget {
   final VoidCallback onNext;
 
-  const StepFinalReveal({
-    super.key,
-    required this.onNext,
-  });
+  const StepFinalReveal({super.key, required this.onNext});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +22,7 @@ class StepFinalReveal extends StatelessWidget {
         children: [
           SizedBox(
             width: double.infinity,
-            child: GradientButton(
-              text: l10n.getStarted,
-              onPressed: onNext,
-            ),
+            child: GradientButton(text: l10n.getStarted, onPressed: onNext),
           ),
           const SizedBox(height: 16),
           Text(

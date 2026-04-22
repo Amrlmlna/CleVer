@@ -160,7 +160,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(onboardingFormProvider);

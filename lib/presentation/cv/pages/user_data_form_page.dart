@@ -104,7 +104,15 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         gender: _genderController.text,
         experience: _experience,
         education: _education,
-        skills: _skills.isNotEmpty ? _skills : [const Skill(name: 'Leadership', category: SkillCategory.soft), const Skill(name: 'Communication', category: SkillCategory.soft)],
+        skills: _skills.isNotEmpty
+            ? _skills
+            : [
+                const Skill(name: 'Leadership', category: SkillCategory.soft),
+                const Skill(
+                  name: 'Communication',
+                  category: SkillCategory.soft,
+                ),
+              ],
         certifications: _certifications,
       );
 

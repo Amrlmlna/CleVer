@@ -98,9 +98,7 @@ class _CreditPurchaseBottomSheetState
     return Container(
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(24),
-        ),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -180,9 +178,8 @@ class _CreditPurchaseBottomSheetState
                       style: FilledButton.styleFrom(
                         backgroundColor: colorScheme.onSurface,
                         foregroundColor: colorScheme.surface,
-                        disabledBackgroundColor: colorScheme.onSurface.withValues(
-                          alpha: 0.3,
-                        ),
+                        disabledBackgroundColor: colorScheme.onSurface
+                            .withValues(alpha: 0.3),
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),

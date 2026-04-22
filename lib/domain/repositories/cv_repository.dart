@@ -6,7 +6,6 @@ import '../entities/tailoring_options.dart';
 import '../entities/subject.dart';
 
 abstract class CVRepository {
-
   Future<String> rewriteContent(String originalText, {String? locale});
 
   Future<TailoredCVResult> tailorProfile({

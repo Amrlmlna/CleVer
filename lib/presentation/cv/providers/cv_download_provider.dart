@@ -52,7 +52,10 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     bool usePhoto = false,
   }) {
     final creationState = ref.read(cvCreationProvider);
-    final photoUrl = ref.read(profileControllerProvider).currentProfile.photoUrl;
+    final photoUrl = ref
+        .read(profileControllerProvider)
+        .currentProfile
+        .photoUrl;
 
     final payload = {
       'cvData': {
@@ -79,7 +82,8 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     bool usePhoto = false,
     VoidCallback? onSuccess,
   }) async {
-    final effectiveLocale = locale ?? ref.read(localeNotifierProvider).languageCode;
+    final effectiveLocale =
+        locale ?? ref.read(localeNotifierProvider).languageCode;
     final cacheKey = _buildCacheKey(
       styleId,
       effectiveLocale,
@@ -103,7 +107,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
 
     final adService = ref.read(adServiceProvider);
     final creationState = ref.read(cvCreationProvider);
-    
+
     // 1. Prepare Data
     final cvId = const Uuid().v4();
     final cvData = CVData(
@@ -115,26 +119,39 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       jobTitle: creationState.jobInput?.jobTitle ?? 'Untitled CV',
       jobDescription: creationState.jobInput?.jobDescription ?? '',
     );
-    final photoUrl = ref.read(profileControllerProvider).currentProfile.photoUrl;
+    final photoUrl = ref
+        .read(profileControllerProvider)
+        .currentProfile
+        .photoUrl;
 
     // 2. Save Draft Immediately
     await ref.read(draftsProvider.notifier).saveFromState(creationState);
 
     // 3. START CONCURRENT GENERATION (Runs while Ad plays)
-    final Future<List<int>> pdfFuture = ref.read(cvRepositoryProvider).downloadPDF(
-      cvData: cvData,
-      templateId: styleId,
-      locale: effectiveLocale,
-      usePhoto: usePhoto,
-      photoUrl: photoUrl,
-    );
+    final Future<List<int>> pdfFuture = ref
+        .read(cvRepositoryProvider)
+        .downloadPDF(
+          cvData: cvData,
+          templateId: styleId,
+          locale: effectiveLocale,
+          usePhoto: usePhoto,
+          photoUrl: photoUrl,
+        );
 
-    if (template.hasFreeGeneration || template.userCredits >= template.requiredCredits) {
+    if (template.hasFreeGeneration ||
+        template.userCredits >= template.requiredCredits) {
       if (template.userCredits > 0) {
         state = state.copyWith(status: DownloadStatus.generating);
         try {
           final bytes = await pdfFuture;
-          final path = await _finalizePDFExport(context, bytes, cvData, styleId, effectiveLocale, onSuccess);
+          final path = await _finalizePDFExport(
+            context,
+            bytes,
+            cvData,
+            styleId,
+            effectiveLocale,
+            onSuccess,
+          );
           _localCache[cacheKey] = path;
         } catch (e) {
           _handleError(context, e, effectiveLocale, styleId);
@@ -149,7 +166,14 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
               state = state.copyWith(status: DownloadStatus.generating);
               try {
                 final bytes = await pdfFuture;
-                final path = await _finalizePDFExport(context, bytes, cvData, styleId, effectiveLocale, onSuccess);
+                final path = await _finalizePDFExport(
+                  context,
+                  bytes,
+                  cvData,
+                  styleId,
+                  effectiveLocale,
+                  onSuccess,
+                );
                 _localCache[cacheKey] = path;
               } catch (e) {
                 _handleError(context, e, effectiveLocale, styleId);
@@ -170,12 +194,17 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     VoidCallback? onSuccess,
   ) async {
     if (pdfBytes.length < 1000) {
-      throw Exception('Downloaded PDF is too small (${pdfBytes.length} bytes).');
+      throw Exception(
+        'Downloaded PDF is too small (${pdfBytes.length} bytes).',
+      );
     }
 
     final cvDir = await CompletedCVNotifier.getStorageDir();
-    final safeId = styleId.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_').toLowerCase();
-    final fileName = 'cv_${safeId}_${DateTime.now().millisecondsSinceEpoch}.pdf';
+    final safeId = styleId
+        .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_')
+        .toLowerCase();
+    final fileName =
+        'cv_${safeId}_${DateTime.now().millisecondsSinceEpoch}.pdf';
     final pdfFile = File('${cvDir.path}/$fileName');
     await pdfFile.writeAsBytes(pdfBytes, flush: true);
 
@@ -212,10 +241,10 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     );
 
     await ref.read(completedCVProvider.notifier).addCompletedCV(completedCV);
-    
+
     ref.invalidate(templatesProvider);
     state = state.copyWith(status: DownloadStatus.success);
-    
+
     if (context.mounted) {
       NotificationService.showSimpleNotification(
         title: AppLocalizations.of(context)!.cvGeneratedSuccess,
@@ -226,7 +255,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
 
     await OpenFilex.open(pdfFile.path);
     if (onSuccess != null) onSuccess();
-    
+
     Future.delayed(const Duration(seconds: 1), () {
       state = state.copyWith(status: DownloadStatus.idle);
     });
@@ -234,18 +263,31 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     return pdfFile.path;
   }
 
-  void _handleError(BuildContext context, dynamic e, String locale, String styleId) {
+  void _handleError(
+    BuildContext context,
+    dynamic e,
+    String locale,
+    String styleId,
+  ) {
     AnalyticsService().trackEvent(
       'cv_generation_failed',
-      properties: {'template_id': styleId, 'error': e.toString(), 'locale': locale},
+      properties: {
+        'template_id': styleId,
+        'error': e.toString(),
+        'locale': locale,
+      },
     );
-    state = state.copyWith(status: DownloadStatus.error, errorMessage: e.toString());
+    state = state.copyWith(
+      status: DownloadStatus.error,
+      errorMessage: e.toString(),
+    );
     if (context.mounted) {
       CustomSnackBar.showError(context, e.toString());
     }
   }
 }
 
-final cvDownloadProvider = NotifierProvider<CVDownloadNotifier, CVDownloadState>(
-  CVDownloadNotifier.new,
-);
+final cvDownloadProvider =
+    NotifierProvider<CVDownloadNotifier, CVDownloadState>(
+      CVDownloadNotifier.new,
+    );

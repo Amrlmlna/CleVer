@@ -24,7 +24,10 @@ class Certification extends Equatable {
           json['id'] as String? ??
           DateTime.now().millisecondsSinceEpoch.toString(),
       name: FormatUtils.ensureString(json['name'], fallback: 'Certification'),
-      issuer: FormatUtils.ensureString(json['issuer'], fallback: 'Organization'),
+      issuer: FormatUtils.ensureString(
+        json['issuer'],
+        fallback: 'Organization',
+      ),
       date: DateTime.tryParse(json['date'] as String? ?? '') ?? DateTime.now(),
       description: FormatUtils.ensureString(json['description']),
       fingerprint: json['fingerprint'] as String?,

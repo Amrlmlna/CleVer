@@ -45,7 +45,9 @@ class AdService {
     if (!_isEnabled || _adUnitId.isEmpty || _isLoading) return;
 
     _isLoading = true;
-    debugPrint('[AdService] Attempting to load Rewarded Interstitial Ad: $_adUnitId');
+    debugPrint(
+      '[AdService] Attempting to load Rewarded Interstitial Ad: $_adUnitId',
+    );
 
     RewardedInterstitialAd.load(
       adUnitId: _adUnitId,
@@ -73,7 +75,9 @@ class AdService {
           );
         },
         onAdFailedToLoad: (LoadAdError error) {
-          debugPrint('[AdService] Rewarded Interstitial FAILED to load: ${error.code} - ${error.message}');
+          debugPrint(
+            '[AdService] Rewarded Interstitial FAILED to load: ${error.code} - ${error.message}',
+          );
           _isAdLoaded = false;
           _isLoading = false;
         },
@@ -100,24 +104,27 @@ class AdService {
 
     if (_isAdLoaded && _rewardedInterstitialAd != null) {
       debugPrint('[AdService] SHOWING Rewarded Interstitial...');
-      _rewardedInterstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-        onAdDismissedFullScreenContent: (ad) {
-          ad.dispose();
-          _isAdLoaded = false;
-          _loadRewardedInterstitialAd();
-          onAdClosed();
-        },
-        onAdFailedToShowFullScreenContent: (ad, error) {
-          ad.dispose();
-          _isAdLoaded = false;
-          _loadRewardedInterstitialAd();
-          onAdClosed();
-        },
-      );
+      _rewardedInterstitialAd!.fullScreenContentCallback =
+          FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              ad.dispose();
+              _isAdLoaded = false;
+              _loadRewardedInterstitialAd();
+              onAdClosed();
+            },
+            onAdFailedToShowFullScreenContent: (ad, error) {
+              ad.dispose();
+              _isAdLoaded = false;
+              _loadRewardedInterstitialAd();
+              onAdClosed();
+            },
+          );
 
       await _rewardedInterstitialAd!.show(
         onUserEarnedReward: (ad, reward) {
-          debugPrint('[AdService] User earned reward: ${reward.amount} ${reward.type}');
+          debugPrint(
+            '[AdService] User earned reward: ${reward.amount} ${reward.type}',
+          );
         },
       );
     } else {

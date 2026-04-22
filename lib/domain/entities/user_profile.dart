@@ -97,13 +97,11 @@ class UserProfile extends Equatable {
               .toList() ??
           const [],
       skills:
-          (json['skills'] as List<dynamic>?)
-              ?.map((e) {
-                if (e is String) return Skill.fromString(e);
-                if (e is Map<String, dynamic>) return Skill.fromJson(e);
-                return Skill.fromString(e.toString());
-              })
-              .toList() ??
+          (json['skills'] as List<dynamic>?)?.map((e) {
+            if (e is String) return Skill.fromString(e);
+            if (e is Map<String, dynamic>) return Skill.fromJson(e);
+            return Skill.fromString(e.toString());
+          }).toList() ??
           const [],
       certifications:
           (json['certifications'] as List<dynamic>?)

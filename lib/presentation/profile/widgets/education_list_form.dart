@@ -180,10 +180,15 @@ class _EducationListFormState extends State<EducationListForm> {
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer
+                                  .withValues(alpha: 0.3),
                               borderRadius: BorderRadius.circular(4),
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.primary.withValues(alpha: 0.2),
                               ),
                             ),
                             child: Text(

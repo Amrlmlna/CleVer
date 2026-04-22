@@ -74,7 +74,9 @@ class Education extends Equatable {
         fallback: 'University',
       ),
       startDate:
-          json['startDate'] as String? ?? json['start_date'] as String? ?? '2000-01',
+          json['startDate'] as String? ??
+          json['start_date'] as String? ??
+          '2000-01',
       endDate: json['endDate'] as String? ?? json['end_date'] as String?,
       description: FormatUtils.ensureString(json['description']),
       gpa: json['gpa'] as String?,

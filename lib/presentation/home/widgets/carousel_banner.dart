@@ -21,7 +21,10 @@ class _CarouselBannerState extends ConsumerState<CarouselBanner> {
     final bannerAsync = ref.watch(bannerProvider);
 
     return bannerAsync.when(
-      data: (banners) => _buildCarousel(context, banners.isEmpty ? DefaultBanners.list : banners),
+      data: (banners) => _buildCarousel(
+        context,
+        banners.isEmpty ? DefaultBanners.list : banners,
+      ),
       loading: () => _buildCarousel(context, DefaultBanners.list),
       error: (err, stack) {
         debugPrint('Banner Error: $err');
@@ -56,7 +59,8 @@ class _CarouselBannerState extends ConsumerState<CarouselBanner> {
 
             return GestureDetector(
               onTap: () async {
-                if (banner.redirectUrl != null && banner.redirectUrl!.isNotEmpty) {
+                if (banner.redirectUrl != null &&
+                    banner.redirectUrl!.isNotEmpty) {
                   final url = Uri.parse(banner.redirectUrl!);
                   if (await canLaunchUrl(url)) {
                     await launchUrl(url);
@@ -73,7 +77,7 @@ class _CarouselBannerState extends ConsumerState<CarouselBanner> {
                     width: 1,
                   ),
                   image: DecorationImage(
-                    image: isLocal 
+                    image: isLocal
                         ? AssetImage(banner.imageUrl) as ImageProvider
                         : NetworkImage(banner.imageUrl),
                     fit: BoxFit.cover,

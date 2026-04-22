@@ -43,7 +43,8 @@ class EducationBottomSheet extends ConsumerStatefulWidget {
   }
 
   @override
-  ConsumerState<EducationBottomSheet> createState() => _EducationBottomSheetState();
+  ConsumerState<EducationBottomSheet> createState() =>
+      _EducationBottomSheetState();
 }
 
 class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
@@ -55,7 +56,6 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
   late TextEditingController _descCtrl;
   late TextEditingController _gpaCtrl;
   late List<Subject> _subjects;
-
 
   @override
   void initState() {
@@ -138,7 +138,9 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -215,7 +217,9 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
               color: Theme.of(context).colorScheme.outlineVariant,
             ),
             borderRadius: BorderRadius.circular(14),
-            color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+            color: Theme.of(
+              context,
+            ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
           ),
           child: Column(
             children: [
@@ -247,7 +251,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
 
     try {
       final String? text;
-      
+
       void showLoading() {
         if (!loadingShown && mounted) {
           loadingShown = true;
@@ -300,7 +304,9 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
           }
 
           for (final newSub in result.subjects) {
-            if (!_subjects.any((s) => s.name.toLowerCase() == newSub.name.toLowerCase())) {
+            if (!_subjects.any(
+              (s) => s.name.toLowerCase() == newSub.name.toLowerCase(),
+            )) {
               _subjects.add(newSub);
             }
           }
@@ -338,11 +344,15 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
             ),
             TextField(
               controller: gradeCtrl,
-              decoration: InputDecoration(labelText: localization.gradeOptional),
+              decoration: InputDecoration(
+                labelText: localization.gradeOptional,
+              ),
             ),
             TextField(
               controller: descCtrl,
-              decoration: InputDecoration(labelText: localization.whatDidYouLearn),
+              decoration: InputDecoration(
+                labelText: localization.whatDidYouLearn,
+              ),
               maxLines: 2,
             ),
           ],
@@ -356,11 +366,13 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
             onPressed: () {
               if (nameCtrl.text.isNotEmpty) {
                 setState(() {
-                  _subjects.add(Subject(
-                    name: nameCtrl.text,
-                    grade: gradeCtrl.text.isEmpty ? null : gradeCtrl.text,
-                    description: descCtrl.text.isEmpty ? null : descCtrl.text,
-                  ));
+                  _subjects.add(
+                    Subject(
+                      name: nameCtrl.text,
+                      grade: gradeCtrl.text.isEmpty ? null : gradeCtrl.text,
+                      description: descCtrl.text.isEmpty ? null : descCtrl.text,
+                    ),
+                  );
                 });
                 Navigator.pop(context);
               }
@@ -441,66 +453,67 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                         v!.isEmpty ? localization.requiredField : null,
                   ),
                   const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CustomTextFormField(
-                            controller: _startCtrl,
-                            labelText: localization.startDate,
-                            hintText: localization.year,
-                            readOnly: true,
-                            prefixIcon: Icons.calendar_today,
-                            onTap: () => _pickDate(_startCtrl),
-                            validator: (v) =>
-                                v!.isEmpty ? localization.requiredField : null,
-                          ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextFormField(
+                          controller: _startCtrl,
+                          labelText: localization.startDate,
+                          hintText: localization.year,
+                          readOnly: true,
+                          prefixIcon: Icons.calendar_today,
+                          onTap: () => _pickDate(_startCtrl),
+                          validator: (v) =>
+                              v!.isEmpty ? localization.requiredField : null,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: CustomTextFormField(
-                            controller: _endCtrl,
-                            labelText: localization.endDate,
-                            hintText: localization.year,
-                            readOnly: true,
-                            prefixIcon: Icons.event,
-                            onTap: () => _pickDate(_endCtrl),
-                          ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: CustomTextFormField(
+                          controller: _endCtrl,
+                          labelText: localization.endDate,
+                          hintText: localization.year,
+                          readOnly: true,
+                          prefixIcon: Icons.event,
+                          onTap: () => _pickDate(_endCtrl),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: CustomTextFormField(
-                            controller: _gpaCtrl,
-                            labelText: localization.gpaLabel,
-                            hintText: localization.gpaHint,
-                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                            prefixIcon: Icons.star_outline,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: CustomTextFormField(
+                          controller: _gpaCtrl,
+                          labelText: localization.gpaLabel,
+                          hintText: localization.gpaHint,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
                           ),
+                          prefixIcon: Icons.star_outline,
                         ),
-                        const SizedBox(width: 12),
-                        const Expanded(flex: 3, child: SizedBox()),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    CustomTextFormField(
-                      controller: _descCtrl,
-                      labelText: localization.educationDescriptionLabel,
-                      hintText: localization.educationDescriptionHint,
-                      maxLines: 3,
-                    ),
+                      ),
+                      const SizedBox(width: 12),
+                      const Expanded(flex: 3, child: SizedBox()),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  CustomTextFormField(
+                    controller: _descCtrl,
+                    labelText: localization.educationDescriptionLabel,
+                    hintText: localization.educationDescriptionHint,
+                    maxLines: 3,
+                  ),
                   const SizedBox(height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         localization.academicSubjects,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w600),
                       ),
                       TextButton.icon(
                         onPressed: _scanKHS,
@@ -529,9 +542,15 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                       children: _subjects.map((subject) {
                         return GestureDetector(
                           onTap: () {
-                            final nameCtrl = TextEditingController(text: subject.name);
-                            final gradeCtrl = TextEditingController(text: subject.grade);
-                            final descCtrl = TextEditingController(text: subject.description);
+                            final nameCtrl = TextEditingController(
+                              text: subject.name,
+                            );
+                            final gradeCtrl = TextEditingController(
+                              text: subject.grade,
+                            );
+                            final descCtrl = TextEditingController(
+                              text: subject.description,
+                            );
 
                             final localization = AppLocalizations.of(context)!;
                             showDialog(
@@ -543,16 +562,22 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                                   children: [
                                     TextField(
                                       controller: nameCtrl,
-                                      decoration: InputDecoration(labelText: localization.subjectName),
+                                      decoration: InputDecoration(
+                                        labelText: localization.subjectName,
+                                      ),
                                       autofocus: true,
                                     ),
                                     TextField(
                                       controller: gradeCtrl,
-                                      decoration: InputDecoration(labelText: localization.gradeOptional),
+                                      decoration: InputDecoration(
+                                        labelText: localization.gradeOptional,
+                                      ),
                                     ),
                                     TextField(
                                       controller: descCtrl,
-                                      decoration: InputDecoration(labelText: localization.whatDidYouLearn),
+                                      decoration: InputDecoration(
+                                        labelText: localization.whatDidYouLearn,
+                                      ),
                                       maxLines: 2,
                                     ),
                                   ],
@@ -566,11 +591,17 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                                     onPressed: () {
                                       if (nameCtrl.text.isNotEmpty) {
                                         setState(() {
-                                          final index = _subjects.indexOf(subject);
+                                          final index = _subjects.indexOf(
+                                            subject,
+                                          );
                                           _subjects[index] = Subject(
                                             name: nameCtrl.text,
-                                            grade: gradeCtrl.text.isEmpty ? null : gradeCtrl.text,
-                                            description: descCtrl.text.isEmpty ? null : descCtrl.text,
+                                            grade: gradeCtrl.text.isEmpty
+                                                ? null
+                                                : gradeCtrl.text,
+                                            description: descCtrl.text.isEmpty
+                                                ? null
+                                                : descCtrl.text,
                                           );
                                         });
                                         Navigator.pop(context);

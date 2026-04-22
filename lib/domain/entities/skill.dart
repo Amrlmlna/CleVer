@@ -38,26 +38,14 @@ class Skill extends Equatable {
   final String name;
   final SkillCategory category;
 
-  const Skill({
-    required this.name,
-    this.category = SkillCategory.technical,
-  });
+  const Skill({required this.name, this.category = SkillCategory.technical});
 
-  Skill copyWith({
-    String? name,
-    SkillCategory? category,
-  }) {
-    return Skill(
-      name: name ?? this.name,
-      category: category ?? this.category,
-    );
+  Skill copyWith({String? name, SkillCategory? category}) {
+    return Skill(name: name ?? this.name, category: category ?? this.category);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'category': category.name,
-    };
+    return {'name': name, 'category': category.name};
   }
 
   /// Parses a Skill from JSON map.

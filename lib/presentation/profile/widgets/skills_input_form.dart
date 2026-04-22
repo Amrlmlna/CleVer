@@ -133,7 +133,9 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
                             deleteIcon: Icon(
                               Icons.cancel,
                               size: 18,
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                             ),
                           ),
                         )

@@ -132,7 +132,9 @@ class ReviewSuccessDialog extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(14),
                                     side: BorderSide(
-                                      color: AppColors.black.withValues(alpha: 0.1),
+                                      color: AppColors.black.withValues(
+                                        alpha: 0.1,
+                                      ),
                                       width: 1.5,
                                     ),
                                   ),

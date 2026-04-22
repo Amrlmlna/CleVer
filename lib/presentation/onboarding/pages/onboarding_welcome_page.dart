@@ -21,7 +21,7 @@ class OnboardingWelcomePage extends StatefulWidget {
 class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
   int _currentStep = 0;
   bool _showForm = false;
-  
+
   // Data for diagnosis
   String? _selectedBurnout;
   String? _selectedTime;
@@ -38,7 +38,10 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
       setState(() {
         _currentStep++;
       });
-      AnalyticsService().trackEvent('onboarding_step_reached', properties: {'step': _currentStep});
+      AnalyticsService().trackEvent(
+        'onboarding_step_reached',
+        properties: {'step': _currentStep},
+      );
     } else {
       setState(() => _showForm = true);
     }
@@ -54,7 +57,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
       body: Stack(
         children: [
           _buildAmbientSpotlight(height, colorScheme),
-          
+
           Positioned.fill(
             child: SafeArea(
               child: AnimatedSwitcher(
@@ -111,7 +114,10 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
     );
   }
 
-  Widget _buildProgressIndicator(BuildContext context, ColorScheme colorScheme) {
+  Widget _buildProgressIndicator(
+    BuildContext context,
+    ColorScheme colorScheme,
+  ) {
     return Positioned(
       top: MediaQuery.of(context).padding.top + 20,
       left: 32,
@@ -123,9 +129,9 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
               height: 4,
               margin: const EdgeInsets.symmetric(horizontal: 2),
               decoration: BoxDecoration(
-                color: (index + 1) <= _currentStep 
-                  ? colorScheme.primary 
-                  : colorScheme.onSurface.withValues(alpha: 0.1),
+                color: (index + 1) <= _currentStep
+                    ? colorScheme.primary
+                    : colorScheme.onSurface.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -155,10 +161,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
             ),
           ],
         ),
-        child: Theme(
-          data: AppTheme.sheetTheme,
-          child: const OnboardingPage(),
-        ),
+        child: Theme(data: AppTheme.sheetTheme, child: const OnboardingPage()),
       ),
     );
   }
@@ -188,9 +191,18 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
         return StepSelectionList(
           title: l10n.onboardingBurnoutTitle,
           options: [
-            SelectionOption(text: l10n.onboardingBurnout1, icon: Icons.edit_note_rounded),
-            SelectionOption(text: l10n.onboardingBurnout2, icon: Icons.auto_fix_high_rounded),
-            SelectionOption(text: l10n.onboardingBurnout3, icon: Icons.psychology_rounded),
+            SelectionOption(
+              text: l10n.onboardingBurnout1,
+              icon: Icons.edit_note_rounded,
+            ),
+            SelectionOption(
+              text: l10n.onboardingBurnout2,
+              icon: Icons.auto_fix_high_rounded,
+            ),
+            SelectionOption(
+              text: l10n.onboardingBurnout3,
+              icon: Icons.psychology_rounded,
+            ),
           ],
           selectedOption: _selectedBurnout,
           onSelect: (val) => setState(() => _selectedBurnout = val),
@@ -201,10 +213,22 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
         return StepSelectionList(
           title: l10n.onboardingTimeSpentTitle,
           options: [
-            SelectionOption(text: l10n.onboardingTime1, icon: Icons.timer_outlined),
-            SelectionOption(text: l10n.onboardingTime2, icon: Icons.history_rounded),
-            SelectionOption(text: l10n.onboardingTime3, icon: Icons.hourglass_empty_rounded),
-            SelectionOption(text: l10n.onboardingTime4, icon: Icons.alarm_on_rounded),
+            SelectionOption(
+              text: l10n.onboardingTime1,
+              icon: Icons.timer_outlined,
+            ),
+            SelectionOption(
+              text: l10n.onboardingTime2,
+              icon: Icons.history_rounded,
+            ),
+            SelectionOption(
+              text: l10n.onboardingTime3,
+              icon: Icons.hourglass_empty_rounded,
+            ),
+            SelectionOption(
+              text: l10n.onboardingTime4,
+              icon: Icons.alarm_on_rounded,
+            ),
           ],
           selectedOption: _selectedTime,
           onSelect: (val) => setState(() => _selectedTime = val),
@@ -215,9 +239,18 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
         return StepSelectionList(
           title: l10n.onboardingProcrastinationTitle,
           options: [
-            SelectionOption(text: l10n.onboardingProcrastination1, icon: Icons.sentiment_dissatisfied_rounded),
-            SelectionOption(text: l10n.onboardingProcrastination2, icon: Icons.sentiment_neutral_rounded),
-            SelectionOption(text: l10n.onboardingProcrastination3, icon: Icons.sentiment_very_dissatisfied_rounded),
+            SelectionOption(
+              text: l10n.onboardingProcrastination1,
+              icon: Icons.sentiment_dissatisfied_rounded,
+            ),
+            SelectionOption(
+              text: l10n.onboardingProcrastination2,
+              icon: Icons.sentiment_neutral_rounded,
+            ),
+            SelectionOption(
+              text: l10n.onboardingProcrastination3,
+              icon: Icons.sentiment_very_dissatisfied_rounded,
+            ),
           ],
           selectedOption: _selectedProcrastination,
           onSelect: (val) => setState(() => _selectedProcrastination = val),
@@ -242,4 +275,3 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
     }
   }
 }
-

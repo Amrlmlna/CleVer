@@ -107,7 +107,9 @@ class NotificationService {
     // Check if the app was opened via a notification when it was terminated
     RemoteMessage? initialMessage = await messaging.getInitialMessage();
     if (initialMessage != null) {
-      debugPrint('App opened from terminated state via FCM: ${initialMessage.data}');
+      debugPrint(
+        'App opened from terminated state via FCM: ${initialMessage.data}',
+      );
       NotificationController.handleFcmTap(initialMessage.data);
     }
 
@@ -162,25 +164,21 @@ class NotificationService {
 
     // Background/terminated: we must show the notification manually
     // AwesomeNotifications needs initialization first
-    await AwesomeNotifications().initialize(
-      'resource://drawable/notification_icon',
-      [
-        NotificationChannel(
-          channelKey: 'general_alerts',
-          channelName: 'General Alerts',
-          channelDescription: 'General app notifications',
-          defaultColor: const Color(0xFF000000),
-          importance: NotificationImportance.High,
-          channelShowBadge: true,
-          playSound: true,
-        ),
-      ],
-    );
+    await AwesomeNotifications()
+        .initialize('resource://drawable/notification_icon', [
+          NotificationChannel(
+            channelKey: 'general_alerts',
+            channelName: 'General Alerts',
+            channelDescription: 'General app notifications',
+            defaultColor: const Color(0xFF000000),
+            importance: NotificationImportance.High,
+            channelShowBadge: true,
+            playSound: true,
+          ),
+        ]);
 
-    final String? title =
-        message.notification?.title ?? message.data['title'];
-    final String? body =
-        message.notification?.body ?? message.data['body'];
+    final String? title = message.notification?.title ?? message.data['title'];
+    final String? body = message.notification?.body ?? message.data['body'];
 
     if (title != null || body != null) {
       await AwesomeNotifications().createNotification(
@@ -189,7 +187,9 @@ class NotificationService {
           channelKey: 'general_alerts',
           title: title,
           body: body,
-          payload: message.data.map((key, value) => MapEntry(key, value.toString())),
+          payload: message.data.map(
+            (key, value) => MapEntry(key, value.toString()),
+          ),
           notificationLayout: NotificationLayout.Default,
         ),
       );

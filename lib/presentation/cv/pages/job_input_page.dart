@@ -34,7 +34,6 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
   final GlobalKey _scanButtonKey = GlobalKey();
   late TutorialCoachMark _tutorialCoachMark;
 
-
   static const String _kDraftTitleKey = 'draft_job_title';
   static const String _kDraftCompanyKey = 'draft_job_company';
   static const String _kDraftDescKey = 'draft_job_desc';
@@ -62,14 +61,11 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
 
   void _initTutorial() {
     final List<TargetFocus> targets = [
-
       TargetFocus(
         identify: "scan_button",
         keyTarget: _scanButtonKey,
         alignSkip: Alignment.topRight,
         contents: [
-
-
           TargetContent(
             align: ContentAlign.bottom,
             builder: (context, controller) {
@@ -142,7 +138,6 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
       }
     }
   }
-
 
   Future<void> _loadDrafts() async {
     final prefs = await SharedPreferences.getInstance();
@@ -462,7 +457,6 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
             tooltip: AppLocalizations.of(context)!.scanJobPosting,
             onPressed: _showImageSourceDialog,
           ),
-
         ],
       ),
       extendBodyBehindAppBar: true,

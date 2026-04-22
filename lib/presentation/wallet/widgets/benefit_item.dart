@@ -27,11 +27,7 @@ class BenefitItem extends StatelessWidget {
             color: colorScheme.onSurface.withValues(alpha: 0.03),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Icon(
-            icon,
-            size: 16,
-            color: colorScheme.onSurface,
-          ),
+          child: Icon(icon, size: 16, color: colorScheme.onSurface),
         ),
         const SizedBox(width: 14),
         Expanded(

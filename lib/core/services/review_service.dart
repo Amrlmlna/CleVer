@@ -20,26 +20,29 @@ class ReviewService {
     return prefs.getBool(_successFlagKey) ?? false;
   }
 
-
   Future<void> requestReviewWithBlur(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     final hasPrompted = prefs.getBool(_reviewFlagKey) ?? false;
     final hasGenerated = prefs.getBool(_successFlagKey) ?? false;
 
     if (hasPrompted) {
-      debugPrint('[ReviewService] Native review already prompted before. Skipping.');
+      debugPrint(
+        '[ReviewService] Native review already prompted before. Skipping.',
+      );
       return;
     }
 
     // Always ensure they have at least one generation success for quality control
     if (!hasGenerated) {
-      debugPrint('[ReviewService] No successful generation detected yet. skipping.');
+      debugPrint(
+        '[ReviewService] No successful generation detected yet. skipping.',
+      );
       return;
     }
 
     if (context.mounted) {
       final result = await ReviewSuccessDialog.show(context);
-      
+
       if (result == true) {
         // Positive: Native Review (or store fallback)
         await prefs.setBool(_reviewFlagKey, true);
@@ -53,10 +56,12 @@ class ReviewService {
 
   Future<void> requestReview() async {
     try {
-      // In Debug mode, the native prompt is silent. 
+      // In Debug mode, the native prompt is silent.
       // We force a Store redirection so the dev can see it works.
       if (kDebugMode) {
-        debugPrint('[ReviewService] Debug mode: Forcing Store Listing fallback.');
+        debugPrint(
+          '[ReviewService] Debug mode: Forcing Store Listing fallback.',
+        );
         await openStoreListing();
         return;
       }
@@ -101,20 +106,19 @@ class ReviewService {
 
   String? encodeQueryParameters(Map<String, String> params) {
     return params.entries
-        .map((MapEntry<String, String> e) =>
-            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .map(
+          (MapEntry<String, String> e) =>
+              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',
+        )
         .join('&');
   }
 
   Future<void> openStoreListing() async {
     try {
       // package_info_plus can be used here to get dynamic ID, but com.clevermaster.app is correct for now
-      await _inAppReview.openStoreListing(
-        appStoreId: 'com.clevermaster.app',
-      );
+      await _inAppReview.openStoreListing(appStoreId: 'com.clevermaster.app');
     } catch (e) {
       debugPrint('ReviewService Store Error: $e');
     }
   }
 }
-

@@ -179,7 +179,9 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
         final oldEdu = mergedEducation[existsIndex];
         final updatedEdu = oldEdu.copyWith(
           gpa: newEdu.gpa ?? oldEdu.gpa,
-          subjects: newEdu.subjects.length > oldEdu.subjects.length ? newEdu.subjects : oldEdu.subjects,
+          subjects: newEdu.subjects.length > oldEdu.subjects.length
+              ? newEdu.subjects
+              : oldEdu.subjects,
           description: newEdu.description.length > oldEdu.description.length
               ? newEdu.description
               : oldEdu.description,
@@ -553,7 +555,9 @@ class ProfileController extends StateNotifier<ProfileState> {
         final oldEdu = dedupedEdu[existsIndex];
         final updatedEdu = oldEdu.copyWith(
           gpa: newEdu.gpa ?? oldEdu.gpa,
-          subjects: newEdu.subjects.length > oldEdu.subjects.length ? newEdu.subjects : oldEdu.subjects,
+          subjects: newEdu.subjects.length > oldEdu.subjects.length
+              ? newEdu.subjects
+              : oldEdu.subjects,
           description: newEdu.description.length > oldEdu.description.length
               ? newEdu.description
               : oldEdu.description,

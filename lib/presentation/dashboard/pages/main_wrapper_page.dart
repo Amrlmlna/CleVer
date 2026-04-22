@@ -37,14 +37,13 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
   final GlobalKey _profileKey = GlobalKey();
   TutorialCoachMark? _navTutorialCoachMark;
 
-
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkVerification(ref.read(authStateProvider).value);
-      
+
       // Handle "missed" onboarding success trigger from navigation
       if (ref.read(onboardingAuthCaptureProvider)) {
         _handleOnboardingSuccess();
@@ -142,13 +141,10 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
 
   void _initNavTutorial() {
     final List<TargetFocus> targets = [
-
       TargetFocus(
         identify: "nav_drafts",
         keyTarget: _draftsKey,
         contents: [
-
-
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) {
@@ -194,8 +190,6 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
         identify: "nav_profile",
         keyTarget: _profileKey,
         contents: [
-
-
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) {
@@ -265,7 +259,6 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     ref.listen(authStateProvider, (previous, next) {
@@ -284,7 +277,6 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
         _navTutorialCoachMark?.show(context: context);
       }
     });
-
 
     final currentIndex = widget.navigationShell.currentIndex;
 
@@ -338,7 +330,6 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
               currentIndex,
               itemKey: _profileKey,
             ),
-
           ],
         ),
       ),

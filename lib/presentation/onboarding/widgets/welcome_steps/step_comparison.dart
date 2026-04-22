@@ -8,10 +8,7 @@ import '../onboarding_step_screen.dart';
 class StepComparison extends StatelessWidget {
   final VoidCallback onNext;
 
-  const StepComparison({
-    super.key,
-    required this.onNext,
-  });
+  const StepComparison({super.key, required this.onNext});
 
   @override
   Widget build(BuildContext context) {
@@ -29,43 +26,53 @@ class StepComparison extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(32),
-                  border: Border.all(
-                    color: colorScheme.onSurface.withValues(alpha: 0.05),
-                  ),
-                ),
-                child: IntrinsicHeight(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      // Without CleVer
-                      Expanded(
-                        child: _ComparisonBar(
-                          label: l10n.onboardingComparisonLabelLeft,
-                          value: l10n.onboardingComparisonValueLeft,
-                          percent: 0.2, // 20%
-                          color: colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
-                          delay: 400.ms,
-                        ),
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: colorScheme.surfaceContainerHighest.withValues(
+                        alpha: 0.1,
                       ),
-                      const SizedBox(width: 24),
-                      // With CleVer
-                      Expanded(
-                        child: _ComparisonBar(
-                          label: l10n.onboardingComparisonLabelRight,
-                          value: l10n.onboardingComparisonValueRight,
-                          percent: 1.0, // 2X / Full
-                          isPrimary: true,
-                          delay: 700.ms,
-                        ),
+                      borderRadius: BorderRadius.circular(32),
+                      border: Border.all(
+                        color: colorScheme.onSurface.withValues(alpha: 0.05),
                       ),
-                    ],
+                    ),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          // Without CleVer
+                          Expanded(
+                            child: _ComparisonBar(
+                              label: l10n.onboardingComparisonLabelLeft,
+                              value: l10n.onboardingComparisonValueLeft,
+                              percent: 0.2, // 20%
+                              color: colorScheme.onSurfaceVariant.withValues(
+                                alpha: 0.3,
+                              ),
+                              delay: 400.ms,
+                            ),
+                          ),
+                          const SizedBox(width: 24),
+                          // With CleVer
+                          Expanded(
+                            child: _ComparisonBar(
+                              label: l10n.onboardingComparisonLabelRight,
+                              value: l10n.onboardingComparisonValueRight,
+                              percent: 1.0, // 2X / Full
+                              isPrimary: true,
+                              delay: 700.ms,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                  .animate()
+                  .fadeIn(duration: 800.ms)
+                  .scale(
+                    begin: const Offset(0.98, 0.98),
+                    curve: Curves.easeOutCubic,
                   ),
-                ),
-              ).animate().fadeIn(duration: 800.ms).scale(begin: const Offset(0.98, 0.98), curve: Curves.easeOutCubic),
               const SizedBox(height: 24),
               Text(
                 l10n.onboardingComparisonFooter,
@@ -81,10 +88,7 @@ class StepComparison extends StatelessWidget {
       ],
       footer: SizedBox(
         width: double.infinity,
-        child: GradientButton(
-          text: l10n.showMeTheWay,
-          onPressed: onNext,
-        ),
+        child: GradientButton(text: l10n.showMeTheWay, onPressed: onNext),
       ),
     );
   }
@@ -134,25 +138,25 @@ class _ComparisonBar extends StatelessWidget {
             children: [
               // The Bar
               FractionallySizedBox(
-                heightFactor: percent,
-                widthFactor: 1.0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    gradient: isPrimary
-                        ? LinearGradient(
-                            colors: [
-                              colorScheme.primary,
-                              colorScheme.tertiary,
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          )
-                        : null,
-                    color: !isPrimary ? color : null,
-                  ),
-                ),
-              )
+                    heightFactor: percent,
+                    widthFactor: 1.0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: isPrimary
+                            ? LinearGradient(
+                                colors: [
+                                  colorScheme.primary,
+                                  colorScheme.tertiary,
+                                ],
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                              )
+                            : null,
+                        color: !isPrimary ? color : null,
+                      ),
+                    ),
+                  )
                   .animate()
                   .scaleY(
                     duration: 1200.ms,
@@ -162,21 +166,32 @@ class _ComparisonBar extends StatelessWidget {
                     delay: delay,
                   )
                   .fadeIn(delay: delay + 100.ms),
-              
+
               // The Value
               Positioned(
-                bottom: 16,
-                child: Text(
-                  value,
-                  style: (isPrimary ? AppTextStyles.h3 : AppTextStyles.bodyLarge).copyWith(
-                    fontWeight: FontWeight.w900,
-                    color: isPrimary ? Colors.white : colorScheme.onSurface,
-                  ),
-                ),
-              )
+                    bottom: 16,
+                    child: Text(
+                      value,
+                      style:
+                          (isPrimary
+                                  ? AppTextStyles.h3
+                                  : AppTextStyles.bodyLarge)
+                              .copyWith(
+                                fontWeight: FontWeight.w900,
+                                color: isPrimary
+                                    ? Colors.white
+                                    : colorScheme.onSurface,
+                              ),
+                    ),
+                  )
                   .animate()
                   .fadeIn(delay: delay + 800.ms)
-                  .moveY(begin: 10, end: 0, delay: delay + 800.ms, duration: 400.ms),
+                  .moveY(
+                    begin: 10,
+                    end: 0,
+                    delay: delay + 800.ms,
+                    duration: 400.ms,
+                  ),
             ],
           ),
         ),

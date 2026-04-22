@@ -11,10 +11,7 @@ class SkillsBottomSheet extends StatefulWidget {
 
   const SkillsBottomSheet({super.key, required this.currentSkills});
 
-  static Future<Skill?> show(
-    BuildContext context,
-    List<Skill> currentSkills,
-  ) {
+  static Future<Skill?> show(BuildContext context, List<Skill> currentSkills) {
     return showModalBottomSheet<Skill>(
       context: context,
       useRootNavigator: true,
@@ -127,12 +124,16 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
                         onSelected: (_) {
                           setState(() => _selectedCategory = category);
                         },
-                        selectedColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.15),
+                        selectedColor: Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.15),
                         labelStyle: TextStyle(
                           color: isSelected
                               ? Theme.of(context).colorScheme.primary
                               : Theme.of(context).colorScheme.onSurface,
-                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.w400,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),

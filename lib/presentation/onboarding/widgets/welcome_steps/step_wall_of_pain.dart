@@ -8,10 +8,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 class StepWallOfPain extends StatelessWidget {
   final VoidCallback onNext;
 
-  const StepWallOfPain({
-    super.key,
-    required this.onNext,
-  });
+  const StepWallOfPain({super.key, required this.onNext});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +46,9 @@ class StepWallOfPain extends StatelessWidget {
             backgroundColor: colorScheme.primary,
             foregroundColor: colorScheme.onPrimary,
             padding: const EdgeInsets.symmetric(vertical: 20),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
           ),
           child: Text(l10n.next, style: AppTextStyles.button),
         ),

@@ -118,7 +118,7 @@ class PackageCard extends StatelessWidget {
                     color: colorScheme.onSurface,
                   ),
                 ),
-                if (isSelected) 
+                if (isSelected)
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Icon(

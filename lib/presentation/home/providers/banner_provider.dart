@@ -4,8 +4,6 @@ import '../../../../domain/entities/banner_ad.dart';
 import '../../../../data/datasources/remote_banner_datasource.dart';
 import '../../../../data/repositories/banner_repository_impl.dart';
 
-
-
 final bannerRepositoryProvider = Provider<BannerRepositoryImpl>((ref) {
   return BannerRepositoryImpl(
     remoteDataSource: RemoteBannerDataSource(client: http.Client()),

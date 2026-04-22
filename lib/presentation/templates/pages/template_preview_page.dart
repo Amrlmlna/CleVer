@@ -10,6 +10,7 @@ import '../../profile/providers/profile_provider.dart';
 import '../../../core/providers/locale_provider.dart';
 import '../../../../core/services/payment_service.dart';
 import '../../auth/utils/auth_guard.dart';
+import '../../home/providers/review_check_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 import '../widgets/template_carousel_preview.dart';
@@ -105,6 +106,9 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage>
               // Set the success flag for ReviewService to pick up later on HomePage
               final prefs = await SharedPreferences.getInstance();
               await prefs.setBool('has_generated_at_least_one_cv', true);
+
+              // LIVE SIGNAL: Trigger the reactive check on HomePage
+              ref.read(reviewCheckProvider.notifier).state++;
             }
           },
         );

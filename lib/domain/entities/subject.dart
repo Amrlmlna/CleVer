@@ -5,17 +5,9 @@ class Subject extends Equatable {
   final String? description;
   final String? grade;
 
-  const Subject({
-    required this.name,
-    this.description,
-    this.grade,
-  });
+  const Subject({required this.name, this.description, this.grade});
 
-  Subject copyWith({
-    String? name,
-    String? description,
-    String? grade,
-  }) {
+  Subject copyWith({String? name, String? description, String? grade}) {
     return Subject(
       name: name ?? this.name,
       description: description ?? this.description,
@@ -24,11 +16,7 @@ class Subject extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'description': description,
-      'grade': grade,
-    };
+    return {'name': name, 'description': description, 'grade': grade};
   }
 
   factory Subject.fromJson(Map<String, dynamic> json) {

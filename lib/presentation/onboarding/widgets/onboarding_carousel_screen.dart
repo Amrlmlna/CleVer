@@ -75,7 +75,9 @@ class OnboardingCarouselScreen extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: isCentered ? Alignment.bottomCenter : Alignment.topCenter,
+                begin: isCentered
+                    ? Alignment.bottomCenter
+                    : Alignment.topCenter,
                 end: isCentered ? Alignment.topCenter : Alignment.bottomCenter,
                 colors: [
                   Colors.black.withValues(alpha: 0.9),
@@ -96,7 +98,9 @@ class OnboardingCarouselScreen extends StatelessWidget {
           bottom: isCentered ? (footer != null ? 180 : 80) : null,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: isCentered ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+            crossAxisAlignment: isCentered
+                ? CrossAxisAlignment.center
+                : CrossAxisAlignment.start,
             children: [
               Text(
                 headline,
@@ -125,12 +129,7 @@ class OnboardingCarouselScreen extends StatelessWidget {
         ),
 
         if (footer != null)
-          Positioned(
-            left: 32,
-            right: 32,
-            bottom: 24,
-            child: footer!,
-          ),
+          Positioned(left: 32, right: 32, bottom: 24, child: footer!),
       ],
     );
   }

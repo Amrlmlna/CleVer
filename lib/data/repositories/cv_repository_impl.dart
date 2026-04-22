@@ -16,16 +16,18 @@ class CVRepositoryImpl implements CVRepository {
   CVRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<({List<Subject> subjects, String? gpa})> parseStudyCard(String text) async {
+  Future<({List<Subject> subjects, String? gpa})> parseStudyCard(
+    String text,
+  ) async {
     try {
       final responseData = await remoteDataSource.parseStudyCard(text);
       final subjectsJson = responseData['subjects'] as List<dynamic>? ?? [];
       final gpa = responseData['gpa'] as String?;
-      
+
       final subjects = subjectsJson
           .map((s) => Subject.fromJson(s as Map<String, dynamic>))
           .toList();
-          
+
       return (subjects: subjects, gpa: gpa);
     } catch (e) {
       throw DataErrorMapper.map(e);

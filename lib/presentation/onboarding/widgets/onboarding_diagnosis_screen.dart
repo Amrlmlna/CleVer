@@ -38,85 +38,95 @@ class OnboardingDiagnosisScreen extends StatelessWidget {
             ),
             textAlign: TextAlign.left,
           ).animate().fadeIn().slideY(begin: 0.1, end: 0),
-          
+
           const SizedBox(height: 24),
-          
+
           // Line Graphics Container (Cinematic Chart)
           Container(
-            height: 220,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: colorScheme.surface.withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(28),
-              border: Border.all(
-                color: colorScheme.onSurface.withValues(alpha: 0.08),
-                width: 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: colorScheme.primary.withValues(alpha: 0.05),
-                  blurRadius: 40,
-                  offset: const Offset(0, 12),
-                ),
-              ],
-            ),
-            child: Stack(
-              children: [
-                // Background Grid
-                CustomPaint(
-                  size: Size.infinite,
-                  painter: _ChartGridPainter(
-                    color: colorScheme.onSurface.withValues(alpha: 0.05),
+                height: 220,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: colorScheme.surface.withValues(alpha: 0.05),
+                  borderRadius: BorderRadius.circular(28),
+                  border: Border.all(
+                    color: colorScheme.onSurface.withValues(alpha: 0.08),
+                    width: 1,
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: colorScheme.primary.withValues(alpha: 0.05),
+                      blurRadius: 40,
+                      offset: const Offset(0, 12),
+                    ),
+                  ],
                 ),
-                
-                // Organic Line & Gradient Fill
-                CustomPaint(
-                  size: Size.infinite,
-                  painter: _DiagnosisLinePainter(
-                    color: colorScheme.primary,
-                    fillColor: colorScheme.primary.withValues(alpha: 0.1),
-                  ),
-                ),
-                
-                Positioned(
-                  bottom: 24,
-                  right: 24,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        timeSpent,
-                        style: AppTextStyles.h1.copyWith(
-                          fontWeight: FontWeight.w900,
-                          color: colorScheme.primary,
-                          shadows: [
-                            Shadow(
-                              color: colorScheme.primary.withValues(alpha: 0.3),
-                              blurRadius: 30,
-                              offset: const Offset(0, 10),
+                child: Stack(
+                  children: [
+                    // Background Grid
+                    CustomPaint(
+                      size: Size.infinite,
+                      painter: _ChartGridPainter(
+                        color: colorScheme.onSurface.withValues(alpha: 0.05),
+                      ),
+                    ),
+
+                    // Organic Line & Gradient Fill
+                    CustomPaint(
+                      size: Size.infinite,
+                      painter: _DiagnosisLinePainter(
+                        color: colorScheme.primary,
+                        fillColor: colorScheme.primary.withValues(alpha: 0.1),
+                      ),
+                    ),
+
+                    Positioned(
+                      bottom: 24,
+                      right: 24,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            timeSpent,
+                            style: AppTextStyles.h1.copyWith(
+                              fontWeight: FontWeight.w900,
+                              color: colorScheme.primary,
+                              shadows: [
+                                Shadow(
+                                  color: colorScheme.primary.withValues(
+                                    alpha: 0.3,
+                                  ),
+                                  blurRadius: 30,
+                                  offset: const Offset(0, 10),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ).animate().scale(duration: 800.ms, curve: Curves.elasticOut),
-                      Text(
-                        'LOST ANNUALLY',
-                        style: textTheme.labelSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-                          letterSpacing: 2,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ).animate().fadeIn(delay: 400.ms),
-                    ],
-                  ),
+                          ).animate().scale(
+                            duration: 800.ms,
+                            curve: Curves.elasticOut,
+                          ),
+                          Text(
+                            'LOST ANNUALLY',
+                            style: textTheme.labelSmall?.copyWith(
+                              color: colorScheme.onSurfaceVariant.withValues(
+                                alpha: 0.6,
+                              ),
+                              letterSpacing: 2,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ).animate().fadeIn(delay: 400.ms),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ).animate(delay: 200.ms).fadeIn(duration: 800.ms).slideY(begin: 0.1, end: 0),
-          
+              )
+              .animate(delay: 200.ms)
+              .fadeIn(duration: 800.ms)
+              .slideY(begin: 0.1, end: 0),
+
           const SizedBox(height: 48),
-          
+
           // The Polished Diagnostic Card
           Container(
             padding: const EdgeInsets.all(24),
@@ -222,13 +232,15 @@ class OnboardingDiagnosisScreen extends StatelessWidget {
         spans.add(TextSpan(text: remaining.substring(0, earliestIndex)));
       }
 
-      spans.add(TextSpan(
-        text: foundKeyword,
-        style: TextStyle(
-          fontWeight: FontWeight.w900,
-          color: colorScheme.primary,
+      spans.add(
+        TextSpan(
+          text: foundKeyword,
+          style: TextStyle(
+            fontWeight: FontWeight.w900,
+            color: colorScheme.primary,
+          ),
         ),
-      ));
+      );
 
       remaining = remaining.substring(earliestIndex + foundKeyword!.length);
     }
@@ -281,10 +293,7 @@ class _DiagnosisLinePainter extends CustomPainter {
   final Color color;
   final Color fillColor;
 
-  _DiagnosisLinePainter({
-    required this.color,
-    required this.fillColor,
-  });
+  _DiagnosisLinePainter({required this.color, required this.fillColor});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -303,18 +312,24 @@ class _DiagnosisLinePainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final path = Path();
-    
+
     // Create an organic organic curve representing waste accumulation
     path.moveTo(0, size.height * 0.8);
     path.cubicTo(
-      size.width * 0.25, size.height * 0.75,
-      size.width * 0.4, size.height * 0.2,
-      size.width * 0.7, size.height * 0.35,
+      size.width * 0.25,
+      size.height * 0.75,
+      size.width * 0.4,
+      size.height * 0.2,
+      size.width * 0.7,
+      size.height * 0.35,
     );
     path.cubicTo(
-      size.width * 0.85, size.height * 0.45,
-      size.width * 0.95, size.height * 0.1,
-      size.width, size.height * 0.15,
+      size.width * 0.85,
+      size.height * 0.45,
+      size.width * 0.95,
+      size.height * 0.1,
+      size.width,
+      size.height * 0.15,
     );
 
     // Create the fill path by closing it to the bottom
@@ -325,10 +340,10 @@ class _DiagnosisLinePainter extends CustomPainter {
 
     canvas.drawPath(fillPath, fillPaint);
     canvas.drawPath(path, linePaint);
-    
+
     // Add a glowing effect to the line
     canvas.drawPath(
-      path, 
+      path,
       Paint()
         ..color = color.withValues(alpha: 0.3)
         ..style = PaintingStyle.stroke
