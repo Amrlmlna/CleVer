@@ -126,7 +126,7 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
       if (existsIndex != -1) {
         final oldExp = mergedExperience[existsIndex];
         final updatedExp = oldExp.copyWith(
-          description: (newExp.description?.length ?? 0) > (oldExp.description?.length ?? 0)
+          description: newExp.description.length > oldExp.description.length
               ? newExp.description
               : oldExp.description,
         );
@@ -180,7 +180,7 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
         final updatedEdu = oldEdu.copyWith(
           gpa: newEdu.gpa ?? oldEdu.gpa,
           subjects: newEdu.subjects.length > oldEdu.subjects.length ? newEdu.subjects : oldEdu.subjects,
-          description: (newEdu.description?.length ?? 0) > (oldEdu.description?.length ?? 0)
+          description: newEdu.description.length > oldEdu.description.length
               ? newEdu.description
               : oldEdu.description,
         );
@@ -508,7 +508,7 @@ class ProfileController extends StateNotifier<ProfileState> {
       if (existsIndex != -1) {
         final oldExp = dedupedExp[existsIndex];
         final updatedExp = oldExp.copyWith(
-          description: (newExp.description?.length ?? 0) > (oldExp.description?.length ?? 0)
+          description: newExp.description.length > oldExp.description.length
               ? newExp.description
               : oldExp.description,
         );
@@ -554,7 +554,7 @@ class ProfileController extends StateNotifier<ProfileState> {
         final updatedEdu = oldEdu.copyWith(
           gpa: newEdu.gpa ?? oldEdu.gpa,
           subjects: newEdu.subjects.length > oldEdu.subjects.length ? newEdu.subjects : oldEdu.subjects,
-          description: (newEdu.description?.length ?? 0) > (oldEdu.description?.length ?? 0)
+          description: newEdu.description.length > oldEdu.description.length
               ? newEdu.description
               : oldEdu.description,
         );

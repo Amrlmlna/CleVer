@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../domain/entities/subject.dart';
-import '../../../cv/providers/cv_generation_provider.dart';
+import '../../cv/providers/cv_generation_provider.dart';
 import '../../../../data/datasources/ocr_datasource.dart';
 import '../../../../domain/entities/user_profile.dart';
 import '../../common/widgets/custom_text_form_field.dart';
@@ -10,6 +11,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../common/widgets/unsaved_changes_dialog.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_theme.dart';
+import 'package:intl/intl.dart';
 
 class EducationBottomSheet extends ConsumerStatefulWidget {
   final Education? existing;
@@ -84,7 +86,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
         _endCtrl.text != (widget.existing?.endDate ?? '') ||
         _descCtrl.text != (widget.existing?.description ?? '') ||
         _gpaCtrl.text != (widget.existing?.gpa ?? '') ||
-        _subjects.length != (widget.existing?.subjects?.length ?? 0);
+        _subjects.length != (widget.existing?.subjects.length ?? 0);
   }
 
   void _handlePop() async {
@@ -363,7 +365,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                       child: Text(
                         'No subjects added yet.',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: AppColors.sheetOnSurfaceVar,
                         ),
                       ),
                     )
@@ -437,7 +439,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                                 _subjects.remove(subject);
                               });
                             },
-                            backgroundColor: AppColors.chipBackground,
+                            backgroundColor: AppColors.sheetInputFill,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),

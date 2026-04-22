@@ -8,7 +8,7 @@ class Education extends Equatable {
   final String schoolName;
   final String startDate;
   final String? endDate;
-  final String? description;
+  final String description;
   final String? gpa;
   final List<Subject> subjects;
   final String? fingerprint;
