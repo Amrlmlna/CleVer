@@ -32,6 +32,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addExperience => 'add experience';
 
   @override
+  String get addSubject => 'add subject';
+
+  @override
+  String get addSubjectManually => 'add subject manually';
+
+  @override
   String get addSkill => 'add skill';
 
   @override
@@ -1043,6 +1049,55 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scanJobPosting => 'scan job posting';
 
   @override
+  String get scanKHS => 'Scan KHS';
+
+  @override
+  String get scanKHSTitle => 'Scan Study Result Card (KHS)';
+
+  @override
+  String get scanKHSMessage => 'Select a source to extract GPA and subjects';
+
+  @override
+  String get scanningKHSBadge => 'scanning khs';
+
+  @override
+  String get readingKHS => 'reading khs...';
+
+  @override
+  String get extractingGPA => 'extracting gpa & subjects...';
+
+  @override
+  String get academicSubjects => 'academic subjects';
+
+  @override
+  String get subjectName => 'subject name';
+
+  @override
+  String get gradeOptional => 'grade (optional)';
+
+  @override
+  String get whatDidYouLearn => 'what did you learn? (optional)';
+
+  @override
+  String get noSubjectsAdded => 'no subjects added yet.';
+
+  @override
+  String get editSubject => 'edit subject';
+
+  @override
+  String get gpaLabel => 'GPA / IPK';
+
+  @override
+  String get gpaHint => 'e.g. 3.85';
+
+  @override
+  String get educationDescriptionLabel => 'description / honors';
+
+  @override
+  String get educationDescriptionHint =>
+      'e.g. Summa Cum Laude, Major in Computer Science';
+
+  @override
   String get schoolHint => 'ex: university of indonesia';
 
   @override
@@ -1203,6 +1258,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get unknownErrorDesc =>
       'something went wrong, but we aren\'t sure what.';
+
+  @override
+  String get update => 'update';
 
   @override
   String get unlockFeatures => 'refill generation credits';

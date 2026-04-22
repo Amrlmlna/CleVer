@@ -11,6 +11,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../common/widgets/unsaved_changes_dialog.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../common/widgets/app_loading_screen.dart';
 import 'package:intl/intl.dart';
 
 class EducationBottomSheet extends ConsumerStatefulWidget {
@@ -54,7 +55,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
   late TextEditingController _descCtrl;
   late TextEditingController _gpaCtrl;
   late List<Subject> _subjects;
-  bool _isScanning = false;
+
 
   @override
   void initState() {
@@ -121,39 +122,195 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
   }
 
   Future<void> _scanKHS() async {
-    final picker = ImageSource.gallery; // Or show a choice
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (sheetContext) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                AppLocalizations.of(context)!.scanKHSTitle,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                AppLocalizations.of(context)!.scanKHSMessage,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.sheetOnSurfaceVar,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  _buildScanOption(
+                    context: sheetContext,
+                    icon: Icons.camera_alt_outlined,
+                    label: AppLocalizations.of(context)!.camera,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      _processScan(ImageSource.camera);
+                    },
+                  ),
+                  const SizedBox(width: 12),
+                  _buildScanOption(
+                    context: sheetContext,
+                    icon: Icons.photo_library_outlined,
+                    label: AppLocalizations.of(context)!.gallery,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      _processScan(ImageSource.gallery);
+                    },
+                  ),
+                  const SizedBox(width: 12),
+                  _buildScanOption(
+                    context: sheetContext,
+                    icon: Icons.picture_as_pdf_outlined,
+                    label: AppLocalizations.of(context)!.pdfFile,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      _processScan(null); // null means PDF
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScanOption({
+    required BuildContext context,
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 18),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outlineVariant,
+            ),
+            borderRadius: BorderRadius.circular(14),
+            color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+          ),
+          child: Column(
+            children: [
+              Icon(
+                icon,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                size: 28,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _processScan(ImageSource? source) async {
+    bool loadingShown = false;
+    final localization = AppLocalizations.of(context)!;
     final ocrService = OCRDataSource();
 
     try {
-      final text = await ocrService.extractTextFromImage(picker);
-      if (text == null || text.isEmpty) return;
+      final String? text;
+      
+      void showLoading() {
+        if (!loadingShown && mounted) {
+          loadingShown = true;
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              opaque: false,
+              barrierDismissible: false,
+              pageBuilder: (ctx, _, __) => AppLoadingScreen(
+                badge: localization.scanningKHSBadge,
+                messages: [
+                  localization.readingKHS,
+                  localization.extractingGPA,
+                  localization.compilingProfile,
+                ],
+              ),
+            ),
+          );
+        }
+      }
 
-      setState(() => _isScanning = true);
+      if (source != null) {
+        final XFile? file = await ImagePicker().pickImage(source: source);
+        if (file == null) return;
+        showLoading();
+        text = await ocrService.extractTextFromFilePath(file.path);
+      } else {
+        showLoading();
+        text = await ocrService.extractTextFromPDF();
+      }
+
+      if (text == null || text.isEmpty) {
+        if (loadingShown && mounted) Navigator.pop(context);
+        return;
+      }
 
       final repository = ref.read(cvRepositoryProvider);
       final result = await repository.parseStudyCard(text);
 
+      if (loadingShown && mounted) {
+        Navigator.pop(context);
+        loadingShown = false;
+      }
+
       if (mounted) {
         setState(() {
-          // Update GPA if found and current is empty
           if (_gpaCtrl.text.isEmpty && result.gpa != null) {
             _gpaCtrl.text = result.gpa!;
           }
 
-          // Merge unique subjects by name
           for (final newSub in result.subjects) {
             if (!_subjects.any((s) => s.name.toLowerCase() == newSub.name.toLowerCase())) {
               _subjects.add(newSub);
             }
           }
-          _isScanning = false;
         });
       }
     } catch (e) {
+      if (loadingShown && mounted) {
+        Navigator.pop(context);
+      }
       if (mounted) {
-        setState(() => _isScanning = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to parse KHS: $e')),
+          SnackBar(content: Text('${localization.unknownError}: $e')),
         );
       }
     }
@@ -163,26 +320,27 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
     final nameCtrl = TextEditingController();
     final gradeCtrl = TextEditingController();
     final descCtrl = TextEditingController();
+    final localization = AppLocalizations.of(context)!;
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Add Subject'),
+        title: Text(localization.addSubject),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: nameCtrl,
-              decoration: const InputDecoration(labelText: 'Subject Name'),
+              decoration: InputDecoration(labelText: localization.subjectName),
               autofocus: true,
             ),
             TextField(
               controller: gradeCtrl,
-              decoration: const InputDecoration(labelText: 'Grade (Optional)'),
+              decoration: InputDecoration(labelText: localization.gradeOptional),
             ),
             TextField(
               controller: descCtrl,
-              decoration: const InputDecoration(labelText: 'What did you learn? (Optional)'),
+              decoration: InputDecoration(labelText: localization.whatDidYouLearn),
               maxLines: 2,
             ),
           ],
@@ -190,7 +348,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(localization.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -205,7 +363,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                 Navigator.pop(context);
               }
             },
-            child: const Text('Add'),
+            child: Text(localization.add),
           ),
         ],
       ),
@@ -315,8 +473,8 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                           flex: 2,
                           child: CustomTextFormField(
                             controller: _gpaCtrl,
-                            labelText: 'GPA / IPK',
-                            hintText: 'e.g. 3.85',
+                            labelText: localization.gpaLabel,
+                            hintText: localization.gpaHint,
                             keyboardType: const TextInputType.numberWithOptions(decimal: true),
                             prefixIcon: Icons.star_outline,
                           ),
@@ -328,8 +486,8 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                     const SizedBox(height: 16),
                     CustomTextFormField(
                       controller: _descCtrl,
-                      labelText: 'Description / Honors',
-                      hintText: 'e.g. Summa Cum Laude, Major in Computer Science',
+                      labelText: localization.educationDescriptionLabel,
+                      hintText: localization.educationDescriptionHint,
                       maxLines: 3,
                     ),
                   const SizedBox(height: 24),
@@ -337,33 +495,26 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Academic Subjects',
+                        localization.academicSubjects,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      if (_isScanning)
-                        const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      else
-                        TextButton.icon(
-                          onPressed: _scanKHS,
-                          icon: const Icon(Icons.document_scanner, size: 18),
-                          label: const Text('Scan KHS'),
-                          style: TextButton.styleFrom(
-                            visualDensity: VisualDensity.compact,
-                          ),
+                      TextButton.icon(
+                        onPressed: _scanKHS,
+                        icon: const Icon(Icons.document_scanner, size: 18),
+                        label: Text(AppLocalizations.of(context)!.scanKHS),
+                        style: TextButton.styleFrom(
+                          visualDensity: VisualDensity.compact,
                         ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   if (_subjects.isEmpty)
                     Center(
                       child: Text(
-                        'No subjects added yet.',
+                        localization.noSubjectsAdded,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.sheetOnSurfaceVar,
                         ),
@@ -380,25 +531,26 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                             final gradeCtrl = TextEditingController(text: subject.grade);
                             final descCtrl = TextEditingController(text: subject.description);
 
+                            final localization = AppLocalizations.of(context)!;
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title: const Text('Edit Subject'),
+                                title: Text(localization.editSubject),
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     TextField(
                                       controller: nameCtrl,
-                                      decoration: const InputDecoration(labelText: 'Subject Name'),
+                                      decoration: InputDecoration(labelText: localization.subjectName),
                                       autofocus: true,
                                     ),
                                     TextField(
                                       controller: gradeCtrl,
-                                      decoration: const InputDecoration(labelText: 'Grade (Optional)'),
+                                      decoration: InputDecoration(labelText: localization.gradeOptional),
                                     ),
                                     TextField(
                                       controller: descCtrl,
-                                      decoration: const InputDecoration(labelText: 'What did you learn? (Optional)'),
+                                      decoration: InputDecoration(labelText: localization.whatDidYouLearn),
                                       maxLines: 2,
                                     ),
                                   ],
@@ -406,7 +558,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: const Text('Cancel'),
+                                    child: Text(localization.cancel),
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
@@ -422,7 +574,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                                         Navigator.pop(context);
                                       }
                                     },
-                                    child: const Text('Update'),
+                                    child: Text(localization.update),
                                   ),
                                 ],
                               ),
@@ -451,7 +603,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                   OutlinedButton.icon(
                     onPressed: _addSubject,
                     icon: const Icon(Icons.add, size: 18),
-                    label: const Text('Add Subject Manually'),
+                    label: Text(localization.addSubjectManually),
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 48),
                       shape: RoundedRectangleBorder(

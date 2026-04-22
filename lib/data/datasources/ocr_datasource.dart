@@ -20,12 +20,20 @@ class OCRDataSource {
 
       if (image == null) return null;
 
-      final inputImage = InputImage.fromFilePath(image.path);
-      final recognizedText = await _textRecognizer.processImage(inputImage);
-
-      return recognizedText.text.trim();
+      return extractTextFromFilePath(image.path);
     } catch (e) {
       debugPrint('[OCRDataSource] Error extracting text: $e');
+      return null;
+    }
+  }
+
+  Future<String?> extractTextFromFilePath(String path) async {
+    try {
+      final inputImage = InputImage.fromFilePath(path);
+      final recognizedText = await _textRecognizer.processImage(inputImage);
+      return recognizedText.text.trim();
+    } catch (e) {
+      debugPrint('[OCRDataSource] Error processing image path: $e');
       return null;
     }
   }

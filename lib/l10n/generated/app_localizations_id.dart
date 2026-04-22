@@ -32,6 +32,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get addExperience => 'tambah pengalaman';
 
   @override
+  String get addSubject => 'tambah mata kuliah';
+
+  @override
+  String get addSubjectManually => 'tambah mata kuliah manual';
+
+  @override
   String get addSkill => 'tambah skill';
 
   @override
@@ -1048,6 +1054,56 @@ class AppLocalizationsId extends AppLocalizations {
   String get scanJobPosting => 'pindai lowongan kerja';
 
   @override
+  String get scanKHS => 'Scan KHS';
+
+  @override
+  String get scanKHSTitle => 'Scan Kartu Hasil Studi (KHS)';
+
+  @override
+  String get scanKHSMessage =>
+      'Pilih sumber untuk mengambil IPK dan mata kuliah';
+
+  @override
+  String get scanningKHSBadge => 'memindai khs';
+
+  @override
+  String get readingKHS => 'membaca khs...';
+
+  @override
+  String get extractingGPA => 'mengambil ipk & mata kuliah...';
+
+  @override
+  String get academicSubjects => 'mata kuliah akademik';
+
+  @override
+  String get subjectName => 'nama mata kuliah';
+
+  @override
+  String get gradeOptional => 'nilai (opsional)';
+
+  @override
+  String get whatDidYouLearn => 'apa yang kamu pelajari? (opsional)';
+
+  @override
+  String get noSubjectsAdded => 'belum ada mata kuliah.';
+
+  @override
+  String get editSubject => 'ubah mata kuliah';
+
+  @override
+  String get gpaLabel => 'GPA / IPK';
+
+  @override
+  String get gpaHint => 'cth: 3.85';
+
+  @override
+  String get educationDescriptionLabel => 'deskripsi / penghargaan';
+
+  @override
+  String get educationDescriptionHint =>
+      'cth: Summa Cum Laude, Jurusan Ilmu Komputer';
+
+  @override
   String get schoolHint => 'cth: universitas indonesia';
 
   @override
@@ -1209,6 +1265,9 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get unknownErrorDesc =>
       'terjadi kesalahan, tapi kami tidak yakin apa penyebabnya.';
+
+  @override
+  String get update => 'perbarui';
 
   @override
   String get unlockFeatures => 'isi ulang kredit cv kamu';

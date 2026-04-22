@@ -140,6 +140,18 @@ abstract class AppLocalizations {
   /// **'add experience'**
   String get addExperience;
 
+  /// No description provided for @addSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'add subject'**
+  String get addSubject;
+
+  /// No description provided for @addSubjectManually.
+  ///
+  /// In en, this message translates to:
+  /// **'add subject manually'**
+  String get addSubjectManually;
+
   /// No description provided for @addSkill.
   ///
   /// In en, this message translates to:
@@ -2010,6 +2022,102 @@ abstract class AppLocalizations {
   /// **'scan job posting'**
   String get scanJobPosting;
 
+  /// No description provided for @scanKHS.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan KHS'**
+  String get scanKHS;
+
+  /// No description provided for @scanKHSTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan Study Result Card (KHS)'**
+  String get scanKHSTitle;
+
+  /// No description provided for @scanKHSMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a source to extract GPA and subjects'**
+  String get scanKHSMessage;
+
+  /// No description provided for @scanningKHSBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'scanning khs'**
+  String get scanningKHSBadge;
+
+  /// No description provided for @readingKHS.
+  ///
+  /// In en, this message translates to:
+  /// **'reading khs...'**
+  String get readingKHS;
+
+  /// No description provided for @extractingGPA.
+  ///
+  /// In en, this message translates to:
+  /// **'extracting gpa & subjects...'**
+  String get extractingGPA;
+
+  /// No description provided for @academicSubjects.
+  ///
+  /// In en, this message translates to:
+  /// **'academic subjects'**
+  String get academicSubjects;
+
+  /// No description provided for @subjectName.
+  ///
+  /// In en, this message translates to:
+  /// **'subject name'**
+  String get subjectName;
+
+  /// No description provided for @gradeOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'grade (optional)'**
+  String get gradeOptional;
+
+  /// No description provided for @whatDidYouLearn.
+  ///
+  /// In en, this message translates to:
+  /// **'what did you learn? (optional)'**
+  String get whatDidYouLearn;
+
+  /// No description provided for @noSubjectsAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'no subjects added yet.'**
+  String get noSubjectsAdded;
+
+  /// No description provided for @editSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'edit subject'**
+  String get editSubject;
+
+  /// No description provided for @gpaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'GPA / IPK'**
+  String get gpaLabel;
+
+  /// No description provided for @gpaHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 3.85'**
+  String get gpaHint;
+
+  /// No description provided for @educationDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'description / honors'**
+  String get educationDescriptionLabel;
+
+  /// No description provided for @educationDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Summa Cum Laude, Major in Computer Science'**
+  String get educationDescriptionHint;
+
   /// No description provided for @schoolHint.
   ///
   /// In en, this message translates to:
@@ -2321,6 +2429,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'something went wrong, but we aren\'t sure what.'**
   String get unknownErrorDesc;
+
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'update'**
+  String get update;
 
   /// No description provided for @unlockFeatures.
   ///
