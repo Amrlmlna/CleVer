@@ -109,11 +109,11 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     final cvData = CVData(
       id: cvId,
       userProfile: creationState.userProfile!,
-      summary: creationState.summary!,
+      summary: creationState.summary ?? '',
       styleId: styleId,
       createdAt: DateTime.now(),
-      jobTitle: creationState.jobInput!.jobTitle,
-      jobDescription: creationState.jobInput!.jobDescription ?? '',
+      jobTitle: creationState.jobInput?.jobTitle ?? 'Untitled CV',
+      jobDescription: creationState.jobInput?.jobDescription ?? '',
     );
     final photoUrl = ref.read(profileControllerProvider).currentProfile.photoUrl;
 
