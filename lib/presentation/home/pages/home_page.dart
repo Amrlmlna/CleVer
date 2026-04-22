@@ -36,6 +36,17 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
   }
 
+  void _triggerReviewAndTutorials() {
+    ReviewService().requestReviewWithBlur(context);
+
+    ReviewService().hasGeneratedAtLeastOneCv().then((hasGenerated) async {
+      final hasShown = await TutorialService().hasShownNavTutorial();
+      if (hasGenerated && !hasShown && mounted) {
+        ref.read(navigationTutorialPendingProvider.notifier).state = true;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // WATCH: This ensures HomePage rebuilds as soon as generation is successful.
@@ -45,17 +56,19 @@ class _HomePageState extends ConsumerState<HomePage> {
     // REACTIVE SIGNAL: Listen for the ping from TemplatePreviewPage
     ref.listen(reviewCheckProvider, (previous, next) {
       if (next > 0 && mounted) {
-        // Only trigger if we are currently visible on the Home route
-        // This prevents the dialog from popping up on top of the Preview Page
-        ReviewService().requestReviewWithBlur(context);
+        // ONLY trigger if we are the current route (not in the background)
+        if (ModalRoute.of(context)?.isCurrent ?? false) {
+          _triggerReviewAndTutorials();
+        }
+      }
+    });
 
-        // Also check for pending tutorials now that we have a generation success
-        ReviewService().hasGeneratedAtLeastOneCv().then((hasGenerated) async {
-          final hasShown = await TutorialService().hasShownNavTutorial();
-          if (hasGenerated && !hasShown && mounted) {
-            ref.read(navigationTutorialPendingProvider.notifier).state = true;
-          }
-        });
+    // VISIBILITY CATCH: If we have a signal and just became the current route
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (reviewSignal > 0 &&
+          mounted &&
+          (ModalRoute.of(context)?.isCurrent ?? false)) {
+        _triggerReviewAndTutorials();
       }
     });
 

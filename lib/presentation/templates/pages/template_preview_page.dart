@@ -12,6 +12,8 @@ import '../../../../core/services/payment_service.dart';
 import '../../auth/utils/auth_guard.dart';
 import '../../home/providers/review_check_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import 'package:go_router/go_router.dart';
+import '../../../core/router/app_routes.dart';
 
 import '../widgets/template_carousel_preview.dart';
 import '../widgets/language_selector.dart';
@@ -109,6 +111,11 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage>
 
               // LIVE SIGNAL: Trigger the reactive check on HomePage
               ref.read(reviewCheckProvider.notifier).state++;
+
+              // AUTO-HOME: Clear the navigation stack and land user on Home
+              if (mounted) {
+                context.go(AppRoutes.home);
+              }
             }
           },
         );
