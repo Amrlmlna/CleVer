@@ -4,12 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../cv/providers/cv_download_provider.dart';
-import '../../wallet/widgets/credit_purchase_bottom_sheet.dart';
 import '../providers/template_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../../core/providers/locale_provider.dart';
 import '../../../../core/services/payment_service.dart';
 import '../../auth/utils/auth_guard.dart';
+import '../../home/providers/paywall_provider.dart';
 import '../../home/providers/review_check_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -29,37 +29,22 @@ class TemplatePreviewPage extends ConsumerStatefulWidget {
       _TemplatePreviewPageState();
 }
 
-class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage>
-    with WidgetsBindingObserver {
+class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
   String? _manualLocaleOverride;
   bool _usePhoto = true;
   bool _isUploading = false;
-  bool _isWaitingForPaywall = false;
-
   late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
-    WidgetsBinding.instance.addObserver(this);
+    _pageController = PageController(viewportFraction: 0.85);
   }
 
   @override
   void dispose() {
     _pageController.dispose();
-    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed && _isWaitingForPaywall) {
-      _isWaitingForPaywall = false;
-      if (mounted) {
-        CreditPurchaseBottomSheet.show(context);
-      }
-    }
   }
 
   Future<void> _handleDownload() async {
@@ -102,9 +87,8 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage>
           usePhoto: _usePhoto,
           onSuccess: () async {
             if (mounted) {
-              setState(() {
-                _isWaitingForPaywall = true;
-              });
+              ref.read(pendingPaywallProvider.notifier).state = true;
+
               // Set the success flag for ReviewService to pick up later on HomePage
               final prefs = await SharedPreferences.getInstance();
               await prefs.setBool('has_generated_at_least_one_cv', true);
