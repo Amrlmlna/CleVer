@@ -75,9 +75,9 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     return md5.convert(utf8.encode(raw)).toString();
   }
 
-  Future<void> downloadPDF(
-    BuildContext context,
-    String styleId, {
+  Future<void> attemptDownload({
+    required BuildContext context,
+    required String styleId,
     String? locale,
     bool usePhoto = false,
     VoidCallback? onSuccess,
