@@ -64,7 +64,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
       TargetFocus(
         identify: "scan_button",
         keyTarget: _scanButtonKey,
-        alignSkip: Alignment.topRight,
+        alignSkip: Alignment.bottomCenter,
         contents: [
           TargetContent(
             align: ContentAlign.bottom,

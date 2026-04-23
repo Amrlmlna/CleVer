@@ -242,6 +242,7 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
           _onTabTap(3);
         }
       },
+      alignSkip: Alignment.bottomCenter,
 
       colorShadow: Colors.black,
       textSkip: AppLocalizations.of(context)!.skipIntro,

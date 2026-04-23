@@ -26,7 +26,6 @@ class _HomePageState extends ConsumerState<HomePage>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // Initial check on app start
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => _checkAndShowSequentialPrompts(),
     );
@@ -52,25 +51,19 @@ class _HomePageState extends ConsumerState<HomePage>
     _isCheckingPrompts = true;
 
     try {
-      // 1. Check for Pending Paywall (from CV Export)
       final hasPendingPaywall = ref.read(pendingPaywallProvider);
       if (hasPendingPaywall) {
         ref.read(pendingPaywallProvider.notifier).state = false;
-        // We AWAIT the paywall so review doesn't overlap
         await CreditPurchaseBottomSheet.show(context);
       }
 
-      // 2. Check for Review Signal (from CV Export)
       final reviewSignal = ref.read(reviewCheckProvider);
       if (reviewSignal > 0) {
-        // Clear signal so it doesn't fire again on next resume
         ref.read(reviewCheckProvider.notifier).state = 0;
         await _triggerReviewAndTutorials();
-        return; // Success flow ends here
+        return;
       }
 
-      // 3. Fallback for General App Usage (Initial Load)
-      // If no signal, still check if we should show review/tutorials based on general rules
       await _triggerReviewAndTutorials();
     } finally {
       _isCheckingPrompts = false;
@@ -80,10 +73,8 @@ class _HomePageState extends ConsumerState<HomePage>
   Future<void> _triggerReviewAndTutorials() async {
     if (!mounted) return;
 
-    // 2a. Review Prompt
     await ReviewService().requestReviewWithBlur(context);
 
-    // 2b. Tutorial Tooltip
     if (!mounted) return;
     final hasGenerated = await ReviewService().hasGeneratedAtLeastOneCv();
     final hasShown = await TutorialService().hasShownNavTutorial();
@@ -94,8 +85,6 @@ class _HomePageState extends ConsumerState<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    // WATCH: This ensures HomePage rebuilds as soon as generation is successful.
-    // When the user pops back from Preview, this rebuild is what triggers the check.
     ref.watch(reviewCheckProvider);
     ref.watch(pendingPaywallProvider);
 
