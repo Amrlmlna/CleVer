@@ -1,68 +1,109 @@
-# CV Fast
+<p align="center">
+  <img src="assets/icon/app_logo.png" width="120" alt="Clever Logo">
+</p>
 
-> **AI-Powered Resume Builder for Indonesian Job Seekers**
+# Clever
 
-Create professional, ATS-friendly resumes tailored to specific job postings using AI. Built with Flutter for cross-platform mobile experience.
+> **The Smart CV Builder — AI-Powered Career Excellence**
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.0+-02569B?logo=flutter)](https://flutter.dev)
+Clever is a premium, AI-driven resume builder designed to help job seekers create professional, ATS-optimized resumes in minutes. Built with Flutter, it offers a seamless cross-platform experience with deep AI integration for tailoring content to specific job descriptions.
+
+[![Flutter](https://img.shields.io/badge/Flutter-3.10+-02569B?logo=flutter)](https://flutter.dev)
+[![Firebase](https://img.shields.io/badge/Firebase-Latest-FFCA28?logo=firebase)](https://firebase.google.com)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+**English 🇺🇸** | [Bahasa Indonesia 🇮🇩](README_ID.md) | [🌐 Website](https://cleverpwebsite.vercel.app/)
+
+---
+
+## 📺 Demo Video
+
+[![Clever CV Demo](https://img.youtube.com/vi/RzeYjZ_eVbs/0.jpg)](https://www.youtube.com/watch?v=RzeYjZ_eVbs)
+
+---
+
+## ⚠️ Portfolio Disclaimer
+
+**Important Notice for Developers & Recruiters:**
+
+This repository serves as a **Personal Portfolio Showcase**. While the frontend code is public to demonstrate architectural patterns, UI/UX design, and Flutter expertise, the project is **not fully open-source** in a turnkey sense:
+
+1.  **Private Backend**: Many features (AI Tailoring, Job Extraction, PDF Rendering) depend on a proprietary backend API hosted on Google Cloud Run.
+2.  **Private Credentials**: The `.env` file and Firebase configuration containing production keys are not included in this repository.
+3.  **No Mocks (Yet)**: There is currently no local mock implementation to bypass the backend requirement. A "Playground Mode" with mocks is planned for future updates.
 
 ---
 
 ## Features
 
-- **AI-Powered Tailoring**: Automatically optimize your resume for specific job descriptions
-- **4 Professional Templates**: ATS, Modern, Creative, and Executive layouts
-- **Cross-Platform**: iOS and Android support
-- **Indonesian-First**: Built with local job market in mind (universities, regions auto-complete)
-- **Smart Drafts**: Save and manage multiple resume versions
-- **PDF Export**: Professional PDF generation with template styling
-- **Profile Pictures**: Optional photo support for Modern/Creative templates
-- **Dark Mode**: Full dark theme support
+- **Advanced AI Tailoring**: Automatically optimize every section of your CV for specific job postings using Gemini-powered logic.
+- **AI Job Extraction**: Extract requirements and key skills directly from job URLs or raw text descriptions.
+- **13+ Premium Templates**: A diverse library of ATS-friendly, Modern, Creative, and Professional layouts.
+- **Master Profile**: Manage your career data in one place—Experience, Education, Projects, and Skills.
+- **Real-time Analytics**: Track your CV generation stats and career progress via the integrated dashboard.
+- **Concurrent Pre-generation**: Smart performance optimization that triggers backend rendering while users engage with the app.
+- **Premium Wallet**: Integrated subscription and credit system powered by RevenueCat.
+- **Interactive Onboarding**: Guided walkthroughs to ensure users make the most of every feature.
 
 ---
 
 ## Architecture
 
-This is the **open-source Flutter frontend**. The AI backend is proprietary and hosted separately.
+Clever uses a dual-AI strategy and a cloud-native infrastructure to deliver high-performance tailoring.
+
+### System Components
+
+```mermaid
+graph TD
+    subgraph "Frontend (Flutter)"
+        App["Clever App"]
+        Local["Local Storage"]
+    end
+
+    subgraph "Backend (Node.js)"
+        API["Express API (Cloud Run)"]
+        Tasks["Cloud Tasks (PDF Gen)"]
+    end
+
+    subgraph "AI Models"
+        Gemini["Gemini (Tailoring)"]
+        Llama["Llama 3 (Parsing)"]
+    end
+
+    subgraph "Infrastructure"
+        Firebase["Firestore / Auth"]
+        GCS["Cloud Storage (PDFs)"]
+    end
+
+    App --> API
+    API --> Gemini
+    API --> Llama
+    API --> Firebase
+    API --> GCS
+    API --> Tasks
+```
+
+### Data Pipeline Flow
 
 ```mermaid
 sequenceDiagram
     participant User
-    participant Flutter as Flutter App (Client)
-    participant NextJS as Next.js API (Backend - Proprietary)
-    participant Gemini as Gemini AI (LLM)
+    participant App as Clever App
+    participant API as Backend API
+    participant AI as Gemini/Llama
 
-    User->>Flutter: Enters Master Profile & Job Input
-    User->>Flutter: Clicks "Generate CV"
-    
-    Note over Flutter: RemoteAIService packages data<br/>into JSON (Profile + Job)
-    
-    Flutter->>NextJS: POST /api/cv/tailor
-    
-    Note over NextJS: "Career Coach" System Prompt<br/>Embeds user data + job description
-    
-    NextJS->>Gemini: Send Complex Prompt
-    Gemini-->>NextJS: Returns Structured JSON
-    
-    Note right of Gemini: JSON contains:<br/>1. Summary<br/>2. Tailored Skills<br/>3. Filtered Experience
-    
-    NextJS-->>Flutter: Returns AI JSON
-    
-    Note over Flutter: App Merges Data<br/>and displays in Review Form
-    
-    Flutter->>User: Shows Tailored CV Preview
+    User->>App: Input Profile & Job
+    App->>API: POST /api/ai/cv/tailor
+    Note over API: MD5 Cache Check
+    API->>AI: Grounding (Company Context)
+    AI-->>API: Summary
+    API->>AI: Tailoring (XYZ Formula)
+    AI-->>API: Tailored JSON
+    API-->>App: Results + Analysis
+    App->>API: POST /api/cv/generate
+    API->>API: Render PDF
+    API-->>App: GCS PDF URL
 ```
-
-### Why Open Source?
-
-**This repository contains only the Flutter app.** The AI backend remains proprietary, which allows:
-
-- **Open Development**: Community contributions, bug fixes, and UI improvements
-- **Portfolio Showcase**: Demonstrate clean architecture and Flutter best practices
-- **Monetization Security**: Backend AI logic and API keys stay protected
-- **Play Store Revenue**: Open source ≠ free. You can still charge for the app or use ads/IAP
 
 ---
 
@@ -70,35 +111,25 @@ sequenceDiagram
 
 ### Prerequisites
 
-- Flutter SDK `>=3.0.0`
-- Dart `>=3.0.0`
-- Android Studio / Xcode (for mobile deployment)
-- **Backend API URL** (Contact maintainer for access or self-host the backend)
+- Flutter SDK `^3.10.1`
+- Dart `^3.0.0`
+- Android Studio / Xcode
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Amrlmlna/cv-master.git
-   cd cv-master/cv_master
-   ```
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/Amrlmlna/CleVer.git
+    cd clever
+    ```
 
-2. **Install dependencies**
-   ```bash
-   flutter pub get
-   ```
+2.  **Install dependencies**
+    ```bash
+    flutter pub get
+    ```
 
-3. **Configure Backend URL**
-   
-   Create `.env` file in the root:
-   ```env
-   API_BASE_URL=https://your-backend-url.com
-   ```
-
-4. **Run the app**
-   ```bash
-   flutter run
-   ```
+3.  **Note on Execution**
+    Running the app locally will result in functional boundaries unless you provide your own Firebase configuration and a compatible Backend API endpoint in a `.env` file.
 
 ---
 
@@ -107,119 +138,74 @@ sequenceDiagram
 ```
 lib/
 ├── core/
-│   ├── constants/         # App constants (colors, universities, regions)
-│   ├── router/           # GoRouter navigation setup
-│   ├── services/         # External services (AI, analytics)
-│   └── utils/            # PDF generator, helpers
-├── data/
-│   ├── datasources/      # Remote API clients
-│   ├── repositories/     # Repository implementations
-│   └── models/           # Data transfer objects
+│   ├── constants/         # Design tokens, local data (regions, universities)
+│   ├── router/           # GoRouter configuration
+│   ├── services/         # External integrations (Payment, Analytics, AI)
+│   └── theme/            # App branding & design system
 ├── domain/
-│   ├── entities/         # Core business objects
-│   └── repositories/     # Repository interfaces
+│   ├── entities/         # Pure business logic objects
+│   └── repositories/     # Abstract data contracts
+├── data/
+│   ├── models/           # DTOs and JSON serialization
+│   ├── repositories/     # Repository implementations
+│   └── datasources/      # Remote & Local data clients
 └── presentation/
-    ├── cv/               # CV creation flow
-    ├── profile/          # User profile management
-    ├── drafts/           # Saved drafts
-    ├── notifications/    # Notification center
-    └── common/           # Shared widgets
-
-tool/
-├── fetch_regions.dart    # Script to generate local region data
-└── fetch_universities.dart # Script to generate local university data
+    ├── auth/             # User authentication flow
+    ├── cv/               # CV editing & step-by-step creation
+    ├── dashboard/        # Career insights & user metrics
+    ├── home/             # Main landing & quick actions
+    ├── jobs/             # Job extraction & analysis
+    ├── notification/     # FCM handling & notification center
+    ├── onboarding/       # Interactive feature walkthrough
+    ├── profile/          # Master career profile management
+    ├── templates/        # Premium template gallery
+    └── wallet/           # Credits & subscription management
 ```
-
-**Clean Architecture Layers:**
-- **Presentation**: Flutter widgets, pages, providers (Riverpod)
-- **Domain**: Business logic, entities, use cases
-- **Data**: API communication, local storage, repositories
 
 ---
 
 ## Development
-
-### Running Tests
-```bash
-flutter test
-```
 
 ### Code Analysis
 ```bash
 flutter analyze
 ```
 
-### Building for Release
+### Build Generation
+The project uses `riverpod_generator` and `json_serializable`. To generate code:
 ```bash
-# Android
-flutter build apk --release
-
-# iOS
-flutter build ios --release
+flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
 ---
 
 ## Templates
 
-| Template | Description | Best For |
-|----------|-------------|----------|
-| **ATS** | Simple, single-column, text-focused | Applicant Tracking Systems |
-| **Modern** | Two-column with sidebar, blue accents | Tech, startups, creative roles |
-| **Creative** | Bold purple header, unique styling | Design, marketing, media |
-| **Executive** | Traditional, formal layout | Senior positions, corporate |
-
----
-
-## Contributing
-
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) first.
-
-### Areas for Contribution
-- Bug fixes
-- UI/UX improvements
-- Localization (currently Indonesian + English)
-- Template designs
-- Documentation
-
-### Development Workflow
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
-## License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-**Note:** While the Flutter app is open source, the backend API and AI integration remain proprietary.
-
----
-
-## Acknowledgments
-
-- **Flutter Team**: For the amazing framework
-- **Google Gemini**: For powering the AI features
-- **Community Contributors**: For bug reports and improvements
-
----
-
-## Support
-
-- Email: cvfast.contact@gmail.com
-- Issues: [GitHub Issues](https://github.com/Amrlmlna/CleVer/issues)
-- Docs: [Developer Guide](DEVELOPER_GUIDE.md)
+| Category | Best For | Templates Available |
+|----------|----------|---------------------|
+| **ATS-Friendly** | Corporate & Large Firms | 5 Layouts |
+| **Modern** | Startups & Tech | 4 Layouts |
+| **Creative** | Design & Media | 2 Layouts |
+| **Executive** | Leadership Roles | 2 Layouts |
 
 ---
 
 ## Roadmap
 
-- [ ] Cover letter generation
-- [ ] LinkedIn profile import
-- [ ] Web version
+- [ ] **Mock Playground**: Local mock data to allow running the app without the private backend.
+- [ ] **Cover Letter AI**: Fully automated, tailored cover letter generation.
+- [ ] **LinkedIn Integration**: One-click profile import.
+- [ ] **Web Version**: Responsive web dashboard for CV management.
 
 ---
 
+## Support
+
+- Issues: [GitHub Issues](https://github.com/Amrlmlna/CleVer/issues)
+- Developer: [Amrlmlna](https://github.com/Amrlmlna)
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
