@@ -26,18 +26,10 @@ class _HomePageState extends ConsumerState<HomePage>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        await ReviewService().requestReviewWithBlur(context);
-
-        final hasGenerated = await ReviewService().hasGeneratedAtLeastOneCv();
-        final hasShown = await TutorialService().hasShownNavTutorial();
-
-        if (hasGenerated && !hasShown) {
-          ref.read(navigationTutorialPendingProvider.notifier).state = true;
-        }
-      }
-    });
+    // Initial check on app start
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _checkAndShowSequentialPrompts(),
+    );
   }
 
   @override
@@ -53,23 +45,35 @@ class _HomePageState extends ConsumerState<HomePage>
     }
   }
 
+  bool _isCheckingPrompts = false;
+
   Future<void> _checkAndShowSequentialPrompts() async {
-    if (!mounted) return;
+    if (_isCheckingPrompts || !mounted) return;
+    _isCheckingPrompts = true;
 
-    // 1. Check for Pending Paywall (from CV Export)
-    final hasPendingPaywall = ref.read(pendingPaywallProvider);
-    if (hasPendingPaywall) {
-      ref.read(pendingPaywallProvider.notifier).state = false;
-      // We AWAIT the paywall so review doesn't overlap
-      await CreditPurchaseBottomSheet.show(context);
-    }
+    try {
+      // 1. Check for Pending Paywall (from CV Export)
+      final hasPendingPaywall = ref.read(pendingPaywallProvider);
+      if (hasPendingPaywall) {
+        ref.read(pendingPaywallProvider.notifier).state = false;
+        // We AWAIT the paywall so review doesn't overlap
+        await CreditPurchaseBottomSheet.show(context);
+      }
 
-    // 2. Check for Review Signal (from CV Export)
-    final reviewSignal = ref.read(reviewCheckProvider);
-    if (reviewSignal > 0) {
-      // Clear signal so it doesn't fire again on next resume
-      ref.read(reviewCheckProvider.notifier).state = 0;
+      // 2. Check for Review Signal (from CV Export)
+      final reviewSignal = ref.read(reviewCheckProvider);
+      if (reviewSignal > 0) {
+        // Clear signal so it doesn't fire again on next resume
+        ref.read(reviewCheckProvider.notifier).state = 0;
+        await _triggerReviewAndTutorials();
+        return; // Success flow ends here
+      }
+
+      // 3. Fallback for General App Usage (Initial Load)
+      // If no signal, still check if we should show review/tutorials based on general rules
       await _triggerReviewAndTutorials();
+    } finally {
+      _isCheckingPrompts = false;
     }
   }
 
@@ -95,22 +99,13 @@ class _HomePageState extends ConsumerState<HomePage>
     ref.watch(reviewCheckProvider);
     ref.watch(pendingPaywallProvider);
 
-    // REACTIVE SIGNAL: Listen for the ping from TemplatePreviewPage
+    // LIVE SIGNAL: Listen for the ping from TemplatePreviewPage
     ref.listen(reviewCheckProvider, (previous, next) {
       if (next > 0 && mounted) {
         // ONLY trigger if we are the current route (not in the background)
         if (ModalRoute.of(context)?.isCurrent ?? false) {
           _checkAndShowSequentialPrompts();
         }
-      }
-    });
-
-    // VISIBILITY CATCH: If we have a signal and just became the current route
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (ref.read(reviewCheckProvider) > 0 &&
-          mounted &&
-          (ModalRoute.of(context)?.isCurrent ?? false)) {
-        _checkAndShowSequentialPrompts();
       }
     });
 
