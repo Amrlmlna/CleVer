@@ -3053,6 +3053,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Got it!'**
   String get tutorialFinish;
+
+  /// No description provided for @legalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'legal information'**
+  String get legalInformation;
+
+  /// No description provided for @privacyPolicyAndTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'privacy policy and terms'**
+  String get privacyPolicyAndTerms;
+
+  /// No description provided for @supportAndLegal.
+  ///
+  /// In en, this message translates to:
+  /// **'support & legal'**
+  String get supportAndLegal;
 }
 
 class _AppLocalizationsDelegate

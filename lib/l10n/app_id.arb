@@ -587,6 +587,9 @@
   "tutorialProfileTitle": "profil master",
   "tutorialProfileDesc": "kelola profil master kamu di sini agar data dasar cv kamu selalu terupdate.",
   "tutorialNext": "lanjut",
-  "tutorialFinish": "siap!"
+  "tutorialFinish": "siap!",
+  "legalInformation": "informasi hukum",
+  "privacyPolicyAndTerms": "kebijakan privasi & ketentuan",
+  "supportAndLegal": "dukungan & hukum"
 }
 

@@ -587,7 +587,10 @@
   "tutorialProfileTitle": "Master Profile",
   "tutorialProfileDesc": "Manage your Master Profile here to keep your base CV data up to date.",
   "tutorialNext": "Next",
-  "tutorialFinish": "Got it!"
+  "tutorialFinish": "Got it!",
+  "legalInformation": "legal information",
+  "privacyPolicyAndTerms": "privacy policy and terms",
+  "supportAndLegal": "support & legal"
 }
 
 

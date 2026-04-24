@@ -14,6 +14,7 @@ import '../widgets/certification_list_form.dart';
 import '../widgets/section_card.dart';
 import '../widgets/import_cv_button.dart';
 import '../widgets/profile_action_buttons.dart';
+import '../widgets/profile_navigation_card.dart';
 import '../../../core/utils/custom_snackbar.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
@@ -179,6 +180,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     final profileState = ref.watch(profileControllerProvider);
     final currentProfile = profileState.currentProfile;
     final hasChanges = profileState.hasChanges;
@@ -267,15 +270,26 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         .updateSkills(val),
                   ),
                 ),
-                const SizedBox(height: 24),
-                ListTile(
-                  leading: const Icon(Icons.description_outlined),
-                  title: const Text('Legal Information'),
-                  subtitle: const Text('Privacy Policy and Terms'),
-                  trailing: const Icon(Icons.chevron_right),
+                const SizedBox(height: 32),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    l10n.supportAndLegal,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ProfileNavigationCard(
+                  title: l10n.legalInformation,
+                  subtitle: l10n.privacyPolicyAndTerms,
+                  icon: Icons.description_outlined,
                   onTap: () => context.push('/legal'),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 32),
+
                 const Divider(),
                 const SizedBox(height: 32),
                 ProfileActionButtons(

@@ -1608,4 +1608,13 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get tutorialFinish => 'siap!';
+
+  @override
+  String get legalInformation => 'informasi hukum';
+
+  @override
+  String get privacyPolicyAndTerms => 'kebijakan privasi & ketentuan';
+
+  @override
+  String get supportAndLegal => 'dukungan & hukum';
 }

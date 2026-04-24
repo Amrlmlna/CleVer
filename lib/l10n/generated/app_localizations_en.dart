@@ -1600,4 +1600,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tutorialFinish => 'Got it!';
+
+  @override
+  String get legalInformation => 'legal information';
+
+  @override
+  String get privacyPolicyAndTerms => 'privacy policy and terms';
+
+  @override
+  String get supportAndLegal => 'support & legal';
 }
