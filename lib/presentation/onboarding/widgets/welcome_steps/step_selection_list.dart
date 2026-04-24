@@ -44,26 +44,29 @@ class StepSelectionList extends StatelessWidget {
             ),
           )
           .toList(),
-      footer:
-          Padding(
-                padding: const EdgeInsets.only(top: 24.0),
-                child: ElevatedButton(
-                  onPressed: selectedOption != null ? onNext : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colorScheme.primary,
-                    foregroundColor: colorScheme.onPrimary,
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: Text(l10n.next, style: AppTextStyles.button),
-                ),
-              )
-              .animate(target: selectedOption != null ? 1 : 0)
-              .fadeIn()
-              .scale(begin: const Offset(0.95, 0.95)),
+      footer: Padding(
+        padding: const EdgeInsets.only(top: 32.0),
+        child: ElevatedButton(
+          onPressed: selectedOption != null ? onNext : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: colorScheme.primary,
+            foregroundColor: colorScheme.onPrimary,
+            padding: const EdgeInsets.symmetric(vertical: 22),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            elevation: 0,
+            disabledBackgroundColor: colorScheme.onSurface.withValues(alpha: 0.1),
+          ),
+          child: Text(
+            l10n.next.toUpperCase(),
+            style: AppTextStyles.button.copyWith(letterSpacing: 1.2),
+          ),
+        ),
+      )
+          .animate(target: selectedOption != null ? 1 : 0)
+          .fadeIn(duration: 200.ms)
+          .slideY(begin: 0.1, end: 0, curve: Curves.easeOutCubic),
     );
   }
 }
