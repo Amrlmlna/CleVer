@@ -468,6 +468,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forgotPassword => 'forgot password';
 
   @override
+  String get free => 'free';
+
+  @override
   String get forgotPasswordResetMessage =>
       'enter your email address and we\'ll send you a link to reset your password.';
 
@@ -692,6 +695,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get keyMetrics => 'key metrics';
+
+  @override
+  String get locked => 'locked';
 
   @override
   String get loadingPreview => 'loading preview...';
@@ -1245,6 +1251,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get totalCVs => 'total cvs';
+
+  @override
+  String get totalCreditsLabel => 'total credits';
 
   @override
   String get tue => 'tue';

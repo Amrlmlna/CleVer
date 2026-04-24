@@ -8,7 +8,7 @@ class CVTemplate extends Equatable {
   final List<String> previewUrls;
   final bool isPremium;
   final List<String> tags;
-  final int currentUsage;
+  final int currentUsage; // Global usage across all templates
   final int userCredits;
   final bool supportsPhoto;
 

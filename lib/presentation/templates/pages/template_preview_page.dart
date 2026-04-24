@@ -323,8 +323,14 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                                   ),
                                   child: Text(
                                     currentTemplate.hasFreeGeneration
-                                        ? "FREE"
-                                        : "${currentTemplate.requiredCredits} CREDITS",
+                                        ? AppLocalizations.of(
+                                            context,
+                                          )!.free.toUpperCase()
+                                        : AppLocalizations.of(context)!
+                                              .creditsCount(
+                                                currentTemplate.requiredCredits,
+                                              )
+                                              .toUpperCase(),
                                     style: textTheme.labelSmall?.copyWith(
                                       color: colorScheme.onSurfaceVariant,
                                       fontWeight: FontWeight.w700,

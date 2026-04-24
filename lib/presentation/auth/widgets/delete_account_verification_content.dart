@@ -16,6 +16,8 @@ class DeleteAccountVerificationContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final templatesAsync = ref.watch(templatesProvider);
+    final colorScheme = Theme.of(context).colorScheme;
+
     final totalCredits = templatesAsync.maybeWhen(
       data: (templates) =>
           templates.isNotEmpty ? templates.first.userCredits : 0,
@@ -28,16 +30,18 @@ class DeleteAccountVerificationContent extends ConsumerWidget {
         Container(
           padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.03),
+            color: colorScheme.onSurface.withValues(alpha: 0.03),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+            border: Border.all(
+              color: colorScheme.onSurface.withValues(alpha: 0.08),
+            ),
           ),
           child: Column(
             children: [
               Text(
                 AppLocalizations.of(context)!.creditBalance,
-                style: const TextStyle(
-                  color: Colors.white38,
+                style: TextStyle(
+                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
                   fontSize: 12,
                   fontWeight: FontWeight.normal,
                 ),
@@ -45,17 +49,17 @@ class DeleteAccountVerificationContent extends ConsumerWidget {
               const SizedBox(height: 4),
               Text(
                 "$totalCredits",
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: colorScheme.onSurface,
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
                   letterSpacing: -1,
                 ),
               ),
-              const Text(
-                "TOTAL CREDITS",
+              Text(
+                AppLocalizations.of(context)!.totalCreditsLabel.toUpperCase(),
                 style: TextStyle(
-                  color: Colors.white12,
+                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2,
@@ -71,13 +75,15 @@ class DeleteAccountVerificationContent extends ConsumerWidget {
             decoration: BoxDecoration(
               color: Colors.transparent,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+              border: Border.all(
+                color: colorScheme.onSurface.withValues(alpha: 0.1),
+              ),
             ),
             child: Text(
               AppLocalizations.of(context)!.creditWarning(totalCredits),
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white70,
+              style: TextStyle(
+                color: colorScheme.onSurfaceVariant,
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
               ),
@@ -88,27 +94,32 @@ class DeleteAccountVerificationContent extends ConsumerWidget {
 
         Container(
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.02),
+            color: colorScheme.onSurface.withValues(alpha: 0.02),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+            border: Border.all(
+              color: colorScheme.onSurface.withValues(alpha: 0.05),
+            ),
           ),
           child: SwitchListTile(
             value: keepLocalData,
             onChanged: onRetentionChanged,
             title: Text(
               AppLocalizations.of(context)!.keepLocalData,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: colorScheme.onSurface,
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),
             ),
             subtitle: Text(
               AppLocalizations.of(context)!.clearLocalData,
-              style: const TextStyle(color: Colors.white24, fontSize: 11),
+              style: TextStyle(
+                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+                fontSize: 11,
+              ),
             ),
-            activeThumbColor: Colors.white,
-            activeTrackColor: Colors.white24,
+            activeThumbColor: colorScheme.primary,
+            activeTrackColor: colorScheme.primaryContainer,
           ),
         ),
       ],

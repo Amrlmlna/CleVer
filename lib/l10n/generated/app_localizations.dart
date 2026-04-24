@@ -962,6 +962,12 @@ abstract class AppLocalizations {
   /// **'forgot password'**
   String get forgotPassword;
 
+  /// No description provided for @free.
+  ///
+  /// In en, this message translates to:
+  /// **'free'**
+  String get free;
+
   /// No description provided for @forgotPasswordResetMessage.
   ///
   /// In en, this message translates to:
@@ -1361,6 +1367,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'key metrics'**
   String get keyMetrics;
+
+  /// No description provided for @locked.
+  ///
+  /// In en, this message translates to:
+  /// **'locked'**
+  String get locked;
 
   /// No description provided for @loadingPreview.
   ///
@@ -2405,6 +2417,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'total cvs'**
   String get totalCVs;
+
+  /// No description provided for @totalCreditsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'total credits'**
+  String get totalCreditsLabel;
 
   /// No description provided for @tue.
   ///

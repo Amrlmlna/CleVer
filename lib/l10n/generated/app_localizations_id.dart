@@ -472,6 +472,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get forgotPassword => 'lupa kata sandi';
 
   @override
+  String get free => 'gratis';
+
+  @override
   String get forgotPasswordResetMessage =>
       'masukkan alamat email anda dan kami akan mengirimkan tautan untuk mengatur ulang kata sandi anda.';
 
@@ -695,6 +698,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get keyMetrics => 'metrik kunci';
+
+  @override
+  String get locked => 'terkunci';
 
   @override
   String get loadingPreview => 'memuat preview...';
@@ -1252,6 +1258,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get totalCVs => 'total cv';
+
+  @override
+  String get totalCreditsLabel => 'total kredit';
 
   @override
   String get tue => 'sel';

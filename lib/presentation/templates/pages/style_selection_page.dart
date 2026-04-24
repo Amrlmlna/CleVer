@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../cv/providers/cv_generation_provider.dart';
 import '../../cv/providers/cv_download_provider.dart';
-import '../providers/template_provider.dart';
 import '../widgets/style_selection_content.dart';
 import '../../common/widgets/app_loading_screen.dart';
 
@@ -11,88 +9,32 @@ import '../../../../core/router/app_routes.dart';
 
 import 'package:clever/l10n/generated/app_localizations.dart';
 
-class StyleSelectionPage extends ConsumerStatefulWidget {
+class StyleSelectionPage extends ConsumerWidget {
   const StyleSelectionPage({super.key});
 
-  @override
-  ConsumerState<StyleSelectionPage> createState() => _StyleSelectionPageState();
-}
-
-class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
-  Future<void> _navigateToPreview() async {
+  Future<void> _navigateToPreview(BuildContext context) async {
     context.push(AppRoutes.createTemplatePreview);
   }
 
-  Future<void> _handleStyleSelection(String styleId) async {
-    ref.read(cvCreationProvider.notifier).setStyle(styleId);
-  }
-
   @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final templatesAsync = ref.watch(templatesProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
     final downloadState = ref.watch(cvDownloadProvider);
 
-    return templatesAsync.when(
-      data: (templates) {
-        final creationState = ref.watch(cvCreationProvider);
-        final selectedStyle = creationState.selectedStyle;
-
-        if (templates.isNotEmpty &&
-            !templates.any((t) => t.id == selectedStyle)) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            ref.read(cvCreationProvider.notifier).setStyle(templates.first.id);
-          });
-        }
-
-        return Stack(
-          children: [
-            StyleSelectionContent(
-              templates: templates,
-              selectedStyleId: selectedStyle,
-              onStyleSelected: _handleStyleSelection,
-              onExport: _navigateToPreview,
-            ),
-            if (downloadState.status == DownloadStatus.generating ||
-                downloadState.status == DownloadStatus.loading)
-              AppLoadingScreen(
-                badge: AppLocalizations.of(context)!.generatingPdfBadge,
-                messages: [
-                  AppLocalizations.of(context)!.processingData,
-                  AppLocalizations.of(context)!.applyingDesign,
-                  AppLocalizations.of(context)!.creatingPages,
-                  AppLocalizations.of(context)!.finalizingPdf,
-                ],
-              ),
-          ],
-        );
-      },
-      loading: () => AppLoadingScreen(
-        badge: AppLocalizations.of(context)!.loadingTemplatesBadge,
-        messages: [
-          AppLocalizations.of(context)!.fetchingTemplates,
-          AppLocalizations.of(context)!.preparingGallery,
-          AppLocalizations.of(context)!.loadingPreview,
-        ],
-      ),
-      error: (err, stack) => Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.error_outline, size: 48, color: colorScheme.error),
-              const SizedBox(height: 16),
-              Text(
-                AppLocalizations.of(context)!.templateLoadError(err.toString()),
-              ),
-              ElevatedButton(
-                onPressed: () => ref.refresh(templatesProvider),
-                child: Text(AppLocalizations.of(context)!.retry),
-              ),
+    return Stack(
+      children: [
+        StyleSelectionContent(onExport: () => _navigateToPreview(context)),
+        if (downloadState.status == DownloadStatus.generating ||
+            downloadState.status == DownloadStatus.loading)
+          AppLoadingScreen(
+            badge: AppLocalizations.of(context)!.generatingPdfBadge,
+            messages: [
+              AppLocalizations.of(context)!.processingData,
+              AppLocalizations.of(context)!.applyingDesign,
+              AppLocalizations.of(context)!.creatingPages,
+              AppLocalizations.of(context)!.finalizingPdf,
             ],
           ),
-        ),
-      ),
+      ],
     );
   }
 }
