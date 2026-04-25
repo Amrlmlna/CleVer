@@ -11,6 +11,7 @@ import 'presentation/profile/providers/profile_provider.dart';
 import 'domain/entities/user_profile.dart';
 import 'presentation/profile/providers/profile_sync_provider.dart';
 import 'presentation/drafts/providers/draft_sync_provider.dart';
+import 'presentation/drafts/providers/completed_cv_sync_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'core/providers/locale_provider.dart';
@@ -114,6 +115,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(profileSyncProvider).init();
       ref.read(draftSyncProvider).init();
+      ref.read(completedCVSyncProvider).init();
       ref.read(localeNotifierProvider.notifier).init();
 
       _initBackgroundServices();

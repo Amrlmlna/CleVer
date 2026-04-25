@@ -6,12 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../domain/entities/cv_data.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import '../providers/draft_provider.dart';
-import '../../../data/datasources/firestore_datasource.dart';
+import '../../../core/providers/firebase_providers.dart';
 import '../../../data/repositories/firestore_draft_repository.dart';
-
-final firestoreDataSourceProvider = Provider<FirestoreDataSource>((ref) {
-  return FirestoreDataSource();
-});
 
 final firestoreDraftRepositoryProvider = Provider<FirestoreDraftRepository>((
   ref,

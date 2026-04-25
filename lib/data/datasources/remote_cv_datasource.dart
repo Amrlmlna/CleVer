@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../core/config/api_config.dart';
+import '../../domain/entities/pdf_generation_result.dart';
 
 class RemoteCVDataSource {
   final http.Client _httpClient;
@@ -93,7 +94,7 @@ class RemoteCVDataSource {
     }
   }
 
-  Future<List<int>> downloadPDF({
+  Future<PDFGenerationResult> downloadPDF({
     required Map<String, dynamic> cvDataJson,
     required String templateId,
     String? locale,
@@ -135,7 +136,7 @@ class RemoteCVDataSource {
           throw http.ClientException('Downloaded file is not a valid PDF.');
         }
 
-        return bytes;
+        return PDFGenerationResult(bytes: bytes, pdfUrl: pdfUrl);
       } else {
         throw http.ClientException(
           'Failed to download PDF from GCS: ${pdfResponse.statusCode}',

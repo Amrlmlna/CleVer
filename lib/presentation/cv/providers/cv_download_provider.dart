@@ -19,6 +19,7 @@ import '../../drafts/providers/completed_cv_provider.dart';
 import '../../templates/providers/template_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../../core/providers/locale_provider.dart';
+import '../../../domain/entities/pdf_generation_result.dart';
 
 enum DownloadStatus { idle, loading, generating, success, error }
 
@@ -123,7 +124,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
 
     await ref.read(draftsProvider.notifier).saveFromState(creationState);
 
-    final Future<List<int>> pdfFuture = ref
+    final Future<PDFGenerationResult> pdfFuture = ref
         .read(cvRepositoryProvider)
         .downloadPDF(
           cvData: cvData,
@@ -138,10 +139,10 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       if (template.userCredits > 0) {
         state = state.copyWith(status: DownloadStatus.generating);
         try {
-          final bytes = await pdfFuture;
+          final result = await pdfFuture;
           final path = await _processResult(
             context,
-            bytes,
+            result,
             cvData,
             styleId,
             onSuccess,
@@ -158,10 +159,10 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
             if (context.mounted) {
               state = state.copyWith(status: DownloadStatus.generating);
               try {
-                final bytes = await pdfFuture;
+                final result = await pdfFuture;
                 final path = await _processResult(
                   context,
-                  bytes,
+                  result,
                   cvData,
                   styleId,
                   onSuccess,
@@ -179,16 +180,17 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
 
   Future<String> _processResult(
     BuildContext context,
-    List<int> bytes,
+    PDFGenerationResult result,
     CVData cvData,
     String styleId,
     VoidCallback? onSuccess,
   ) async {
     final completedCV = await PDFExportService.finalizeExport(
-      pdfBytes: bytes,
+      pdfBytes: result.bytes,
       cvId: cvData.id,
       jobTitle: cvData.jobTitle,
       styleId: styleId,
+      remotePdfUrl: result.pdfUrl,
     );
 
     await ref.read(completedCVProvider.notifier).addCompletedCV(completedCV);

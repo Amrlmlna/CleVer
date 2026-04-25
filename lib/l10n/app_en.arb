@@ -94,6 +94,9 @@
   "cvImportedSuccess": "cv imported successfully! let's complete your profile.",
   "cvLanguage": "cv language",
   "cvReadyMessage": "your cv for {jobTitle} is ready!",
+  "download": "download",
+  "downloadPDF": "download pdf",
+  "downloadPDFDescription": "this pdf is stored in the cloud. would you like to download it now?",
   "cvs": "cvs",
   "dateLabel": "date:",
   "degree": "degree / major",
@@ -337,6 +340,7 @@
     }
   },
   "photoUpdateSuccess": "profile photo updated successfully!",
+  "profilePhotoExportTooltip": "this photo will be used for every pdf export that includes a photo.",
   "pleaseEnterEmail": "please enter your email",
   "pleaseEnterName": "please enter your name",
   "pleaseEnterPassword": "please enter your password",

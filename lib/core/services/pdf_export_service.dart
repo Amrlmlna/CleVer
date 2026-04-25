@@ -10,6 +10,7 @@ class PDFExportService {
     required String cvId,
     required String jobTitle,
     required String styleId,
+    String? remotePdfUrl,
   }) async {
     if (pdfBytes.length < 1000) {
       throw Exception(
@@ -56,6 +57,7 @@ class PDFExportService {
       jobTitle: jobTitle,
       templateId: styleId,
       pdfPath: pdfFile.path,
+      remotePdfUrl: remotePdfUrl,
       thumbnailPath: thumbnailPath,
       generatedAt: DateTime.now(),
     );

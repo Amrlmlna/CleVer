@@ -286,6 +286,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get download => 'download';
+
+  @override
+  String get downloadPDF => 'download pdf';
+
+  @override
+  String get downloadPDFDescription =>
+      'this pdf is stored in the cloud. would you like to download it now?';
+
+  @override
   String get cvs => 'cvs';
 
   @override
@@ -926,6 +936,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get photoUpdateSuccess => 'profile photo updated successfully!';
+
+  @override
+  String get profilePhotoExportTooltip =>
+      'this photo will be used for every pdf export that includes a photo.';
 
   @override
   String get pleaseEnterEmail => 'please enter your email';

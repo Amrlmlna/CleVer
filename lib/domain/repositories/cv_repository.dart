@@ -5,6 +5,8 @@ import '../entities/tailored_cv_result.dart';
 import '../entities/tailoring_options.dart';
 import '../entities/subject.dart';
 
+import '../entities/pdf_generation_result.dart';
+
 abstract class CVRepository {
   Future<String> rewriteContent(String originalText, {String? locale});
 
@@ -15,7 +17,7 @@ abstract class CVRepository {
     TailoringOptions? options,
   });
 
-  Future<List<int>> downloadPDF({
+  Future<PDFGenerationResult> downloadPDF({
     required CVData cvData,
     required String templateId,
     String? locale,

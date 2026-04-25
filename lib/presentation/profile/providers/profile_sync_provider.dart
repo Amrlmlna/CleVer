@@ -9,7 +9,7 @@ import '../../../domain/entities/user_profile.dart';
 import '../../../domain/repositories/template_repository.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import 'profile_provider.dart';
-import '../../drafts/providers/draft_sync_provider.dart';
+import '../../../core/providers/firebase_providers.dart';
 
 final firestoreProfileRepositoryProvider = Provider<FirestoreProfileRepository>(
   (ref) {
@@ -103,6 +103,10 @@ class ProfileSyncManager {
   }
 
   Future<void> _heartbeat() async {
+    await syncProfileNow();
+  }
+
+  Future<void> syncProfileNow() async {
     final currentProfile = _ref.read(masterProfileProvider);
     final user = _ref.read(authStateProvider).value;
 
@@ -110,14 +114,15 @@ class ProfileSyncManager {
 
     if (currentProfile != _lastSyncedProfile) {
       print(
-        "[SyncManager] Changes detected! Pushing to Cloud for ${user.uid}...",
+        "[SyncManager] Sync triggered! Pushing to Cloud for ${user.uid}...",
       );
       try {
         await _firestoreRepo.saveProfile(user.uid, currentProfile);
         await _updateLastSyncedCache(currentProfile);
         print("[SyncManager] Cloud sync SUCCESSFUL.");
       } catch (e) {
-        print("[SyncManager] Heartbeat sync error: $e");
+        print("[SyncManager] Sync error: $e");
+        rethrow;
       }
     }
   }

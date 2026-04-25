@@ -620,6 +620,24 @@ abstract class AppLocalizations {
   /// **'your cv for {jobTitle} is ready!'**
   String cvReadyMessage(Object jobTitle);
 
+  /// No description provided for @download.
+  ///
+  /// In en, this message translates to:
+  /// **'download'**
+  String get download;
+
+  /// No description provided for @downloadPDF.
+  ///
+  /// In en, this message translates to:
+  /// **'download pdf'**
+  String get downloadPDF;
+
+  /// No description provided for @downloadPDFDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'this pdf is stored in the cloud. would you like to download it now?'**
+  String get downloadPDFDescription;
+
   /// No description provided for @cvs.
   ///
   /// In en, this message translates to:
@@ -1787,6 +1805,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'profile photo updated successfully!'**
   String get photoUpdateSuccess;
+
+  /// No description provided for @profilePhotoExportTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'this photo will be used for every pdf export that includes a photo.'**
+  String get profilePhotoExportTooltip;
 
   /// No description provided for @pleaseEnterEmail.
   ///

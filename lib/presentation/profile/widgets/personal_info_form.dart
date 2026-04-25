@@ -89,66 +89,81 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
       children: [
         if (widget.showPhotoField) ...[
           Center(
-            child: Stack(
-              children: [
-                GestureDetector(
-                  onTap: _pickAndUploadImage,
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Theme.of(
-                      context,
-                    ).colorScheme.surfaceContainerHighest,
-                    backgroundImage: photoUrl != null
-                        ? NetworkImage(photoUrl)
-                        : null,
-                    child: photoUrl == null && !_isUploading
-                        ? Icon(
-                            Icons.person,
-                            size: 50,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurfaceVariant,
-                          )
-                        : null,
-                  ),
-                ),
-                if (_isUploading)
-                  const Positioned.fill(
-                    child: Center(
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: GestureDetector(
+            child: Tooltip(
+              message: AppLocalizations.of(context)!.profilePhotoExportTooltip,
+              triggerMode: TooltipTriggerMode.tap,
+              child: Stack(
+                children: [
+                  GestureDetector(
                     onTap: _pickAndUploadImage,
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                          width: 1.0,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.15),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
+                      backgroundImage: photoUrl != null
+                          ? NetworkImage(photoUrl)
+                          : null,
+                      child: photoUrl == null && !_isUploading
+                          ? Icon(
+                              Icons.person,
+                              size: 50,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                            )
+                          : null,
+                    ),
+                  ),
+                  if (_isUploading)
+                    const Positioned.fill(
+                      child: Center(
+                        child: CircularProgressIndicator(strokeWidth: 2),
                       ),
-                      child: Icon(
-                        Icons.camera_alt_rounded,
-                        size: 18,
-                        color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: _pickAndUploadImage,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                            width: 1.0,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.15),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.camera_alt_rounded,
+                          size: 18,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Icon(
+                      Icons.info_outline_rounded,
+                      size: 16,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.7),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 24),

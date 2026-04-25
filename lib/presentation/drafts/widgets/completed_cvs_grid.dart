@@ -75,7 +75,7 @@ class _CompletedCVCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () => _openPDF(context),
+      onTap: () => _handleTap(context, ref),
       onLongPress: () => _showOptions(context, ref),
       child: Container(
         decoration: BoxDecoration(
@@ -170,18 +170,55 @@ class _CompletedCVCard extends ConsumerWidget {
   }
 
   Widget _placeholderThumbnail(BuildContext context) {
+    final bool isCloudOnly =
+        !File(cv.pdfPath).existsSync() && cv.remotePdfUrl != null;
+
     return Container(
       color: Theme.of(
         context,
       ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
       child: Center(
         child: Icon(
-          Icons.picture_as_pdf_rounded,
+          isCloudOnly
+              ? Icons.cloud_download_outlined
+              : Icons.picture_as_pdf_rounded,
           size: 36,
-          color: Theme.of(context).colorScheme.onSurfaceVariant,
+          color: isCloudOnly
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.onSurfaceVariant,
         ),
       ),
     );
+  }
+
+  void _handleTap(BuildContext context, WidgetRef ref) async {
+    final file = File(cv.pdfPath);
+    if (await file.exists()) {
+      await OpenFilex.open(cv.pdfPath);
+    } else if (cv.remotePdfUrl != null) {
+      // Show download confirmation
+      final shouldDownload = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(AppLocalizations.of(context)!.downloadPDF),
+          content: Text(AppLocalizations.of(context)!.downloadPDFDescription),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(AppLocalizations.of(context)!.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text(AppLocalizations.of(context)!.download),
+            ),
+          ],
+        ),
+      );
+
+      if (shouldDownload == true) {
+        await ref.read(completedCVProvider.notifier).downloadCVFile(cv);
+      }
+    }
   }
 
   void _openPDF(BuildContext context) async {

@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../../core/utils/deduplication_utils.dart';
 import '../../auth/providers/auth_state_provider.dart';
+import './profile_sync_provider.dart';
 
 final masterProfileProvider =
     StateNotifierProvider<MasterProfileNotifier, UserProfile?>((ref) {
@@ -401,7 +402,17 @@ class ProfileController extends StateNotifier<ProfileState> {
         if (!state.hasChanges) {
           state = state.copyWith(initialProfile: next, currentProfile: next);
         } else {
-          state = state.copyWith(initialProfile: next);
+          // IMPORTANT: If photo changed in Master Profile, propagate it even if there are unsaved text changes
+          if (next.photoUrl != state.currentProfile.photoUrl) {
+            state = state.copyWith(
+              initialProfile: next,
+              currentProfile: state.currentProfile.copyWith(
+                photoUrl: next.photoUrl,
+              ),
+            );
+          } else {
+            state = state.copyWith(initialProfile: next);
+          }
         }
       }
     });
@@ -643,6 +654,10 @@ class ProfileController extends StateNotifier<ProfileState> {
       await ref
           .read(masterProfileProvider.notifier)
           .saveProfile(state.currentProfile);
+
+      // Trigger immediate cloud sync after saving local master profile
+      await ref.read(profileSyncProvider).syncProfileNow();
+
       state = state.copyWith(
         initialProfile: state.currentProfile,
         isSaving: false,

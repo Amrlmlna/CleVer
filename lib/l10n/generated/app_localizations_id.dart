@@ -284,8 +284,18 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String cvReadyMessage(Object jobTitle) {
-    return 'cv anda untuk $jobTitle sudah siap!';
+    return 'cv $jobTitle anda sudah siap!';
   }
+
+  @override
+  String get download => 'unduh';
+
+  @override
+  String get downloadPDF => 'unduh pdf';
+
+  @override
+  String get downloadPDFDescription =>
+      'pdf ini tersimpan di cloud. apakah anda ingin mengunduhnya sekarang?';
 
   @override
   String get cvs => 'cv';
@@ -931,6 +941,10 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get photoUpdateSuccess => 'foto profil berhasil diperbarui!';
+
+  @override
+  String get profilePhotoExportTooltip =>
+      'foto ini akan digunakan untuk setiap ekspor pdf yang menyertakan foto.';
 
   @override
   String get pleaseEnterEmail => 'mohon masukkan email anda';

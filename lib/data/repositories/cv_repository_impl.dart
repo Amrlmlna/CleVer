@@ -9,6 +9,7 @@ import '../datasources/remote_cv_datasource.dart';
 import '../utils/data_error_mapper.dart';
 import '../../domain/entities/tailoring_options.dart';
 import '../../domain/entities/subject.dart';
+import '../../domain/entities/pdf_generation_result.dart';
 
 class CVRepositoryImpl implements CVRepository {
   final RemoteCVDataSource remoteDataSource;
@@ -79,7 +80,7 @@ class CVRepositoryImpl implements CVRepository {
   }
 
   @override
-  Future<List<int>> downloadPDF({
+  Future<PDFGenerationResult> downloadPDF({
     required CVData cvData,
     required String templateId,
     String? locale,

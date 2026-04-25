@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 
 class OnboardingStepScreen extends StatelessWidget {
@@ -147,63 +146,79 @@ class OnboardingSelectionCard extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
-          splashColor: colorScheme.primary.withValues(alpha: 0.1),
-          highlightColor: Colors.transparent,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeOutCubic,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? colorScheme.primary
-                  : colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              children: [
-                if (icon != null) ...[
-                  Icon(
-                    icon,
-                    color: isSelected
-                        ? colorScheme.onPrimary
-                        : colorScheme.onSurface.withValues(alpha: 0.5),
-                    size: 24,
-                  ),
-                  const SizedBox(width: 16),
-                ],
-                Expanded(
-                  child: Text(
-                    text,
-                    style: AppTextStyles.bodyLarge.copyWith(
-                      fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+      child:
+          Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: onTap,
+                  borderRadius: BorderRadius.circular(16),
+                  splashColor: colorScheme.primary.withValues(alpha: 0.1),
+                  highlightColor: Colors.transparent,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeOutCubic,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 20,
+                    ),
+                    decoration: BoxDecoration(
                       color: isSelected
-                          ? colorScheme.onPrimary
-                          : colorScheme.onSurface.withValues(alpha: 0.8),
-                      letterSpacing: -0.3,
+                          ? colorScheme.primary
+                          : colorScheme.surfaceContainerHighest.withValues(
+                              alpha: 0.3,
+                            ),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      children: [
+                        if (icon != null) ...[
+                          Icon(
+                            icon,
+                            color: isSelected
+                                ? colorScheme.onPrimary
+                                : colorScheme.onSurface.withValues(alpha: 0.5),
+                            size: 24,
+                          ),
+                          const SizedBox(width: 16),
+                        ],
+                        Expanded(
+                          child: Text(
+                            text,
+                            style: AppTextStyles.bodyLarge.copyWith(
+                              fontWeight: isSelected
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
+                              color: isSelected
+                                  ? colorScheme.onPrimary
+                                  : colorScheme.onSurface.withValues(
+                                      alpha: 0.8,
+                                    ),
+                              letterSpacing: -0.3,
+                            ),
+                          ),
+                        ),
+                        if (isSelected)
+                          Icon(
+                            Icons.arrow_forward_rounded,
+                            color: colorScheme.onPrimary,
+                            size: 20,
+                          ).animate().moveX(
+                            begin: -4,
+                            end: 0,
+                            curve: Curves.easeOutBack,
+                          ),
+                      ],
                     ),
                   ),
                 ),
-                if (isSelected)
-                  Icon(
-                    Icons.arrow_forward_rounded,
-                    color: colorScheme.onPrimary,
-                    size: 20,
-                  ).animate().moveX(begin: -4, end: 0, curve: Curves.easeOutBack),
-              ],
-            ),
-          ),
-        ),
-      ).animate(target: isSelected ? 1 : 0).scale(
-            begin: const Offset(1, 1),
-            end: const Offset(1.02, 1.02),
-            duration: 200.ms,
-            curve: Curves.easeOutCubic,
-          ),
+              )
+              .animate(target: isSelected ? 1 : 0)
+              .scale(
+                begin: const Offset(1, 1),
+                end: const Offset(1.02, 1.02),
+                duration: 200.ms,
+                curve: Curves.easeOutCubic,
+              ),
     );
   }
 }

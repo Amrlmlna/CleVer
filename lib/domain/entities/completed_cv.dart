@@ -5,6 +5,7 @@ class CompletedCV {
   final String jobTitle;
   final String templateId;
   final String pdfPath;
+  final String? remotePdfUrl;
   final String? thumbnailPath;
   final DateTime generatedAt;
 
@@ -13,6 +14,7 @@ class CompletedCV {
     required this.jobTitle,
     required this.templateId,
     required this.pdfPath,
+    this.remotePdfUrl,
     this.thumbnailPath,
     required this.generatedAt,
   });
@@ -22,6 +24,7 @@ class CompletedCV {
     'jobTitle': jobTitle,
     'templateId': templateId,
     'pdfPath': pdfPath,
+    'remotePdfUrl': remotePdfUrl,
     'thumbnailPath': thumbnailPath,
     'generatedAt': generatedAt.toIso8601String(),
   };
@@ -31,9 +34,30 @@ class CompletedCV {
     jobTitle: json['jobTitle'] as String,
     templateId: json['templateId'] as String,
     pdfPath: json['pdfPath'] as String,
+    remotePdfUrl: json['remotePdfUrl'] as String?,
     thumbnailPath: json['thumbnailPath'] as String?,
     generatedAt: DateTime.parse(json['generatedAt'] as String),
   );
+
+  CompletedCV copyWith({
+    String? id,
+    String? jobTitle,
+    String? templateId,
+    String? pdfPath,
+    String? remotePdfUrl,
+    String? thumbnailPath,
+    DateTime? generatedAt,
+  }) {
+    return CompletedCV(
+      id: id ?? this.id,
+      jobTitle: jobTitle ?? this.jobTitle,
+      templateId: templateId ?? this.templateId,
+      pdfPath: pdfPath ?? this.pdfPath,
+      remotePdfUrl: remotePdfUrl ?? this.remotePdfUrl,
+      thumbnailPath: thumbnailPath ?? this.thumbnailPath,
+      generatedAt: generatedAt ?? this.generatedAt,
+    );
+  }
 
   static List<CompletedCV> listFromJsonString(String jsonString) {
     final list = jsonDecode(jsonString) as List;
@@ -45,4 +69,27 @@ class CompletedCV {
   static String listToJsonString(List<CompletedCV> cvs) {
     return jsonEncode(cvs.map((e) => e.toJson()).toList());
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CompletedCV &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          jobTitle == other.jobTitle &&
+          templateId == other.templateId &&
+          pdfPath == other.pdfPath &&
+          remotePdfUrl == other.remotePdfUrl &&
+          thumbnailPath == other.thumbnailPath &&
+          generatedAt == other.generatedAt;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      jobTitle.hashCode ^
+      templateId.hashCode ^
+      pdfPath.hashCode ^
+      remotePdfUrl.hashCode ^
+      thumbnailPath.hashCode ^
+      generatedAt.hashCode;
 }

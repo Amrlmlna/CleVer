@@ -51,6 +51,43 @@ class StorageService {
     }
   }
 
+  static String get _cvUploadUrl => '${ApiConfig.baseUrl}/cv/upload';
+
+  Future<String?> uploadCompletedCV(File file) async {
+    try {
+      final request = http.MultipartRequest('POST', Uri.parse(_cvUploadUrl));
+
+      final headers = await ApiConfig.getAuthHeaders();
+      headers.remove('Content-Type');
+      request.headers.addAll(headers);
+
+      final multipartFile = await http.MultipartFile.fromPath(
+        'pdf',
+        file.path,
+        filename: file.path.split('/').last,
+        contentType: MediaType('application', 'pdf'),
+      );
+
+      request.files.add(multipartFile);
+
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data['pdfUrl'];
+      } else {
+        debugPrint(
+          'Failed to upload CV: ${response.statusCode} - ${response.body}',
+        );
+        return null;
+      }
+    } catch (e) {
+      debugPrint('Error uploading CV: $e');
+      return null;
+    }
+  }
+
   Future<void> deleteProfilePhoto(String userId) async {
     // Note: Backend implementation for photo deletion can be added if needed.
     // For now, we mainly care about successful uploads.
