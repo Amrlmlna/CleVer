@@ -914,6 +914,12 @@ abstract class AppLocalizations {
   /// **'gender'**
   String get gender;
 
+  /// No description provided for @viewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'view all'**
+  String get viewAll;
+
   /// No description provided for @member.
   ///
   /// In en, this message translates to:

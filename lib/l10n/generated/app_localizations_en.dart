@@ -443,6 +443,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gender => 'gender';
 
   @override
+  String get viewAll => 'view all';
+
+  @override
   String get member => 'member';
 
   @override

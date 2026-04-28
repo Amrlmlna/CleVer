@@ -447,6 +447,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get gender => 'jenis kelamin';
 
   @override
+  String get viewAll => 'lihat semua';
+
+  @override
   String get member => 'member';
 
   @override

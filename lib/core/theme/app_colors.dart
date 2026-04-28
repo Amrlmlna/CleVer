@@ -34,6 +34,8 @@ class AppColors {
   static const Color accentLavender = Color(0xFFE8E0F0); // Education
   static const Color accentMist = Color(0xFFDFE8ED); // Certifications
   static const Color accentLemon = Color(0xFFF0EDD4); // Skills
+  static const Color accentPeach = Color(0xFFF8A26A); // Wallet Header
+  static const Color accentPeachDark = Color(0xFF8B4A1D); // Wallet Header Text
 
   // Darker tints for icons/text on accent cards
   static const Color accentSandDark = Color(0xFF8B6914);

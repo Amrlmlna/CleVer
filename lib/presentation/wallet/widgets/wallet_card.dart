@@ -6,84 +6,58 @@ class WalletCard extends StatelessWidget {
   final int totalCredits;
   final String cardHolder;
   final bool isLoading;
+  final VoidCallback? onTopUp;
 
   const WalletCard({
     super.key,
     required this.totalCredits,
     required this.cardHolder,
     this.isLoading = false,
+    this.onTopUp,
   });
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
 
     return AnimatedContainer(
           duration: const Duration(milliseconds: 500),
           width: double.infinity,
-          height: 220,
+          height: 200,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(28),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                colorScheme.inverseSurface,
-                colorScheme.inverseSurface.withValues(alpha: 0.9),
-                colorScheme.inverseSurface.withValues(alpha: 0.8),
-              ],
-            ),
+            borderRadius: BorderRadius.circular(48),
+            color: colorScheme.onSurface,
             boxShadow: [
               BoxShadow(
-                color: colorScheme.shadow.withValues(alpha: 0.5),
-                blurRadius: 30,
-                offset: const Offset(0, 15),
-              ),
-              BoxShadow(
-                color: colorScheme.onInverseSurface.withValues(alpha: 0.05),
-                blurRadius: 1,
-                spreadRadius: 1,
+                color: colorScheme.shadow.withValues(alpha: 0.15),
+                blurRadius: 40,
+                offset: const Offset(0, 20),
               ),
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(28),
+            borderRadius: BorderRadius.circular(48),
             child: Stack(
               children: [
-                // Decorative Elements
+                // Decorative Geometric Pattern
                 Positioned(
-                  top: -50,
-                  right: -50,
-                  child: Container(
-                    width: 150,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: colorScheme.onInverseSurface.withValues(
-                        alpha: 0.03,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: -30,
-                  left: -30,
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: colorScheme.onInverseSurface.withValues(
-                        alpha: 0.02,
-                      ),
+                  top: -20,
+                  right: -20,
+                  child: Opacity(
+                    opacity: 0.05,
+                    child: Icon(
+                      Icons.qr_code_2_rounded,
+                      size: 200,
+                      color: colorScheme.surface,
                     ),
                   ),
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.all(24.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -91,25 +65,30 @@ class WalletCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'CleVer',
-                            style: textTheme.titleLarge?.copyWith(
-                              color: colorScheme.onInverseSurface,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 22,
-                              letterSpacing: 1.2,
+                            'CLEVER',
+                            style: TextStyle(
+                              color: colorScheme.surface,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 16,
+                              letterSpacing: 2.0,
                             ),
                           ),
-                          Container(
-                            width: 45,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              color: colorScheme.tertiary,
-                              borderRadius: BorderRadius.circular(8),
+                          if (onTopUp != null)
+                            GestureDetector(
+                              onTap: onTopUp,
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.surface,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.add_rounded,
+                                  color: colorScheme.onSurface,
+                                  size: 24,
+                                ),
+                              ),
                             ),
-                            child: CustomPaint(
-                              painter: ChipPainter(colorScheme: colorScheme),
-                            ),
-                          ),
                         ],
                       ),
                       const Spacer(),
@@ -118,12 +97,11 @@ class WalletCard extends StatelessWidget {
                         children: [
                           Text(
                             l10n.creditBalance.toUpperCase(),
-                            style: textTheme.labelSmall?.copyWith(
-                              color: colorScheme.onInverseSurface.withValues(
-                                alpha: 0.4,
-                              ),
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.5,
+                            style: TextStyle(
+                              color: colorScheme.surface.withValues(alpha: 0.4),
+                              fontSize: 10,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 1.2,
                             ),
                           ),
                           const SizedBox(height: 4),
@@ -131,72 +109,31 @@ class WalletCard extends StatelessWidget {
                             Text(
                               '...',
                               style: textTheme.displaySmall?.copyWith(
-                                color: colorScheme.onInverseSurface,
+                                color: colorScheme.surface,
+                                fontWeight: FontWeight.w900,
                               ),
                             )
                           else
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.baseline,
-                              textBaseline: TextBaseline.alphabetic,
-                              children: [
-                                Text(
-                                  '$totalCredits',
-                                  style: textTheme.displayMedium?.copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    color: colorScheme.onInverseSurface,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  l10n.credits.toUpperCase(),
-                                  style: textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: colorScheme.tertiary,
-                                    letterSpacing: 1.0,
-                                  ),
-                                ),
-                              ],
+                            Text(
+                              '$totalCredits',
+                              style: TextStyle(
+                                fontSize: 64,
+                                fontWeight: FontWeight.w900,
+                                color: colorScheme.surface,
+                                letterSpacing: -2.0,
+                                height: 1.0,
+                              ),
                             ),
                         ],
                       ),
                       const Spacer(),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  l10n.member.toUpperCase(),
-                                  style: textTheme.labelSmall?.copyWith(
-                                    color: colorScheme.onInverseSurface
-                                        .withValues(alpha: 0.4),
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.0,
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  cardHolder,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: textTheme.titleSmall?.copyWith(
-                                    color: colorScheme.onInverseSurface,
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 0.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
                           Icon(
-                            Icons.contactless_outlined,
-                            color: colorScheme.onInverseSurface.withValues(
-                              alpha: 0.4,
-                            ),
-                            size: 24,
+                            Icons.contactless_rounded,
+                            color: colorScheme.surface.withValues(alpha: 0.5),
+                            size: 20,
                           ),
                         ],
                       ),
