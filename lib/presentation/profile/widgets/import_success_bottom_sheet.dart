@@ -88,89 +88,92 @@ class ImportSuccessBottomSheet extends StatelessWidget {
       );
     }
 
+    final theme = Theme.of(context);
+
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+          padding: const EdgeInsets.fromLTRB(32, 12, 32, 32),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 40,
+                width: 32,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              const SizedBox(height: 24),
-
+              const SizedBox(height: 48),
               Container(
-                width: 56,
-                height: 56,
+                width: 80,
+                height: 80,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
+                  color: theme.colorScheme.onSurface,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.check_rounded,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  size: 32,
+                  color: theme.colorScheme.surface,
+                  size: 48,
                 ),
               ),
-              const SizedBox(height: 16),
-
+              const SizedBox(height: 32),
               Text(
-                l10n.importSuccessTitle,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  letterSpacing: 0.5,
+                l10n.importSuccessTitle.toUpperCase(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w900,
+                  color: theme.colorScheme.onSurface,
+                  letterSpacing: -1.0,
+                  height: 1.1,
                 ),
               ),
-              const SizedBox(height: 6),
-
+              const SizedBox(height: 12),
               Text(
                 summaryItems.isEmpty
                     ? l10n.importSuccessNoNewData
                     : l10n.importSuccessSubtitle,
                 style: TextStyle(
-                  fontSize: 13,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 14,
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                  fontWeight: FontWeight.w500,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 20),
-
+              const SizedBox(height: 40),
               if (summaryItems.isNotEmpty) ...[
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                    ),
-                    borderRadius: BorderRadius.circular(14),
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest
-                        .withValues(alpha: 0.3),
-                  ),
-                  child: Column(
-                    children: [
-                      for (int i = 0; i < summaryItems.length; i++) ...[
-                        _SummaryRow(item: summaryItems[i]),
-                        if (i < summaryItems.length - 1)
-                          Divider(
-                            color: Theme.of(context).colorScheme.outlineVariant,
-                            height: 20,
-                          ),
-                      ],
-                    ],
-                  ),
+                Column(
+                  children: [
+                    for (int i = 0; i < summaryItems.length; i++)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Row(
+                          children: [
+                            Icon(
+                              summaryItems[i].icon,
+                              color: theme.colorScheme.onSurface,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              summaryItems[i].label.toUpperCase(),
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: theme.colorScheme.onSurface,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: -0.2,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 40),
               ],
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -179,20 +182,21 @@ class ImportSuccessBottomSheet extends StatelessWidget {
                     onContinue();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: theme.colorScheme.onSurface,
+                    foregroundColor: theme.colorScheme.surface,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     elevation: 0,
                   ),
                   child: Text(
-                    l10n.importSuccessContinue,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
+                    l10n.importSuccessContinue.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
                       letterSpacing: 0.5,
-                      color: Theme.of(context).colorScheme.onPrimary,
+                      color: theme.colorScheme.surface,
                     ),
                   ),
                 ),

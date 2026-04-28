@@ -18,86 +18,85 @@ class CVImportHandler {
       context: context,
       useRootNavigator: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
       builder: (sheetContext) => SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+          padding: const EdgeInsets.fromLTRB(32, 12, 32, 32),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 40,
+                width: 32,
                 height: 4,
                 decoration: BoxDecoration(
                   color: Theme.of(
                     context,
-                  ).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+                  ).colorScheme.onSurface.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 32),
               Text(
-                AppLocalizations.of(context)!.importCVTitle,
+                AppLocalizations.of(context)!.importCVTitle.toUpperCase(),
                 style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w900,
                   color: Theme.of(context).colorScheme.onSurface,
-                  letterSpacing: 0.5,
+                  letterSpacing: -1.0,
                 ),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 8),
               Text(
                 AppLocalizations.of(context)!.importCVMessage,
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 13,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 14,
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.5),
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  _buildOption(
-                    context: sheetContext,
-                    icon: Icons.camera_alt_outlined,
-                    label: AppLocalizations.of(context)!.camera,
-                    onTap: () {
-                      Navigator.pop(sheetContext);
-                      _importFromImage(
-                        context,
-                        ref,
-                        ImageSource.camera,
-                        onImportSuccess,
-                      );
-                    },
-                  ),
-                  const SizedBox(width: 12),
-                  _buildOption(
-                    context: sheetContext,
-                    icon: Icons.photo_library_outlined,
-                    label: AppLocalizations.of(context)!.gallery,
-                    onTap: () {
-                      Navigator.pop(sheetContext);
-                      _importFromImage(
-                        context,
-                        ref,
-                        ImageSource.gallery,
-                        onImportSuccess,
-                      );
-                    },
-                  ),
-                  const SizedBox(width: 12),
-                  _buildOption(
-                    context: sheetContext,
-                    icon: Icons.picture_as_pdf_outlined,
-                    label: AppLocalizations.of(context)!.pdfFile,
-                    onTap: () {
-                      Navigator.pop(sheetContext);
-                      _importFromPDF(context, ref, onImportSuccess);
-                    },
-                  ),
-                ],
+              const SizedBox(height: 40),
+              _buildOption(
+                context: sheetContext,
+                icon: Icons.camera_alt_rounded,
+                label: AppLocalizations.of(context)!.camera,
+                onTap: () {
+                  Navigator.pop(sheetContext);
+                  _importFromImage(
+                    context,
+                    ref,
+                    ImageSource.camera,
+                    onImportSuccess,
+                  );
+                },
+              ),
+              _buildOption(
+                context: sheetContext,
+                icon: Icons.photo_library_rounded,
+                label: AppLocalizations.of(context)!.gallery,
+                onTap: () {
+                  Navigator.pop(sheetContext);
+                  _importFromImage(
+                    context,
+                    ref,
+                    ImageSource.gallery,
+                    onImportSuccess,
+                  );
+                },
+              ),
+              _buildOption(
+                context: sheetContext,
+                icon: Icons.picture_as_pdf_rounded,
+                label: AppLocalizations.of(context)!.pdfFile,
+                onTap: () {
+                  Navigator.pop(sheetContext);
+                  _importFromPDF(context, ref, onImportSuccess);
+                },
               ),
             ],
           ),
@@ -112,34 +111,43 @@ class CVImportHandler {
     required String label,
     required VoidCallback onTap,
   }) {
-    return Expanded(
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 18),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Theme.of(
-              context,
-            ).colorScheme.onSurface.withValues(alpha: 0.04),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.04),
           ),
-          child: Column(
+          child: Row(
             children: [
-              Icon(
-                icon,
-                color: Theme.of(context).colorScheme.onSurface,
-                size: 32,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: -0.2,
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.06),
+                  shape: BoxShape.circle,
                 ),
+                child: Icon(icon, color: theme.colorScheme.onSurface, size: 24),
+              ),
+              const SizedBox(width: 16),
+              Text(
+                label.toUpperCase(),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: theme.colorScheme.onSurface,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -0.5,
+                ),
+              ),
+              const Spacer(),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+                size: 16,
               ),
             ],
           ),
