@@ -88,16 +88,8 @@ class _CertificationListFormState extends State<CertificationListForm> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(
-              AppLocalizations.of(context)!.certificationsLicenses,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
             TextButton.icon(
               onPressed: () => _editCertification(),
               icon: Icon(

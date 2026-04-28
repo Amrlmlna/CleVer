@@ -17,8 +17,8 @@ class OnboardingFinalStep extends ConsumerWidget {
     final state = ref.watch(onboardingFormProvider);
     final tier = classifyProfileCompleteness(state.formData);
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
       child: OnboardingFeedbackState(
         profile: state.formData,
         completenessState: tier,

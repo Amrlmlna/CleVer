@@ -88,7 +88,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get alreadyHaveCVSubtitle =>
-      'percepat prosesnya! import cv yang sudah ada, semua data langsung terisi otomatis.';
+      'sudah punya cv/resume? import data nya ke master profile, pakai berkali-kali dengan bantuan AI.';
 
   @override
   String analyzeProfileError(Object error) {
@@ -119,7 +119,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get authWallCreateCVDesc =>
-      'kamu perlu login untuk membuat dan menyimpan cv';
+      'login biar kamu bisa akses master profile dan draft kamu dimana aja.';
 
   @override
   String get authWallSelectTemplate => 'login untuk pilih template';
@@ -337,7 +337,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get drafts => 'draf';
 
   @override
-  String get dropYourDetails => 'isi datamu.';
+  String get dropYourDetails => 'tambahkan riwayat professional.';
 
   @override
   String get editCertification => 'edit sertifikasi';
@@ -382,7 +382,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get experienceSubtitle =>
-      'ceritakan pengalamanmu (kerja, magang, organisasi). ai akan memilih yang paling relevan dengan tujuanmu.';
+      'pengalaman se-random apapun gass aja, AI clever akan filter yang paling relevan buat tiap lowongan';
 
   @override
   String get experienceTitle => 'pengalaman kerja';
@@ -892,7 +892,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get onboardingSubtitle =>
-      'isi data sekali, generate ribuan cv tanpa ngetik ulang. hemat waktu, fokus \"grinding\".';
+      'mari mulai dengan detail kontak, data ini akan otomatis ada di header cv kamu.';
 
   @override
   String get openPDF => 'buka pdf';
@@ -1186,7 +1186,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get startFromScratchDesc =>
-      'isi setiap bagian secara manual, langkah demi langkah.';
+      'tambahin manual, cukup sekali, dan pakai pengalamannya berkali-kali dengan bantuan AI.';
 
   @override
   String get startNow => 'mulai sekarang';

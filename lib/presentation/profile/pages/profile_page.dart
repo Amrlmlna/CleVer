@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/user_profile.dart';
+import '../../../core/theme/app_colors.dart';
 import '../providers/profile_provider.dart';
 import '../widgets/personal_info_form.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
@@ -12,10 +13,13 @@ import '../widgets/skills_input_form.dart';
 import '../../common/widgets/unsaved_changes_dialog.dart';
 import '../widgets/certification_list_form.dart';
 import '../widgets/section_card.dart';
+import 'section_edit_page.dart';
 import '../widgets/import_cv_button.dart';
-import '../widgets/profile_action_buttons.dart';
 import '../widgets/profile_navigation_card.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../models/profile_section_data.dart';
+import '../widgets/profile_stacked_sections.dart';
+import '../widgets/profile_sticky_save_bar.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -193,6 +197,79 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       }
     });
 
+    final sections = [
+      ProfileSectionData(
+        title: l10n.personalInfo,
+        icon: Icons.person_outline,
+        bgColor: AppColors.vibrantPurple,
+        textColor: Colors.white,
+        iconBgColor: Colors.white,
+        iconColor: Colors.black,
+        child: PersonalInfoForm(
+          nameController: _nameController,
+          emailController: _emailController,
+          phoneController: _phoneController,
+          locationController: _locationController,
+          birthDateController: _birthDateController,
+          genderController: _genderController,
+        ),
+      ),
+      ProfileSectionData(
+        title: l10n.experience,
+        icon: Icons.work_outline,
+        bgColor: AppColors.vibrantYellow,
+        textColor: Colors.black,
+        iconBgColor: Colors.black,
+        iconColor: Colors.white,
+        child: ExperienceListForm(
+          experiences: currentProfile.experience,
+          onChanged: (val) => ref
+              .read(profileControllerProvider.notifier)
+              .updateExperience(val),
+        ),
+      ),
+      ProfileSectionData(
+        title: l10n.educationHistory,
+        icon: Icons.school_outlined,
+        bgColor: AppColors.vibrantBlack,
+        textColor: Colors.white,
+        iconBgColor: Colors.white,
+        iconColor: Colors.black,
+        child: EducationListForm(
+          education: currentProfile.education,
+          onChanged: (val) =>
+              ref.read(profileControllerProvider.notifier).updateEducation(val),
+        ),
+      ),
+      ProfileSectionData(
+        title: l10n.certifications,
+        icon: Icons.card_membership,
+        bgColor: AppColors.vibrantGreen,
+        textColor: Colors.black,
+        iconBgColor: Colors.white,
+        iconColor: Colors.black,
+        child: CertificationListForm(
+          certifications: currentProfile.certifications,
+          onChanged: (val) => ref
+              .read(profileControllerProvider.notifier)
+              .updateCertifications(val),
+        ),
+      ),
+      ProfileSectionData(
+        title: l10n.skills,
+        icon: Icons.code,
+        bgColor: AppColors.vibrantBlue,
+        textColor: Colors.white,
+        iconBgColor: Colors.white,
+        iconColor: Colors.black,
+        child: SkillsInputForm(
+          skills: currentProfile.skills,
+          onChanged: (val) =>
+              ref.read(profileControllerProvider.notifier).updateSkills(val),
+        ),
+      ),
+    ];
+
     return Scaffold(
       body: PopScope(
         canPop: !hasChanges || isSaving,
@@ -204,100 +281,43 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           }
         },
         child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24.0,
-              vertical: 16.0,
-            ),
-            child: Column(
-              children: [
-                const SizedBox(height: 16),
-                ImportCVButton(onImportSuccess: _handleImportSuccess),
-                const SizedBox(height: 32),
-                SectionCard(
-                  title: AppLocalizations.of(context)!.personalInfo,
-                  icon: Icons.person_outline,
-                  child: PersonalInfoForm(
-                    nameController: _nameController,
-                    emailController: _emailController,
-                    phoneController: _phoneController,
-                    locationController: _locationController,
-                    birthDateController: _birthDateController,
-                    genderController: _genderController,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                SectionCard(
-                  title: AppLocalizations.of(context)!.experience,
-                  icon: Icons.work_outline,
-                  child: ExperienceListForm(
-                    experiences: currentProfile.experience,
-                    onChanged: (val) => ref
-                        .read(profileControllerProvider.notifier)
-                        .updateExperience(val),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                SectionCard(
-                  title: AppLocalizations.of(context)!.educationHistory,
-                  icon: Icons.school_outlined,
-                  child: EducationListForm(
-                    education: currentProfile.education,
-                    onChanged: (val) => ref
-                        .read(profileControllerProvider.notifier)
-                        .updateEducation(val),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                SectionCard(
-                  title: AppLocalizations.of(context)!.certifications,
-                  icon: Icons.card_membership,
-                  child: CertificationListForm(
-                    certifications: currentProfile.certifications,
-                    onChanged: (val) => ref
-                        .read(profileControllerProvider.notifier)
-                        .updateCertifications(val),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                SectionCard(
-                  title: AppLocalizations.of(context)!.skills,
-                  icon: Icons.code,
-                  child: SkillsInputForm(
-                    skills: currentProfile.skills,
-                    onChanged: (val) => ref
-                        .read(profileControllerProvider.notifier)
-                        .updateSkills(val),
-                  ),
-                ),
-                const SizedBox(height: 32),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    l10n.supportAndLegal,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ProfileNavigationCard(
-                  title: l10n.legalInformation,
-                  subtitle: l10n.privacyPolicyAndTerms,
-                  icon: Icons.description_outlined,
-                  onTap: () => context.push('/legal'),
-                ),
-                const SizedBox(height: 32),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
 
-                const Divider(),
-                const SizedBox(height: 32),
-                ProfileActionButtons(
-                  onSave: _saveProfile,
-                  canSave: hasChanges && !isSaving,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        child: ImportCVButton(
+                          onImportSuccess: _handleImportSuccess,
+                        ),
+                      ),
+                      const SizedBox(height: 28),
+
+                      ProfileStackedSections(
+                        sections: sections,
+                        skillsCount: currentProfile.skills.length,
+                        skillsLabel: l10n.skills,
+                      ),
+
+                      const SizedBox(height: 32),
+                    ],
+                  ),
                 ),
-              ],
-            ),
+              ),
+
+              if (hasChanges)
+                ProfileStickySaveBar(
+                  hasChanges: hasChanges,
+                  isSaving: isSaving,
+                  onSave: _saveProfile,
+                ),
+            ],
           ),
         ),
       ),

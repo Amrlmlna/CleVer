@@ -104,6 +104,9 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                       backgroundImage: photoUrl != null
                           ? NetworkImage(photoUrl)
                           : null,
+                      onBackgroundImageError: photoUrl != null
+                          ? (exception, stackTrace) {}
+                          : null,
                       child: photoUrl == null && !_isUploading
                           ? Icon(
                               Icons.person,
@@ -131,10 +134,6 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                         decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
                           shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.outlineVariant,
-                            width: 1.0,
-                          ),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withValues(alpha: 0.15),
@@ -149,17 +148,6 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                           color: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Icon(
-                      Icons.info_outline_rounded,
-                      size: 16,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.7),
                     ),
                   ),
                 ],

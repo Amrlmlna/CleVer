@@ -27,6 +27,27 @@ class AppColors {
     0xFF5EEAD4,
   ); // Teal for subtle highlights
 
+  // ─── Profile Section Accent Palette ────────────────────────────────────────
+  // Muted pastels for stacked profile cards — each section gets a personality.
+  static const Color accentSand = Color(0xFFF5E6D3); // Personal Info
+  static const Color accentSage = Color(0xFFE2EDDF); // Experience
+  static const Color accentLavender = Color(0xFFE8E0F0); // Education
+  static const Color accentMist = Color(0xFFDFE8ED); // Certifications
+  static const Color accentLemon = Color(0xFFF0EDD4); // Skills
+
+  // Darker tints for icons/text on accent cards
+  static const Color accentSandDark = Color(0xFF8B6914);
+  static const Color accentSageDark = Color(0xFF3D6B35);
+  static const Color accentLavenderDark = Color(0xFF6B3FA0);
+  static const Color accentMistDark = Color(0xFF2E5A6E);
+  static const Color accentLemonDark = Color(0xFF6B6520);
+
+  static const Color vibrantPurple = Color(0xFF6344E7);
+  static const Color vibrantYellow = Color(0xFFF6C344);
+  static const Color vibrantBlack = Color(0xFF1E1E1E);
+  static const Color vibrantGreen = Color(0xFFB9D870);
+  static const Color vibrantBlue = Color(0xFF44A1F6);
+
   // Semantic Colors
   static const Color success = Color(0xFF10B981);
   static const Color error = Color(0xFFE53935);

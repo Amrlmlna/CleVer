@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../widgets/welcome_steps/step_wall_of_pain.dart';
 import '../widgets/welcome_steps/step_selection_list.dart';
-import '../widgets/welcome_steps/step_diagnosis.dart';
 import '../widgets/welcome_steps/step_comparison.dart';
 import '../widgets/welcome_steps/step_final_reveal.dart';
 import 'onboarding_page.dart';
@@ -34,7 +33,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
   }
 
   void _nextStep() {
-    if (_currentStep < 6) {
+    if (_currentStep < 5) {
       setState(() {
         _currentStep++;
       });
@@ -68,7 +67,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
             ),
           ),
 
-          if (!_showForm && _currentStep > 0 && _currentStep < 6)
+          if (!_showForm && _currentStep > 0 && _currentStep < 5)
             _buildProgressIndicator(context, colorScheme),
 
           _buildSlidingForm(height),
@@ -123,7 +122,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
       left: 32,
       right: 32,
       child: Row(
-        children: List.generate(5, (index) {
+        children: List.generate(4, (index) {
           return Expanded(
             child: Container(
               height: 4,
@@ -258,16 +257,9 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
         );
 
       case 4:
-        return StepDiagnosis(
-          burnoutCause: _selectedBurnout ?? '',
-          timeSpent: _selectedTime ?? '',
-          onNext: _nextStep,
-        );
-
-      case 5:
         return StepComparison(onNext: _nextStep);
 
-      case 6:
+      case 5:
         return StepFinalReveal(onNext: _nextStep);
 
       default:

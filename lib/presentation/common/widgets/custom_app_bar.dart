@@ -161,6 +161,11 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   backgroundImage: photoUrl != null
                       ? NetworkImage(photoUrl)
                       : null,
+                  onBackgroundImageError: photoUrl != null
+                      ? (exception, stackTrace) {
+                          // Ignore image load errors (e.g. expired signed URL)
+                        }
+                      : null,
                   child: photoUrl == null
                       ? Icon(
                           Icons.person,

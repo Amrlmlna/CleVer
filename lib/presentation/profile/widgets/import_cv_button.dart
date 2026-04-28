@@ -23,27 +23,28 @@ class ImportCVButton extends ConsumerWidget {
           ref: ref,
           onImportSuccess: onImportSuccess,
         ),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(20),
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
           decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: theme.shadowColor.withValues(alpha: 0.1),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
-              ),
-            ],
+            color: AppColors.grey900,
+            borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
             children: [
-              const Icon(
-                Icons.auto_awesome,
-                color: AppColors.grey900,
-                size: 32,
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppColors.white.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.auto_awesome,
+                  color: AppColors.accentLemon,
+                  size: 22,
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -52,19 +53,19 @@ class ImportCVButton extends ConsumerWidget {
                   children: [
                     Text(
                       l10n.importFromCV,
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w900,
-                        color: AppColors.grey900,
-                        letterSpacing: -0.7,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.white,
+                        letterSpacing: -0.5,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       l10n.importCVHeroSubtitle,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: AppColors.grey500,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: AppColors.grey400,
                         fontWeight: FontWeight.w500,
-                        height: 1.2,
+                        height: 1.3,
                       ),
                     ),
                   ],
@@ -72,8 +73,8 @@ class ImportCVButton extends ConsumerWidget {
               ),
               const Icon(
                 Icons.chevron_right_rounded,
-                color: AppColors.grey300,
-                size: 28,
+                color: AppColors.grey500,
+                size: 24,
               ),
             ],
           ),

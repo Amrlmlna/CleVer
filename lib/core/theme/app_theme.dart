@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 import 'app_text_styles.dart';
 
@@ -33,6 +34,7 @@ class AppTheme {
     );
 
     return ThemeData(
+      fontFamily: GoogleFonts.inter().fontFamily,
       useMaterial3: true,
       brightness: Brightness.light,
       primaryColor: colorScheme.primary,
@@ -125,10 +127,7 @@ class AppTheme {
       cardTheme: CardThemeData(
         color: AppColors.surfaceLight,
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: AppColors.borderLight),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
 
       dividerTheme: const DividerThemeData(
@@ -168,6 +167,7 @@ class AppTheme {
     );
 
     return ThemeData(
+      fontFamily: GoogleFonts.inter().fontFamily,
       useMaterial3: true,
       brightness: Brightness.dark,
       primaryColor: colorScheme.primary,
@@ -254,10 +254,7 @@ class AppTheme {
       cardTheme: CardThemeData(
         color: AppColors.surfaceDark,
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: AppColors.borderDark),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
 
       dividerTheme: const DividerThemeData(
@@ -323,6 +320,7 @@ class AppTheme {
     );
 
     return ThemeData(
+      fontFamily: GoogleFonts.inter().fontFamily,
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: colorScheme,

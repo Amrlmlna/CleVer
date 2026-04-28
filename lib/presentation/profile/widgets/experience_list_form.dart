@@ -90,16 +90,8 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(
-              AppLocalizations.of(context)!.workExperience,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
             TextButton.icon(
               onPressed: () => _editExperience(),
               icon: Icon(

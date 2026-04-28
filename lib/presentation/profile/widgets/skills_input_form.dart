@@ -31,7 +31,6 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
     widget.onChanged(newList);
   }
 
-  /// Group skills by category for organized display.
   Map<SkillCategory, List<Skill>> get _groupedSkills {
     final grouped = <SkillCategory, List<Skill>>{};
     for (final skill in widget.skills) {
@@ -49,16 +48,8 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(
-              l10n.skills,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
             TextButton.icon(
               onPressed: _showAddSkill,
               icon: Icon(
