@@ -6,6 +6,7 @@ class CompletedCV {
   final String templateId;
   final String pdfPath;
   final String? remotePdfUrl;
+  final String? remotePath;
   final String? thumbnailPath;
   final DateTime generatedAt;
 
@@ -15,6 +16,7 @@ class CompletedCV {
     required this.templateId,
     required this.pdfPath,
     this.remotePdfUrl,
+    this.remotePath,
     this.thumbnailPath,
     required this.generatedAt,
   });
@@ -25,6 +27,7 @@ class CompletedCV {
     'templateId': templateId,
     'pdfPath': pdfPath,
     'remotePdfUrl': remotePdfUrl,
+    'remotePath': remotePath,
     'thumbnailPath': thumbnailPath,
     'generatedAt': generatedAt.toIso8601String(),
   };
@@ -35,6 +38,7 @@ class CompletedCV {
     templateId: json['templateId'] as String,
     pdfPath: json['pdfPath'] as String,
     remotePdfUrl: json['remotePdfUrl'] as String?,
+    remotePath: json['remotePath'] as String?,
     thumbnailPath: json['thumbnailPath'] as String?,
     generatedAt: DateTime.parse(json['generatedAt'] as String),
   );
@@ -45,6 +49,7 @@ class CompletedCV {
     String? templateId,
     String? pdfPath,
     String? remotePdfUrl,
+    String? remotePath,
     String? thumbnailPath,
     DateTime? generatedAt,
   }) {
@@ -54,6 +59,7 @@ class CompletedCV {
       templateId: templateId ?? this.templateId,
       pdfPath: pdfPath ?? this.pdfPath,
       remotePdfUrl: remotePdfUrl ?? this.remotePdfUrl,
+      remotePath: remotePath ?? this.remotePath,
       thumbnailPath: thumbnailPath ?? this.thumbnailPath,
       generatedAt: generatedAt ?? this.generatedAt,
     );
@@ -80,6 +86,7 @@ class CompletedCV {
           templateId == other.templateId &&
           pdfPath == other.pdfPath &&
           remotePdfUrl == other.remotePdfUrl &&
+          remotePath == other.remotePath &&
           thumbnailPath == other.thumbnailPath &&
           generatedAt == other.generatedAt;
 
@@ -90,6 +97,7 @@ class CompletedCV {
       templateId.hashCode ^
       pdfPath.hashCode ^
       remotePdfUrl.hashCode ^
+      remotePath.hashCode ^
       thumbnailPath.hashCode ^
       generatedAt.hashCode;
 }

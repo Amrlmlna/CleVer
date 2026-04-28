@@ -53,7 +53,7 @@ class StorageService {
 
   static String get _cvUploadUrl => '${ApiConfig.baseUrl}/cv/upload';
 
-  Future<String?> uploadCompletedCV(File file) async {
+  Future<Map<String, String?>?> uploadCompletedCV(File file) async {
     try {
       final request = http.MultipartRequest('POST', Uri.parse(_cvUploadUrl));
 
@@ -75,7 +75,10 @@ class StorageService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return data['pdfUrl'];
+        return {
+          'pdfUrl': data['pdfUrl'] as String?,
+          'remotePath': data['remotePath'] as String?,
+        };
       } else {
         debugPrint(
           'Failed to upload CV: ${response.statusCode} - ${response.body}',

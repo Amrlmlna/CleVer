@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,7 @@ import '../../../domain/entities/completed_cv.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import '../providers/completed_cv_sync_provider.dart';
 import '../../../core/services/storage_service.dart';
+import '../../../core/config/api_config.dart';
 import 'package:pdfx/pdfx.dart';
 
 const _storageKey = 'completed_cvs';
@@ -55,22 +57,41 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
     for (int i = 0; i < updatedList.length; i++) {
       final cv = updatedList[i];
 
-      // If local CV is missing a remote URL, upload it to "re-link" it to the cloud
-      if (cv.remotePdfUrl == null) {
-        final file = File(cv.pdfPath);
+      // 1. Recover remotePath from existing URL if missing (RESCUE MISSION)
+      if (cv.remotePath == null && cv.remotePdfUrl != null) {
+        final recoveredPath = _recoverPathFromUrl(cv.remotePdfUrl!);
+        if (recoveredPath != null) {
+          debugPrint(
+            "[Migration] Recovered path for CV ${cv.id}: $recoveredPath",
+          );
+          updatedList[i] = updatedList[i].copyWith(remotePath: recoveredPath);
+          hasChanges = true;
+          // Continue with this updated version
+          await syncManager.syncCVNow(updatedList[i]);
+        }
+      }
+
+      // 2. If local CV is missing a remote URL or path, upload it to "re-link" it to the cloud
+      if (updatedList[i].remotePdfUrl == null ||
+          updatedList[i].remotePath == null) {
+        final file = File(updatedList[i].pdfPath);
         if (await file.exists()) {
-          debugPrint("[Migration] Uploading local CV ${cv.id} to cloud...");
-          final newRemoteUrl = await storageService.uploadCompletedCV(file);
-          if (newRemoteUrl != null) {
-            updatedList[i] = cv.copyWith(remotePdfUrl: newRemoteUrl);
+          debugPrint(
+            "[Migration] Uploading local CV ${updatedList[i].id} to cloud...",
+          );
+          final uploadResult = await storageService.uploadCompletedCV(file);
+          if (uploadResult != null) {
+            updatedList[i] = updatedList[i].copyWith(
+              remotePdfUrl: uploadResult['pdfUrl'],
+              remotePath: uploadResult['remotePath'],
+            );
             await syncManager.syncCVNow(updatedList[i]);
             hasChanges = true;
           }
         }
       } else {
-        // If it HAS a remote URL but isn't in Firestore metadata yet, sync it
-        // (This handles cases where upload succeeded but Firestore write failed)
-        await syncManager.syncCVNow(cv);
+        // If it HAS everything but isn't in Firestore metadata yet, sync it
+        await syncManager.syncCVNow(updatedList[i]);
       }
     }
 
@@ -78,6 +99,28 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
       await _saveToStorage(updatedList);
       state = AsyncData(updatedList);
     }
+  }
+
+  String? _recoverPathFromUrl(String url) {
+    try {
+      final uri = Uri.parse(url);
+      // GCS URLs are usually https://storage.googleapis.com/[bucket]/[path]
+      // or https://[bucket].storage.googleapis.com/[path]
+      if (uri.host == 'storage.googleapis.com') {
+        final segments = uri.pathSegments;
+        if (segments.length >= 2) {
+          // Structure: /bucket-name/pdfs/uid/file.pdf
+          // We want: pdfs/uid/file.pdf
+          return segments.skip(1).join('/');
+        }
+      } else if (uri.host.contains('.storage.googleapis.com')) {
+        // Structure: /pdfs/uid/file.pdf
+        return uri.pathSegments.join('/');
+      }
+    } catch (e) {
+      debugPrint("Path recovery failed: $e");
+    }
+    return null;
   }
 
   Future<void> mergeRemoteCVs(List<CompletedCV> remoteCVs) async {
@@ -92,11 +135,13 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
         updatedList.add(remote);
         hasChanges = true;
       } else {
-        // Update local with remote URL if missing
-        if (updatedList[existsIndex].remotePdfUrl == null &&
-            remote.remotePdfUrl != null) {
-          updatedList[existsIndex] = updatedList[existsIndex].copyWith(
+        // Update local with remote URL and path if missing
+        final local = updatedList[existsIndex];
+        if ((local.remotePdfUrl == null && remote.remotePdfUrl != null) ||
+            (local.remotePath == null && remote.remotePath != null)) {
+          updatedList[existsIndex] = local.copyWith(
             remotePdfUrl: remote.remotePdfUrl,
+            remotePath: remote.remotePath,
           );
           hasChanges = true;
         }
@@ -141,11 +186,38 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
   }
 
   Future<void> downloadCVFile(CompletedCV cv) async {
-    if (cv.remotePdfUrl == null) return;
-
     state = const AsyncLoading();
     try {
-      final response = await http.get(Uri.parse(cv.remotePdfUrl!));
+      String? downloadUrl = cv.remotePdfUrl;
+
+      // If we have a remote path, always try to get a FRESH signed URL
+      // to avoid 400 Bad Request from expired links
+      if (cv.remotePath != null) {
+        try {
+          final authHeaders = await ApiConfig.getAuthHeaders();
+          final refreshUri = Uri.parse(
+            '${ApiConfig.baseUrl}/cv/url',
+          ).replace(queryParameters: {'path': cv.remotePath});
+
+          final refreshResponse = await http.get(
+            refreshUri,
+            headers: authHeaders,
+          );
+          if (refreshResponse.statusCode == 200) {
+            final data = jsonDecode(refreshResponse.body);
+            downloadUrl = data['pdfUrl'];
+          }
+        } catch (e) {
+          debugPrint("Failed to refresh signed URL: $e");
+          // Fallback to original URL if refresh fails
+        }
+      }
+
+      if (downloadUrl == null || downloadUrl.isEmpty) {
+        throw Exception("No download URL available");
+      }
+
+      final response = await http.get(Uri.parse(downloadUrl));
       if (response.statusCode == 200) {
         final bytes = response.bodyBytes;
 

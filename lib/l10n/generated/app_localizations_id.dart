@@ -507,7 +507,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get generateCVFirst => 'buat cv pertama anda untuk melihatnya di sini';
 
   @override
-  String get generated => 'dihasilkan';
+  String get generated => 'pdf';
 
   @override
   String get generatingPdfBadge => 'membuat pdf';
@@ -1136,7 +1136,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get schoolName => 'nama sekolah';
 
   @override
-  String get searchJob => 'cari lowongan...';
+  String get searchJob => 'cari folder...';
 
   @override
   String get selectDate => 'pilih tanggal';

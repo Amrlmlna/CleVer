@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import 'package:clever/core/theme/app_colors.dart';
 import '../../../domain/entities/cv_data.dart';
 import '../../../domain/entities/job_input.dart';
 import '../../../domain/entities/tailored_cv_result.dart';
@@ -68,83 +69,116 @@ class _DraftsPageState extends ConsumerState<DraftsPage>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
     final draftsAsync = ref.watch(draftsProvider);
 
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 60),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Text(
-                AppLocalizations.of(context)!.myCVs,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w900,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  letterSpacing: 1.2,
-                ),
+      backgroundColor: colorScheme.surface,
+      body: Column(
+        children: [
+          // --- TOP ACCENT HEADER ---
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.accentPeach,
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(48),
               ),
             ),
-            const SizedBox(height: 20),
+            padding: const EdgeInsets.fromLTRB(24, 80, 24, 40),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (_selectedFolder != null) ...[
+                  IconButton(
+                    onPressed: () => setState(() => _selectedFolder = null),
+                    icon: const Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: Colors.black,
+                      size: 20,
+                    ),
+                    style: IconButton.styleFrom(
+                      backgroundColor: Colors.black.withValues(alpha: 0.1),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
+                Text(
+                  (_selectedFolder ?? AppLocalizations.of(context)!.myCVs)
+                      .toUpperCase(),
+                  style: textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: Colors.black,
+                    letterSpacing: 1.0,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+
+          // --- TAB BAR SECTION ---
+          if (_selectedFolder == null) ...[
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.fromLTRB(32, 24, 32, 8),
               child: Container(
-                height: 40,
+                height: 48,
+                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(10),
+                  color: colorScheme.onSurface.withValues(alpha: 0.05),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: TabBar(
                   controller: _tabController,
                   indicator: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(8),
+                    color: colorScheme.onSurface,
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   indicatorSize: TabBarIndicatorSize.tab,
                   dividerColor: Colors.transparent,
-                  labelColor: Theme.of(context).colorScheme.onSurface,
-                  unselectedLabelColor: Theme.of(
-                    context,
-                  ).colorScheme.onSurfaceVariant,
-                  labelStyle: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
+                  labelColor: colorScheme.surface,
+                  unselectedLabelColor: colorScheme.onSurface.withValues(
+                    alpha: 0.4,
                   ),
-                  unselectedLabelStyle: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
+                  labelStyle: textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.0,
                   ),
-                  labelPadding: EdgeInsets.zero,
-                  padding: const EdgeInsets.all(3),
+                  unselectedLabelStyle: textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                   tabs: [
-                    Tab(text: AppLocalizations.of(context)!.drafts),
-                    Tab(text: AppLocalizations.of(context)!.generated),
+                    Tab(
+                      text: AppLocalizations.of(context)!.drafts.toUpperCase(),
+                    ),
+                    Tab(
+                      text: AppLocalizations.of(
+                        context,
+                      )!.generated.toUpperCase(),
+                    ),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  _buildDraftsTab(draftsAsync),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: CompletedCVsGrid(),
-                  ),
-                ],
-              ),
+          ] else
+            const SizedBox(height: 24),
+
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _buildDraftsTab(draftsAsync),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: CompletedCVsGrid(),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
