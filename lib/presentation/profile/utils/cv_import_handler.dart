@@ -119,28 +119,26 @@ class CVImportHandler {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 18),
           decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).colorScheme.outlineVariant,
-            ),
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(16),
             color: Theme.of(
               context,
-            ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+            ).colorScheme.onSurface.withValues(alpha: 0.04),
           ),
           child: Column(
             children: [
               Icon(
                 icon,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                size: 28,
+                color: Theme.of(context).colorScheme.onSurface,
+                size: 32,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 13,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -0.2,
                 ),
               ),
             ],

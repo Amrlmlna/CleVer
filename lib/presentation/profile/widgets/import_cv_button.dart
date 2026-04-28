@@ -15,69 +15,44 @@ class ImportCVButton extends ConsumerWidget {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () => CVImportHandler.showImportDialog(
-          context: context,
-          ref: ref,
-          onImportSuccess: onImportSuccess,
-        ),
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
-          decoration: BoxDecoration(
-            color: AppColors.grey900,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: AppColors.white.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  Icons.auto_awesome,
-                  color: AppColors.accentLemon,
-                  size: 22,
+    return InkWell(
+      onTap: () => CVImportHandler.showImportDialog(
+        context: context,
+        ref: ref,
+        onImportSuccess: onImportSuccess,
+      ),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                l10n.importFromCV.toUpperCase(),
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -1.2,
+                  height: 1.0,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.importFromCV,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.white,
-                        letterSpacing: -0.5,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      l10n.importCVHeroSubtitle,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.grey400,
-                        fontWeight: FontWeight.w500,
-                        height: 1.3,
-                      ),
-                    ),
-                  ],
-                ),
+            ),
+            const SizedBox(width: 16),
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.onSurface,
+                shape: BoxShape.circle,
               ),
-              const Icon(
-                Icons.chevron_right_rounded,
-                color: AppColors.grey500,
+              child: Icon(
+                Icons.add_rounded,
                 size: 24,
+                weight: 800,
+                color: theme.colorScheme.surface,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
