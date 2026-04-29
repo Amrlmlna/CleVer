@@ -372,7 +372,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorDetailsCopied => 'error details copied to clipboard';
 
   @override
-  String get exitWithoutSaving => 'exit without saving';
+  String get exitWithoutSaving => 'Discard';
 
   @override
   String get experience => 'experience';
@@ -1057,10 +1057,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saveChangesMessage =>
-      'you have unsaved changes. are you sure you want to leave?';
+      'You have unsaved changes. Would you like to save them before leaving?';
 
   @override
-  String get saveChangesTitle => 'save changes?';
+  String get saveChangesTitle => 'Unsaved Changes';
 
   @override
   String get saveProfile => 'save profile';
@@ -1192,7 +1192,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statistics => 'statistics';
 
   @override
-  String get stayHere => 'stay here';
+  String get stayHere => 'Cancel';
 
   @override
   String get stepCertifications => 'certifications';

@@ -15,7 +15,7 @@ class UnsavedChangesDialog extends StatelessWidget {
   }) {
     return showDialog<bool>(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (context) =>
           UnsavedChangesDialog(onSave: onSave, onDiscard: onDiscard),
     );
@@ -24,72 +24,191 @@ class UnsavedChangesDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
 
-    return AlertDialog(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      title: Text(
-        localization.saveChangesTitle,
-        style: Theme.of(
-          context,
-        ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
-      ),
-      content: Text(
-        localization.saveChangesMessage,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Container(
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(28),
+          border: Border.all(
+            color: colorScheme.onSurface.withValues(alpha: 0.1),
+            width: 1.5,
+          ),
         ),
-      ),
-      actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      actions: [
-        Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: TextButton(
-                onPressed: () async {
-                  if (onDiscard != null) await onDiscard!();
-                  if (context.mounted) Navigator.pop(context, true);
-                },
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                ),
-                child: Text(
-                  localization.exitWithoutSaving,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.error,
-                    fontWeight: FontWeight.w600,
+            // ─── Header ──────────────────────────────────────────────
+            Container(
+              padding: const EdgeInsets.fromLTRB(24, 32, 24, 16),
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: colorScheme.error.withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.warning_amber_rounded,
+                      color: colorScheme.error,
+                      size: 32,
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 20),
+                  Text(
+                    localization.saveChangesTitle.toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.5,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    localization.saveChangesMessage,
+                    textAlign: TextAlign.center,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurface.withValues(alpha: 0.6),
+                      height: 1.5,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () async {
-                  if (onSave != null) await onSave!();
-                  if (context.mounted) Navigator.pop(context, true);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+
+            const Divider(height: 1),
+
+            // ─── Actions ─────────────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  // Save Button (Primary)
+                  _DialogButton(
+                    onTap: () async {
+                      if (onSave != null) await onSave!();
+                      if (context.mounted) Navigator.pop(context, true);
+                    },
+                    label: localization.save,
+                    isPrimary: true,
+                    icon: Icons.check_circle_outline_rounded,
                   ),
-                  elevation: 0,
-                ),
-                child: Text(
-                  localization.save,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).colorScheme.onPrimary,
+                  const SizedBox(height: 12),
+                  // Discard Button (Secondary/Alert)
+                  _DialogButton(
+                    onTap: () async {
+                      if (onDiscard != null) await onDiscard!();
+                      if (context.mounted) Navigator.pop(context, true);
+                    },
+                    label: localization.exitWithoutSaving,
+                    isPrimary: false,
+                    isDanger: true,
+                    icon: Icons.delete_outline_rounded,
                   ),
-                ),
+                  const SizedBox(height: 8),
+                  // Cancel Button (Tertiary)
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, false),
+                    style: TextButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 48),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      localization.stayHere.toUpperCase(),
+                      style: textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: colorScheme.onSurface.withValues(alpha: 0.4),
+                        letterSpacing: 1.1,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
-      ],
+      ),
+    );
+  }
+}
+
+class _DialogButton extends StatelessWidget {
+  final VoidCallback onTap;
+  final String label;
+  final bool isPrimary;
+  final bool isDanger;
+  final IconData icon;
+
+  const _DialogButton({
+    required this.onTap,
+    required this.label,
+    required this.isPrimary,
+    this.isDanger = false,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
+    final bgColor = isPrimary
+        ? colorScheme.onSurface
+        : (isDanger
+              ? colorScheme.error.withValues(alpha: 0.05)
+              : Colors.transparent);
+
+    final fgColor = isPrimary
+        ? colorScheme.surface
+        : (isDanger ? colorScheme.error : colorScheme.onSurface);
+
+    return Material(
+      color: bgColor,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: isPrimary
+                ? null
+                : Border.all(
+                    color: isDanger
+                        ? colorScheme.error.withValues(alpha: 0.2)
+                        : colorScheme.onSurface.withValues(alpha: 0.1),
+                    width: 1.5,
+                  ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 18, color: fgColor),
+              const SizedBox(width: 10),
+              Text(
+                label.toUpperCase(),
+                style: textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  color: fgColor,
+                  letterSpacing: 1.2,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

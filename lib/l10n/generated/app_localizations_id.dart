@@ -375,7 +375,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get errorDetailsCopied => 'detail kesalahan disalin ke papan klip';
 
   @override
-  String get exitWithoutSaving => 'keluar tanpa simpan';
+  String get exitWithoutSaving => 'Abaikan';
 
   @override
   String get experience => 'pengalaman';
@@ -1062,10 +1062,10 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get saveChangesMessage =>
-      'kamu punya perubahan yang belum disimpan. yakin mau keluar?';
+      'Ada perubahan yang belum disimpan. Ingin simpan dulu sebelum keluar?';
 
   @override
-  String get saveChangesTitle => 'simpan perubahan?';
+  String get saveChangesTitle => 'Perubahan Belum Tersimpan';
 
   @override
   String get saveProfile => 'simpan profil';
@@ -1198,7 +1198,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get statistics => 'statistik';
 
   @override
-  String get stayHere => 'tetap di sini';
+  String get stayHere => 'Batal';
 
   @override
   String get stepCertifications => 'sertifikasi';

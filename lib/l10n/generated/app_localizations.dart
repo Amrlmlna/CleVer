@@ -785,7 +785,7 @@ abstract class AppLocalizations {
   /// No description provided for @exitWithoutSaving.
   ///
   /// In en, this message translates to:
-  /// **'exit without saving'**
+  /// **'Discard'**
   String get exitWithoutSaving;
 
   /// No description provided for @experience.
@@ -2037,13 +2037,13 @@ abstract class AppLocalizations {
   /// No description provided for @saveChangesMessage.
   ///
   /// In en, this message translates to:
-  /// **'you have unsaved changes. are you sure you want to leave?'**
+  /// **'You have unsaved changes. Would you like to save them before leaving?'**
   String get saveChangesMessage;
 
   /// No description provided for @saveChangesTitle.
   ///
   /// In en, this message translates to:
-  /// **'save changes?'**
+  /// **'Unsaved Changes'**
   String get saveChangesTitle;
 
   /// No description provided for @saveProfile.
@@ -2301,7 +2301,7 @@ abstract class AppLocalizations {
   /// No description provided for @stayHere.
   ///
   /// In en, this message translates to:
-  /// **'stay here'**
+  /// **'Cancel'**
   String get stayHere;
 
   /// No description provided for @stepCertifications.
