@@ -17,118 +17,10 @@ import '../models/profile_section_data.dart';
 import '../widgets/profile_stacked_sections.dart';
 import '../widgets/profile_sticky_save_bar.dart';
 
-class ProfilePage extends ConsumerStatefulWidget {
+class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
 
-  @override
-  ConsumerState<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends ConsumerState<ProfilePage> {
-  late TextEditingController _nameController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneController;
-  late TextEditingController _locationController;
-  late TextEditingController _birthDateController;
-  late TextEditingController _genderController;
-
-  @override
-  void initState() {
-    super.initState();
-    final initialProfile = ref.read(profileControllerProvider).currentProfile;
-
-    _nameController = TextEditingController(text: initialProfile.fullName);
-    _emailController = TextEditingController(text: initialProfile.email);
-    _phoneController = TextEditingController(
-      text: initialProfile.phoneNumber ?? '',
-    );
-    _locationController = TextEditingController(
-      text: initialProfile.location ?? '',
-    );
-    _birthDateController = TextEditingController(
-      text: initialProfile.birthDate ?? '',
-    );
-    _genderController = TextEditingController(
-      text: initialProfile.gender ?? '',
-    );
-
-    _nameController.addListener(_onNameChanged);
-    _emailController.addListener(_onEmailChanged);
-    _phoneController.addListener(_onPhoneChanged);
-    _locationController.addListener(_onLocationChanged);
-    _birthDateController.addListener(_onBirthDateChanged);
-    _genderController.addListener(_onGenderChanged);
-  }
-
-  void _onNameChanged() {
-    ref
-        .read(profileControllerProvider.notifier)
-        .updateName(_nameController.text);
-  }
-
-  void _onEmailChanged() {
-    ref
-        .read(profileControllerProvider.notifier)
-        .updateEmail(_emailController.text);
-  }
-
-  void _onPhoneChanged() {
-    ref
-        .read(profileControllerProvider.notifier)
-        .updatePhone(_phoneController.text);
-  }
-
-  void _onLocationChanged() {
-    ref
-        .read(profileControllerProvider.notifier)
-        .updateLocation(_locationController.text);
-  }
-
-  void _onBirthDateChanged() {
-    ref
-        .read(profileControllerProvider.notifier)
-        .updateBirthDate(_birthDateController.text);
-  }
-
-  void _onGenderChanged() {
-    ref
-        .read(profileControllerProvider.notifier)
-        .updateGender(_genderController.text);
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _locationController.dispose();
-    _birthDateController.dispose();
-    _genderController.dispose();
-    super.dispose();
-  }
-
-  void _syncControllers(UserProfile profile) {
-    if (_nameController.text != profile.fullName) {
-      _nameController.text = profile.fullName;
-    }
-    if (_emailController.text != profile.email) {
-      _emailController.text = profile.email;
-    }
-    if (_phoneController.text != (profile.phoneNumber ?? '')) {
-      _phoneController.text = profile.phoneNumber ?? '';
-    }
-    if (_locationController.text != (profile.location ?? '')) {
-      _locationController.text = profile.location ?? '';
-    }
-    if (_birthDateController.text != (profile.birthDate ?? '')) {
-      _birthDateController.text = profile.birthDate ?? '';
-    }
-    if (_genderController.text != (profile.gender ?? '')) {
-      _genderController.text = profile.gender ?? '';
-    }
-  }
-
-  Future<bool> _showExitWarning() async {
+  Future<bool> _showExitWarning(BuildContext context, WidgetRef ref) async {
     final profileState = ref.read(profileControllerProvider);
     if (!profileState.hasChanges) return true;
 
@@ -144,7 +36,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     return result ?? false;
   }
 
-  void _handleImportSuccess(UserProfile importedProfile) {
+  void _handleImportSuccess(
+    BuildContext context,
+    WidgetRef ref,
+    UserProfile importedProfile,
+  ) {
     ref.read(profileControllerProvider.notifier).importProfile(importedProfile);
 
     CustomSnackBar.showSuccess(
@@ -157,19 +53,19 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     );
   }
 
-  Future<void> _saveProfile() async {
+  Future<void> _saveProfile(BuildContext context, WidgetRef ref) async {
     try {
       final success = await ref
           .read(profileControllerProvider.notifier)
           .saveProfile();
-      if (success && mounted) {
+      if (success && context.mounted) {
         CustomSnackBar.showSuccess(
           context,
           AppLocalizations.of(context)!.profileSavedSuccess,
         );
       }
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         CustomSnackBar.showError(
           context,
           AppLocalizations.of(context)!.profileSaveError(e.toString()),
@@ -179,18 +75,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final profileState = ref.watch(profileControllerProvider);
     final currentProfile = profileState.currentProfile;
     final hasChanges = profileState.hasChanges;
     final isSaving = profileState.isSaving;
-
-    ref.listen(profileControllerProvider, (prev, next) {
-      if (prev?.currentProfile != next.currentProfile) {
-        _syncControllers(next.currentProfile);
-      }
-    });
 
     final sections = [
       ProfileSectionData(
@@ -200,14 +90,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         textColor: Colors.white,
         iconBgColor: Colors.white,
         iconColor: Colors.black,
-        child: PersonalInfoForm(
-          nameController: _nameController,
-          emailController: _emailController,
-          phoneController: _phoneController,
-          locationController: _locationController,
-          birthDateController: _birthDateController,
-          genderController: _genderController,
-        ),
+        child: const PersonalInfoForm(),
       ),
       ProfileSectionData(
         title: l10n.experience,
@@ -270,8 +153,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         canPop: !hasChanges || isSaving,
         onPopInvokedWithResult: (didPop, result) async {
           if (didPop) return;
-          final shouldPop = await _showExitWarning();
-          if (shouldPop && mounted) {
+          final shouldPop = await _showExitWarning(context, ref);
+          if (shouldPop && context.mounted) {
             Navigator.of(context).pop();
           }
         },
@@ -289,7 +172,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24.0),
                         child: ImportCVButton(
-                          onImportSuccess: _handleImportSuccess,
+                          onImportSuccess: (importedProfile) =>
+                              _handleImportSuccess(
+                                context,
+                                ref,
+                                importedProfile,
+                              ),
                         ),
                       ),
                       const SizedBox(height: 28),
@@ -310,7 +198,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 ProfileStickySaveBar(
                   hasChanges: hasChanges,
                   isSaving: isSaving,
-                  onSave: _saveProfile,
+                  onSave: () => _saveProfile(context, ref),
                 ),
             ],
           ),
