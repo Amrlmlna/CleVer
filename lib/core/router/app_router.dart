@@ -14,7 +14,6 @@ import '../../presentation/drafts/pages/drafts_page.dart';
 import '../../presentation/profile/pages/profile_page.dart';
 import '../../presentation/cv/pages/job_input_page.dart';
 import '../../presentation/cv/pages/user_data_form_page.dart';
-import '../../presentation/stats/pages/stats_page.dart';
 import '../../presentation/wallet/pages/wallet_page.dart';
 import '../../presentation/wallet/pages/transaction_history_page.dart';
 import '../../presentation/templates/pages/style_selection_page.dart';
@@ -211,11 +210,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.jobs,
         pageBuilder: (context, state) => _buildPage(const JobListPage(), state),
       ),
-      GoRoute(
-        path: AppRoutes.stats,
-        pageBuilder: (context, state) => _buildPage(const StatsPage(), state),
-      ),
-
       GoRoute(
         path: AppRoutes.createJobInput,
         pageBuilder: (context, state) {

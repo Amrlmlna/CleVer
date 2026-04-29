@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/user_profile.dart';
 import '../../../core/theme/app_colors.dart';
@@ -12,10 +11,7 @@ import '../widgets/education_list_form.dart';
 import '../widgets/skills_input_form.dart';
 import '../../common/widgets/unsaved_changes_dialog.dart';
 import '../widgets/certification_list_form.dart';
-import '../widgets/section_card.dart';
-import 'section_edit_page.dart';
 import '../widgets/import_cv_button.dart';
-import '../widgets/profile_navigation_card.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../models/profile_section_data.dart';
 import '../widgets/profile_stacked_sections.dart';
@@ -185,7 +181,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
     final profileState = ref.watch(profileControllerProvider);
     final currentProfile = profileState.currentProfile;
     final hasChanges = profileState.hasChanges;

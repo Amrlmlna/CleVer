@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../utils/cv_import_handler.dart';
-import '../../../core/theme/app_colors.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class ImportCVButton extends ConsumerWidget {

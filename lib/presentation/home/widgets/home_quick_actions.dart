@@ -42,10 +42,10 @@ class HomeQuickActions extends ConsumerWidget {
           },
         ),
         _QuickActionCircle(
-          icon: Icons.bar_chart_rounded,
-          label: AppLocalizations.of(context)!.statistics,
+          icon: Icons.account_balance_wallet_outlined,
+          label: AppLocalizations.of(context)!.wallet,
           onTap: () {
-            context.push('/stats');
+            context.push('/wallet');
           },
         ),
         _QuickActionCircle(

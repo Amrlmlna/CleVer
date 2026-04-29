@@ -215,31 +215,3 @@ class _SummaryItem {
 
   const _SummaryItem({required this.icon, required this.label});
 }
-
-class _SummaryRow extends StatelessWidget {
-  final _SummaryItem item;
-
-  const _SummaryRow({required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(
-          item.icon,
-          color: Theme.of(context).colorScheme.onSurfaceVariant,
-          size: 20,
-        ),
-        const SizedBox(width: 12),
-        Text(
-          item.label,
-          style: TextStyle(
-            fontSize: 14,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
-    );
-  }
-}

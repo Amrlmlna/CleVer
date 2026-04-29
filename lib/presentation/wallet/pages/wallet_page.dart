@@ -8,8 +8,7 @@ import '../widgets/wallet_card.dart';
 import '../providers/transaction_provider.dart';
 import '../../../core/services/payment_service.dart';
 import '../../auth/utils/auth_guard.dart';
-import 'package:clever/core/theme/app_colors.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import '../../../core/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
 
 class WalletPage extends ConsumerWidget {
