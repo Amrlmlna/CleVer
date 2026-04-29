@@ -148,13 +148,17 @@ class ProfileController extends StateNotifier<ProfileState> {
       // Trigger immediate cloud sync after saving local master profile
       await ref.read(profileSyncProvider).syncProfileNow();
 
-      state = state.copyWith(
-        initialProfile: state.currentProfile,
-        isSaving: false,
-      );
+      if (mounted) {
+        state = state.copyWith(
+          initialProfile: state.currentProfile,
+          isSaving: false,
+        );
+      }
       return true;
     } catch (e) {
-      state = state.copyWith(isSaving: false);
+      if (mounted) {
+        state = state.copyWith(isSaving: false);
+      }
       rethrow;
     }
   }
@@ -168,21 +172,25 @@ class ProfileController extends StateNotifier<ProfileState> {
         await ref.read(masterProfileProvider.notifier).clearProfile();
       }
 
-      state = state.copyWith(
-        initialProfile: keepLocalData ? state.initialProfile : null,
-        currentProfile: keepLocalData
-            ? state.currentProfile
-            : const UserProfile(
-                fullName: '',
-                email: '',
-                experience: [],
-                education: [],
-                skills: [],
-                certifications: [],
-              ),
-      );
+      if (mounted) {
+        state = state.copyWith(
+          initialProfile: keepLocalData ? state.initialProfile : null,
+          currentProfile: keepLocalData
+              ? state.currentProfile
+              : const UserProfile(
+                  fullName: '',
+                  email: '',
+                  experience: [],
+                  education: [],
+                  skills: [],
+                  certifications: [],
+                ),
+        );
+      }
     } finally {
-      state = state.copyWith(isSaving: false);
+      if (mounted) {
+        state = state.copyWith(isSaving: false);
+      }
     }
   }
 

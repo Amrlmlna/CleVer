@@ -1,23 +1,21 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class UnsavedChangesDialog extends StatelessWidget {
-  final VoidCallback onSave;
-  final VoidCallback onDiscard;
+  final FutureOr<void> Function()? onSave;
+  final FutureOr<void> Function()? onDiscard;
 
-  const UnsavedChangesDialog({
-    super.key,
-    required this.onSave,
-    required this.onDiscard,
-  });
+  const UnsavedChangesDialog({super.key, this.onSave, this.onDiscard});
 
   static Future<bool?> show(
     BuildContext context, {
-    required VoidCallback onSave,
-    required VoidCallback onDiscard,
+    FutureOr<void> Function()? onSave,
+    FutureOr<void> Function()? onDiscard,
   }) {
     return showDialog<bool>(
       context: context,
+      barrierDismissible: false,
       builder: (context) =>
           UnsavedChangesDialog(onSave: onSave, onDiscard: onDiscard),
     );
@@ -48,9 +46,9 @@ class UnsavedChangesDialog extends StatelessWidget {
           children: [
             Expanded(
               child: TextButton(
-                onPressed: () {
-                  Navigator.pop(context, true);
-                  onDiscard();
+                onPressed: () async {
+                  if (onDiscard != null) await onDiscard!();
+                  if (context.mounted) Navigator.pop(context, true);
                 },
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14),
@@ -67,9 +65,9 @@ class UnsavedChangesDialog extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context, true);
-                  onSave();
+                onPressed: () async {
+                  if (onSave != null) await onSave!();
+                  if (context.mounted) Navigator.pop(context, true);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/entities/certification.dart';
 import 'certification_bottom_sheet.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../../core/utils/custom_snackbar.dart';
+import '../providers/profile_provider.dart';
 
-class CertificationListForm extends StatefulWidget {
+class CertificationListForm extends ConsumerWidget {
   final List<Certification> certifications;
   final Function(List<Certification>) onChanged;
 
@@ -14,23 +16,24 @@ class CertificationListForm extends StatefulWidget {
     required this.onChanged,
   });
 
-  @override
-  State<CertificationListForm> createState() => _CertificationListFormState();
-}
-
-class _CertificationListFormState extends State<CertificationListForm> {
-  void _editCertification({Certification? existing, int? index}) async {
+  void _editCertification(
+    BuildContext context,
+    WidgetRef ref, {
+    Certification? existing,
+    int? index,
+  }) async {
     final result = await CertificationBottomSheet.show(
       context,
       existing: existing,
     );
 
     if (result != null) {
-      final newList = List<Certification>.from(widget.certifications);
+      final profileState = ref.read(profileControllerProvider);
+      final currentList = profileState.currentProfile.certifications;
+      final newList = List<Certification>.from(currentList);
 
       if (index != null) {
         newList[index] = result;
-        widget.onChanged(newList);
       } else {
         final isDuplicate = newList.any(
           (cert) =>
@@ -39,21 +42,29 @@ class _CertificationListFormState extends State<CertificationListForm> {
         );
 
         if (isDuplicate) {
-          if (mounted) {
+          if (context.mounted) {
             CustomSnackBar.showWarning(
               context,
               AppLocalizations.of(context)!.cvDataExists,
             );
+            return;
           }
         } else {
           newList.add(result);
-          widget.onChanged(newList);
         }
       }
+
+      ref
+          .read(profileControllerProvider.notifier)
+          .updateCertifications(newList);
     }
   }
 
-  void _removeCertification(int index) async {
+  void _removeCertification(
+    int index,
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -76,14 +87,22 @@ class _CertificationListFormState extends State<CertificationListForm> {
     );
 
     if (confirmed == true) {
-      final newList = List<Certification>.from(widget.certifications);
+      final profileState = ref.read(profileControllerProvider);
+      final newList = List<Certification>.from(
+        profileState.currentProfile.certifications,
+      );
       newList.removeAt(index);
-      widget.onChanged(newList);
+      ref
+          .read(profileControllerProvider.notifier)
+          .updateCertifications(newList);
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profileState = ref.watch(profileControllerProvider);
+    final certifications = profileState.currentProfile.certifications;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -91,7 +110,7 @@ class _CertificationListFormState extends State<CertificationListForm> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton.icon(
-              onPressed: () => _editCertification(),
+              onPressed: () => _editCertification(context, ref),
               icon: Icon(
                 Icons.add,
                 color: Theme.of(context).colorScheme.primary,
@@ -111,7 +130,7 @@ class _CertificationListFormState extends State<CertificationListForm> {
             ),
           ],
         ),
-        if (widget.certifications.isEmpty)
+        if (certifications.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
@@ -124,10 +143,10 @@ class _CertificationListFormState extends State<CertificationListForm> {
         ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: widget.certifications.length,
+          itemCount: certifications.length,
           separatorBuilder: (context, index) => const SizedBox(height: 8),
           itemBuilder: (context, index) {
-            final cert = widget.certifications[index];
+            final cert = certifications[index];
             return Card(
               margin: EdgeInsets.zero,
               color: Theme.of(context).cardTheme.color,
@@ -150,9 +169,14 @@ class _CertificationListFormState extends State<CertificationListForm> {
                     Icons.delete_outline,
                     color: Theme.of(context).colorScheme.error,
                   ),
-                  onPressed: () => _removeCertification(index),
+                  onPressed: () => _removeCertification(index, context, ref),
                 ),
-                onTap: () => _editCertification(existing: cert, index: index),
+                onTap: () => _editCertification(
+                  context,
+                  ref,
+                  existing: cert,
+                  index: index,
+                ),
               ),
             );
           },

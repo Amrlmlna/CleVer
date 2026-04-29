@@ -3,6 +3,8 @@ import '../models/profile_section_data.dart';
 import 'section_card.dart';
 import '../pages/section_edit_page.dart';
 
+enum SectionType { personalInfo, experience, education, certifications, skills }
+
 class ProfileStackedSections extends StatelessWidget {
   final List<ProfileSectionData> sections;
   final int skillsCount;
@@ -15,7 +17,11 @@ class ProfileStackedSections extends StatelessWidget {
     required this.skillsLabel,
   });
 
-  void _openSection(BuildContext context, ProfileSectionData section) {
+  void _openSection(
+    BuildContext context,
+    ProfileSectionData section,
+    SectionType type,
+  ) {
     Navigator.of(context).push(
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
@@ -28,7 +34,7 @@ class ProfileStackedSections extends StatelessWidget {
             textColor: section.textColor,
             iconBgColor: section.iconBgColor,
             iconColor: section.iconColor,
-            child: section.child,
+            sectionType: type,
           );
         },
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -36,6 +42,17 @@ class ProfileStackedSections extends StatelessWidget {
         },
       ),
     );
+  }
+
+  SectionType _getSectionType(int index) {
+    return switch (index) {
+      0 => SectionType.personalInfo,
+      1 => SectionType.experience,
+      2 => SectionType.education,
+      3 => SectionType.certifications,
+      4 => SectionType.skills,
+      _ => SectionType.personalInfo,
+    };
   }
 
   @override
@@ -48,6 +65,7 @@ class ProfileStackedSections extends StatelessWidget {
         final section = sections[i];
         final bool isLast = i == total - 1;
         final double bottomOverlap = isLast ? 160.0 : overlapAmount;
+        final sectionType = _getSectionType(i);
 
         final card = ProfileSectionCard(
           title: section.title,
@@ -57,7 +75,7 @@ class ProfileStackedSections extends StatelessWidget {
           iconBgColor: section.iconBgColor,
           iconColor: section.iconColor,
           bottomOverlap: bottomOverlap,
-          onTap: () => _openSection(context, section),
+          onTap: () => _openSection(context, section, sectionType),
           bottomContent: isLast
               ? Stack(
                   clipBehavior: Clip.none,

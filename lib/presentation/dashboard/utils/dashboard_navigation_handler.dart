@@ -28,7 +28,7 @@ class DashboardNavigationHandler {
             onSave: () async {
               await ref.read(profileControllerProvider.notifier).saveProfile();
             },
-            onDiscard: () {
+            onDiscard: () async {
               ref.read(profileControllerProvider.notifier).discardChanges();
             },
           );

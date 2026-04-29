@@ -59,6 +59,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
   late TextEditingController _descCtrl;
 
   bool _isRewriting = false;
+  bool _canPopNow = false;
 
   @override
   void initState() {
@@ -89,16 +90,40 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
   }
 
   void _handlePop() async {
+    if (_canPopNow) return;
+
     if (!_isDirty) {
+      setState(() => _canPopNow = true);
       Navigator.pop(context);
       return;
     }
 
-    UnsavedChangesDialog.show(
+    Experience? savedExp;
+    final result = await UnsavedChangesDialog.show(
       context,
-      onSave: _save,
-      onDiscard: () => Navigator.pop(context),
+      onSave: () async {
+        if (_formKey.currentState!.validate()) {
+          savedExp = Experience(
+            id:
+                widget.existing?.id ??
+                DateTime.now().millisecondsSinceEpoch.toString(),
+            jobTitle: _titleCtrl.text,
+            companyName: _companyCtrl.text,
+            startDate: _startCtrl.text,
+            endDate: _endCtrl.text.isEmpty ? null : _endCtrl.text,
+            description: _descCtrl.text,
+          );
+        }
+      },
+      onDiscard: () async {
+        // Just return true to the dialog
+      },
     );
+
+    if (result == true && mounted) {
+      setState(() => _canPopNow = true);
+      Navigator.pop(context, savedExp);
+    }
   }
 
   void _save() {
@@ -113,6 +138,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
         endDate: _endCtrl.text.isEmpty ? null : _endCtrl.text,
         description: _descCtrl.text,
       );
+      setState(() => _canPopNow = true);
       Navigator.pop(context, exp);
     }
   }
@@ -169,7 +195,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
     final localization = AppLocalizations.of(context)!;
 
     return PopScope(
-      canPop: false,
+      canPop: _canPopNow,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         _handlePop();

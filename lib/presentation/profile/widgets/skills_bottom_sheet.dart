@@ -40,6 +40,7 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
   final _controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   SkillCategory _selectedCategory = SkillCategory.technical;
+  bool _canPopNow = false;
 
   bool get _isDirty => _controller.text.trim().isNotEmpty;
 
@@ -51,6 +52,7 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
+      setState(() => _canPopNow = true);
       Navigator.pop(
         context,
         Skill(name: _controller.text.trim(), category: _selectedCategory),
@@ -64,7 +66,7 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
     final isId = Localizations.localeOf(context).languageCode == 'id';
 
     return PopScope(
-      canPop: false,
+      canPop: _canPopNow,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         _handlePop();
@@ -102,7 +104,6 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
                   ),
                   const SizedBox(height: 24),
 
-                  // Category Selector
                   Text(
                     isId ? 'Kategori' : 'Category',
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -216,15 +217,32 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
     );
   }
 
-  void _handlePop() {
-    if (_isDirty) {
-      UnsavedChangesDialog.show(
-        context,
-        onSave: _submit,
-        onDiscard: () => Navigator.pop(context),
-      );
-    } else {
+  void _handlePop() async {
+    if (_canPopNow) return;
+
+    if (!_isDirty) {
+      setState(() => _canPopNow = true);
       Navigator.pop(context);
+      return;
+    }
+
+    Skill? savedSkill;
+    final result = await UnsavedChangesDialog.show(
+      context,
+      onSave: () async {
+        if (_formKey.currentState!.validate()) {
+          savedSkill = Skill(
+            name: _controller.text.trim(),
+            category: _selectedCategory,
+          );
+        }
+      },
+      onDiscard: () async {},
+    );
+
+    if (result == true && mounted) {
+      setState(() => _canPopNow = true);
+      Navigator.pop(context, savedSkill);
     }
   }
 }

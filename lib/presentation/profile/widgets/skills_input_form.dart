@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../domain/entities/skill.dart';
 import 'skills_bottom_sheet.dart';
+import '../providers/profile_provider.dart';
 
-class SkillsInputForm extends StatefulWidget {
+class SkillsInputForm extends ConsumerWidget {
   final List<Skill> skills;
   final Function(List<Skill>) onChanged;
 
@@ -13,34 +15,38 @@ class SkillsInputForm extends StatefulWidget {
     required this.onChanged,
   });
 
-  @override
-  State<SkillsInputForm> createState() => _SkillsInputFormState();
-}
-
-class _SkillsInputFormState extends State<SkillsInputForm> {
-  void _showAddSkill() async {
-    final result = await SkillsBottomSheet.show(context, widget.skills);
+  void _showAddSkill(BuildContext context, WidgetRef ref) async {
+    final profileState = ref.read(profileControllerProvider);
+    final result = await SkillsBottomSheet.show(
+      context,
+      profileState.currentProfile.skills,
+    );
     if (result != null) {
-      final newList = List<Skill>.from(widget.skills)..add(result);
-      widget.onChanged(newList);
+      final newList = List<Skill>.from(profileState.currentProfile.skills)
+        ..add(result);
+      ref.read(profileControllerProvider.notifier).updateSkills(newList);
     }
   }
 
-  void _removeSkill(Skill skill) {
-    final newList = List<Skill>.from(widget.skills)..remove(skill);
-    widget.onChanged(newList);
+  void _removeSkill(Skill skill, WidgetRef ref) {
+    final profileState = ref.read(profileControllerProvider);
+    final newList = List<Skill>.from(profileState.currentProfile.skills)
+      ..remove(skill);
+    ref.read(profileControllerProvider.notifier).updateSkills(newList);
   }
 
-  Map<SkillCategory, List<Skill>> get _groupedSkills {
+  Map<SkillCategory, List<Skill>> _getGroupedSkills(List<Skill> skills) {
     final grouped = <SkillCategory, List<Skill>>{};
-    for (final skill in widget.skills) {
+    for (final skill in skills) {
       grouped.putIfAbsent(skill.category, () => []).add(skill);
     }
     return grouped;
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profileState = ref.watch(profileControllerProvider);
+    final skills = profileState.currentProfile.skills;
     final l10n = AppLocalizations.of(context)!;
     final isId = Localizations.localeOf(context).languageCode == 'id';
 
@@ -51,7 +57,7 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton.icon(
-              onPressed: _showAddSkill,
+              onPressed: () => _showAddSkill(context, ref),
               icon: Icon(
                 Icons.add,
                 color: Theme.of(context).colorScheme.primary,
@@ -72,7 +78,7 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
           ],
         ),
         const SizedBox(height: 16),
-        if (widget.skills.isEmpty)
+        if (skills.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
@@ -83,9 +89,9 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
             ),
           )
         else
-          ..._groupedSkills.entries.map((entry) {
+          ..._getGroupedSkills(skills).entries.map((entry) {
             final category = entry.key;
-            final skills = entry.value;
+            final skillsList = entry.value;
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
               child: Column(
@@ -103,7 +109,7 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
                   Wrap(
                     spacing: 8.0,
                     runSpacing: 8.0,
-                    children: skills
+                    children: skillsList
                         .map(
                           (skill) => Chip(
                             label: Text(
@@ -120,7 +126,7 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            onDeleted: () => _removeSkill(skill),
+                            onDeleted: () => _removeSkill(skill, ref),
                             deleteIcon: Icon(
                               Icons.cancel,
                               size: 18,

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'education_bottom_sheet.dart';
 import '../../../../domain/entities/user_profile.dart';
-
 import '../../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../providers/profile_provider.dart';
 
-class EducationListForm extends StatefulWidget {
+class EducationListForm extends ConsumerWidget {
   final List<Education> education;
   final Function(List<Education>) onChanged;
 
@@ -15,20 +16,21 @@ class EducationListForm extends StatefulWidget {
     required this.onChanged,
   });
 
-  @override
-  State<EducationListForm> createState() => _EducationListFormState();
-}
-
-class _EducationListFormState extends State<EducationListForm> {
-  void _editEducation({Education? existing, int? index}) async {
+  void _editEducation(
+    BuildContext context,
+    WidgetRef ref, {
+    Education? existing,
+    int? index,
+  }) async {
     final result = await EducationBottomSheet.show(context, existing: existing);
 
     if (result != null) {
-      final newList = List<Education>.from(widget.education);
+      final profileState = ref.read(profileControllerProvider);
+      final currentList = profileState.currentProfile.education;
+      final newList = List<Education>.from(currentList);
 
       if (index != null) {
         newList[index] = result;
-        widget.onChanged(newList);
       } else {
         final isDuplicate = newList.any(
           (edu) =>
@@ -37,23 +39,25 @@ class _EducationListFormState extends State<EducationListForm> {
         );
 
         if (isDuplicate) {
-          if (mounted) {
+          if (ref.context.mounted) {
             CustomSnackBar.showWarning(
-              context,
-              AppLocalizations.of(context)!.cvDataExists,
+              ref.context,
+              AppLocalizations.of(ref.context)!.cvDataExists,
             );
+            return;
           }
         } else {
           newList.add(result);
-          widget.onChanged(newList);
         }
       }
+
+      ref.read(profileControllerProvider.notifier).updateEducation(newList);
     }
   }
 
-  void _removeEducation(int index) async {
+  void _removeEducation(int index, WidgetRef ref) async {
     final confirmed = await showDialog<bool>(
-      context: context,
+      context: ref.context,
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.confirmDelete),
         content: Text(AppLocalizations.of(context)!.deleteConfirmation),
@@ -74,14 +78,20 @@ class _EducationListFormState extends State<EducationListForm> {
     );
 
     if (confirmed == true) {
-      final newList = List<Education>.from(widget.education);
+      final profileState = ref.read(profileControllerProvider);
+      final newList = List<Education>.from(
+        profileState.currentProfile.education,
+      );
       newList.removeAt(index);
-      widget.onChanged(newList);
+      ref.read(profileControllerProvider.notifier).updateEducation(newList);
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profileState = ref.watch(profileControllerProvider);
+    final education = profileState.currentProfile.education;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -89,7 +99,7 @@ class _EducationListFormState extends State<EducationListForm> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton.icon(
-              onPressed: () => _editEducation(),
+              onPressed: () => _editEducation(context, ref),
               icon: Icon(
                 Icons.add,
                 color: Theme.of(context).colorScheme.primary,
@@ -109,7 +119,7 @@ class _EducationListFormState extends State<EducationListForm> {
             ),
           ],
         ),
-        if (widget.education.isEmpty)
+        if (education.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
@@ -122,10 +132,10 @@ class _EducationListFormState extends State<EducationListForm> {
         ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: widget.education.length,
+          itemCount: education.length,
           separatorBuilder: (context, index) => const SizedBox(height: 8),
           itemBuilder: (context, index) {
-            final edu = widget.education[index];
+            final edu = education[index];
             return Card(
               margin: EdgeInsets.zero,
               color: Theme.of(context).cardTheme.color,
@@ -213,9 +223,10 @@ class _EducationListFormState extends State<EducationListForm> {
                     Icons.delete_outline,
                     color: Theme.of(context).colorScheme.error,
                   ),
-                  onPressed: () => _removeEducation(index),
+                  onPressed: () => _removeEducation(index, ref),
                 ),
-                onTap: () => _editEducation(existing: edu, index: index),
+                onTap: () =>
+                    _editEducation(context, ref, existing: edu, index: index),
               ),
             );
           },

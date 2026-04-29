@@ -49,6 +49,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
   late TextEditingController _nameController;
   late TextEditingController _issuerController;
   late DateTime _selectedDate;
+  bool _canPopNow = false;
 
   @override
   void initState() {
@@ -74,16 +75,36 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
   }
 
   void _handlePop() async {
+    if (_canPopNow) return;
+
     if (!_isDirty) {
+      setState(() => _canPopNow = true);
       Navigator.pop(context);
       return;
     }
 
-    UnsavedChangesDialog.show(
+    Certification? savedCert;
+    final result = await UnsavedChangesDialog.show(
       context,
-      onSave: _save,
-      onDiscard: () => Navigator.pop(context),
+      onSave: () async {
+        if (_formKey.currentState!.validate()) {
+          savedCert = Certification(
+            id:
+                widget.existing?.id ??
+                DateTime.now().millisecondsSinceEpoch.toString(),
+            name: _nameController.text,
+            issuer: _issuerController.text,
+            date: _selectedDate,
+          );
+        }
+      },
+      onDiscard: () async {},
     );
+
+    if (result == true && mounted) {
+      setState(() => _canPopNow = true);
+      Navigator.pop(context, savedCert);
+    }
   }
 
   void _save() {
@@ -96,6 +117,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
         issuer: _issuerController.text,
         date: _selectedDate,
       );
+      setState(() => _canPopNow = true);
       Navigator.of(context).pop(cert);
     }
   }
@@ -119,7 +141,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
     final localization = AppLocalizations.of(context)!;
 
     return PopScope(
-      canPop: false,
+      canPop: _canPopNow,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         _handlePop();

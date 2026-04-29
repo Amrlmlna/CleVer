@@ -9,32 +9,14 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import '../widgets/experience_list_form.dart';
 import '../widgets/education_list_form.dart';
 import '../widgets/skills_input_form.dart';
-import '../../common/widgets/unsaved_changes_dialog.dart';
 import '../widgets/certification_list_form.dart';
 import '../widgets/import_cv_button.dart';
-import '../../../core/utils/custom_snackbar.dart';
 import '../models/profile_section_data.dart';
 import '../widgets/profile_stacked_sections.dart';
-import '../widgets/profile_sticky_save_bar.dart';
+import '../../../core/utils/custom_snackbar.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
-
-  Future<bool> _showExitWarning(BuildContext context, WidgetRef ref) async {
-    final profileState = ref.read(profileControllerProvider);
-    if (!profileState.hasChanges) return true;
-
-    final result = await UnsavedChangesDialog.show(
-      context,
-      onSave: () async {
-        await ref.read(profileControllerProvider.notifier).saveProfile();
-      },
-      onDiscard: () {
-        ref.read(profileControllerProvider.notifier).discardChanges();
-      },
-    );
-    return result ?? false;
-  }
 
   void _handleImportSuccess(
     BuildContext context,
@@ -53,34 +35,11 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  Future<void> _saveProfile(BuildContext context, WidgetRef ref) async {
-    try {
-      final success = await ref
-          .read(profileControllerProvider.notifier)
-          .saveProfile();
-      if (success && context.mounted) {
-        CustomSnackBar.showSuccess(
-          context,
-          AppLocalizations.of(context)!.profileSavedSuccess,
-        );
-      }
-    } catch (e) {
-      if (context.mounted) {
-        CustomSnackBar.showError(
-          context,
-          AppLocalizations.of(context)!.profileSaveError(e.toString()),
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final profileState = ref.watch(profileControllerProvider);
     final currentProfile = profileState.currentProfile;
-    final hasChanges = profileState.hasChanges;
-    final isSaving = profileState.isSaving;
 
     final sections = [
       ProfileSectionData(
@@ -90,7 +49,7 @@ class ProfilePage extends ConsumerWidget {
         textColor: Colors.white,
         iconBgColor: Colors.white,
         iconColor: Colors.black,
-        child: const PersonalInfoForm(),
+        child: const SizedBox.shrink(),
       ),
       ProfileSectionData(
         title: l10n.experience,
@@ -99,12 +58,7 @@ class ProfilePage extends ConsumerWidget {
         textColor: Colors.black,
         iconBgColor: Colors.black,
         iconColor: Colors.white,
-        child: ExperienceListForm(
-          experiences: currentProfile.experience,
-          onChanged: (val) => ref
-              .read(profileControllerProvider.notifier)
-              .updateExperience(val),
-        ),
+        child: const SizedBox.shrink(),
       ),
       ProfileSectionData(
         title: l10n.educationHistory,
@@ -113,11 +67,7 @@ class ProfilePage extends ConsumerWidget {
         textColor: Colors.white,
         iconBgColor: Colors.white,
         iconColor: Colors.black,
-        child: EducationListForm(
-          education: currentProfile.education,
-          onChanged: (val) =>
-              ref.read(profileControllerProvider.notifier).updateEducation(val),
-        ),
+        child: const SizedBox.shrink(),
       ),
       ProfileSectionData(
         title: l10n.certifications,
@@ -126,12 +76,7 @@ class ProfilePage extends ConsumerWidget {
         textColor: Colors.black,
         iconBgColor: Colors.white,
         iconColor: Colors.black,
-        child: CertificationListForm(
-          certifications: currentProfile.certifications,
-          onChanged: (val) => ref
-              .read(profileControllerProvider.notifier)
-              .updateCertifications(val),
-        ),
+        child: const SizedBox.shrink(),
       ),
       ProfileSectionData(
         title: l10n.skills,
@@ -140,68 +85,41 @@ class ProfilePage extends ConsumerWidget {
         textColor: Colors.white,
         iconBgColor: Colors.white,
         iconColor: Colors.black,
-        child: SkillsInputForm(
-          skills: currentProfile.skills,
-          onChanged: (val) =>
-              ref.read(profileControllerProvider.notifier).updateSkills(val),
-        ),
+        child: const SizedBox.shrink(),
       ),
     ];
 
     return Scaffold(
-      body: PopScope(
-        canPop: !hasChanges || isSaving,
-        onPopInvokedWithResult: (didPop, result) async {
-          if (didPop) return;
-          final shouldPop = await _showExitWarning(context, ref);
-          if (shouldPop && context.mounted) {
-            Navigator.of(context).pop();
-          }
-        },
-        child: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 8),
-
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                        child: ImportCVButton(
-                          onImportSuccess: (importedProfile) =>
-                              _handleImportSuccess(
-                                context,
-                                ref,
-                                importedProfile,
-                              ),
-                        ),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: ImportCVButton(
+                        onImportSuccess: (importedProfile) =>
+                            _handleImportSuccess(context, ref, importedProfile),
                       ),
-                      const SizedBox(height: 28),
-
-                      ProfileStackedSections(
-                        sections: sections,
-                        skillsCount: currentProfile.skills.length,
-                        skillsLabel: l10n.skills,
-                      ),
-
-                      const SizedBox(height: 32),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 28),
+                    ProfileStackedSections(
+                      sections: sections,
+                      skillsCount: currentProfile.skills.length,
+                      skillsLabel: l10n.skills,
+                    ),
+                    const SizedBox(height: 32),
+                  ],
                 ),
               ),
-
-              if (hasChanges)
-                ProfileStickySaveBar(
-                  hasChanges: hasChanges,
-                  isSaving: isSaving,
-                  onSave: () => _saveProfile(context, ref),
-                ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

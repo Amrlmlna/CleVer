@@ -55,6 +55,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
   late TextEditingController _descCtrl;
   late TextEditingController _gpaCtrl;
   late List<Subject> _subjects;
+  bool _canPopNow = false;
 
   @override
   void initState() {
@@ -90,16 +91,40 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
   }
 
   void _handlePop() async {
+    if (_canPopNow) return;
+
     if (!_isDirty) {
+      setState(() => _canPopNow = true);
       Navigator.pop(context);
       return;
     }
 
-    UnsavedChangesDialog.show(
+    Education? savedEdu;
+    final result = await UnsavedChangesDialog.show(
       context,
-      onSave: _save,
-      onDiscard: () => Navigator.pop(context),
+      onSave: () async {
+        if (_formKey.currentState!.validate()) {
+          savedEdu = Education(
+            id:
+                widget.existing?.id ??
+                DateTime.now().millisecondsSinceEpoch.toString(),
+            schoolName: _schoolCtrl.text,
+            degree: _degreeCtrl.text,
+            startDate: _startCtrl.text,
+            endDate: _endCtrl.text.isEmpty ? null : _endCtrl.text,
+            description: _descCtrl.text,
+            gpa: _gpaCtrl.text,
+            subjects: _subjects,
+          );
+        }
+      },
+      onDiscard: () async {},
     );
+
+    if (result == true && mounted) {
+      setState(() => _canPopNow = true);
+      Navigator.pop(context, savedEdu);
+    }
   }
 
   void _save() {
@@ -116,6 +141,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
         gpa: _gpaCtrl.text.isEmpty ? null : _gpaCtrl.text,
         subjects: _subjects,
       );
+      setState(() => _canPopNow = true);
       Navigator.pop(context, edu);
     }
   }
@@ -137,7 +163,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
     final localization = AppLocalizations.of(context)!;
 
     return PopScope(
-      canPop: false,
+      canPop: _canPopNow,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         _handlePop();
