@@ -128,6 +128,7 @@ class ProfileController extends StateNotifier<ProfileState> {
     final mergedProfile = ProfileMerger.merge(
       state.currentProfile,
       importedProfile,
+      overwriteExisting: false,
     );
 
     state = state.copyWith(currentProfile: mergedProfile);

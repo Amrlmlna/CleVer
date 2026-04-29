@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/widgets/custom_text_form_field.dart';
@@ -219,7 +218,7 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
         const SizedBox(width: 16),
         Expanded(
           child: DropdownButtonFormField<String>(
-            value: _genderController.text.isEmpty
+            initialValue: _genderController.text.isEmpty
                 ? null
                 : _genderController.text,
             isExpanded: true,

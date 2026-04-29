@@ -11,6 +11,8 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../common/widgets/unsaved_changes_dialog.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../common/widgets/sheet/sheet_header.dart';
+import '../../common/widgets/sheet/sheet_action_buttons.dart';
 
 class ExperienceBottomSheet extends ConsumerStatefulWidget {
   final Experience? existing;
@@ -116,15 +118,11 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
   }
 
   Future<void> _pickDate(TextEditingController controller) async {
-    // ... existing date picker logic ...
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime.now(),
-      builder: (context, child) {
-        return Theme(data: Theme.of(context), child: child!);
-      },
     );
     if (picked != null) {
       controller.text = DateFormat('MMM yyyy').format(picked);
@@ -186,35 +184,17 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: GestureDetector(
-                      onTap: _handlePop,
-                      child: Container(
-                        width: 40,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: AppColors.sheetHandle,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    widget.existing == null
+                  SheetHeader(
+                    title: widget.existing == null
                         ? localization.addExperience
                         : localization.editExperienceTitle,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.5,
-                    ),
+                    onClosing: _handlePop,
                   ),
                   const SizedBox(height: 24),
                   CustomTextFormField(
                     controller: _titleCtrl,
                     labelText: localization.jobTitle,
                     hintText: 'Software Engineer',
-
                     validator: (v) =>
                         v!.isEmpty ? localization.requiredField : null,
                   ),
@@ -223,7 +203,6 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                     controller: _companyCtrl,
                     labelText: localization.company,
                     hintText: localization.companyPlaceholder,
-
                     validator: (v) =>
                         v!.isEmpty ? localization.requiredField : null,
                   ),
@@ -235,7 +214,6 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                           controller: _startCtrl,
                           labelText: localization.startDate,
                           hintText: localization.selectDate,
-
                           readOnly: true,
                           prefixIcon: Icons.calendar_today,
                           onTap: () => _pickDate(_startCtrl),
@@ -249,7 +227,6 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                           controller: _endCtrl,
                           labelText: localization.endDate,
                           hintText: localization.untilNow,
-
                           readOnly: true,
                           prefixIcon: Icons.event,
                           onTap: () => _pickDate(_endCtrl),
@@ -318,53 +295,12 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                     controller: _descCtrl,
                     labelText: '',
                     hintText: localization.descriptionHint,
-
                     maxLines: 4,
                     validator: (v) =>
                         v!.isEmpty ? localization.requiredField : null,
                   ),
                   const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _save,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        elevation: 0,
-                      ),
-                      child: Text(
-                        localization.saveAllCaps,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    width: double.infinity,
-                    child: TextButton(
-                      onPressed: _handlePop,
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      child: Text(
-                        localization.cancel.toUpperCase(),
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
+                  SheetActionButtons(onSave: _save, onCancel: _handlePop),
                 ],
               ),
             ),

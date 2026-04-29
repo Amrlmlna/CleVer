@@ -5,6 +5,8 @@ import '../../common/widgets/custom_text_form_field.dart';
 import '../../common/widgets/unsaved_changes_dialog.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../common/widgets/sheet/sheet_header.dart';
+import '../../common/widgets/sheet/sheet_action_buttons.dart';
 
 class CertificationBottomSheet extends StatefulWidget {
   final Certification? existing;
@@ -68,9 +70,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
   bool get _isDirty {
     return _nameController.text != (widget.existing?.name ?? '') ||
         _issuerController.text != (widget.existing?.issuer ?? '') ||
-        _selectedDate !=
-            (widget.existing?.date ??
-                DateTime.now()); // Note: date comparison might be tricky if default changes
+        _selectedDate != (widget.existing?.date ?? _selectedDate);
   }
 
   void _handlePop() async {
@@ -106,9 +106,6 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
       initialDate: _selectedDate,
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
-      builder: (context, child) {
-        return Theme(data: Theme.of(context), child: child!);
-      },
     );
     if (picked != null && picked != _selectedDate) {
       setState(() {
@@ -137,35 +134,17 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: GestureDetector(
-                      onTap: _handlePop,
-                      child: Container(
-                        width: 40,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: AppColors.sheetHandle,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    widget.existing == null
+                  SheetHeader(
+                    title: widget.existing == null
                         ? localization.addCertification
                         : localization.editCertification,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.5,
-                    ),
+                    onClosing: _handlePop,
                   ),
                   const SizedBox(height: 24),
                   CustomTextFormField(
                     controller: _nameController,
                     labelText: localization.certificationName,
                     hintText: 'AWS Certified Cloud Practitioner',
-
                     validator: (v) =>
                         v!.isEmpty ? localization.requiredField : null,
                   ),
@@ -174,7 +153,6 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                     controller: _issuerController,
                     labelText: localization.issuer,
                     hintText: 'Amazon Web Services',
-
                     validator: (v) =>
                         v!.isEmpty ? localization.requiredField : null,
                   ),
@@ -231,47 +209,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _save,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        elevation: 0,
-                      ),
-                      child: Text(
-                        localization.saveAllCaps,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    width: double.infinity,
-                    child: TextButton(
-                      onPressed: _handlePop,
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      child: Text(
-                        localization.cancel.toUpperCase(),
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
+                  SheetActionButtons(onSave: _save, onCancel: _handlePop),
                 ],
               ),
             ),
