@@ -5,127 +5,117 @@ class JobInputHeroCard extends StatelessWidget {
   final TextEditingController controller;
   final TextEditingController companyController;
   final String hintText;
-  final VoidCallback onSubmit;
 
   const JobInputHeroCard({
     super.key,
     required this.controller,
     required this.companyController,
     required this.hintText,
-    required this.onSubmit,
   });
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppLocalizations.of(context)!.whatJobApply,
-          style: textTheme.displaySmall?.copyWith(
-            color: colorScheme.onSurface,
-            fontWeight: FontWeight.w800,
-            height: 1.2,
-            letterSpacing: -0.5,
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        color: colorScheme.onSurface.withValues(alpha: 0.04),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: colorScheme.onSurface.withValues(alpha: 0.08),
         ),
-        const SizedBox(height: 12),
-
-        Text(
-          AppLocalizations.of(context)!.aiHelpCreateCV,
-          style: textTheme.bodyLarge?.copyWith(
-            color: colorScheme.onSurfaceVariant,
-            height: 1.5,
+      ),
+      child: Column(
+        children: [
+          _buildDocumentField(
+            context: context,
+            controller: controller,
+            label: l10n.targetPosition.toUpperCase(),
+            hint: hintText.isEmpty && controller.text.isEmpty
+                ? l10n.positionHint
+                : hintText,
+            autoFocus: true,
           ),
-        ),
-
-        const SizedBox(height: 32),
-
-        Container(
-          decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-            borderRadius: BorderRadius.circular(12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Divider(
+              height: 1,
+              thickness: 1,
+              color: colorScheme.onSurface.withValues(alpha: 0.06),
+            ),
           ),
-          child: Column(
-            children: [
-              _buildMinimalInput(
-                context: context,
-                controller: controller,
-                hint: hintText.isEmpty && controller.text.isEmpty
-                    ? AppLocalizations.of(context)!.positionHint
-                    : hintText,
-                autoFocus: true,
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: colorScheme.outlineVariant.withValues(alpha: 0.5),
-                ),
-              ),
-
-              _buildMinimalInput(
-                context: context,
-                controller: companyController,
-                hint: AppLocalizations.of(context)!.companyHint,
-                isLast: true,
-                onSubmit: onSubmit,
-              ),
-            ],
+          _buildDocumentField(
+            context: context,
+            controller: companyController,
+            label: l10n.companyHint.toUpperCase(),
+            hint: l10n.companyHint,
+            isLast: true,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _buildMinimalInput({
+  Widget _buildDocumentField({
     required BuildContext context,
     required TextEditingController controller,
+    required String label,
     required String hint,
     bool autoFocus = false,
     bool isLast = false,
-    VoidCallback? onSubmit,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    return TextFormField(
-      controller: controller,
-      autofocus: autoFocus,
-      style: textTheme.titleSmall?.copyWith(
-        color: colorScheme.onSurface,
-        fontWeight: FontWeight.w600,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: textTheme.labelSmall?.copyWith(
+              color: colorScheme.onSurface.withValues(alpha: 0.35),
+              fontWeight: FontWeight.w800,
+              letterSpacing: 1.5,
+              fontSize: 10,
+            ),
+          ),
+          TextFormField(
+            controller: controller,
+            autofocus: autoFocus,
+            style: textTheme.titleSmall?.copyWith(
+              color: colorScheme.onSurface,
+              fontWeight: FontWeight.w600,
+            ),
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: textTheme.titleSmall?.copyWith(
+                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+                fontWeight: FontWeight.w400,
+              ),
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              focusedErrorBorder: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 8),
+              filled: false,
+              isDense: true,
+            ),
+            validator: (value) {
+              if (!isLast && (value == null || value.isEmpty)) {
+                return AppLocalizations.of(context)!.requiredFieldFriendly;
+              }
+              return null;
+            },
+            textInputAction: isLast
+                ? TextInputAction.done
+                : TextInputAction.next,
+          ),
+        ],
       ),
-      decoration: InputDecoration(
-        hintText: hint,
-        hintStyle: textTheme.titleSmall?.copyWith(
-          color: colorScheme.onSurfaceVariant,
-          fontWeight: FontWeight.w400,
-        ),
-        border: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        errorBorder: InputBorder.none,
-        focusedErrorBorder: InputBorder.none,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
-        ),
-        filled: false,
-      ),
-      validator: (value) {
-        if (!isLast && (value == null || value.isEmpty)) {
-          return AppLocalizations.of(context)!.requiredFieldFriendly;
-        }
-        return null;
-      },
-      textInputAction: isLast ? TextInputAction.done : TextInputAction.next,
-      onFieldSubmitted: isLast ? (_) => onSubmit?.call() : null,
     );
   }
 }

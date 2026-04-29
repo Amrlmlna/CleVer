@@ -74,6 +74,25 @@ class OCRNotifier extends Notifier<OCRState> {
       return OCRResult.cancelled();
     }
 
+    return _processExtractedText(extractedText, onProcessingStart);
+  }
+
+  Future<OCRResult> scanJobPostingFromPDF({
+    VoidCallback? onProcessingStart,
+  }) async {
+    final extractedText = await _ocrService.extractTextFromPDF();
+
+    if (extractedText == null) {
+      return OCRResult.cancelled();
+    }
+
+    return _processExtractedText(extractedText, onProcessingStart);
+  }
+
+  Future<OCRResult> _processExtractedText(
+    String extractedText,
+    VoidCallback? onProcessingStart,
+  ) async {
     if (extractedText.isEmpty) {
       return OCRResult.noText();
     }

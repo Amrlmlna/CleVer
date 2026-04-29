@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import '../../../core/services/tutorial_service.dart';
+import '../../../core/theme/app_colors.dart';
 
 import '../../../core/utils/custom_snackbar.dart';
 import '../providers/job_input_controller.dart';
 import '../widgets/job/job_input_content.dart';
 import '../widgets/job/job_scan_bottom_sheet.dart';
+import '../widgets/job/job_submit_button.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 import '../../../domain/entities/job_input.dart';
@@ -149,11 +151,21 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
   void _showScanDialog() {
     JobScanBottomSheet.show(
       context,
-      onSourceSelected: (source) => ref
+      onImageSelected: (source) => ref
           .read(jobInputControllerProvider.notifier)
           .scanJobPosting(
             context: context,
             source: source,
+            onFound: (input) {
+              _titleController.text = input.jobTitle;
+              _companyController.text = input.company ?? '';
+              _descController.text = input.jobDescription ?? '';
+            },
+          ),
+      onPdfSelected: () => ref
+          .read(jobInputControllerProvider.notifier)
+          .scanJobPostingFromPDF(
+            context: context,
             onFound: (input) {
               _titleController.text = input.jobTitle;
               _companyController.text = input.company ?? '';
@@ -192,26 +204,102 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.targetPosition),
-        actions: [
-          IconButton(
-            key: _scanButtonKey,
-            icon: const Icon(Icons.document_scanner_outlined),
-            tooltip: AppLocalizations.of(context)!.scanJobPosting,
-            onPressed: _showScanDialog,
+      backgroundColor: colorScheme.surface,
+      body: Column(
+        children: [
+          // ─── INDUSTRIAL PEACH HEADER ───────────────────────────────
+          Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              color: AppColors.accentPeach,
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(48)),
+            ),
+            padding: const EdgeInsets.fromLTRB(24, 64, 24, 32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ─── Top row: Back + Scan ─────────────────────────────
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Colors.black,
+                        size: 20,
+                      ),
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.black.withValues(alpha: 0.1),
+                      ),
+                    ),
+                    // Scan icon — tutorial key lives HERE
+                    IconButton(
+                      key: _scanButtonKey,
+                      onPressed: _showScanDialog,
+                      icon: const Icon(
+                        Icons.document_scanner_rounded,
+                        color: Colors.black,
+                        size: 22,
+                      ),
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.black.withValues(alpha: 0.1),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                // ─── Title ────────────────────────────────────────────
+                Text(
+                  l10n.whatJobApply,
+                  style: textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: Colors.black,
+                    letterSpacing: 0.3,
+                    height: 1.2,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  l10n.aiHelpCreateCV,
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: Colors.black.withValues(alpha: 0.6),
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // ─── SCROLLABLE FORM CONTENT ───────────────────────────────
+          Expanded(
+            child: JobInputContent(
+              formKey: _formKey,
+              titleController: _titleController,
+              companyController: _companyController,
+              descController: _descController,
+            ),
+          ),
+
+          // ─── FIXED BOTTOM SUBMIT BUTTON ────────────────────────────
+          SafeArea(
+            top: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
+              child: JobSubmitButton(
+                isLoading: ref.watch(jobInputControllerProvider).isLoading,
+                onTap: _handleSubmit,
+              ),
+            ),
           ),
         ],
-      ),
-      extendBodyBehindAppBar: true,
-      body: JobInputContent(
-        formKey: _formKey,
-        titleController: _titleController,
-        companyController: _companyController,
-        descController: _descController,
-        isLoading: ref.watch(jobInputControllerProvider).isLoading,
-        onSubmit: _handleSubmit,
       ),
     );
   }

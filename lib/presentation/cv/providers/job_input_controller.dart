@@ -120,47 +120,81 @@ class JobInputController extends AutoDisposeAsyncNotifier<void> {
     required ImageSource source,
     required Function(JobInput) onFound,
   }) async {
-    final l10n = AppLocalizations.of(context)!;
     final ocrNotifier = ref.read(ocrProvider.notifier);
-
     bool loadingShown = false;
 
     final result = await ocrNotifier.scanJobPosting(
       source,
       onProcessingStart: () {
-        if (!loadingShown && context.mounted) {
-          loadingShown = true;
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              opaque: false,
-              barrierDismissible: false,
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  AppLoadingScreen(
-                    badge: l10n.ocrScanning,
-                    messages: [
-                      l10n.analyzingText,
-                      l10n.identifyingVacancy,
-                      l10n.organizingData,
-                      l10n.finalizing,
-                    ],
-                  ),
-            ),
-          );
-        }
+        loadingShown = true;
+        _showOCRProcessingLoading(context);
       },
     );
 
-    if (context.mounted && loadingShown) {
+    if (loadingShown && context.mounted) {
       Navigator.of(context).pop();
     }
 
+    _handleOCRResult(context, result, onFound);
+  }
+
+  Future<void> scanJobPostingFromPDF({
+    required BuildContext context,
+    required Function(JobInput) onFound,
+  }) async {
+    final ocrNotifier = ref.read(ocrProvider.notifier);
+    bool loadingShown = false;
+
+    final result = await ocrNotifier.scanJobPostingFromPDF(
+      onProcessingStart: () {
+        loadingShown = true;
+        _showOCRProcessingLoading(context);
+      },
+    );
+
+    if (loadingShown && context.mounted) {
+      Navigator.of(context).pop();
+    }
+
+    _handleOCRResult(context, result, onFound);
+  }
+
+  void _showOCRProcessingLoading(BuildContext context) {
     if (!context.mounted) return;
+    final l10n = AppLocalizations.of(context)!;
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        barrierDismissible: false,
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            AppLoadingScreen(
+              badge: l10n.ocrScanning,
+              messages: [
+                l10n.analyzingText,
+                l10n.identifyingVacancy,
+                l10n.organizingData,
+                l10n.finalizing,
+              ],
+            ),
+      ),
+    );
+  }
+
+  void _handleOCRResult(
+    BuildContext context,
+    OCRResult result,
+    Function(JobInput) onFound,
+  ) {
+    if (!context.mounted) return;
+    final l10n = AppLocalizations.of(context)!;
 
     switch (result.status) {
       case OCRStatus.success:
         onFound(result.jobInput!);
         CustomSnackBar.showSuccess(context, l10n.jobExtractionSuccess);
       case OCRStatus.cancelled:
+        break; // Just ignore cancellation
       case OCRStatus.noText:
         CustomSnackBar.showWarning(context, l10n.noTextFound);
       case OCRStatus.error:

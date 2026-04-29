@@ -5,15 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'job_input_hero_card.dart';
 import 'job_description_field.dart';
 import 'job_tailoring_options_section.dart';
-import 'job_submit_button.dart';
 
 class JobInputContent extends ConsumerStatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController titleController;
   final TextEditingController companyController;
   final TextEditingController descController;
-  final bool isLoading;
-  final VoidCallback onSubmit;
 
   const JobInputContent({
     super.key,
@@ -21,8 +18,6 @@ class JobInputContent extends ConsumerStatefulWidget {
     required this.titleController,
     required this.companyController,
     required this.descController,
-    required this.isLoading,
-    required this.onSubmit,
   });
 
   @override
@@ -97,31 +92,23 @@ class _JobInputContentState extends ConsumerState<JobInputContent> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Form(
-          key: widget.formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              JobInputHeroCard(
-                controller: widget.titleController,
-                companyController: widget.companyController,
-                hintText: _hintText,
-                onSubmit: widget.onSubmit,
-              ),
-              const SizedBox(height: 32),
-              JobDescriptionField(controller: widget.descController),
-              const SizedBox(height: 24),
-              const JobTailoringOptionsSection(),
-              const SizedBox(height: 16),
-              JobSubmitButton(
-                isLoading: widget.isLoading,
-                onTap: widget.onSubmit,
-              ),
-            ],
-          ),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
+      child: Form(
+        key: widget.formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            JobInputHeroCard(
+              controller: widget.titleController,
+              companyController: widget.companyController,
+              hintText: _hintText,
+            ),
+            const SizedBox(height: 20),
+            JobDescriptionField(controller: widget.descController),
+            const SizedBox(height: 20),
+            const JobTailoringOptionsSection(),
+          ],
         ),
       ),
     );

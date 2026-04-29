@@ -10,30 +10,53 @@ class JobDescriptionField extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          AppLocalizations.of(context)!.jobDetailLabel,
-          style: textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: colorScheme.onSurface,
-          ),
+        Row(
+          children: [
+            Text(
+              l10n.jobDetailLabel.toUpperCase(),
+              style: textTheme.labelSmall?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: colorScheme.onSurface.withValues(alpha: 0.35),
+                letterSpacing: 1.5,
+                fontSize: 10,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Divider(
+                thickness: 1,
+                color: colorScheme.onSurface.withValues(alpha: 0.06),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 10),
         Container(
           decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-            borderRadius: BorderRadius.circular(12),
+            color: colorScheme.onSurface.withValues(alpha: 0.04),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: colorScheme.onSurface.withValues(alpha: 0.08),
+            ),
           ),
           child: TextFormField(
             controller: controller,
-            maxLines: 5,
-            style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface),
+            maxLines: 4,
+            minLines: 3,
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurface,
+              height: 1.5,
+            ),
             decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)!.jobDetailHint,
+              hintText: l10n.jobDetailHint,
               hintStyle: textTheme.bodyMedium?.copyWith(
-                color: colorScheme.onSurfaceVariant,
+                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+                height: 1.5,
               ),
               border: InputBorder.none,
               enabledBorder: InputBorder.none,
