@@ -431,6 +431,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feedbackSubtitle => 'share your experience or report an issue.';
 
   @override
+  String get menuCreateCV => 'Create New CV';
+
+  @override
+  String get menuAddData => 'Add to Profile';
+
+  @override
+  String get menuExperience => 'Experience';
+
+  @override
+  String get menuEducation => 'Education';
+
+  @override
+  String get menuSkills => 'Skills';
+
+  @override
+  String get menuCertifications => 'Certifications';
+
+  @override
+  String get message => 'message';
+
+  @override
   String get male => 'male';
 
   @override

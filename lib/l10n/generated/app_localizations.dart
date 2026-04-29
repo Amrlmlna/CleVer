@@ -890,6 +890,48 @@ abstract class AppLocalizations {
   /// **'share your experience or report an issue.'**
   String get feedbackSubtitle;
 
+  /// No description provided for @menuCreateCV.
+  ///
+  /// In en, this message translates to:
+  /// **'Create New CV'**
+  String get menuCreateCV;
+
+  /// No description provided for @menuAddData.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Profile'**
+  String get menuAddData;
+
+  /// No description provided for @menuExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Experience'**
+  String get menuExperience;
+
+  /// No description provided for @menuEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'Education'**
+  String get menuEducation;
+
+  /// No description provided for @menuSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills'**
+  String get menuSkills;
+
+  /// No description provided for @menuCertifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Certifications'**
+  String get menuCertifications;
+
+  /// No description provided for @message.
+  ///
+  /// In en, this message translates to:
+  /// **'message'**
+  String get message;
+
   /// No description provided for @male.
   ///
   /// In en, this message translates to:

@@ -94,28 +94,37 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
       }
     });
 
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      body: widget.navigationShell,
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-          child: Row(
-            children: [
-              FloatingNavbarCapsule(
-                currentIndex: widget.navigationShell.currentIndex,
-                onTabTap: _onTabTap,
-                draftsKey: _draftsKey,
-                profileKey: _profileKey,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: const CustomAppBar(),
+          extendBodyBehindAppBar: true,
+          extendBody: true,
+          body: widget.navigationShell,
+          bottomNavigationBar: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+              child: Row(
+                children: [
+                  FloatingNavbarCapsule(
+                    currentIndex: widget.navigationShell.currentIndex,
+                    onTabTap: _onTabTap,
+                    draftsKey: _draftsKey,
+                    profileKey: _profileKey,
+                  ),
+                  const SizedBox(width: 12),
+                  const SizedBox(width: 64, height: 64),
+                ],
               ),
-              const SizedBox(width: 12),
-              const FloatingActionCircle(),
-            ],
+            ),
           ),
         ),
-      ),
+        Positioned(
+          bottom: MediaQuery.of(context).padding.bottom + 12,
+          right: 16,
+          child: FloatingActionCircle(navigationShell: widget.navigationShell),
+        ),
+      ],
     );
   }
 }

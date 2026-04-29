@@ -435,6 +435,27 @@ class AppLocalizationsId extends AppLocalizations {
       'ceritakan pengalamanmu atau laporkan masalah.';
 
   @override
+  String get menuCreateCV => 'Buat CV Baru';
+
+  @override
+  String get menuAddData => 'Tambah Data Profil';
+
+  @override
+  String get menuExperience => 'Pengalaman';
+
+  @override
+  String get menuEducation => 'Pendidikan';
+
+  @override
+  String get menuSkills => 'Keahlian';
+
+  @override
+  String get menuCertifications => 'Sertifikasi';
+
+  @override
+  String get message => 'pesan';
+
+  @override
   String get male => 'laki-laki';
 
   @override

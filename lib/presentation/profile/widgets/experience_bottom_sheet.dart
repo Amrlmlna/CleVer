@@ -138,7 +138,6 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
         endDate: _endCtrl.text.isEmpty ? null : _endCtrl.text,
         description: _descCtrl.text,
       );
-      setState(() => _canPopNow = true);
       Navigator.pop(context, exp);
     }
   }

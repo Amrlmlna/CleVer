@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/profile_provider.dart';
+import '../providers/profile_state.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../core/theme/app_colors.dart';
-import '../providers/profile_state.dart';
 import '../../common/widgets/unsaved_changes_dialog.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../widgets/profile_stacked_sections.dart';
@@ -12,6 +12,12 @@ import '../widgets/experience_list_form.dart';
 import '../widgets/education_list_form.dart';
 import '../widgets/certification_list_form.dart';
 import '../widgets/skills_input_form.dart';
+import '../widgets/experience_bottom_sheet.dart';
+import '../widgets/education_bottom_sheet.dart';
+import '../widgets/certification_bottom_sheet.dart';
+import '../widgets/skills_bottom_sheet.dart';
+import '../../../../domain/entities/user_profile.dart';
+import '../../../../domain/entities/skill.dart';
 
 class SectionEditPage extends ConsumerStatefulWidget {
   final String title;
@@ -21,6 +27,7 @@ class SectionEditPage extends ConsumerStatefulWidget {
   final Color iconBgColor;
   final Color iconColor;
   final SectionType sectionType;
+  final bool autoOpenAddSheet;
 
   const SectionEditPage({
     super.key,
@@ -31,6 +38,7 @@ class SectionEditPage extends ConsumerStatefulWidget {
     required this.iconBgColor,
     required this.iconColor,
     required this.sectionType,
+    this.autoOpenAddSheet = false,
   });
 
   @override
@@ -39,6 +47,65 @@ class SectionEditPage extends ConsumerStatefulWidget {
 
 class _SectionEditPageState extends ConsumerState<SectionEditPage> {
   bool _canPopNow = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.autoOpenAddSheet) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _triggerAddSheet();
+      });
+    }
+  }
+
+  void _triggerAddSheet() async {
+    final profileState = ref.read(profileControllerProvider);
+    final notifier = ref.read(profileControllerProvider.notifier);
+
+    switch (widget.sectionType) {
+      case SectionType.experience:
+        final result = await ExperienceBottomSheet.show(context);
+        if (result != null && mounted) {
+          final newList = List<Experience>.from(
+            profileState.currentProfile.experience,
+          )..add(result);
+          notifier.updateExperience(newList);
+        }
+        break;
+      case SectionType.education:
+        final result = await EducationBottomSheet.show(context);
+        if (result != null && mounted) {
+          final newList = List<Education>.from(
+            profileState.currentProfile.education,
+          )..add(result);
+          notifier.updateEducation(newList);
+        }
+        break;
+      case SectionType.certifications:
+        final result = await CertificationBottomSheet.show(context);
+        if (result != null && mounted) {
+          final newList = List<Certification>.from(
+            profileState.currentProfile.certifications,
+          )..add(result);
+          notifier.updateCertifications(newList);
+        }
+        break;
+      case SectionType.skills:
+        final result = await SkillsBottomSheet.show(
+          context,
+          profileState.currentProfile.skills,
+        );
+        if (result != null && mounted) {
+          final newList = List<Skill>.from(profileState.currentProfile.skills)
+            ..add(result);
+          notifier.updateSkills(newList);
+        }
+        break;
+      case SectionType.personalInfo:
+        // No add sheet for personal info
+        break;
+    }
+  }
 
   void _handleSave() async {
     final success = await ref
@@ -199,7 +266,6 @@ class _SectionEditPageState extends ConsumerState<SectionEditPage> {
   }
 
   Widget _buildStickySaveBar(bool isSaving) {
-    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context)!;
 
