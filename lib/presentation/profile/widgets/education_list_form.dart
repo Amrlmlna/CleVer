@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'education_bottom_sheet.dart';
 import '../../../../domain/entities/user_profile.dart';
 import '../../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import '../providers/profile_provider.dart';
 
-class EducationListForm extends ConsumerWidget {
+class EducationListForm extends StatelessWidget {
   final List<Education> education;
-  final Function(List<Education>) onChanged;
+  final ValueChanged<List<Education>> onChanged;
 
   const EducationListForm({
     super.key,
@@ -17,17 +15,14 @@ class EducationListForm extends ConsumerWidget {
   });
 
   void _editEducation(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     Education? existing,
     int? index,
   }) async {
     final result = await EducationBottomSheet.show(context, existing: existing);
 
     if (result != null) {
-      final profileState = ref.read(profileControllerProvider);
-      final currentList = profileState.currentProfile.education;
-      final newList = List<Education>.from(currentList);
+      final newList = List<Education>.from(education);
 
       if (index != null) {
         newList[index] = result;
@@ -39,10 +34,10 @@ class EducationListForm extends ConsumerWidget {
         );
 
         if (isDuplicate) {
-          if (ref.context.mounted) {
+          if (context.mounted) {
             CustomSnackBar.showWarning(
-              ref.context,
-              AppLocalizations.of(ref.context)!.cvDataExists,
+              context,
+              AppLocalizations.of(context)!.cvDataExists,
             );
             return;
           }
@@ -51,13 +46,13 @@ class EducationListForm extends ConsumerWidget {
         }
       }
 
-      ref.read(profileControllerProvider.notifier).updateEducation(newList);
+      onChanged(newList);
     }
   }
 
-  void _removeEducation(int index, WidgetRef ref) async {
+  void _removeEducation(BuildContext context, int index) async {
     final confirmed = await showDialog<bool>(
-      context: ref.context,
+      context: context,
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.confirmDelete),
         content: Text(AppLocalizations.of(context)!.deleteConfirmation),
@@ -78,20 +73,14 @@ class EducationListForm extends ConsumerWidget {
     );
 
     if (confirmed == true) {
-      final profileState = ref.read(profileControllerProvider);
-      final newList = List<Education>.from(
-        profileState.currentProfile.education,
-      );
+      final newList = List<Education>.from(education);
       newList.removeAt(index);
-      ref.read(profileControllerProvider.notifier).updateEducation(newList);
+      onChanged(newList);
     }
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final profileState = ref.watch(profileControllerProvider);
-    final education = profileState.currentProfile.education;
-
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -99,7 +88,7 @@ class EducationListForm extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton.icon(
-              onPressed: () => _editEducation(context, ref),
+              onPressed: () => _editEducation(context),
               icon: Icon(
                 Icons.add,
                 color: Theme.of(context).colorScheme.primary,
@@ -223,10 +212,10 @@ class EducationListForm extends ConsumerWidget {
                     Icons.delete_outline,
                     color: Theme.of(context).colorScheme.error,
                   ),
-                  onPressed: () => _removeEducation(index, ref),
+                  onPressed: () => _removeEducation(context, index),
                 ),
                 onTap: () =>
-                    _editEducation(context, ref, existing: edu, index: index),
+                    _editEducation(context, existing: edu, index: index),
               ),
             );
           },

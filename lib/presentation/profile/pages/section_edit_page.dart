@@ -44,15 +44,83 @@ class SectionEditPage extends ConsumerStatefulWidget {
 
 class _SectionEditPageState extends ConsumerState<SectionEditPage> {
   bool _canPopNow = false;
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneController;
+  late TextEditingController _locationController;
+  late TextEditingController _birthDateController;
+  late TextEditingController _genderController;
 
   @override
   void initState() {
     super.initState();
+    final profile = ref.read(profileControllerProvider).currentProfile;
+    _nameController = TextEditingController(text: profile.fullName);
+    _emailController = TextEditingController(text: profile.email);
+    _phoneController = TextEditingController(text: profile.phoneNumber ?? '');
+    _locationController = TextEditingController(text: profile.location ?? '');
+    _birthDateController = TextEditingController(text: profile.birthDate ?? '');
+    _genderController = TextEditingController(text: profile.gender ?? '');
+
+    _nameController.addListener(_onNameChanged);
+    _emailController.addListener(_onEmailChanged);
+    _phoneController.addListener(_onPhoneChanged);
+    _locationController.addListener(_onLocationChanged);
+    _birthDateController.addListener(_onBirthDateChanged);
+    _genderController.addListener(_onGenderChanged);
+
     if (widget.autoOpenAddSheet) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _triggerAddSheet();
       });
     }
+  }
+
+  void _onNameChanged() {
+    ref
+        .read(profileControllerProvider.notifier)
+        .updateName(_nameController.text);
+  }
+
+  void _onEmailChanged() {
+    ref
+        .read(profileControllerProvider.notifier)
+        .updateEmail(_emailController.text);
+  }
+
+  void _onPhoneChanged() {
+    ref
+        .read(profileControllerProvider.notifier)
+        .updatePhone(_phoneController.text);
+  }
+
+  void _onLocationChanged() {
+    ref
+        .read(profileControllerProvider.notifier)
+        .updateLocation(_locationController.text);
+  }
+
+  void _onBirthDateChanged() {
+    ref
+        .read(profileControllerProvider.notifier)
+        .updateBirthDate(_birthDateController.text);
+  }
+
+  void _onGenderChanged() {
+    ref
+        .read(profileControllerProvider.notifier)
+        .updateGender(_genderController.text);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _locationController.dispose();
+    _birthDateController.dispose();
+    _genderController.dispose();
+    super.dispose();
   }
 
   void _triggerAddSheet() async {
@@ -147,7 +215,16 @@ class _SectionEditPageState extends ConsumerState<SectionEditPage> {
     final notifier = ref.read(profileControllerProvider.notifier);
 
     return switch (widget.sectionType) {
-      SectionType.personalInfo => PersonalInfoForm(),
+      SectionType.personalInfo => PersonalInfoForm(
+        nameController: _nameController,
+        emailController: _emailController,
+        phoneController: _phoneController,
+        locationController: _locationController,
+        birthDateController: _birthDateController,
+        genderController: _genderController,
+        photoUrl: currentProfile.photoUrl,
+        onPhotoChanged: notifier.updatePhoto,
+      ),
       SectionType.experience => ExperienceListForm(
         experiences: currentProfile.experience,
         onChanged: notifier.updateExperience,

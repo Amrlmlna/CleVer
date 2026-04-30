@@ -4,12 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../core/services/storage_service.dart';
 import '../../../core/utils/custom_snackbar.dart';
-import '../providers/profile_provider.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class ProfilePhotoUploader extends ConsumerStatefulWidget {
-  const ProfilePhotoUploader({super.key});
+  final String? photoUrl;
+  final ValueChanged<String>? onPhotoChanged;
+
+  const ProfilePhotoUploader({super.key, this.photoUrl, this.onPhotoChanged});
 
   @override
   ConsumerState<ProfilePhotoUploader> createState() =>
@@ -53,14 +55,12 @@ class _ProfilePhotoUploaderState extends ConsumerState<ProfilePhotoUploader> {
         userId,
       );
 
-      if (downloadUrl != null) {
-        ref.read(profileControllerProvider.notifier).updatePhoto(downloadUrl);
-        if (mounted) {
-          CustomSnackBar.showSuccess(
-            context,
-            AppLocalizations.of(context)!.photoUpdateSuccess,
-          );
-        }
+      if (downloadUrl != null && mounted) {
+        widget.onPhotoChanged?.call(downloadUrl);
+        CustomSnackBar.showSuccess(
+          context,
+          AppLocalizations.of(context)!.photoUpdateSuccess,
+        );
       }
     } catch (e) {
       if (mounted) {
@@ -78,10 +78,7 @@ class _ProfilePhotoUploaderState extends ConsumerState<ProfilePhotoUploader> {
 
   @override
   Widget build(BuildContext context) {
-    final photoUrl = ref
-        .watch(profileControllerProvider)
-        .currentProfile
-        .photoUrl;
+    final photoUrl = widget.photoUrl;
 
     return Center(
       child: Tooltip(

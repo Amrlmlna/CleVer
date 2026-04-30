@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/entities/user_profile.dart';
 import 'experience_bottom_sheet.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../../core/utils/custom_snackbar.dart';
-import '../providers/profile_provider.dart';
 
-class ExperienceListForm extends ConsumerWidget {
+class ExperienceListForm extends StatelessWidget {
   final List<Experience> experiences;
-  final Function(List<Experience>) onChanged;
+  final ValueChanged<List<Experience>> onChanged;
 
   const ExperienceListForm({
     super.key,
@@ -17,8 +15,7 @@ class ExperienceListForm extends ConsumerWidget {
   });
 
   void _editExperience(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     Experience? existing,
     int? index,
   }) async {
@@ -28,9 +25,7 @@ class ExperienceListForm extends ConsumerWidget {
     );
 
     if (result != null) {
-      final profileState = ref.read(profileControllerProvider);
-      final currentList = profileState.currentProfile.experience;
-      final newList = List<Experience>.from(currentList);
+      final newList = List<Experience>.from(experiences);
 
       if (index != null) {
         newList[index] = result;
@@ -44,10 +39,10 @@ class ExperienceListForm extends ConsumerWidget {
         );
 
         if (isDuplicate) {
-          if (ref.context.mounted) {
+          if (context.mounted) {
             CustomSnackBar.showWarning(
-              ref.context,
-              AppLocalizations.of(ref.context)!.cvDataExists,
+              context,
+              AppLocalizations.of(context)!.cvDataExists,
             );
             return;
           }
@@ -56,13 +51,13 @@ class ExperienceListForm extends ConsumerWidget {
         }
       }
 
-      ref.read(profileControllerProvider.notifier).updateExperience(newList);
+      onChanged(newList);
     }
   }
 
-  void _removeExperience(int index, WidgetRef ref) async {
+  void _removeExperience(BuildContext context, int index) async {
     final confirmed = await showDialog<bool>(
-      context: ref.context,
+      context: context,
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.confirmDelete),
         content: Text(AppLocalizations.of(context)!.deleteConfirmation),
@@ -83,20 +78,14 @@ class ExperienceListForm extends ConsumerWidget {
     );
 
     if (confirmed == true) {
-      final profileState = ref.read(profileControllerProvider);
-      final newList = List<Experience>.from(
-        profileState.currentProfile.experience,
-      );
+      final newList = List<Experience>.from(experiences);
       newList.removeAt(index);
-      ref.read(profileControllerProvider.notifier).updateExperience(newList);
+      onChanged(newList);
     }
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final profileState = ref.watch(profileControllerProvider);
-    final experiences = profileState.currentProfile.experience;
-
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -104,7 +93,7 @@ class ExperienceListForm extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton.icon(
-              onPressed: () => _editExperience(context, ref),
+              onPressed: () => _editExperience(context),
               icon: Icon(
                 Icons.add,
                 color: Theme.of(context).colorScheme.primary,
@@ -164,10 +153,10 @@ class ExperienceListForm extends ConsumerWidget {
                     Icons.delete_outline,
                     color: Theme.of(context).colorScheme.error,
                   ),
-                  onPressed: () => _removeExperience(index, ref),
+                  onPressed: () => _removeExperience(context, index),
                 ),
                 onTap: () =>
-                    _editExperience(context, ref, existing: exp, index: index),
+                    _editExperience(context, existing: exp, index: index),
               ),
             );
           },

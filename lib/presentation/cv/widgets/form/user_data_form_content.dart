@@ -94,6 +94,7 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
                 locationController: widget.locationController,
                 birthDateController: widget.birthDateController,
                 genderController: widget.genderController,
+                showPhotoField: false,
               ),
             ),
             const SizedBox(height: 16),

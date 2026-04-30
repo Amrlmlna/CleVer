@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../domain/entities/skill.dart';
 import 'skills_bottom_sheet.dart';
-import '../providers/profile_provider.dart';
 
-class SkillsInputForm extends ConsumerWidget {
+class SkillsInputForm extends StatelessWidget {
   final List<Skill> skills;
-  final Function(List<Skill>) onChanged;
+  final ValueChanged<List<Skill>> onChanged;
 
   const SkillsInputForm({
     super.key,
@@ -15,24 +13,17 @@ class SkillsInputForm extends ConsumerWidget {
     required this.onChanged,
   });
 
-  void _showAddSkill(BuildContext context, WidgetRef ref) async {
-    final profileState = ref.read(profileControllerProvider);
-    final result = await SkillsBottomSheet.show(
-      context,
-      profileState.currentProfile.skills,
-    );
+  void _showAddSkill(BuildContext context) async {
+    final result = await SkillsBottomSheet.show(context, skills);
     if (result != null) {
-      final newList = List<Skill>.from(profileState.currentProfile.skills)
-        ..add(result);
-      ref.read(profileControllerProvider.notifier).updateSkills(newList);
+      final newList = List<Skill>.from(skills)..add(result);
+      onChanged(newList);
     }
   }
 
-  void _removeSkill(Skill skill, WidgetRef ref) {
-    final profileState = ref.read(profileControllerProvider);
-    final newList = List<Skill>.from(profileState.currentProfile.skills)
-      ..remove(skill);
-    ref.read(profileControllerProvider.notifier).updateSkills(newList);
+  void _removeSkill(Skill skill) {
+    final newList = List<Skill>.from(skills)..remove(skill);
+    onChanged(newList);
   }
 
   Map<SkillCategory, List<Skill>> _getGroupedSkills(List<Skill> skills) {
@@ -44,9 +35,7 @@ class SkillsInputForm extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final profileState = ref.watch(profileControllerProvider);
-    final skills = profileState.currentProfile.skills;
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final isId = Localizations.localeOf(context).languageCode == 'id';
 
@@ -57,7 +46,7 @@ class SkillsInputForm extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton.icon(
-              onPressed: () => _showAddSkill(context, ref),
+              onPressed: () => _showAddSkill(context),
               icon: Icon(
                 Icons.add,
                 color: Theme.of(context).colorScheme.primary,
@@ -126,7 +115,7 @@ class SkillsInputForm extends ConsumerWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            onDeleted: () => _removeSkill(skill, ref),
+                            onDeleted: () => _removeSkill(skill),
                             deleteIcon: Icon(
                               Icons.cancel,
                               size: 18,

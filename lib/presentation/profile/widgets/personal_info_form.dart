@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/widgets/custom_text_form_field.dart';
 import '../../common/widgets/location_picker.dart';
-import '../providers/profile_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import '../../../domain/entities/user_profile.dart';
 import 'profile_photo_uploader.dart';
 
-class PersonalInfoForm extends ConsumerStatefulWidget {
+class PersonalInfoForm extends StatefulWidget {
   final TextEditingController? nameController;
   final TextEditingController? emailController;
   final TextEditingController? phoneController;
   final TextEditingController? locationController;
   final TextEditingController? birthDateController;
   final TextEditingController? genderController;
+  final String? photoUrl;
+  final ValueChanged<String>? onPhotoChanged;
   final bool showPhotoField;
 
   const PersonalInfoForm({
@@ -24,14 +23,16 @@ class PersonalInfoForm extends ConsumerStatefulWidget {
     this.locationController,
     this.birthDateController,
     this.genderController,
+    this.photoUrl,
+    this.onPhotoChanged,
     this.showPhotoField = true,
   });
 
   @override
-  ConsumerState<PersonalInfoForm> createState() => _PersonalInfoFormState();
+  State<PersonalInfoForm> createState() => _PersonalInfoFormState();
 }
 
-class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
+class _PersonalInfoFormState extends State<PersonalInfoForm> {
   late TextEditingController _nameController;
   late TextEditingController _emailController;
   late TextEditingController _phoneController;
@@ -42,69 +43,14 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
   @override
   void initState() {
     super.initState();
-    final initialProfile = ref.read(profileControllerProvider).currentProfile;
 
-    _nameController =
-        widget.nameController ??
-        TextEditingController(text: initialProfile.fullName);
-    _emailController =
-        widget.emailController ??
-        TextEditingController(text: initialProfile.email);
-    _phoneController =
-        widget.phoneController ??
-        TextEditingController(text: initialProfile.phoneNumber ?? '');
-    _locationController =
-        widget.locationController ??
-        TextEditingController(text: initialProfile.location ?? '');
+    _nameController = widget.nameController ?? TextEditingController();
+    _emailController = widget.emailController ?? TextEditingController();
+    _phoneController = widget.phoneController ?? TextEditingController();
+    _locationController = widget.locationController ?? TextEditingController();
     _birthDateController =
-        widget.birthDateController ??
-        TextEditingController(text: initialProfile.birthDate ?? '');
-    _genderController =
-        widget.genderController ??
-        TextEditingController(text: initialProfile.gender ?? '');
-
-    _nameController.addListener(_onNameChanged);
-    _emailController.addListener(_onEmailChanged);
-    _phoneController.addListener(_onPhoneChanged);
-    _locationController.addListener(_onLocationChanged);
-    _birthDateController.addListener(_onBirthDateChanged);
-    _genderController.addListener(_onGenderChanged);
-  }
-
-  void _onNameChanged() {
-    ref
-        .read(profileControllerProvider.notifier)
-        .updateName(_nameController.text);
-  }
-
-  void _onEmailChanged() {
-    ref
-        .read(profileControllerProvider.notifier)
-        .updateEmail(_emailController.text);
-  }
-
-  void _onPhoneChanged() {
-    ref
-        .read(profileControllerProvider.notifier)
-        .updatePhone(_phoneController.text);
-  }
-
-  void _onLocationChanged() {
-    ref
-        .read(profileControllerProvider.notifier)
-        .updateLocation(_locationController.text);
-  }
-
-  void _onBirthDateChanged() {
-    ref
-        .read(profileControllerProvider.notifier)
-        .updateBirthDate(_birthDateController.text);
-  }
-
-  void _onGenderChanged() {
-    ref
-        .read(profileControllerProvider.notifier)
-        .updateGender(_genderController.text);
+        widget.birthDateController ?? TextEditingController();
+    _genderController = widget.genderController ?? TextEditingController();
   }
 
   @override
@@ -119,39 +65,15 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
     super.dispose();
   }
 
-  void _syncControllers(UserProfile profile) {
-    if (_nameController.text != profile.fullName) {
-      _nameController.text = profile.fullName;
-    }
-    if (_emailController.text != profile.email) {
-      _emailController.text = profile.email;
-    }
-    if (_phoneController.text != (profile.phoneNumber ?? '')) {
-      _phoneController.text = profile.phoneNumber ?? '';
-    }
-    if (_locationController.text != (profile.location ?? '')) {
-      _locationController.text = profile.location ?? '';
-    }
-    if (_birthDateController.text != (profile.birthDate ?? '')) {
-      _birthDateController.text = profile.birthDate ?? '';
-    }
-    if (_genderController.text != (profile.gender ?? '')) {
-      _genderController.text = profile.gender ?? '';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    ref.listen(profileControllerProvider, (previous, next) {
-      if (previous?.currentProfile != next.currentProfile) {
-        _syncControllers(next.currentProfile);
-      }
-    });
-
     return Column(
       children: [
         if (widget.showPhotoField) ...[
-          const ProfilePhotoUploader(),
+          ProfilePhotoUploader(
+            photoUrl: widget.photoUrl,
+            onPhotoChanged: widget.onPhotoChanged,
+          ),
           const SizedBox(height: 24),
         ],
         CustomTextFormField(

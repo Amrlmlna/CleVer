@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/entities/certification.dart';
 import 'certification_bottom_sheet.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../../core/utils/custom_snackbar.dart';
-import '../providers/profile_provider.dart';
 
-class CertificationListForm extends ConsumerWidget {
+class CertificationListForm extends StatelessWidget {
   final List<Certification> certifications;
-  final Function(List<Certification>) onChanged;
+  final ValueChanged<List<Certification>> onChanged;
 
   const CertificationListForm({
     super.key,
@@ -17,8 +15,7 @@ class CertificationListForm extends ConsumerWidget {
   });
 
   void _editCertification(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     Certification? existing,
     int? index,
   }) async {
@@ -28,9 +25,7 @@ class CertificationListForm extends ConsumerWidget {
     );
 
     if (result != null) {
-      final profileState = ref.read(profileControllerProvider);
-      final currentList = profileState.currentProfile.certifications;
-      final newList = List<Certification>.from(currentList);
+      final newList = List<Certification>.from(certifications);
 
       if (index != null) {
         newList[index] = result;
@@ -54,17 +49,11 @@ class CertificationListForm extends ConsumerWidget {
         }
       }
 
-      ref
-          .read(profileControllerProvider.notifier)
-          .updateCertifications(newList);
+      onChanged(newList);
     }
   }
 
-  void _removeCertification(
-    int index,
-    BuildContext context,
-    WidgetRef ref,
-  ) async {
+  void _removeCertification(BuildContext context, int index) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -87,22 +76,14 @@ class CertificationListForm extends ConsumerWidget {
     );
 
     if (confirmed == true) {
-      final profileState = ref.read(profileControllerProvider);
-      final newList = List<Certification>.from(
-        profileState.currentProfile.certifications,
-      );
+      final newList = List<Certification>.from(certifications);
       newList.removeAt(index);
-      ref
-          .read(profileControllerProvider.notifier)
-          .updateCertifications(newList);
+      onChanged(newList);
     }
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final profileState = ref.watch(profileControllerProvider);
-    final certifications = profileState.currentProfile.certifications;
-
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -110,7 +91,7 @@ class CertificationListForm extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton.icon(
-              onPressed: () => _editCertification(context, ref),
+              onPressed: () => _editCertification(context),
               icon: Icon(
                 Icons.add,
                 color: Theme.of(context).colorScheme.primary,
@@ -169,14 +150,10 @@ class CertificationListForm extends ConsumerWidget {
                     Icons.delete_outline,
                     color: Theme.of(context).colorScheme.error,
                   ),
-                  onPressed: () => _removeCertification(index, context, ref),
+                  onPressed: () => _removeCertification(context, index),
                 ),
-                onTap: () => _editCertification(
-                  context,
-                  ref,
-                  existing: cert,
-                  index: index,
-                ),
+                onTap: () =>
+                    _editCertification(context, existing: cert, index: index),
               ),
             );
           },
