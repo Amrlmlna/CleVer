@@ -3,6 +3,8 @@
   "accountDeleteError": "failed to delete account: {error}",
   "accountDeletedGoodbye": "account successfully deleted. goodbye!",
   "activityOverview": "activity overview",
+  "quickActions": "quick actions",
+  "cleverUser": "clever user",
   "add": "add",
   "addCertification": "add certification",
   "addEducation": "add education",
@@ -617,7 +619,13 @@
   "tutorialFinish": "Got it!",
   "legalInformation": "legal information",
   "privacyPolicyAndTerms": "privacy policy and terms",
-  "supportAndLegal": "support & legal"
+  "supportAndLegal": "support & legal",
+  "mascotWelcome": "here we go",
+  "mascotWelcomeSub": "your journey to a happier, healthier life starts now.",
+  "mascotEncourage": "keep it fresh",
+  "mascotEncourageSub": "don't forget to update your master profile every time you get new experience!",
+  "mascotExciting": "wih, amazing!",
+  "mascotExcitingSub": "you just created your first cv! let's keep the momentum going."
 }
 
 

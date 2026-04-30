@@ -20,6 +20,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get activityOverview => 'activity overview';
 
   @override
+  String get quickActions => 'quick actions';
+
+  @override
+  String get cleverUser => 'clever user';
+
+  @override
   String get add => 'add';
 
   @override
@@ -1661,4 +1667,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get supportAndLegal => 'support & legal';
+
+  @override
+  String get mascotWelcome => 'here we go';
+
+  @override
+  String get mascotWelcomeSub =>
+      'your journey to a happier, healthier life starts now.';
+
+  @override
+  String get mascotEncourage => 'keep it fresh';
+
+  @override
+  String get mascotEncourageSub =>
+      'don\'t forget to update your master profile every time you get new experience!';
+
+  @override
+  String get mascotExciting => 'wih, amazing!';
+
+  @override
+  String get mascotExcitingSub =>
+      'you just created your first cv! let\'s keep the momentum going.';
 }

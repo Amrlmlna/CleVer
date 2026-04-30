@@ -7,11 +7,9 @@ import '../providers/review_check_provider.dart';
 import '../../wallet/widgets/credit_purchase_bottom_sheet.dart';
 import '../../dashboard/providers/dashboard_tutorial_provider.dart';
 
-import '../widgets/carousel_banner.dart';
-import '../widgets/welcome_header.dart';
-import '../widgets/home_quick_actions.dart';
-import '../widgets/login_cta_card.dart';
-import '../widgets/premium_banner.dart';
+import '../widgets/huge_profile_header.dart';
+import '../widgets/bento_quick_actions.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -88,43 +86,41 @@ class _HomePageState extends ConsumerState<HomePage>
     ref.watch(reviewCheckProvider);
     ref.watch(pendingPaywallProvider);
 
-    // LIVE SIGNAL: Listen for the ping from TemplatePreviewPage
     ref.listen(reviewCheckProvider, (previous, next) {
       if (next > 0 && mounted) {
-        // ONLY trigger if we are the current route (not in the background)
         if (ModalRoute.of(context)?.isCurrent ?? false) {
           _checkAndShowSequentialPrompts();
         }
       }
     });
 
+    final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-
-              const WelcomeHeader(),
-              const SizedBox(height: 24),
-
-              const CarouselBanner(),
-              const SizedBox(height: 16),
-
-              const HomeQuickActions(),
-              const SizedBox(height: 32),
-
-              const LoginCTACard(),
-              const SizedBox(height: 16),
-
-              const PremiumBanner(),
-              const SizedBox(height: 24),
-
-              const SizedBox(height: 100),
-            ],
-          ),
+      backgroundColor: colorScheme.surface,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const HugeProfileHeader(),
+            const SizedBox(height: 32),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Text(
+                l10n.quickActions.toUpperCase(),
+                style: TextStyle(
+                  color: colorScheme.onSurface,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1.0,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const BentoQuickActions(),
+            const SizedBox(height: 100),
+          ],
         ),
       ),
     );

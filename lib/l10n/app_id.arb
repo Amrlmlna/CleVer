@@ -3,6 +3,8 @@
   "accountDeleteError": "gagal menghapus akun: {error}",
   "accountDeletedGoodbye": "akun berhasil dihapus. sampai jumpa!",
   "activityOverview": "ringkasan aktivitas",
+  "quickActions": "aksi cepat",
+  "cleverUser": "pengguna clever",
   "add": "tambah",
   "addCertification": "tambah sertifikasi",
   "addEducation": "tambah pendidikan",
@@ -613,6 +615,12 @@
   "tutorialFinish": "siap!",
   "legalInformation": "informasi hukum",
   "privacyPolicyAndTerms": "kebijakan privasi & ketentuan",
-  "supportAndLegal": "dukungan & hukum"
+  "supportAndLegal": "dukungan & hukum",
+  "mascotWelcome": "mari kita mulai",
+  "mascotWelcomeSub": "perjalanan karir yang lebih baik dimulai dari sini.",
+  "mascotEncourage": "tetap update ya",
+  "mascotEncourageSub": "jangan lupa update profil master kamu setiap kali ada pengalaman baru!",
+  "mascotExciting": "wih, keren!",
+  "mascotExcitingSub": "kamu baru saja membuat cv pertama! yuk, lanjut terus semangatnya."
 }
 

@@ -20,6 +20,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get activityOverview => 'ringkasan aktivitas';
 
   @override
+  String get quickActions => 'aksi cepat';
+
+  @override
+  String get cleverUser => 'pengguna clever';
+
+  @override
   String get add => 'tambah';
 
   @override
@@ -1669,4 +1675,25 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get supportAndLegal => 'dukungan & hukum';
+
+  @override
+  String get mascotWelcome => 'mari kita mulai';
+
+  @override
+  String get mascotWelcomeSub =>
+      'perjalanan karir yang lebih baik dimulai dari sini.';
+
+  @override
+  String get mascotEncourage => 'tetap update ya';
+
+  @override
+  String get mascotEncourageSub =>
+      'jangan lupa update profil master kamu setiap kali ada pengalaman baru!';
+
+  @override
+  String get mascotExciting => 'wih, keren!';
+
+  @override
+  String get mascotExcitingSub =>
+      'kamu baru saja membuat cv pertama! yuk, lanjut terus semangatnya.';
 }

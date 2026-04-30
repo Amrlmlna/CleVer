@@ -116,6 +116,18 @@ abstract class AppLocalizations {
   /// **'activity overview'**
   String get activityOverview;
 
+  /// No description provided for @quickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'quick actions'**
+  String get quickActions;
+
+  /// No description provided for @cleverUser.
+  ///
+  /// In en, this message translates to:
+  /// **'clever user'**
+  String get cleverUser;
+
   /// No description provided for @add.
   ///
   /// In en, this message translates to:
@@ -3167,6 +3179,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'support & legal'**
   String get supportAndLegal;
+
+  /// No description provided for @mascotWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'here we go'**
+  String get mascotWelcome;
+
+  /// No description provided for @mascotWelcomeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'your journey to a happier, healthier life starts now.'**
+  String get mascotWelcomeSub;
+
+  /// No description provided for @mascotEncourage.
+  ///
+  /// In en, this message translates to:
+  /// **'keep it fresh'**
+  String get mascotEncourage;
+
+  /// No description provided for @mascotEncourageSub.
+  ///
+  /// In en, this message translates to:
+  /// **'don\'t forget to update your master profile every time you get new experience!'**
+  String get mascotEncourageSub;
+
+  /// No description provided for @mascotExciting.
+  ///
+  /// In en, this message translates to:
+  /// **'wih, amazing!'**
+  String get mascotExciting;
+
+  /// No description provided for @mascotExcitingSub.
+  ///
+  /// In en, this message translates to:
+  /// **'you just created your first cv! let\'s keep the momentum going.'**
+  String get mascotExcitingSub;
 }
 
 class _AppLocalizationsDelegate
