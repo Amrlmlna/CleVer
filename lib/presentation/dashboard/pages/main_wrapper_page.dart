@@ -101,20 +101,29 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
           extendBodyBehindAppBar: true,
           extendBody: true,
           body: widget.navigationShell,
-          bottomNavigationBar: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-              child: Row(
-                children: [
-                  FloatingNavbarCapsule(
-                    currentIndex: widget.navigationShell.currentIndex,
-                    onTabTap: _onTabTap,
-                    draftsKey: _draftsKey,
-                    profileKey: _profileKey,
-                  ),
-                  const SizedBox(width: 12),
-                  const SizedBox(width: 64, height: 64),
-                ],
+          bottomNavigationBar: Theme(
+            data: Theme.of(context).copyWith(
+              canvasColor: Colors.transparent,
+              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              ),
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                child: Row(
+                  children: [
+                    FloatingNavbarCapsule(
+                      currentIndex: widget.navigationShell.currentIndex,
+                      onTabTap: _onTabTap,
+                      draftsKey: _draftsKey,
+                      profileKey: _profileKey,
+                    ),
+                    const SizedBox(width: 12),
+                    const SizedBox(width: 64, height: 64),
+                  ],
+                ),
               ),
             ),
           ),

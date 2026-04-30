@@ -41,7 +41,9 @@ class ProfileSectionCard extends StatelessWidget {
             ),
             padding: const EdgeInsets.fromLTRB(24, 20, 24, 20),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: bottomContent != null
+                  ? MainAxisSize.max
+                  : MainAxisSize.min,
               children: [
                 Row(
                   children: [
@@ -81,12 +83,10 @@ class ProfileSectionCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                if (bottomOverlap > 0)
-                  SizedBox(
-                    height: bottomOverlap,
-                    width: double.infinity,
-                    child: bottomContent,
-                  ),
+                if (bottomContent != null)
+                  Expanded(child: bottomContent!)
+                else if (bottomOverlap > 0)
+                  SizedBox(height: bottomOverlap, width: double.infinity),
               ],
             ),
           ),

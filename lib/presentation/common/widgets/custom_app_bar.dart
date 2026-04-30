@@ -25,67 +25,54 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       forceMaterialTransparency: true,
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 8.0),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (Navigator.of(context).canPop())
-              const BackButton()
-            else
-              Consumer(
-                builder: (context, ref, child) {
-                  final unreadCount = ref.watch(
-                    unreadNotificationCountProvider,
-                  );
-                  return Stack(
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.notifications_none_rounded,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        onPressed: () => context.push(AppRoutes.notifications),
-                      ),
-                      if (unreadCount > 0)
-                        Positioned(
-                          right: 8,
-                          top: 8,
-                          child: Container(
-                            padding: const EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.error,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            constraints: const BoxConstraints(
-                              minWidth: 16,
-                              minHeight: 16,
-                            ),
-                            child: Text(
-                              unreadCount > 9 ? '9+' : '$unreadCount',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.onError,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                    ],
-                  );
-                },
-              ),
-          ],
-        ),
-      ),
-      leadingWidth: 100,
+      leading: Navigator.of(context).canPop() ? const BackButton() : null,
       title: title != null ? Text(title!) : null,
       centerTitle: true,
       actions: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: const LanguageSelector(),
+        Consumer(
+          builder: (context, ref, child) {
+            final unreadCount = ref.watch(unreadNotificationCountProvider);
+            return Stack(
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.notifications_none_rounded,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  onPressed: () => context.push(AppRoutes.notifications),
+                ),
+                if (unreadCount > 0)
+                  Positioned(
+                    right: 8,
+                    top: 8,
+                    child: Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.error,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 16,
+                        minHeight: 16,
+                      ),
+                      child: Text(
+                        unreadCount > 9 ? '9+' : '$unreadCount',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onError,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.0),
+          child: LanguageSelector(),
         ),
         const SizedBox(width: 8),
         if (user != null)

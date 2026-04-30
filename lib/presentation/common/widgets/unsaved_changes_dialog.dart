@@ -25,113 +25,100 @@ class UnsavedChangesDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
 
     return Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 32),
       child: Container(
         decoration: BoxDecoration(
-          color: colorScheme.surface,
-          borderRadius: BorderRadius.circular(28),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(32),
           border: Border.all(
-            color: colorScheme.onSurface.withValues(alpha: 0.1),
-            width: 1.5,
+            color: Colors.black.withValues(alpha: 0.1),
+            width: 1,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
         ),
+        padding: const EdgeInsets.all(28),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // ─── Header ──────────────────────────────────────────────
+            // ─── Minimalist Icon ──────────────────────────────────────
             Container(
-              padding: const EdgeInsets.fromLTRB(24, 32, 24, 16),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: colorScheme.error.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.warning_amber_rounded,
-                      color: colorScheme.error,
-                      size: 32,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    localization.saveChangesTitle.toUpperCase(),
-                    textAlign: TextAlign.center,
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 1.5,
-                      color: colorScheme.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    localization.saveChangesMessage,
-                    textAlign: TextAlign.center,
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onSurface.withValues(alpha: 0.6),
-                      height: 1.5,
-                    ),
-                  ),
-                ],
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.05),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.info_outline_rounded,
+                color: Colors.black,
+                size: 24,
               ),
             ),
+            const SizedBox(height: 24),
 
-            const Divider(height: 1),
+            // ─── Text Content ────────────────────────────────────────
+            Text(
+              localization.saveChangesTitle.toUpperCase(),
+              textAlign: TextAlign.center,
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w900,
+                color: Colors.black,
+                letterSpacing: 1.5,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              localization.saveChangesMessage,
+              textAlign: TextAlign.center,
+              style: textTheme.bodyMedium?.copyWith(
+                color: Colors.black.withValues(alpha: 0.5),
+                height: 1.5,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 32),
 
-            // ─── Actions ─────────────────────────────────────────────
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  // Save Button (Primary)
-                  _DialogButton(
-                    onTap: () async {
-                      if (onSave != null) await onSave!();
-                      if (context.mounted) Navigator.pop(context, true);
-                    },
-                    label: localization.save,
-                    isPrimary: true,
-                    icon: Icons.check_circle_outline_rounded,
-                  ),
-                  const SizedBox(height: 12),
-                  // Discard Button (Secondary/Alert)
-                  _DialogButton(
-                    onTap: () async {
-                      if (onDiscard != null) await onDiscard!();
-                      if (context.mounted) Navigator.pop(context, true);
-                    },
-                    label: localization.exitWithoutSaving,
-                    isPrimary: false,
-                    isDanger: true,
-                    icon: Icons.delete_outline_rounded,
-                  ),
-                  const SizedBox(height: 8),
-                  // Cancel Button (Tertiary)
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, false),
-                    style: TextButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 48),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: Text(
-                      localization.stayHere.toUpperCase(),
-                      style: textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: colorScheme.onSurface.withValues(alpha: 0.4),
-                        letterSpacing: 1.1,
-                      ),
-                    ),
-                  ),
-                ],
+            // ─── Actions (Industrial Pills) ──────────────────────────
+            _IndustrialPillButton(
+              onTap: () async {
+                if (onSave != null) await onSave!();
+                if (context.mounted) Navigator.pop(context, true);
+              },
+              label: localization.save,
+              isPrimary: true,
+            ),
+            const SizedBox(height: 12),
+            _IndustrialPillButton(
+              onTap: () async {
+                if (onDiscard != null) await onDiscard!();
+                if (context.mounted) Navigator.pop(context, true);
+              },
+              label: localization.exitWithoutSaving,
+              isPrimary: false,
+            ),
+            const SizedBox(height: 12),
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              style: TextButton.styleFrom(
+                minimumSize: const Size(double.infinity, 40),
+                foregroundColor: Colors.black.withValues(alpha: 0.4),
+              ),
+              child: Text(
+                localization.stayHere.toUpperCase(),
+                style: textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1.0,
+                ),
               ),
             ),
           ],
@@ -141,71 +128,43 @@ class UnsavedChangesDialog extends StatelessWidget {
   }
 }
 
-class _DialogButton extends StatelessWidget {
+class _IndustrialPillButton extends StatelessWidget {
   final VoidCallback onTap;
   final String label;
   final bool isPrimary;
-  final bool isDanger;
-  final IconData icon;
 
-  const _DialogButton({
+  const _IndustrialPillButton({
     required this.onTap,
     required this.label,
     required this.isPrimary,
-    this.isDanger = false,
-    required this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
-
-    final bgColor = isPrimary
-        ? colorScheme.onSurface
-        : (isDanger
-              ? colorScheme.error.withValues(alpha: 0.05)
-              : Colors.transparent);
-
-    final fgColor = isPrimary
-        ? colorScheme.surface
-        : (isDanger ? colorScheme.error : colorScheme.onSurface);
-
     return Material(
-      color: bgColor,
-      borderRadius: BorderRadius.circular(16),
+      color: isPrimary ? Colors.black : Colors.white,
+      borderRadius: BorderRadius.circular(100),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(100),
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          height: 54,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(100),
             border: isPrimary
                 ? null
-                : Border.all(
-                    color: isDanger
-                        ? colorScheme.error.withValues(alpha: 0.2)
-                        : colorScheme.onSurface.withValues(alpha: 0.1),
-                    width: 1.5,
-                  ),
+                : Border.all(color: Colors.black, width: 1.5),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, size: 18, color: fgColor),
-              const SizedBox(width: 10),
-              Text(
-                label.toUpperCase(),
-                style: textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: fgColor,
-                  letterSpacing: 1.2,
-                ),
-              ),
-            ],
+          child: Text(
+            label.toUpperCase(),
+            style: TextStyle(
+              color: isPrimary ? Colors.white : Colors.black,
+              fontWeight: FontWeight.w900,
+              fontSize: 14,
+              letterSpacing: 1.2,
+            ),
           ),
         ),
       ),

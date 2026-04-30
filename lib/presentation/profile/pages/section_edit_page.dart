@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/profile_provider.dart';
-import '../providers/profile_state.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import '../../../core/theme/app_colors.dart';
 import '../../common/widgets/unsaved_changes_dialog.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../widgets/profile_stacked_sections.dart';
@@ -17,7 +15,6 @@ import '../widgets/education_bottom_sheet.dart';
 import '../widgets/certification_bottom_sheet.dart';
 import '../widgets/skills_bottom_sheet.dart';
 import '../../../../domain/entities/user_profile.dart';
-import '../../../../domain/entities/skill.dart';
 
 class SectionEditPage extends ConsumerStatefulWidget {
   final String title;

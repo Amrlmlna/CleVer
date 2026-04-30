@@ -69,13 +69,11 @@ class _FloatingActionCircleState extends ConsumerState<FloatingActionCircle>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final bottomPadding = MediaQuery.of(context).padding.bottom;
 
     return Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.bottomCenter,
       children: [
-        // Backdrop (Ghost positioned to not overflow layout)
         if (_isOpen)
           Positioned(
             top: -2000,
@@ -89,7 +87,6 @@ class _FloatingActionCircleState extends ConsumerState<FloatingActionCircle>
             ),
           ),
 
-        // THE PILL (Single Container)
         AnimatedContainer(
           duration: const Duration(milliseconds: 400),
           curve: Curves.easeOutBack,

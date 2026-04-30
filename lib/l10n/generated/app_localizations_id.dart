@@ -1187,7 +1187,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get skillHint => 'contoh: flutter, leadership';
 
   @override
-  String get skills => 'keahlian (skills)';
+  String get skills => 'keahlian';
 
   @override
   String get skillsSubtitle =>

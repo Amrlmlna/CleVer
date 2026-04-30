@@ -9,12 +9,16 @@ class ProfileStackedSections extends StatelessWidget {
   final List<ProfileSectionData> sections;
   final int skillsCount;
   final String skillsLabel;
+  final int experienceCount;
+  final String experienceLabel;
 
   const ProfileStackedSections({
     super.key,
     required this.sections,
     required this.skillsCount,
     required this.skillsLabel,
+    required this.experienceCount,
+    required this.experienceLabel,
   });
 
   void _openSection(
@@ -47,10 +51,10 @@ class ProfileStackedSections extends StatelessWidget {
   SectionType _getSectionType(int index) {
     return switch (index) {
       0 => SectionType.personalInfo,
-      1 => SectionType.experience,
+      1 => SectionType.skills,
       2 => SectionType.education,
       3 => SectionType.certifications,
-      4 => SectionType.skills,
+      4 => SectionType.experience,
       _ => SectionType.personalInfo,
     };
   }
@@ -64,7 +68,7 @@ class ProfileStackedSections extends StatelessWidget {
       children: List.generate(total, (i) {
         final section = sections[i];
         final bool isLast = i == total - 1;
-        final double bottomOverlap = isLast ? 160.0 : overlapAmount;
+        final double bottomOverlap = isLast ? 0.0 : overlapAmount;
         final sectionType = _getSectionType(i);
 
         final card = ProfileSectionCard(
@@ -84,13 +88,17 @@ class ProfileStackedSections extends StatelessWidget {
                       right: -30,
                       bottom: -20,
                       child: Icon(
-                        Icons.code_rounded,
+                        sectionType == SectionType.experience
+                            ? Icons.work_outline
+                            : Icons.code_rounded,
                         size: 160,
-                        color: Colors.white.withValues(alpha: 0.15),
+                        color: sectionType == SectionType.experience
+                            ? Colors.black.withValues(alpha: 0.1)
+                            : Colors.white.withValues(alpha: 0.15),
                       ),
                     ),
                     Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: const Alignment(-1.0, -0.6),
                       child: Padding(
                         padding: const EdgeInsets.only(top: 16.0, right: 60.0),
                         child: Column(
@@ -98,22 +106,33 @@ class ProfileStackedSections extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "$skillsCount",
-                              style: const TextStyle(
+                              sectionType == SectionType.experience
+                                  ? "$experienceCount"
+                                  : "$skillsCount",
+                              style: TextStyle(
                                 fontSize: 64,
                                 fontWeight: FontWeight.w800,
-                                color: Colors.white,
+                                color: sectionType == SectionType.experience
+                                    ? Colors.black
+                                    : Colors.white,
                                 height: 1.0,
                                 letterSpacing: -2.0,
                               ),
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              skillsLabel.toLowerCase(),
+                              (sectionType == SectionType.experience
+                                      ? experienceLabel
+                                      : skillsLabel)
+                                  .toLowerCase(),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.white.withValues(alpha: 0.8),
+                                color:
+                                    (sectionType == SectionType.experience
+                                            ? Colors.black
+                                            : Colors.white)
+                                        .withValues(alpha: 0.8),
                                 letterSpacing: 0.5,
                               ),
                             ),
@@ -127,7 +146,7 @@ class ProfileStackedSections extends StatelessWidget {
         );
 
         if (isLast) {
-          return card;
+          return Expanded(child: card);
         }
 
         return SizedBox(
