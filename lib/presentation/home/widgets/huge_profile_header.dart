@@ -48,7 +48,7 @@ class HugeProfileHeader extends ConsumerWidget {
                 Text(
                   subtitle,
                   textAlign: mascotContent.textAlign,
-                  style: textTheme.bodyLarge?.copyWith(
+                  style: textTheme.bodyMedium?.copyWith(
                     color: mascotContent.textColor.withOpacity(0.7),
                     height: 1.5,
                     fontWeight: FontWeight.w500,
