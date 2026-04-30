@@ -296,6 +296,32 @@ class AppLocalizationsEn extends AppLocalizations {
       'this pdf is stored in the cloud. would you like to download it now?';
 
   @override
+  String get downloadComplete => 'download complete';
+
+  @override
+  String downloadFailed(String error) {
+    return 'download failed: $error';
+  }
+
+  @override
+  String get downloading => 'downloading...';
+
+  @override
+  String get finalStatus => 'final';
+
+  @override
+  String get untitled => 'untitled';
+
+  @override
+  String get openPDF => 'open pdf';
+
+  @override
+  String get noCompletedCVs => 'no generated cvs yet';
+
+  @override
+  String get generateCVFirst => 'generate your first cv to see it here';
+
+  @override
   String get cvs => 'cvs';
 
   @override
@@ -519,9 +545,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gallery => 'gallery';
-
-  @override
-  String get generateCVFirst => 'generate your first cv to see it here';
 
   @override
   String get generated => 'generated';
@@ -785,9 +808,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noCertifications => 'no certifications yet.';
 
   @override
-  String get noCompletedCVs => 'no generated cvs yet';
-
-  @override
   String get noDrafts => 'no drafts yet.';
 
   @override
@@ -912,9 +932,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get onboardingSubtitle =>
       'fill in data once, generate thousands of cvs without retyping. save time, focus on \"grinding\".';
-
-  @override
-  String get openPDF => 'open pdf';
 
   @override
   String get or => 'or';
@@ -1314,9 +1331,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get untilNow => 'until now';
-
-  @override
-  String get untitled => 'untitled';
 
   @override
   String get uploadInstruction => 'tap to upload your professional photo';

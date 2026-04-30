@@ -298,6 +298,32 @@ class AppLocalizationsId extends AppLocalizations {
       'pdf ini tersimpan di cloud. apakah anda ingin mengunduhnya sekarang?';
 
   @override
+  String get downloadComplete => 'unduhan selesai';
+
+  @override
+  String downloadFailed(String error) {
+    return 'unduhan gagal: $error';
+  }
+
+  @override
+  String get downloading => 'mengunduh...';
+
+  @override
+  String get finalStatus => 'final';
+
+  @override
+  String get untitled => 'tanpa judul';
+
+  @override
+  String get openPDF => 'buka pdf';
+
+  @override
+  String get noCompletedCVs => 'belum ada cv yang dihasilkan';
+
+  @override
+  String get generateCVFirst => 'buat cv pertama anda untuk melihatnya di sini';
+
+  @override
   String get cvs => 'cv';
 
   @override
@@ -523,9 +549,6 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get gallery => 'galeri';
-
-  @override
-  String get generateCVFirst => 'buat cv pertama anda untuk melihatnya di sini';
 
   @override
   String get generated => 'pdf';
@@ -788,9 +811,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get noCertifications => 'belum ada sertifikasi.';
 
   @override
-  String get noCompletedCVs => 'belum ada cv yang dihasilkan';
-
-  @override
   String get noDrafts => 'belum ada draft.';
 
   @override
@@ -917,9 +937,6 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get onboardingSubtitle =>
       'mari mulai dengan detail kontak, data ini akan otomatis ada di header cv kamu.';
-
-  @override
-  String get openPDF => 'buka pdf';
 
   @override
   String get or => 'atau';
@@ -1321,9 +1338,6 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get untilNow => 'sampai sekarang';
-
-  @override
-  String get untitled => 'tanpa judul';
 
   @override
   String get uploadInstruction =>

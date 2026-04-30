@@ -638,6 +638,54 @@ abstract class AppLocalizations {
   /// **'this pdf is stored in the cloud. would you like to download it now?'**
   String get downloadPDFDescription;
 
+  /// No description provided for @downloadComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'download complete'**
+  String get downloadComplete;
+
+  /// No description provided for @downloadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'download failed: {error}'**
+  String downloadFailed(String error);
+
+  /// No description provided for @downloading.
+  ///
+  /// In en, this message translates to:
+  /// **'downloading...'**
+  String get downloading;
+
+  /// No description provided for @finalStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'final'**
+  String get finalStatus;
+
+  /// No description provided for @untitled.
+  ///
+  /// In en, this message translates to:
+  /// **'untitled'**
+  String get untitled;
+
+  /// No description provided for @openPDF.
+  ///
+  /// In en, this message translates to:
+  /// **'open pdf'**
+  String get openPDF;
+
+  /// No description provided for @noCompletedCVs.
+  ///
+  /// In en, this message translates to:
+  /// **'no generated cvs yet'**
+  String get noCompletedCVs;
+
+  /// No description provided for @generateCVFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'generate your first cv to see it here'**
+  String get generateCVFirst;
+
   /// No description provided for @cvs.
   ///
   /// In en, this message translates to:
@@ -1063,12 +1111,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'gallery'**
   String get gallery;
-
-  /// No description provided for @generateCVFirst.
-  ///
-  /// In en, this message translates to:
-  /// **'generate your first cv to see it here'**
-  String get generateCVFirst;
 
   /// No description provided for @generated.
   ///
@@ -1542,12 +1584,6 @@ abstract class AppLocalizations {
   /// **'no certifications yet.'**
   String get noCertifications;
 
-  /// No description provided for @noCompletedCVs.
-  ///
-  /// In en, this message translates to:
-  /// **'no generated cvs yet'**
-  String get noCompletedCVs;
-
   /// No description provided for @noDrafts.
   ///
   /// In en, this message translates to:
@@ -1769,12 +1805,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'fill in data once, generate thousands of cvs without retyping. save time, focus on \"grinding\".'**
   String get onboardingSubtitle;
-
-  /// No description provided for @openPDF.
-  ///
-  /// In en, this message translates to:
-  /// **'open pdf'**
-  String get openPDF;
 
   /// No description provided for @or.
   ///
@@ -2537,12 +2567,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'until now'**
   String get untilNow;
-
-  /// No description provided for @untitled.
-  ///
-  /// In en, this message translates to:
-  /// **'untitled'**
-  String get untitled;
 
   /// No description provided for @uploadInstruction.
   ///

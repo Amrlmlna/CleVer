@@ -97,6 +97,21 @@
   "download": "download",
   "downloadPDF": "download pdf",
   "downloadPDFDescription": "this pdf is stored in the cloud. would you like to download it now?",
+  "downloadComplete": "download complete",
+  "downloadFailed": "download failed: {error}",
+  "@downloadFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "downloading": "downloading...",
+  "finalStatus": "final",
+  "untitled": "untitled",
+  "openPDF": "open pdf",
+  "noCompletedCVs": "no completed cvs",
+  "generateCVFirst": "generate your first cv now",
   "cvs": "cvs",
   "dateLabel": "date:",
   "degree": "degree / major",

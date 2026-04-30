@@ -97,6 +97,17 @@
   "download": "unduh",
   "downloadPDF": "unduh pdf",
   "downloadPDFDescription": "pdf ini tersimpan di cloud. apakah anda ingin mengunduhnya sekarang?",
+  "downloadComplete": "unduhan selesai",
+  "downloadFailed": "unduhan gagal: {error}",
+  "@downloadFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "downloading": "mengunduh...",
+  "finalStatus": "final",
   "cvs": "cv",
   "dateLabel": "tanggal:",
   "degree": "gelar / jurusan",

@@ -19,7 +19,6 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
   Future<List<CompletedCV>> build() async {
     final cvs = await _loadFromStorage();
 
-    // Trigger migration check in the background
     _migrationCheck();
 
     return cvs;
@@ -57,7 +56,6 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
     for (int i = 0; i < updatedList.length; i++) {
       final cv = updatedList[i];
 
-      // 1. Recover remotePath from existing URL if missing (RESCUE MISSION)
       if (cv.remotePath == null && cv.remotePdfUrl != null) {
         final recoveredPath = _recoverPathFromUrl(cv.remotePdfUrl!);
         if (recoveredPath != null) {
@@ -66,12 +64,10 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
           );
           updatedList[i] = updatedList[i].copyWith(remotePath: recoveredPath);
           hasChanges = true;
-          // Continue with this updated version
           await syncManager.syncCVNow(updatedList[i]);
         }
       }
 
-      // 2. If local CV is missing a remote URL or path, upload it to "re-link" it to the cloud
       if (updatedList[i].remotePdfUrl == null ||
           updatedList[i].remotePath == null) {
         final file = File(updatedList[i].pdfPath);
@@ -90,7 +86,6 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
           }
         }
       } else {
-        // If it HAS everything but isn't in Firestore metadata yet, sync it
         await syncManager.syncCVNow(updatedList[i]);
       }
     }
@@ -104,17 +99,12 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
   String? _recoverPathFromUrl(String url) {
     try {
       final uri = Uri.parse(url);
-      // GCS URLs are usually https://storage.googleapis.com/[bucket]/[path]
-      // or https://[bucket].storage.googleapis.com/[path]
       if (uri.host == 'storage.googleapis.com') {
         final segments = uri.pathSegments;
         if (segments.length >= 2) {
-          // Structure: /bucket-name/pdfs/uid/file.pdf
-          // We want: pdfs/uid/file.pdf
           return segments.skip(1).join('/');
         }
       } else if (uri.host.contains('.storage.googleapis.com')) {
-        // Structure: /pdfs/uid/file.pdf
         return uri.pathSegments.join('/');
       }
     } catch (e) {
@@ -131,11 +121,9 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
     for (final remote in remoteCVs) {
       final existsIndex = updatedList.indexWhere((l) => l.id == remote.id);
       if (existsIndex == -1) {
-        // New CV from cloud
         updatedList.add(remote);
         hasChanges = true;
       } else {
-        // Update local with remote URL and path if missing
         final local = updatedList[existsIndex];
         if ((local.remotePdfUrl == null && remote.remotePdfUrl != null) ||
             (local.remotePath == null && remote.remotePath != null)) {
@@ -161,7 +149,6 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
     await _saveToStorage(updated);
     state = AsyncData(updated);
 
-    // Immediate cloud sync
     await ref.read(completedCVSyncProvider).syncCVNow(cv);
   }
 
@@ -169,7 +156,6 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
     final current = state.value ?? [];
     final cv = current.firstWhere((c) => c.id == id);
 
-    // Delete local files
     final pdfFile = File(cv.pdfPath);
     if (await pdfFile.exists()) await pdfFile.delete();
     if (cv.thumbnailPath != null) {
@@ -177,7 +163,6 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
       if (await thumbFile.exists()) await thumbFile.delete();
     }
 
-    // Delete from Firestore
     await ref.read(completedCVSyncProvider).deleteCV(id);
 
     final updated = current.where((c) => c.id != id).toList();
@@ -185,48 +170,84 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
     state = AsyncData(updated);
   }
 
-  Future<void> downloadCVFile(CompletedCV cv) async {
-    state = const AsyncLoading();
+  Future<void> downloadCVFile(CompletedCV cv, WidgetRef ref) async {
+    final downloadingSet = ref.read(downloadingCVsProvider.notifier);
+    downloadingSet.update((state) => {...state, cv.id});
+
+    debugPrint("[Download] Starting download for CV: ${cv.id}");
+    debugPrint("[Download] Remote Path: ${cv.remotePath}");
+    debugPrint("[Download] Original URL: ${cv.remotePdfUrl}");
+
     try {
       String? downloadUrl = cv.remotePdfUrl;
+      String? effectiveRemotePath = cv.remotePath;
 
-      // If we have a remote path, always try to get a FRESH signed URL
-      // to avoid 400 Bad Request from expired links
-      if (cv.remotePath != null) {
+      if (effectiveRemotePath == null || effectiveRemotePath.isEmpty) {
+        if (cv.remotePdfUrl != null) {
+          effectiveRemotePath = _recoverPathFromUrl(cv.remotePdfUrl!);
+          if (effectiveRemotePath != null) {
+            debugPrint(
+              "[Download] Proactively recovered path: $effectiveRemotePath",
+            );
+
+            final updatedCV = cv.copyWith(remotePath: effectiveRemotePath);
+            final current = state.value ?? [];
+            final updatedList = current
+                .map((item) => item.id == cv.id ? updatedCV : item)
+                .toList();
+            await _saveToStorage(updatedList);
+            state = AsyncData(updatedList);
+
+            await ref.read(completedCVSyncProvider).syncCVNow(updatedCV);
+          }
+        }
+      }
+
+      if (effectiveRemotePath != null && effectiveRemotePath.isNotEmpty) {
         try {
           final authHeaders = await ApiConfig.getAuthHeaders();
           final refreshUri = Uri.parse(
             '${ApiConfig.baseUrl}/cv/url',
-          ).replace(queryParameters: {'path': cv.remotePath});
+          ).replace(queryParameters: {'path': effectiveRemotePath});
+
+          debugPrint("[Download] Refreshing URL via: $refreshUri");
 
           final refreshResponse = await http.get(
             refreshUri,
             headers: authHeaders,
           );
+
           if (refreshResponse.statusCode == 200) {
             final data = jsonDecode(refreshResponse.body);
             downloadUrl = data['pdfUrl'];
+            debugPrint("[Download] URL refreshed successfully.");
+          } else {
+            debugPrint(
+              "[Download] URL refresh FAILED: ${refreshResponse.statusCode} - ${refreshResponse.body}",
+            );
           }
         } catch (e) {
-          debugPrint("Failed to refresh signed URL: $e");
-          // Fallback to original URL if refresh fails
+          debugPrint("[Download] Exception during URL refresh: $e");
         }
       }
 
       if (downloadUrl == null || downloadUrl.isEmpty) {
-        throw Exception("No download URL available");
+        throw Exception("No download URL available. Please sync first.");
       }
 
+      debugPrint("[Download] Fetching file from: $downloadUrl");
       final response = await http.get(Uri.parse(downloadUrl));
+
       if (response.statusCode == 200) {
         final bytes = response.bodyBytes;
-
         final storageDir = await getStorageDir();
         final fileName = cv.pdfPath.split('/').last;
         final localFile = File("${storageDir.path}/$fileName");
-        await localFile.writeAsBytes(bytes);
 
-        // Regenerate thumbnail locally
+        await localFile.writeAsBytes(bytes);
+        debugPrint("[Download] File saved to: ${localFile.path}");
+
+        // 3. Regenerate thumbnail locally
         String? thumbnailPath;
         try {
           final thumbDir = await getThumbnailDir();
@@ -248,7 +269,7 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
           await page.close();
           await document.close();
         } catch (e) {
-          debugPrint("Failed to regenerate thumbnail: $e");
+          debugPrint("[Download] Thumbnail regeneration failed: $e");
         }
 
         final updatedCV = cv.copyWith(
@@ -256,18 +277,29 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
           thumbnailPath: thumbnailPath,
         );
 
-        final current = await _loadFromStorage();
+        final current = state.value ?? [];
         final updatedList = current
             .map((item) => item.id == cv.id ? updatedCV : item)
             .toList();
 
         await _saveToStorage(updatedList);
         state = AsyncData(updatedList);
+        debugPrint("[Download] State updated successfully.");
       } else {
-        throw Exception("Failed to download PDF: ${response.statusCode}");
+        debugPrint(
+          "[Download] GCS Download FAILED: ${response.statusCode} - ${response.body}",
+        );
+        throw Exception(
+          "GCS Error ${response.statusCode}: Link expired or invalid.",
+        );
       }
     } catch (e) {
-      state = AsyncError(e, StackTrace.current);
+      debugPrint("[Download] Critical failure: $e");
+      rethrow;
+    } finally {
+      downloadingSet.update(
+        (state) => state.where((id) => id != cv.id).toSet(),
+      );
     }
   }
 
@@ -292,5 +324,7 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
 
 final completedCVProvider =
     AsyncNotifierProvider<CompletedCVNotifier, List<CompletedCV>>(
-      CompletedCVNotifier.new,
+      () => CompletedCVNotifier(),
     );
+
+final downloadingCVsProvider = StateProvider<Set<String>>((ref) => {});
