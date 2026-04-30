@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
+import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../providers/signup_controller.dart';
@@ -60,47 +60,75 @@ class SignupPage extends ConsumerWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Theme.of(context).iconTheme.color,
+      backgroundColor: AppColors.white,
+      body: Stack(
+        children: [
+          Positioned(
+            right: -60,
+            top: 100,
+            child: Icon(
+              Icons.lock_person_outlined,
+              size: 320,
+              color: Colors.black.withValues(alpha: 0.03),
+            ),
           ),
-          onPressed: () => context.pop(),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SignupHeader(),
-              const SizedBox(height: 32),
-              const SignupForm(),
-              const SizedBox(height: 24),
-              SocialLoginSection(
-                onGoogleSignIn: () async {
-                  _showLoadingOverlay(context, l10n.googleSignInSuccess);
-                  final success = await ref
-                      .read(signupControllerProvider.notifier)
-                      .signUpWithGoogle();
 
-                  if (context.mounted) {
-                    if (success) {
-                      Navigator.of(context).pop();
-                      context.go('/');
-                    }
-                  }
-                },
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SignupHeader(),
+                  const SizedBox(height: 48),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 32),
+                    child: SignupForm(),
+                  ),
+                  const SizedBox(height: 40),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: SocialLoginSection(
+                      onGoogleSignIn: () async {
+                        _showLoadingOverlay(context, l10n.googleSignInSuccess);
+                        final success = await ref
+                            .read(signupControllerProvider.notifier)
+                            .signUpWithGoogle();
+
+                        if (context.mounted) {
+                          if (success) {
+                            Navigator.of(context).pop();
+                            context.go('/');
+                          }
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 32),
+                    child: LoginFooter(),
+                  ),
+                ],
               ),
-              const SizedBox(height: 24),
-              const LoginFooter(),
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            top: 16,
+            left: 16,
+            child: SafeArea(
+              child: IconButton(
+                onPressed: () => context.pop(),
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                style: IconButton.styleFrom(
+                  backgroundColor: AppColors.grey100,
+                  foregroundColor: AppColors.black,
+                  padding: const EdgeInsets.all(12),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/theme/app_colors.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class SignUpFooter extends StatelessWidget {
@@ -12,12 +13,19 @@ class SignUpFooter extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(l10n.dontHaveAccount),
+        Text(
+          l10n.dontHaveAccount,
+          style: const TextStyle(color: AppColors.grey500),
+        ),
         TextButton(
           onPressed: () => context.push('/signup'),
           child: Text(
-            l10n.signUp,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            l10n.signUp.toUpperCase(),
+            style: const TextStyle(
+              fontWeight: FontWeight.w900,
+              color: AppColors.vibrantPurple,
+              letterSpacing: 0.5,
+            ),
           ),
         ),
       ],

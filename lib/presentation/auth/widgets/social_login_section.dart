@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/theme/app_colors.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../widgets/social_login_button.dart';
 
@@ -10,31 +11,32 @@ class SocialLoginSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
       children: [
         Row(
           children: [
-            Expanded(child: Divider(color: colorScheme.outlineVariant)),
+            const Expanded(child: Divider(color: AppColors.grey200)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                l10n.or,
-                style: textTheme.bodyMedium?.copyWith(
-                  color: colorScheme.onSurface.withValues(alpha: 0.6),
+                l10n.or.toUpperCase(),
+                style: textTheme.labelSmall?.copyWith(
+                  color: AppColors.grey400,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1.0,
                 ),
               ),
             ),
-            Expanded(child: Divider(color: colorScheme.outlineVariant)),
+            const Expanded(child: Divider(color: AppColors.grey200)),
           ],
         ),
         const SizedBox(height: 24),
         SocialLoginButton(
           onPressed: onGoogleSignIn,
-          text: l10n.continueWithGoogle,
-          icon: Image.asset('assets/images/google_logo.png', height: 24),
+          text: l10n.continueWithGoogle.toUpperCase(),
+          icon: Image.asset('assets/images/google_logo.png', height: 20),
           isLoading: false,
         ),
       ],

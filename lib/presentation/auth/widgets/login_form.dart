@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../providers/login_controller.dart';
-import '../widgets/gradient_button.dart';
 
 class LoginForm extends ConsumerStatefulWidget {
   const LoginForm({super.key});
@@ -61,6 +61,37 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     }
   }
 
+  InputDecoration _buildIndustrialDecoration(
+    String label,
+    IconData icon, {
+    Widget? suffixIcon,
+  }) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(
+        color: AppColors.grey500,
+        fontWeight: FontWeight.w600,
+      ),
+      prefixIcon: Icon(icon, color: AppColors.black, size: 20),
+      suffixIcon: suffixIcon,
+      filled: true,
+      fillColor: AppColors.grey100,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide.none,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide.none,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: const BorderSide(color: AppColors.black, width: 2),
+      ),
+      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -74,9 +105,10 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           TextFormField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              labelText: l10n.email,
-              prefixIcon: const Icon(Icons.email_outlined),
+            style: const TextStyle(fontWeight: FontWeight.w600),
+            decoration: _buildIndustrialDecoration(
+              l10n.email,
+              Icons.email_outlined,
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -89,12 +121,15 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           TextFormField(
             controller: _passwordController,
             obscureText: !_isPasswordVisible,
-            decoration: InputDecoration(
-              labelText: l10n.password,
-              prefixIcon: const Icon(Icons.lock_outline),
+            style: const TextStyle(fontWeight: FontWeight.w600),
+            decoration: _buildIndustrialDecoration(
+              l10n.password,
+              Icons.lock_outline_rounded,
               suffixIcon: IconButton(
                 icon: Icon(
                   _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: AppColors.grey400,
+                  size: 20,
                 ),
                 onPressed: () =>
                     setState(() => _isPasswordVisible = !_isPasswordVisible),
@@ -107,12 +142,38 @@ class _LoginFormState extends ConsumerState<LoginForm> {
               return null;
             },
           ),
-          const SizedBox(height: 24),
-          GradientButton(
-            onPressed: isLoading ? null : _handleSubmit,
-            text: l10n.login,
-            icon: const Icon(Icons.email_outlined, color: Colors.white),
-            isLoading: isLoading,
+          const SizedBox(height: 32),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: isLoading ? null : _handleSubmit,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.black,
+                foregroundColor: AppColors.white,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                elevation: 0,
+              ),
+              child: isLoading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                        color: AppColors.white,
+                      ),
+                    )
+                  : Text(
+                      l10n.login.toUpperCase(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16,
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+            ),
           ),
         ],
       ),

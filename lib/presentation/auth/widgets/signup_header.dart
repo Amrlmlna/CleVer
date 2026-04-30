@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../home/widgets/mascot_header.dart';
+import '../../home/models/mascot_state.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class SignupHeader extends StatelessWidget {
@@ -8,30 +11,62 @@ class SignupHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/icon/new_logo.png', height: 40),
-            const SizedBox(width: 12),
-            Text('clever', style: textTheme.displayLarge),
-          ],
+        Container(
+          width: double.infinity,
+          clipBehavior: Clip.antiAlias,
+          decoration: const BoxDecoration(
+            color: AppColors.grey100,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(40),
+              bottomRight: Radius.circular(40),
+            ),
+          ),
+          padding: const EdgeInsets.only(top: 60),
+          child: const MascotHeader(
+            expression: MascotExpression.exciting,
+            mascotColor: AppColors.vibrantPurple,
+          ),
         ),
+
         const SizedBox(height: 48),
-        Text(
-          l10n.createAccount,
-          textAlign: TextAlign.center,
-          style: textTheme.displayMedium,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          l10n.createAccountSubtitle,
-          textAlign: TextAlign.center,
-          style: textTheme.bodyLarge?.copyWith(
-            color: colorScheme.onSurface.withValues(alpha: 0.6),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.createAccount.toUpperCase(),
+                style: textTheme.headlineLarge?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  color: AppColors.black,
+                  fontSize: 42,
+                  letterSpacing: -2.0,
+                  height: 0.9,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Container(
+                width: 60,
+                height: 6,
+                decoration: BoxDecoration(
+                  color: AppColors.vibrantPurple,
+                  borderRadius: BorderRadius.circular(3),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                l10n.createAccountSubtitle,
+                style: textTheme.bodyLarge?.copyWith(
+                  color: AppColors.grey600,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: -0.2,
+                ),
+              ),
+            ],
           ),
         ),
       ],
