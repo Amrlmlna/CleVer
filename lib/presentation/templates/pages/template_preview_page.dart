@@ -9,7 +9,6 @@ import '../../profile/providers/profile_provider.dart';
 import '../../../core/providers/locale_provider.dart';
 import '../../../../core/services/payment_service.dart';
 import '../../auth/utils/auth_guard.dart';
-import '../../home/providers/paywall_provider.dart';
 import '../../home/providers/review_check_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:go_router/go_router.dart';
