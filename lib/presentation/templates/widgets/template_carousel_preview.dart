@@ -24,7 +24,7 @@ class TemplateCarouselPreview extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return AspectRatio(
-      aspectRatio: 0.7,
+      aspectRatio: 210 / 297, // Exact A4 Aspect Ratio
       child: Container(
         decoration: BoxDecoration(
           color: colorScheme.surfaceContainerHighest,
@@ -42,7 +42,7 @@ class TemplateCarouselPreview extends StatelessWidget {
           child: previewUrls.isEmpty
               ? CachedNetworkImage(
                   imageUrl: thumbnailUrl,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                   placeholder: (context, url) =>
                       const Center(child: CircularProgressIndicator()),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -57,7 +57,7 @@ class TemplateCarouselPreview extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return CachedNetworkImage(
                           imageUrl: previewUrls[index],
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           placeholder: (context, url) => Center(
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
