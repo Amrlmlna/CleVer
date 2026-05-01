@@ -170,9 +170,16 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
     try {
       final repository = ref.read(cvRepositoryProvider);
       final locale = ref.read(localeNotifierProvider);
+      
+      String? instruction;
+      if (_titleCtrl.text.isNotEmpty || _companyCtrl.text.isNotEmpty) {
+        instruction = "Rewrite this job description to be high-impact and professional for a ${_titleCtrl.text} role${_companyCtrl.text.isNotEmpty ? " at ${_companyCtrl.text}" : ""}. Use the Google XYZ formula (Accomplished X by Y doing Z) and strong action verbs.";
+      }
+
       final newText = await repository.rewriteContent(
         _descCtrl.text,
         locale: locale.languageCode,
+        instruction: instruction,
       );
 
       if (mounted) {

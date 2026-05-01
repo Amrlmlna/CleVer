@@ -39,13 +39,14 @@ class RemoteCVDataSource {
     }
   }
 
-  Future<String> rewriteContent(String originalText, {String? locale}) async {
+  Future<String> rewriteContent(String originalText, {String? locale, String? instruction}) async {
     final response = await _httpClient.post(
       Uri.parse('$_cvBaseUrl/rewrite'),
       headers: await ApiConfig.getAuthHeaders(),
       body: jsonEncode({
         'originalText': originalText,
         if (locale != null) 'locale': locale,
+        if (instruction != null) 'instruction': instruction,
       }),
     );
 

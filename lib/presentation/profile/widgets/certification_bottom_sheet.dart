@@ -48,7 +48,9 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _issuerController;
+  late TextEditingController _descController;
   late DateTime _selectedDate;
+  bool _isRewriting = false;
   bool _canPopNow = false;
 
   @override
@@ -58,6 +60,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
     _issuerController = TextEditingController(
       text: widget.existing?.issuer ?? '',
     );
+    _descController = TextEditingController(text: widget.existing?.description ?? '');
     _selectedDate = widget.existing?.date ?? DateTime.now();
   }
 
@@ -65,12 +68,14 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
   void dispose() {
     _nameController.dispose();
     _issuerController.dispose();
+    _descController.dispose();
     super.dispose();
   }
 
   bool get _isDirty {
     return _nameController.text != (widget.existing?.name ?? '') ||
         _issuerController.text != (widget.existing?.issuer ?? '') ||
+        _descController.text != (widget.existing?.description ?? '') ||
         _selectedDate != (widget.existing?.date ?? _selectedDate);
   }
 
@@ -94,6 +99,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                 DateTime.now().millisecondsSinceEpoch.toString(),
             name: _nameController.text,
             issuer: _issuerController.text,
+            description: _descController.text,
             date: _selectedDate,
           );
         }
@@ -104,6 +110,48 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
     if (result == true && mounted) {
       setState(() => _canPopNow = true);
       Navigator.pop(context, savedCert);
+    }
+  }
+
+  Future<void> _rewriteDescription() async {
+    if (_descController.text.isEmpty) {
+      CustomSnackBar.showWarning(
+        context,
+        AppLocalizations.of(context)!.fillDescriptionFirst,
+      );
+      return;
+    }
+
+    setState(() {
+      _isRewriting = true;
+    });
+
+    try {
+      final repository = ref.read(cvRepositoryProvider);
+      final locale = ref.read(localeNotifierProvider);
+      
+      String? instruction;
+      if (_nameController.text.isNotEmpty || _issuerController.text.isNotEmpty) {
+        instruction = "Rewrite this certification description to be professional for the ${_nameController.text} certificate${_issuerController.text.isNotEmpty ? " issued by ${_issuerController.text}" : ""}. Focus on the skills validated and the professional significance of this certification.";
+      }
+
+      final newText = await repository.rewriteContent(
+        _descController.text,
+        locale: locale.languageCode,
+        instruction: instruction,
+      );
+
+      if (mounted) {
+        setState(() {
+          _descController.text = newText;
+          _isRewriting = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isRewriting = false);
+        CustomSnackBar.showError(context, 'Gagal rewrite: $e');
+      }
     }
   }
 
@@ -229,6 +277,68 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                         ],
                       ),
                     ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        localization.shortDescription,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      _isRewriting
+                          ? SizedBox(
+                              height: 16,
+                              width: 100,
+                              child: SpinningTextLoader(
+                                texts: [
+                                  localization.improving,
+                                  localization.rephrasing,
+                                  localization.polishing,
+                                ],
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                interval: const Duration(milliseconds: 800),
+                              ),
+                            )
+                          : TextButton.icon(
+                              onPressed: _rewriteDescription,
+                              icon: Icon(
+                                Icons.auto_awesome,
+                                size: 14,
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                              label: Text(
+                                localization.rewriteAI,
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(0, 0),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                            ),
+                    ],
+                  ),
+                  CustomTextFormField(
+                    controller: _descController,
+                    labelText: '',
+                    hintText: localization.jobDescriptionHint, // Using generic hint
+                    maxLines: 3,
                   ),
                   const SizedBox(height: 32),
                   SheetActionButtons(onSave: _save, onCancel: _handlePop),

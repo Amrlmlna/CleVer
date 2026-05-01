@@ -56,6 +56,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
   late TextEditingController _gpaCtrl;
   late List<Subject> _subjects;
   bool _canPopNow = false;
+  bool _isRewriting = false;
 
   @override
   void initState() {
@@ -143,6 +144,48 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
       );
       setState(() => _canPopNow = true);
       Navigator.pop(context, edu);
+    }
+  }
+
+  Future<void> _rewriteDescription() async {
+    if (_descCtrl.text.isEmpty) {
+      CustomSnackBar.showWarning(
+        context,
+        AppLocalizations.of(context)!.fillDescriptionFirst,
+      );
+      return;
+    }
+
+    setState(() {
+      _isRewriting = true;
+    });
+
+    try {
+      final repository = ref.read(cvRepositoryProvider);
+      final locale = ref.read(localeNotifierProvider);
+      
+      String? instruction;
+      if (_schoolCtrl.text.isNotEmpty || _degreeCtrl.text.isNotEmpty) {
+        instruction = "Rewrite this education description to be professional for a ${_degreeCtrl.text} degree${_schoolCtrl.text.isNotEmpty ? " from ${_schoolCtrl.text}" : ""}. Focus on relevant coursework, academic achievements, and skills acquired.";
+      }
+
+      final newText = await repository.rewriteContent(
+        _descCtrl.text,
+        locale: locale.languageCode,
+        instruction: instruction,
+      );
+
+      if (mounted) {
+        setState(() {
+          _descCtrl.text = newText;
+          _isRewriting = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isRewriting = false);
+        CustomSnackBar.showError(context, 'Gagal rewrite: $e');
+      }
     }
   }
 
@@ -241,9 +284,64 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                     ],
                   ),
                   const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        localization.educationDescriptionLabel,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      _isRewriting
+                          ? SizedBox(
+                              height: 16,
+                              width: 100,
+                              child: SpinningTextLoader(
+                                texts: [
+                                  localization.improving,
+                                  localization.rephrasing,
+                                  localization.polishing,
+                                ],
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                interval: const Duration(milliseconds: 800),
+                              ),
+                            )
+                          : TextButton.icon(
+                              onPressed: _rewriteDescription,
+                              icon: Icon(
+                                Icons.auto_awesome,
+                                size: 14,
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                              label: Text(
+                                localization.rewriteAI,
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(0, 0),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                            ),
+                    ],
+                  ),
                   CustomTextFormField(
                     controller: _descCtrl,
-                    labelText: localization.educationDescriptionLabel,
+                    labelText: '', // Label is now in the Row above
                     hintText: localization.educationDescriptionHint,
                     maxLines: 3,
                   ),

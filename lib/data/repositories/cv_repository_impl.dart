@@ -36,11 +36,12 @@ class CVRepositoryImpl implements CVRepository {
   }
 
   @override
-  Future<String> rewriteContent(String originalText, {String? locale}) async {
+  Future<String> rewriteContent(String originalText, {String? locale, String? instruction}) async {
     try {
       return await remoteDataSource.rewriteContent(
         originalText,
         locale: locale,
+        instruction: instruction,
       );
     } catch (e) {
       throw DataErrorMapper.map(e);
