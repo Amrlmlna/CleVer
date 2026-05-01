@@ -93,8 +93,6 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Theme(
       data: AppTheme.sheetTheme,
@@ -102,9 +100,11 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
         builder: (context) {
           final sheetTheme = Theme.of(context);
           return Container(
-            decoration: const BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+            decoration: BoxDecoration(
+              color: sheetTheme.colorScheme.surface,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(32),
+              ),
             ),
             padding: const EdgeInsets.only(bottom: 32),
             child: Stack(
@@ -116,7 +116,9 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                   child: Icon(
                     Icons.lock_person_outlined,
                     size: 240,
-                    color: Colors.black.withValues(alpha: 0.04),
+                    color: sheetTheme.colorScheme.onSurface.withValues(
+                      alpha: 0.04,
+                    ),
                   ),
                 ),
 
@@ -129,7 +131,7 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                         height: 5,
                         margin: const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
-                          color: AppColors.grey200,
+                          color: sheetTheme.colorScheme.outlineVariant,
                           borderRadius: BorderRadius.circular(2.5),
                         ),
                       ),
@@ -140,9 +142,9 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                     Container(
                       width: double.infinity,
                       clipBehavior: Clip.antiAlias,
-                      decoration: const BoxDecoration(
-                        color: AppColors.grey100,
-                        borderRadius: BorderRadius.only(
+                      decoration: BoxDecoration(
+                        color: sheetTheme.colorScheme.surfaceContainerHighest,
+                        borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(40),
                           bottomRight: Radius.circular(40),
                         ),
@@ -164,19 +166,20 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                             (widget.featureTitle ?? l10n.loginToSave)
                                 .toUpperCase(),
                             textAlign: TextAlign.center,
-                            style: textTheme.headlineMedium?.copyWith(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 26,
-                              letterSpacing: -1.0,
-                              height: 1.1,
-                            ),
+                            style: sheetTheme.textTheme.headlineMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 26,
+                                  letterSpacing: -1.0,
+                                  height: 1.1,
+                                ),
                           ),
                           const SizedBox(height: 12),
                           Text(
                             widget.featureDescription ?? l10n.syncAnywhere,
                             textAlign: TextAlign.center,
-                            style: textTheme.bodyMedium?.copyWith(
-                              color: AppColors.grey600,
+                            style: sheetTheme.textTheme.bodyMedium?.copyWith(
+                              color: sheetTheme.colorScheme.onSurfaceVariant,
                               height: 1.5,
                               fontWeight: FontWeight.w500,
                             ),
@@ -213,8 +216,9 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                               icon: const Icon(Icons.email_outlined, size: 20),
                               label: Text(l10n.login.toUpperCase()),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.black,
-                                foregroundColor: AppColors.white,
+                                backgroundColor: sheetTheme.colorScheme.primary,
+                                foregroundColor:
+                                    sheetTheme.colorScheme.onPrimary,
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 18,
                                 ),

@@ -18,7 +18,6 @@ class OnboardingImportStep extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
@@ -26,17 +25,21 @@ class OnboardingImportStep extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            AppLocalizations.of(context)!.alreadyHaveCV,
-            style: textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w700,
+            AppLocalizations.of(context)!.alreadyHaveCV.toUpperCase(),
+            style: TextStyle(
+              fontWeight: FontWeight.w900,
+              fontSize: 24,
               color: colorScheme.onSurface,
+              letterSpacing: -1.0,
+              height: 1.0,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           Text(
             AppLocalizations.of(context)!.alreadyHaveCVSubtitle,
-            style: textTheme.bodyMedium?.copyWith(
+            style: TextStyle(
               color: colorScheme.onSurfaceVariant,
+              fontSize: 14,
               height: 1.5,
             ),
           ),
@@ -79,19 +82,18 @@ class _OptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             border: Border.all(color: colorScheme.outlineVariant),
-            borderRadius: BorderRadius.circular(16),
-            color: colorScheme.surfaceContainer,
+            borderRadius: BorderRadius.circular(20),
+            color: colorScheme.surfaceContainerHighest,
           ),
           child: Row(
             children: [
@@ -100,25 +102,33 @@ class _OptionCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
-                      style: textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
+                      title.toUpperCase(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 14,
                         color: colorScheme.onSurface,
+                        letterSpacing: 0.5,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 8),
                     Text(
                       subtitle,
-                      style: textTheme.bodySmall?.copyWith(
+                      style: TextStyle(
                         color: colorScheme.onSurfaceVariant,
+                        fontSize: 12,
                         height: 1.4,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
-              Icon(Icons.chevron_right, color: colorScheme.onSurfaceVariant),
+              const SizedBox(width: 16),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: colorScheme.onSurface,
+                size: 20,
+              ),
             ],
           ),
         ),

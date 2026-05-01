@@ -147,10 +147,22 @@ class _TopSnackBarState extends State<_TopSnackBar>
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final topPadding = MediaQuery.of(context).padding.top;
 
+    Color statusColor;
+    if (widget.icon == Icons.check_circle_outline) {
+      statusColor = const Color(0xFFB9D870);
+    } else if (widget.icon == Icons.error_outline) {
+      statusColor = colorScheme.error;
+    } else if (widget.icon == Icons.warning_amber_rounded) {
+      statusColor = const Color(0xFFF59E0B);
+    } else {
+      statusColor = colorScheme.primary;
+    }
+
     return Positioned(
-      top: topPadding + 1,
+      top: topPadding + 12,
       left: 16,
       right: 16,
       child: Material(
@@ -168,52 +180,59 @@ class _TopSnackBarState extends State<_TopSnackBar>
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 24.0, sigmaY: 24.0),
-                  child: CustomPaint(
-                    painter: _LiquidGlassSnackBarPainter(),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
+                  filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                    decoration: BoxDecoration(
+                      color: colorScheme.onSurface.withValues(alpha: 0.9),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: colorScheme.outlineVariant.withValues(
+                          alpha: 0.3,
+                        ),
+                        width: 1,
                       ),
-                      decoration: BoxDecoration(
-                        // Very transparent dark base so the blur + highlights are visible
-                        color: Colors.black.withValues(alpha: 0.25),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.12),
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.2),
-                                width: 0.5,
-                              ),
-                            ),
-                            child: Icon(
-                              widget.icon,
-                              color: Colors.white.withValues(alpha: 0.9),
-                              size: 20,
+                      boxShadow: [
+                        BoxShadow(
+                          color: colorScheme.shadow.withValues(alpha: 0.1),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 4,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            color: statusColor,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Text(
+                            widget.message.toUpperCase(),
+                            style: TextStyle(
+                              color: colorScheme.surface,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 0.5,
+                              height: 1.1,
                             ),
                           ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              widget.message,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'Outfit',
-                                height: 1.2,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(width: 12),
+                        Icon(
+                          widget.icon,
+                          color: colorScheme.surface.withValues(alpha: 0.7),
+                          size: 18,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -224,90 +243,4 @@ class _TopSnackBarState extends State<_TopSnackBar>
       ),
     );
   }
-}
-
-/// Custom painter for liquid glass specular highlights and edge glow on the snackbar
-class _LiquidGlassSnackBarPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final rect = Offset.zero & size;
-
-    // Top-left specular highlight
-    final specularPaint = Paint()
-      ..shader = RadialGradient(
-        center: const Alignment(-0.5, -1.5),
-        radius: 1.5,
-        colors: [
-          Colors.white.withValues(alpha: 0.25),
-          Colors.white.withValues(alpha: 0.06),
-          Colors.transparent,
-        ],
-        stops: const [0.0, 0.35, 1.0],
-      ).createShader(rect);
-
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(rect, const Radius.circular(16)),
-      specularPaint,
-    );
-
-    // Bottom-right subtle warm glow
-    final warmGlowPaint = Paint()
-      ..shader = RadialGradient(
-        center: const Alignment(0.8, 1.2),
-        radius: 1.0,
-        colors: [Colors.white.withValues(alpha: 0.08), Colors.transparent],
-        stops: const [0.0, 1.0],
-      ).createShader(rect);
-
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(rect, const Radius.circular(16)),
-      warmGlowPaint,
-    );
-
-    // Top edge thin reflection line
-    final topLinePaint = Paint()
-      ..shader = LinearGradient(
-        begin: const Alignment(-1, 0),
-        end: const Alignment(1, 0),
-        colors: [
-          Colors.transparent,
-          Colors.white.withValues(alpha: 0.3),
-          Colors.white.withValues(alpha: 0.4),
-          Colors.white.withValues(alpha: 0.3),
-          Colors.transparent,
-        ],
-        stops: const [0.0, 0.25, 0.5, 0.75, 1.0],
-      ).createShader(Rect.fromLTWH(0, 0, size.width, 2));
-
-    canvas.drawRRect(
-      RRect.fromRectAndCorners(
-        Rect.fromLTWH(size.width * 0.1, 0, size.width * 0.8, 1.0),
-        topLeft: const Radius.circular(1),
-        topRight: const Radius.circular(1),
-      ),
-      topLinePaint,
-    );
-
-    // Gradient border stroke
-    final borderPaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.0
-      ..shader = LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [
-          Colors.white.withValues(alpha: 0.3),
-          Colors.white.withValues(alpha: 0.08),
-          Colors.white.withValues(alpha: 0.15),
-        ],
-      ).createShader(rect);
-
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(rect, const Radius.circular(16)),
-      borderPaint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

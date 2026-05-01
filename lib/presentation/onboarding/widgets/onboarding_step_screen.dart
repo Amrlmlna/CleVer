@@ -38,7 +38,7 @@ class OnboardingStepScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: 80), // Intentional top spacing for hierarchy
+          const SizedBox(height: 80),
           Text(
                 title,
                 style: (isLargeHeader ? AppTextStyles.h2 : AppTextStyles.h4)
@@ -82,16 +82,15 @@ class OnboardingStepScreen extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.black,
-                          Colors.black.withValues(alpha: 0),
+                          colorScheme.surface,
+                          colorScheme.surface.withValues(alpha: 0),
                         ],
                         stops: const [0.8, 1.0],
                       ).createShader(rect);
                     },
                     blendMode: BlendMode.dstIn,
                     child: ListView(
-                      physics:
-                          const NeverScrollableScrollPhysics(), // No scroll mimic as requested
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
                       children: children.asMap().entries.map((entry) {
@@ -163,11 +162,17 @@ class OnboardingSelectionCard extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? colorScheme.primary
+                          ? colorScheme.onSurface
                           : colorScheme.surfaceContainerHighest.withValues(
-                              alpha: 0.3,
+                              alpha: 0.4,
                             ),
                       borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: isSelected
+                            ? colorScheme.onSurface
+                            : colorScheme.outlineVariant.withValues(alpha: 0.5),
+                        width: 1,
+                      ),
                     ),
                     child: Row(
                       children: [
@@ -175,7 +180,7 @@ class OnboardingSelectionCard extends StatelessWidget {
                           Icon(
                             icon,
                             color: isSelected
-                                ? colorScheme.onPrimary
+                                ? colorScheme.surface
                                 : colorScheme.onSurface.withValues(alpha: 0.5),
                             size: 24,
                           ),
@@ -186,13 +191,11 @@ class OnboardingSelectionCard extends StatelessWidget {
                             text,
                             style: AppTextStyles.bodyLarge.copyWith(
                               fontWeight: isSelected
-                                  ? FontWeight.w700
-                                  : FontWeight.w500,
+                                  ? FontWeight.w900
+                                  : FontWeight.w600,
                               color: isSelected
-                                  ? colorScheme.onPrimary
-                                  : colorScheme.onSurface.withValues(
-                                      alpha: 0.8,
-                                    ),
+                                  ? colorScheme.surface
+                                  : colorScheme.onSurface,
                               letterSpacing: -0.3,
                             ),
                           ),
@@ -200,7 +203,7 @@ class OnboardingSelectionCard extends StatelessWidget {
                         if (isSelected)
                           Icon(
                             Icons.arrow_forward_rounded,
-                            color: colorScheme.onPrimary,
+                            color: colorScheme.surface,
                             size: 20,
                           ).animate().moveX(
                             begin: -4,

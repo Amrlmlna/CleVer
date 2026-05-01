@@ -563,7 +563,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get generatingPdfBadge => 'membuat pdf';
 
   @override
-  String get getStarted => 'masukkan data';
+  String get getStarted => 'bangun master profile';
 
   @override
   String get goHome => 'ke beranda';

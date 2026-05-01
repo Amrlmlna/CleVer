@@ -28,40 +28,41 @@ class DeleteAccountVerificationContent extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
           decoration: BoxDecoration(
-            color: colorScheme.onSurface.withValues(alpha: 0.03),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: colorScheme.onSurface.withValues(alpha: 0.08),
-            ),
+            color: colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: colorScheme.outlineVariant),
           ),
           child: Column(
             children: [
               Text(
-                AppLocalizations.of(context)!.creditBalance,
+                AppLocalizations.of(context)!.creditBalance.toUpperCase(),
                 style: TextStyle(
-                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
-                  fontSize: 12,
-                  fontWeight: FontWeight.normal,
+                  color: colorScheme.onSurfaceVariant,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1.5,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 8),
               Text(
                 "$totalCredits",
                 style: TextStyle(
                   color: colorScheme.onSurface,
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -1,
+                  fontSize: 48,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -2,
+                  height: 1,
                 ),
               ),
+              const SizedBox(height: 4),
               Text(
                 AppLocalizations.of(context)!.totalCreditsLabel.toUpperCase(),
                 style: TextStyle(
-                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
+                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
                   fontSize: 10,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w900,
                   letterSpacing: 2,
                 ),
               ),
@@ -71,34 +72,40 @@ class DeleteAccountVerificationContent extends ConsumerWidget {
         const SizedBox(height: 20),
         if (totalCredits > 0) ...[
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Colors.transparent,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: colorScheme.onSurface.withValues(alpha: 0.1),
-              ),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: colorScheme.outlineVariant),
             ),
-            child: Text(
-              AppLocalizations.of(context)!.creditWarning(totalCredits),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: colorScheme.onSurfaceVariant,
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.warning_amber_rounded,
+                  color: colorScheme.error,
+                  size: 20,
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    AppLocalizations.of(context)!.creditWarning(totalCredits),
+                    style: TextStyle(
+                      color: colorScheme.onSurfaceVariant,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 20),
         ],
-
         Container(
           decoration: BoxDecoration(
-            color: colorScheme.onSurface.withValues(alpha: 0.02),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: colorScheme.onSurface.withValues(alpha: 0.05),
-            ),
+            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: colorScheme.outlineVariant),
           ),
           child: SwitchListTile(
             value: keepLocalData,
@@ -108,14 +115,15 @@ class DeleteAccountVerificationContent extends ConsumerWidget {
               style: TextStyle(
                 color: colorScheme.onSurface,
                 fontSize: 14,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w900,
               ),
             ),
             subtitle: Text(
               AppLocalizations.of(context)!.clearLocalData,
               style: TextStyle(
-                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+                color: colorScheme.onSurfaceVariant,
                 fontSize: 11,
+                fontWeight: FontWeight.w500,
               ),
             ),
             activeThumbColor: colorScheme.primary,

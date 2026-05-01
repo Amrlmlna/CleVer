@@ -10,7 +10,6 @@ class HugeProfileHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mascotContent = ref.watch(mascotProvider);
-    final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
     final title = _getLocalizedText(context, mascotContent.title);
@@ -49,7 +48,7 @@ class HugeProfileHeader extends ConsumerWidget {
                   subtitle,
                   textAlign: mascotContent.textAlign,
                   style: textTheme.bodyMedium?.copyWith(
-                    color: mascotContent.textColor.withOpacity(0.7),
+                    color: mascotContent.textColor.withValues(alpha: 0.7),
                     height: 1.5,
                     fontWeight: FontWeight.w500,
                   ),

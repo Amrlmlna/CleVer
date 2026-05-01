@@ -62,6 +62,7 @@ class _ForgotPasswordBottomSheetState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return Container(
@@ -86,71 +87,86 @@ class _ForgotPasswordBottomSheetState
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
+                  color: colorScheme.outlineVariant,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
             ),
             const SizedBox(height: 32),
-
             Text(
-              AppLocalizations.of(context)!.forgotPassword,
+              l10n.forgotPassword,
               textAlign: TextAlign.center,
               style: textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w900,
+                color: colorScheme.onSurface,
+                letterSpacing: -1.0,
               ),
             ),
             const SizedBox(height: 12),
-
             Text(
-              AppLocalizations.of(context)!.forgotPasswordResetMessage,
+              l10n.forgotPasswordResetMessage,
               textAlign: TextAlign.center,
               style: textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 32),
-
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              style: TextStyle(color: colorScheme.onSurface),
+              style: TextStyle(
+                color: colorScheme.onSurface,
+                fontWeight: FontWeight.w600,
+              ),
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.email,
-                labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
+                labelText: l10n.email,
+                labelStyle: TextStyle(
+                  color: colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w600,
+                ),
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  color: colorScheme.onSurface,
+                  size: 20,
+                ),
                 filled: true,
-                fillColor: colorScheme.onSurface.withValues(alpha: 0.03),
+                fillColor: colorScheme.surfaceContainerHighest,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: colorScheme.outlineVariant),
+                  borderSide: BorderSide.none,
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
-                    color: colorScheme.outlineVariant.withValues(alpha: 0.5),
-                  ),
+                  borderSide: BorderSide.none,
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: colorScheme.outline),
+                  borderSide: BorderSide(
+                    color: colorScheme.onSurface,
+                    width: 2,
+                  ),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 16,
                 ),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return AppLocalizations.of(context)!.pleaseEnterEmail;
+                  return l10n.pleaseEnterEmail;
                 }
                 return null;
               },
             ),
             const SizedBox(height: 24),
-
             SizedBox(
               height: 56,
               child: ElevatedButton(
                 onPressed: _isLoading ? null : _sendResetLink,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: colorScheme.primary,
-                  foregroundColor: colorScheme.onPrimary,
+                  backgroundColor: colorScheme.onSurface,
+                  foregroundColor: colorScheme.surface,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -161,15 +177,16 @@ class _ForgotPasswordBottomSheetState
                         height: 20,
                         width: 20,
                         child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: colorScheme.onPrimary,
+                          strokeWidth: 2.5,
+                          color: colorScheme.surface,
                         ),
                       )
                     : Text(
-                        AppLocalizations.of(context)!.sendResetLink,
+                        l10n.sendResetLink.toUpperCase(),
                         style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 14,
+                          letterSpacing: 1.0,
                         ),
                       ),
               ),

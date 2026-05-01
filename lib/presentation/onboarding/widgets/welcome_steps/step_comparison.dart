@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
-import '../../../auth/widgets/gradient_button.dart';
 import '../onboarding_step_screen.dart';
 
 class StepComparison extends StatelessWidget {
@@ -40,12 +39,11 @@ class StepComparison extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          // Without CleVer
                           Expanded(
                             child: _ComparisonBar(
                               label: l10n.onboardingComparisonLabelLeft,
                               value: l10n.onboardingComparisonValueLeft,
-                              percent: 0.2, // 20%
+                              percent: 0.2,
                               color: colorScheme.onSurfaceVariant.withValues(
                                 alpha: 0.3,
                               ),
@@ -53,12 +51,11 @@ class StepComparison extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 24),
-                          // With CleVer
                           Expanded(
                             child: _ComparisonBar(
                               label: l10n.onboardingComparisonLabelRight,
                               value: l10n.onboardingComparisonValueRight,
-                              percent: 1.0, // 2X / Full
+                              percent: 1.0,
                               isPrimary: true,
                               delay: 700.ms,
                             ),
@@ -88,7 +85,25 @@ class StepComparison extends StatelessWidget {
       ],
       footer: SizedBox(
         width: double.infinity,
-        child: GradientButton(text: l10n.showMeTheWay, onPressed: onNext),
+        child: ElevatedButton(
+          onPressed: onNext,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: colorScheme.onSurface,
+            foregroundColor: colorScheme.surface,
+            padding: const EdgeInsets.symmetric(vertical: 18),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            elevation: 0,
+          ),
+          child: Text(
+            l10n.showMeTheWay.toUpperCase(),
+            style: const TextStyle(
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.0,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -121,8 +136,11 @@ class _ComparisonBar extends StatelessWidget {
         Text(
           label,
           textAlign: TextAlign.center,
-          style: AppTextStyles.labelBold.copyWith(
+          style: TextStyle(
             color: colorScheme.onSurfaceVariant,
+            fontSize: 10,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.0,
           ),
         ).animate().fadeIn(delay: delay - 100.ms),
         const SizedBox(height: 16),
@@ -136,24 +154,13 @@ class _ComparisonBar extends StatelessWidget {
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              // The Bar
               FractionallySizedBox(
                     heightFactor: percent,
                     widthFactor: 1.0,
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        gradient: isPrimary
-                            ? LinearGradient(
-                                colors: [
-                                  colorScheme.primary,
-                                  colorScheme.tertiary,
-                                ],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                              )
-                            : null,
-                        color: !isPrimary ? color : null,
+                        color: isPrimary ? colorScheme.primary : color,
                       ),
                     ),
                   )
@@ -166,8 +173,6 @@ class _ComparisonBar extends StatelessWidget {
                     delay: delay,
                   )
                   .fadeIn(delay: delay + 100.ms),
-
-              // The Value
               Positioned(
                     bottom: 16,
                     child: Text(
@@ -179,7 +184,7 @@ class _ComparisonBar extends StatelessWidget {
                               .copyWith(
                                 fontWeight: FontWeight.w900,
                                 color: isPrimary
-                                    ? Colors.white
+                                    ? colorScheme.surface
                                     : colorScheme.onSurface,
                               ),
                     ),

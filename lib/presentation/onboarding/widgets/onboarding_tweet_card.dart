@@ -21,33 +21,31 @@ class OnboardingTweetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          margin: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: colorScheme.surface.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: colorScheme.onSurface.withValues(alpha: 0.1),
-              width: 0.5,
-            ),
+            color: colorScheme.surface,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: colorScheme.outlineVariant),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  CircleAvatar(
-                    radius: 18,
-                    backgroundColor: colorScheme.primaryContainer.withValues(
-                      alpha: 0.3,
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
-                      Icons.person_rounded,
+                      Icons.person_outline_rounded,
                       size: 20,
-                      color: colorScheme.primary,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -57,38 +55,40 @@ class OnboardingTweetCard extends StatelessWidget {
                       children: [
                         Text(
                           handle,
-                          style: textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
                             color: colorScheme.onSurface,
+                            letterSpacing: -0.5,
                           ),
                         ),
                         Text(
-                          'Just now',
-                          style: textTheme.labelSmall?.copyWith(
-                            color: colorScheme.onSurfaceVariant.withValues(
-                              alpha: 0.6,
-                            ),
+                          'Just now'.toUpperCase(),
+                          style: TextStyle(
+                            color: colorScheme.onSurfaceVariant,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1.0,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Icon(
-                    Icons.more_horiz,
-                    color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
-                  ),
+                  Icon(Icons.more_horiz, color: colorScheme.onSurfaceVariant),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
               Text(
                 content,
-                style: textTheme.bodyMedium?.copyWith(
-                  color: colorScheme.onSurface.withValues(alpha: 0.9),
-                  height: 1.4,
+                style: TextStyle(
+                  color: colorScheme.onSurface,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  height: 1.5,
                   letterSpacing: -0.2,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   _buildStat(
@@ -109,7 +109,11 @@ class OnboardingTweetCard extends StatelessWidget {
                     colorScheme,
                   ),
                   const Spacer(),
-                  _buildStat(Icons.share_outlined, '', colorScheme),
+                  Icon(
+                    Icons.share_outlined,
+                    size: 18,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                 ],
               ),
             ],

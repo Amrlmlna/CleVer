@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import '../../../../core/theme/app_text_styles.dart';
 import '../onboarding_step_screen.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -44,32 +42,34 @@ class StepSelectionList extends StatelessWidget {
             ),
           )
           .toList(),
-      footer:
-          Padding(
-                padding: const EdgeInsets.only(top: 32.0),
-                child: ElevatedButton(
-                  onPressed: selectedOption != null ? onNext : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colorScheme.primary,
-                    foregroundColor: colorScheme.onPrimary,
-                    padding: const EdgeInsets.symmetric(vertical: 22),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    elevation: 0,
-                    disabledBackgroundColor: colorScheme.onSurface.withValues(
-                      alpha: 0.1,
-                    ),
-                  ),
-                  child: Text(
-                    l10n.next.toUpperCase(),
-                    style: AppTextStyles.button.copyWith(letterSpacing: 1.2),
-                  ),
-                ),
-              )
-              .animate(target: selectedOption != null ? 1 : 0)
-              .fadeIn(duration: 200.ms)
-              .slideY(begin: 0.1, end: 0, curve: Curves.easeOutCubic),
+      footer: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: selectedOption != null ? onNext : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: colorScheme.onSurface,
+            foregroundColor: colorScheme.surface,
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            elevation: 0,
+            disabledBackgroundColor: colorScheme.onSurface.withValues(
+              alpha: 0.1,
+            ),
+            disabledForegroundColor: colorScheme.onSurface.withValues(
+              alpha: 0.3,
+            ),
+          ),
+          child: Text(
+            l10n.next.toUpperCase(),
+            style: const TextStyle(
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.0,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -24,8 +24,8 @@ final mascotProvider = Provider<MascotState>((ref) {
 
   final isProfileIncomplete =
       masterProfile == null ||
-      (masterProfile.experience?.isEmpty ?? true) ||
-      (masterProfile.skills?.isEmpty ?? true);
+      masterProfile.experience.isEmpty ||
+      masterProfile.skills.isEmpty;
 
   if (isProfileIncomplete && completedCVs.isNotEmpty) {
     return MascotState(

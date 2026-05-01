@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../providers/login_controller.dart';
@@ -62,20 +61,22 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   }
 
   InputDecoration _buildIndustrialDecoration(
+    BuildContext context,
     String label,
     IconData icon, {
     Widget? suffixIcon,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
     return InputDecoration(
       labelText: label,
-      labelStyle: const TextStyle(
-        color: AppColors.grey500,
+      labelStyle: TextStyle(
+        color: colorScheme.onSurfaceVariant,
         fontWeight: FontWeight.w600,
       ),
-      prefixIcon: Icon(icon, color: AppColors.black, size: 20),
+      prefixIcon: Icon(icon, color: colorScheme.onSurface, size: 20),
       suffixIcon: suffixIcon,
       filled: true,
-      fillColor: AppColors.grey100,
+      fillColor: colorScheme.surfaceContainerHighest,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide.none,
@@ -86,7 +87,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: AppColors.black, width: 2),
+        borderSide: BorderSide(color: colorScheme.onSurface, width: 2),
       ),
       contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
     );
@@ -95,6 +96,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
     final isLoading = ref.watch(loginControllerProvider).isLoading;
 
     return Form(
@@ -107,6 +109,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             keyboardType: TextInputType.emailAddress,
             style: const TextStyle(fontWeight: FontWeight.w600),
             decoration: _buildIndustrialDecoration(
+              context,
               l10n.email,
               Icons.email_outlined,
             ),
@@ -123,12 +126,13 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             obscureText: !_isPasswordVisible,
             style: const TextStyle(fontWeight: FontWeight.w600),
             decoration: _buildIndustrialDecoration(
+              context,
               l10n.password,
               Icons.lock_outline_rounded,
               suffixIcon: IconButton(
                 icon: Icon(
                   _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                  color: AppColors.grey400,
+                  color: colorScheme.onSurfaceVariant,
                   size: 20,
                 ),
                 onPressed: () =>
@@ -148,8 +152,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             child: ElevatedButton(
               onPressed: isLoading ? null : _handleSubmit,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.black,
-                foregroundColor: AppColors.white,
+                backgroundColor: colorScheme.onSurface,
+                foregroundColor: colorScheme.surface,
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -157,12 +161,12 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                 elevation: 0,
               ),
               child: isLoading
-                  ? const SizedBox(
+                  ? SizedBox(
                       height: 20,
                       width: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2.5,
-                        color: AppColors.white,
+                        color: colorScheme.surface,
                       ),
                     )
                   : Text(

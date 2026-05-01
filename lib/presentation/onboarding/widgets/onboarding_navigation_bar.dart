@@ -39,7 +39,6 @@ class OnboardingNavigationBar extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 16.0),
               child: Column(
                 children: [
-                  // Soft helper line
                   Text(
                     AppLocalizations.of(context)!.termsAgreePrefix,
                     textAlign: TextAlign.center,
@@ -53,7 +52,6 @@ class OnboardingNavigationBar extends StatelessWidget {
 
                   const SizedBox(height: 6),
 
-                  // Pill chip row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -68,7 +66,6 @@ class OnboardingNavigationBar extends StatelessWidget {
                         textTheme: textTheme,
                       ),
 
-                      // Separator dot
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Container(
@@ -105,9 +102,9 @@ class OnboardingNavigationBar extends StatelessWidget {
             child: ElevatedButton(
               onPressed: onNext,
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                backgroundColor: colorScheme.primary,
-                foregroundColor: colorScheme.onPrimary,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                backgroundColor: colorScheme.onSurface,
+                foregroundColor: colorScheme.surface,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -125,18 +122,20 @@ class OnboardingNavigationBar extends StatelessWidget {
                         style: textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w900,
                           letterSpacing: 1.0,
+                          color: colorScheme.surface,
                         ),
                         interval: const Duration(milliseconds: 800),
                       ),
                     )
                   : Text(
-                      isLastPage
-                          ? AppLocalizations.of(context)!.startNow
-                          : AppLocalizations.of(context)!.nextStep,
+                      (isLastPage
+                              ? AppLocalizations.of(context)!.startNow
+                              : AppLocalizations.of(context)!.nextStep)
+                          .toUpperCase(),
                       style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w900,
                         letterSpacing: 1.0,
-                        color: colorScheme.onPrimary,
+                        color: colorScheme.surface,
                       ),
                     ),
             ),
@@ -146,7 +145,6 @@ class OnboardingNavigationBar extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                // ← Back: outlined box icon button — no label needed
                 if (currentPage > 0)
                   Material(
                     color: Colors.transparent,
@@ -174,7 +172,6 @@ class OnboardingNavigationBar extends StatelessWidget {
 
                 const Spacer(),
 
-                // Skip: ghost text link — clearly tertiary
                 if (isSkippable && onSkip != null)
                   TextButton(
                     onPressed: onSkip,
@@ -227,17 +224,19 @@ class _LegalChip extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(20),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
           decoration: BoxDecoration(
-            color: colorScheme.onSurface.withValues(alpha: 0.06),
+            color: colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: colorScheme.outlineVariant),
           ),
           child: Text(
-            label,
+            label.toUpperCase(),
             style: textTheme.labelSmall?.copyWith(
-              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.85),
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.1,
+              color: colorScheme.onSurface,
+              fontWeight: FontWeight.w900,
+              fontSize: 9,
+              letterSpacing: 1.0,
             ),
           ),
         ),

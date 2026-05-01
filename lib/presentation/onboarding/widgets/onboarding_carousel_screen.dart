@@ -5,6 +5,7 @@ class OnboardingCarouselScreen extends StatelessWidget {
   final String headline;
   final String? subtext;
   final String? imageAsset;
+  final Widget? header;
   final Widget? footer;
   final bool isCentered;
 
@@ -13,6 +14,7 @@ class OnboardingCarouselScreen extends StatelessWidget {
     required this.headline,
     this.subtext,
     this.imageAsset,
+    this.header,
     this.footer,
     this.isCentered = false,
   });
@@ -24,7 +26,11 @@ class OnboardingCarouselScreen extends StatelessWidget {
 
     return Stack(
       children: [
-        if (imageAsset != null)
+        Positioned.fill(child: Container(color: colorScheme.surface)),
+        if (header != null)
+          Positioned(top: 0, left: 0, right: 0, child: header!),
+
+        if (imageAsset != null && header == null)
           Positioned(
             top: 0,
             left: 0,
@@ -32,11 +38,11 @@ class OnboardingCarouselScreen extends StatelessWidget {
             height: screenHeight * 0.55,
             child: ShaderMask(
               shaderCallback: (rect) {
-                return const LinearGradient(
+                return LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  stops: [0.6, 1.0],
-                  colors: [Colors.white, Colors.transparent],
+                  stops: const [0.6, 1.0],
+                  colors: [colorScheme.surface, Colors.transparent],
                 ).createShader(rect);
               },
               blendMode: BlendMode.dstIn,
@@ -47,49 +53,46 @@ class OnboardingCarouselScreen extends StatelessWidget {
               ),
             ),
           ),
-
-        // Deep Vignette
-        Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: RadialGradient(
-                center: Alignment.center,
-                radius: 1.2,
-                colors: [
-                  Colors.transparent,
-                  Colors.black.withValues(alpha: 0.8),
-                ],
-                stops: const [0.5, 1.0],
+        if (imageAsset != null && header == null)
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  center: Alignment.center,
+                  radius: 1.2,
+                  colors: [
+                    Colors.transparent,
+                    colorScheme.surface.withValues(alpha: 0.8),
+                  ],
+                  stops: const [0.5, 1.0],
+                ),
               ),
             ),
           ),
-        ),
-
-        // Top/Bottom Fade Gradient
-        Positioned(
-          top: isCentered ? null : 0,
-          bottom: isCentered ? 0 : null,
-          left: 0,
-          right: 0,
-          height: isCentered ? 400 : 200,
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: isCentered
-                    ? Alignment.bottomCenter
-                    : Alignment.topCenter,
-                end: isCentered ? Alignment.topCenter : Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withValues(alpha: 0.9),
-                  Colors.transparent,
-                ],
+        if (imageAsset != null && header == null)
+          Positioned(
+            top: isCentered ? null : 0,
+            bottom: isCentered ? 0 : null,
+            left: 0,
+            right: 0,
+            height: isCentered ? 400 : 200,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: isCentered
+                      ? Alignment.bottomCenter
+                      : Alignment.topCenter,
+                  end: isCentered
+                      ? Alignment.topCenter
+                      : Alignment.bottomCenter,
+                  colors: [
+                    colorScheme.surface.withValues(alpha: 0.9),
+                    Colors.transparent,
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-
-        if (imageAsset == null)
-          Positioned.fill(child: Container(color: Colors.black)),
 
         Positioned(
           left: 32,

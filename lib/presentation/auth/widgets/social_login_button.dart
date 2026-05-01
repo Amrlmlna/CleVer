@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/theme/app_colors.dart';
 
 class SocialLoginButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -17,9 +16,11 @@ class SocialLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.grey100,
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Material(
@@ -33,12 +34,12 @@ class SocialLoginButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (isLoading)
-                  const SizedBox(
+                  SizedBox(
                     width: 20,
                     height: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2.5,
-                      color: AppColors.black,
+                      color: colorScheme.onSurface,
                     ),
                   )
                 else ...[
@@ -46,10 +47,10 @@ class SocialLoginButton extends StatelessWidget {
                   const SizedBox(width: 12),
                   Text(
                     text.toUpperCase(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 14,
-                      color: AppColors.black,
+                      color: colorScheme.onSurface,
                       letterSpacing: 1.0,
                     ),
                   ),

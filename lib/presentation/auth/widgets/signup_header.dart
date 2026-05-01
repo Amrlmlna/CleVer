@@ -10,7 +10,9 @@ class SignupHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -18,9 +20,9 @@ class SignupHeader extends StatelessWidget {
         Container(
           width: double.infinity,
           clipBehavior: Clip.antiAlias,
-          decoration: const BoxDecoration(
-            color: AppColors.grey100,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest,
+            borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(40),
               bottomRight: Radius.circular(40),
             ),
@@ -42,7 +44,7 @@ class SignupHeader extends StatelessWidget {
                 l10n.createAccount.toUpperCase(),
                 style: textTheme.headlineLarge?.copyWith(
                   fontWeight: FontWeight.w900,
-                  color: AppColors.black,
+                  color: colorScheme.onSurface,
                   fontSize: 42,
                   letterSpacing: -2.0,
                   height: 0.9,
@@ -61,7 +63,7 @@ class SignupHeader extends StatelessWidget {
               Text(
                 l10n.createAccountSubtitle,
                 style: textTheme.bodyLarge?.copyWith(
-                  color: AppColors.grey600,
+                  color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w500,
                   letterSpacing: -0.2,
                 ),

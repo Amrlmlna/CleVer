@@ -7,7 +7,6 @@ import '../widgets/welcome_steps/step_final_reveal.dart';
 import 'onboarding_page.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../core/services/analytics_service.dart';
-import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 class OnboardingWelcomePage extends StatefulWidget {
@@ -21,7 +20,6 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
   int _currentStep = 0;
   bool _showForm = false;
 
-  // Data for diagnosis
   String? _selectedBurnout;
   String? _selectedTime;
   String? _selectedProcrastination;
@@ -52,7 +50,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: colorScheme.surface,
       body: Stack(
         children: [
           _buildAmbientSpotlight(height, colorScheme),
@@ -70,9 +68,9 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
           if (!_showForm && _currentStep > 0 && _currentStep < 5)
             _buildProgressIndicator(context, colorScheme),
 
-          _buildSlidingForm(height),
+          _buildSlidingForm(height, colorScheme),
 
-          if (_showForm) _buildFormCloseButton(context),
+          if (_showForm) _buildFormCloseButton(context, colorScheme),
         ],
       ),
     );
@@ -89,8 +87,8 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
           shape: BoxShape.circle,
           gradient: RadialGradient(
             colors: [
-              colorScheme.primary.withValues(alpha: 0.15),
-              colorScheme.primary.withValues(alpha: 0.05),
+              colorScheme.onSurface.withValues(alpha: 0.08),
+              colorScheme.onSurface.withValues(alpha: 0.03),
               Colors.transparent,
             ],
             stops: const [0.0, 0.4, 1.0],
@@ -129,8 +127,8 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
               margin: const EdgeInsets.symmetric(horizontal: 2),
               decoration: BoxDecoration(
                 color: (index + 1) <= _currentStep
-                    ? colorScheme.primary
-                    : colorScheme.onSurface.withValues(alpha: 0.1),
+                    ? colorScheme.onSurface
+                    : colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -140,23 +138,26 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
     );
   }
 
-  Widget _buildSlidingForm(double height) {
+  Widget _buildSlidingForm(double height, ColorScheme colorScheme) {
     return AnimatedPositioned(
       duration: const Duration(milliseconds: 800),
       curve: Curves.fastOutSlowIn,
       top: _showForm ? height * 0.12 : height,
-      bottom: 0,
+      height: height * 0.88,
       left: 0,
       right: 0,
       child: Container(
-        decoration: const BoxDecoration(
-          color: AppColors.sheetSurface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          border: Border(
+            top: BorderSide(color: colorScheme.outlineVariant, width: 1.5),
+          ),
           boxShadow: [
             BoxShadow(
-              color: Color(0x66000000),
+              color: colorScheme.shadow.withValues(alpha: 0.1),
               blurRadius: 40,
-              offset: Offset(0, -10),
+              offset: const Offset(0, -10),
             ),
           ],
         ),
@@ -165,15 +166,16 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
     );
   }
 
-  Widget _buildFormCloseButton(BuildContext context) {
+  Widget _buildFormCloseButton(BuildContext context, ColorScheme colorScheme) {
     return Positioned(
       top: MediaQuery.of(context).padding.top + 16,
       left: 16,
       child: IconButton(
         onPressed: () => setState(() => _showForm = false),
-        icon: const Icon(Icons.arrow_downward, color: AppColors.white),
+        icon: Icon(Icons.arrow_downward_rounded, color: colorScheme.onSurface),
         style: IconButton.styleFrom(
-          backgroundColor: AppColors.black.withValues(alpha: 0.55),
+          backgroundColor: colorScheme.surfaceContainerHighest,
+          side: BorderSide(color: colorScheme.outlineVariant),
         ),
       ),
     );

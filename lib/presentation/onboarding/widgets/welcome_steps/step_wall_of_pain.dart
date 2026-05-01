@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../../../core/theme/app_text_styles.dart';
 import '../onboarding_step_screen.dart';
 import '../onboarding_tweet_card.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
@@ -38,19 +37,26 @@ class StepWallOfPain extends StatelessWidget {
           delay: 1200.ms,
         ),
       ],
-      footer: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
+      footer: SizedBox(
+        width: double.infinity,
         child: ElevatedButton(
           onPressed: onNext,
           style: ElevatedButton.styleFrom(
-            backgroundColor: colorScheme.primary,
-            foregroundColor: colorScheme.onPrimary,
+            backgroundColor: colorScheme.onSurface,
+            foregroundColor: colorScheme.surface,
             padding: const EdgeInsets.symmetric(vertical: 20),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
+            elevation: 0,
           ),
-          child: Text(l10n.next, style: AppTextStyles.button),
+          child: Text(
+            l10n.next.toUpperCase(),
+            style: const TextStyle(
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.0,
+            ),
+          ),
         ),
       ),
     );

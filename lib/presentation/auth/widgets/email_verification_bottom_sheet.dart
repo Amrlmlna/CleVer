@@ -116,9 +116,14 @@ class _EmailVerificationBottomSheetState
     final user = fb.FirebaseAuth.instance.currentUser;
     final email = user?.email ?? '';
 
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: colorScheme.surface,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
       ),
       padding: EdgeInsets.fromLTRB(
@@ -134,112 +139,107 @@ class _EmailVerificationBottomSheetState
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color:
-                  Theme.of(context).dividerTheme.color ??
-                  Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.2),
+              color: colorScheme.outlineVariant,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          const SizedBox(height: 8),
-
+          const SizedBox(height: 24),
           Text(
-            widget.title ?? AppLocalizations.of(context)!.verifyYourEmail,
+            widget.title ?? l10n.verifyYourEmail,
             textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 12),
-
-          Text(
-            widget.description ??
-                AppLocalizations.of(context)!.verificationSentTo(email),
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(
-                context,
-              ).colorScheme.onSurface.withValues(alpha: 0.6),
+            style: textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w900,
+              color: colorScheme.onSurface,
+              letterSpacing: -1.0,
             ),
           ),
-
+          const SizedBox(height: 12),
+          Text(
+            widget.description ?? l10n.verificationSentTo(email),
+            textAlign: TextAlign.center,
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
           if (widget.extensionContent != null) ...[
             const SizedBox(height: 24),
             widget.extensionContent!,
           ],
-
           const SizedBox(height: 32),
-
           Container(
-            padding: const EdgeInsets.all(16),
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Theme.of(
-                context,
-              ).colorScheme.onSurface.withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.1),
-              ),
+              color: colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: colorScheme.outlineVariant),
             ),
-            child: Text(
-              AppLocalizations.of(context)!.checkSpamFolder,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.4),
-              ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline_rounded,
+                  color: colorScheme.onSurfaceVariant,
+                  size: 20,
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    l10n.checkSpamFolder,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 40),
-
           SizedBox(
             width: double.infinity,
             height: 56,
             child: ElevatedButton(
               onPressed: _isChecking ? null : _checkStatus,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                backgroundColor: colorScheme.onSurface,
+                foregroundColor: colorScheme.surface,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
+                elevation: 0,
               ),
               child: _isChecking
                   ? SpinningTextLoader(
                       texts: [
-                        AppLocalizations.of(context)!.checkingSystem,
-                        AppLocalizations.of(context)!.validatingLink,
-                        AppLocalizations.of(context)!.almostThere,
+                        l10n.checkingSystem,
+                        l10n.validatingLink,
+                        l10n.almostThere,
                       ],
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        fontWeight: FontWeight.w900,
+                        color: colorScheme.surface,
                       ),
                     )
                   : Text(
-                      AppLocalizations.of(context)!.iHaveVerified,
+                      l10n.iHaveVerified.toUpperCase(),
                       style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 14,
+                        letterSpacing: 1.0,
                       ),
                     ),
             ),
           ),
           const SizedBox(height: 16),
-
           TextButton(
             onPressed: _isResending ? null : _resendLink,
             child: Text(
-              _isResending
-                  ? AppLocalizations.of(context)!.sending
-                  : AppLocalizations.of(context)!.resendEmail,
+              (_isResending ? l10n.sending : l10n.resendEmail).toUpperCase(),
               style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.w600,
+                color: colorScheme.primary,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 0.5,
               ),
             ),
           ),
