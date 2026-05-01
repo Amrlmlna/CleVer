@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/entities/certification.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../common/widgets/custom_text_form_field.dart';
@@ -7,8 +8,12 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../common/widgets/sheet/sheet_header.dart';
 import '../../common/widgets/sheet/sheet_action_buttons.dart';
+import '../../../../core/utils/custom_snackbar.dart';
+import '../../common/widgets/spinning_text_loader.dart';
+import '../../cv/providers/cv_generation_provider.dart';
+import '../../../../core/providers/locale_provider.dart';
 
-class CertificationBottomSheet extends StatefulWidget {
+class CertificationBottomSheet extends ConsumerStatefulWidget {
   final Certification? existing;
 
   const CertificationBottomSheet({super.key, this.existing});
@@ -40,11 +45,11 @@ class CertificationBottomSheet extends StatefulWidget {
   }
 
   @override
-  State<CertificationBottomSheet> createState() =>
+  ConsumerState<CertificationBottomSheet> createState() =>
       _CertificationBottomSheetState();
 }
 
-class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
+class _CertificationBottomSheetState extends ConsumerState<CertificationBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _issuerController;
@@ -337,7 +342,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
                   CustomTextFormField(
                     controller: _descController,
                     labelText: '',
-                    hintText: localization.jobDescriptionHint, // Using generic hint
+                    hintText: localization.descriptionHint,
                     maxLines: 3,
                   ),
                   const SizedBox(height: 32),

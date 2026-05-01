@@ -12,6 +12,10 @@ import '../../common/widgets/sheet/sheet_header.dart';
 import '../../common/widgets/sheet/sheet_action_buttons.dart';
 import './education/subject_list_section.dart';
 import 'package:intl/intl.dart';
+import '../../../../core/utils/custom_snackbar.dart';
+import '../../common/widgets/spinning_text_loader.dart';
+import '../../cv/providers/cv_generation_provider.dart';
+import '../../../../core/providers/locale_provider.dart';
 
 class EducationBottomSheet extends ConsumerStatefulWidget {
   final Education? existing;
