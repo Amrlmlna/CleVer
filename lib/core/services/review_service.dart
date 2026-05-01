@@ -32,7 +32,6 @@ class ReviewService {
       return;
     }
 
-    // Always ensure they have at least one generation success for quality control
     if (!hasGenerated) {
       debugPrint(
         '[ReviewService] No successful generation detected yet. skipping.',
@@ -43,12 +42,11 @@ class ReviewService {
     if (context.mounted) {
       final result = await ReviewSuccessDialog.show(context);
 
+      await prefs.setBool(_reviewFlagKey, true);
+
       if (result == true) {
-        // Positive: Native Review (or store fallback)
-        await prefs.setBool(_reviewFlagKey, true);
         await requestReview();
       } else if (result == false) {
-        // Negative/Feedback: Open Email
         await sendFeedback(context);
       }
     }
@@ -56,8 +54,6 @@ class ReviewService {
 
   Future<void> requestReview() async {
     try {
-      // In Debug mode, the native prompt is silent.
-      // We force a Store redirection so the dev can see it works.
       if (kDebugMode) {
         debugPrint(
           '[ReviewService] Debug mode: Forcing Store Listing fallback.',
@@ -115,7 +111,6 @@ class ReviewService {
 
   Future<void> openStoreListing() async {
     try {
-      // package_info_plus can be used here to get dynamic ID, but com.clevermaster.app is correct for now
       await _inAppReview.openStoreListing(appStoreId: 'com.clevermaster.app');
     } catch (e) {
       debugPrint('ReviewService Store Error: $e');

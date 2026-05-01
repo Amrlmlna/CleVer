@@ -41,6 +41,8 @@ class LoginPage extends ConsumerWidget {
           if (Navigator.of(context).canPop()) {
             Navigator.of(context).pop();
           }
+          if (error.toString().toLowerCase().contains('canceled')) return;
+
           CustomSnackBar.showError(context, error.toString());
         },
       );

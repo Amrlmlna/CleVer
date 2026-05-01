@@ -81,7 +81,10 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
       }
     } catch (e) {
       if (mounted) {
-        CustomSnackBar.showError(context, e.toString());
+        final errorStr = e.toString().toLowerCase();
+        if (!errorStr.contains('canceled')) {
+          CustomSnackBar.showError(context, e.toString());
+        }
       }
     } finally {
       if (mounted) {

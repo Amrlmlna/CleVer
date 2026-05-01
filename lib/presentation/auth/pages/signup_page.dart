@@ -47,6 +47,8 @@ class SignupPage extends ConsumerWidget {
           }
 
           final errorMessage = error.toString();
+          if (errorMessage.toLowerCase().contains('canceled')) return;
+
           if (errorMessage.contains('google')) {
             CustomSnackBar.showError(
               context,

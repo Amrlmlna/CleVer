@@ -61,8 +61,6 @@ class _HomePageState extends ConsumerState<HomePage>
         await _triggerReviewAndTutorials();
         return;
       }
-
-      await _triggerReviewAndTutorials();
     } finally {
       _isCheckingPrompts = false;
     }

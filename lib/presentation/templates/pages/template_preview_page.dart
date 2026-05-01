@@ -87,16 +87,11 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
           usePhoto: _usePhoto,
           onSuccess: () async {
             if (mounted) {
-              ref.read(pendingPaywallProvider.notifier).state = true;
-
-              // Set the success flag for ReviewService to pick up later on HomePage
               final prefs = await SharedPreferences.getInstance();
               await prefs.setBool('has_generated_at_least_one_cv', true);
 
-              // LIVE SIGNAL: Trigger the reactive check on HomePage
               ref.read(reviewCheckProvider.notifier).state++;
 
-              // AUTO-HOME: Clear the navigation stack and land user on Home
               if (mounted) {
                 context.go(AppRoutes.home);
               }
