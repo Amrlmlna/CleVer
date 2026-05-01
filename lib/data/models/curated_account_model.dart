@@ -10,6 +10,8 @@ class CuratedAccountModel extends CuratedAccount {
     required super.description,
     required super.tags,
     super.profileImageUrl,
+    super.location,
+    super.followersCount,
   });
 
   factory CuratedAccountModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,8 @@ class CuratedAccountModel extends CuratedAccount {
       description: json['description'] as String,
       tags: (json['tags'] as List).map((e) => e as String).toList(),
       profileImageUrl: json['profileImageUrl'] as String?,
+      location: json['location'] as String?,
+      followersCount: json['followersCount'] as int?,
     );
   }
 
@@ -35,6 +39,8 @@ class CuratedAccountModel extends CuratedAccount {
       'description': description,
       'tags': tags,
       'profileImageUrl': profileImageUrl,
+      'location': location,
+      'followersCount': followersCount,
     };
   }
 }

@@ -9,6 +9,8 @@ class CuratedAccount extends Equatable {
   final String description;
   final List<String> tags;
   final String? profileImageUrl;
+  final String? location;
+  final int? followersCount;
 
   const CuratedAccount({
     required this.id,
@@ -19,6 +21,8 @@ class CuratedAccount extends Equatable {
     required this.description,
     required this.tags,
     this.profileImageUrl,
+    this.location,
+    this.followersCount,
   });
 
   @override
@@ -31,5 +35,7 @@ class CuratedAccount extends Equatable {
     description,
     tags,
     profileImageUrl,
+    location,
+    followersCount,
   ];
 }

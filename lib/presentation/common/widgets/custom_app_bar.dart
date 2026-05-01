@@ -25,51 +25,18 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       forceMaterialTransparency: true,
-      leading: Navigator.of(context).canPop() ? const BackButton() : null,
-      title: title != null ? Text(title!) : null,
+      leading: _buildLeading(context, ref),
+      title: title != null
+          ? Text(
+              title!,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w900,
+                letterSpacing: -0.5,
+              ),
+            )
+          : null,
       centerTitle: true,
       actions: [
-        Consumer(
-          builder: (context, ref, child) {
-            final unreadCount = ref.watch(unreadNotificationCountProvider);
-            return Stack(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.notifications_none_rounded,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                  onPressed: () => context.push(AppRoutes.notifications),
-                ),
-                if (unreadCount > 0)
-                  Positioned(
-                    right: 8,
-                    top: 8,
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.error,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      constraints: const BoxConstraints(
-                        minWidth: 16,
-                        minHeight: 16,
-                      ),
-                      child: Text(
-                        unreadCount > 9 ? '9+' : '$unreadCount',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onError,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-              ],
-            );
-          },
-        ),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 8.0),
           child: LanguageSelector(),
@@ -165,6 +132,75 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
             ),
           ),
       ],
+    );
+  }
+
+  Widget? _buildLeading(BuildContext context, WidgetRef ref) {
+    if (title != null) {
+      return BackButton(
+        color: Theme.of(context).colorScheme.onSurface,
+        onPressed: () {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            // If we can't pop, go to home as fallback
+            context.go(AppRoutes.home);
+          }
+        },
+      );
+    }
+
+    final unreadCount = ref.watch(unreadNotificationCountProvider);
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Center(
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.notifications_none_rounded,
+                color: Theme.of(context).colorScheme.onSurface,
+                size: 28,
+              ),
+              onPressed: () => context.push(AppRoutes.notifications),
+            ),
+            if (unreadCount > 0)
+              Positioned(
+                right: 4,
+                top: 4,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.error,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.surface,
+                      width: 1.5,
+                    ),
+                  ),
+                  constraints: const BoxConstraints(
+                    minWidth: 18,
+                    minHeight: 18,
+                  ),
+                  child: Text(
+                    unreadCount > 9 ? '9+' : '$unreadCount',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onError,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w900,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 

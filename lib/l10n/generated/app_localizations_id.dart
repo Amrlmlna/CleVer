@@ -701,6 +701,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get jobListTitle => 'cari lowongan';
 
   @override
+  String get jobListSubtitle => 'Temukan peluang karir terbaik untukmu';
+
+  @override
   String get jobListSocialTab => 'sosial (top picks)';
 
   @override
@@ -1645,7 +1648,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get tutorialJobOcrDesc =>
-      'tau gak? kamu bisa screenshot lowongan kerja dan kami akan ambil detailnya secara otomatis!';
+      'tau gak? ada fitur scan screenshot lowongan kerja buat kamu yang manger ngetik';
 
   @override
   String get tutorialDraftsTitle => 'draft kamu';
@@ -1659,7 +1662,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get tutorialProfileDesc =>
-      'kelola profil master kamu di sini agar data dasar cv kamu selalu terupdate.';
+      'rutin update dan kelola master profile kamu disini biar bikin cv makin low effort!.';
 
   @override
   String get tutorialNext => 'lanjut';

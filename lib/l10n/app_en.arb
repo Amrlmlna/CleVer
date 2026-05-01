@@ -255,6 +255,7 @@
   "jobExtractionFailed": "failed to extract job posting",
   "jobExtractionSuccess": "job posting extracted successfully!",
   "jobListTitle": "find jobs",
+  "jobListSubtitle": "Find the best career opportunities for you",
   "jobListSocialTab": "social (top picks)",
   "jobListApiTab": "job boards (api)",
   "jobListScannerHint": "found a job here? take a screenshot and use our smart scanner to instantly auto-fill your cv!",

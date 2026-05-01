@@ -1374,6 +1374,12 @@ abstract class AppLocalizations {
   /// **'find jobs'**
   String get jobListTitle;
 
+  /// No description provided for @jobListSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find the best career opportunities for you'**
+  String get jobListSubtitle;
+
   /// No description provided for @jobListSocialTab.
   ///
   /// In en, this message translates to:

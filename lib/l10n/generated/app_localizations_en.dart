@@ -698,6 +698,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get jobListTitle => 'find jobs';
 
   @override
+  String get jobListSubtitle => 'Find the best career opportunities for you';
+
+  @override
   String get jobListSocialTab => 'social (top picks)';
 
   @override
