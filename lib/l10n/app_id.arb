@@ -622,6 +622,14 @@
   "mascotEncourage": "tetap update ya",
   "mascotEncourageSub": "jangan lupa update profil master kamu setiap kali ada pengalaman baru!",
   "mascotExciting": "wih, keren!",
-  "mascotExcitingSub": "kamu baru saja membuat cv pertama! yuk, lanjut terus semangatnya."
+  "mascotExcitingSub": "kamu baru saja membuat cv pertama! yuk, lanjut terus semangatnya.",
+  "voiceInput": "input suara",
+  "voiceListening": "mendengarkan...",
+  "voiceProcessing": "memproses...",
+  "voiceError": "maaf, kurang kedengeran nih.",
+  "voicePermissionRequired": "butuh izin mikrofon buat input suara.",
+  "voiceHint": "ketuk buat ngomong detailnya",
+  "voiceExplainExperience": "cth: \"saya kerja jadi Senior Dev di Google selama 2 tahun...\"",
+  "voiceExplainEducation": "cth: \"saya kuliah Ilmu Komputer di UI dari 2018 sampe 2022...\""
 }
 

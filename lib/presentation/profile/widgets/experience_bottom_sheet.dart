@@ -13,6 +13,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../common/widgets/sheet/sheet_header.dart';
 import '../../common/widgets/sheet/sheet_action_buttons.dart';
+import '../../common/widgets/voice_input_pill.dart';
 
 class ExperienceBottomSheet extends ConsumerStatefulWidget {
   final Experience? existing;
@@ -170,10 +171,11 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
     try {
       final repository = ref.read(cvRepositoryProvider);
       final locale = ref.read(localeNotifierProvider);
-      
+
       String? instruction;
       if (_titleCtrl.text.isNotEmpty || _companyCtrl.text.isNotEmpty) {
-        instruction = "Rewrite this job description to be high-impact and professional for a ${_titleCtrl.text} role${_companyCtrl.text.isNotEmpty ? " at ${_companyCtrl.text}" : ""}. Use the Google XYZ formula (Accomplished X by Y doing Z) and strong action verbs.";
+        instruction =
+            "Rewrite this job description to be high-impact and professional for a ${_titleCtrl.text} role${_companyCtrl.text.isNotEmpty ? " at ${_companyCtrl.text}" : ""}. Use the Google XYZ formula (Accomplished X by Y doing Z) and strong action verbs.";
       }
 
       final newText = await repository.rewriteContent(
@@ -222,6 +224,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                         : localization.editExperienceTitle,
                     onClosing: _handlePop,
                   ),
+
                   const SizedBox(height: 24),
                   CustomTextFormField(
                     controller: _titleCtrl,
@@ -332,7 +335,35 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                         v!.isEmpty ? localization.requiredField : null,
                   ),
                   const SizedBox(height: 32),
-                  SheetActionButtons(onSave: _save, onCancel: _handlePop),
+                  SheetActionButtons(
+                    onSave: _save,
+                    onCancel: _handlePop,
+                    voiceEntityType: 'experience',
+                    onVoiceParsed: (data) {
+                      setState(() {
+                        if (data['jobTitle'] != null &&
+                            data['jobTitle'].toString().isNotEmpty) {
+                          _titleCtrl.text = data['jobTitle'];
+                        }
+                        if (data['companyName'] != null &&
+                            data['companyName'].toString().isNotEmpty) {
+                          _companyCtrl.text = data['companyName'];
+                        }
+                        if (data['startDate'] != null &&
+                            data['startDate'].toString().isNotEmpty) {
+                          _startCtrl.text = data['startDate'];
+                        }
+                        if (data['endDate'] != null &&
+                            data['endDate'].toString().isNotEmpty) {
+                          _endCtrl.text = data['endDate'];
+                        }
+                        if (data['description'] != null &&
+                            data['description'].toString().isNotEmpty) {
+                          _descCtrl.text = data['description'];
+                        }
+                      });
+                    },
+                  ),
                 ],
               ),
             ),

@@ -5,6 +5,8 @@ import '../../common/widgets/custom_text_form_field.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../domain/entities/skill.dart';
+import '../../common/widgets/sheet/sheet_header.dart';
+import '../../common/widgets/sheet/sheet_action_buttons.dart';
 
 class SkillsBottomSheet extends StatefulWidget {
   final List<Skill> currentSkills;
@@ -81,27 +83,11 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: GestureDetector(
-                      onTap: _handlePop,
-                      child: Container(
-                        width: 40,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: AppColors.sheetHandle,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
+                  SheetHeader(
+                    title: localization.addSkill,
+                    onClosing: _handlePop,
                   ),
-                  const SizedBox(height: 24),
-                  Text(
-                    localization.addSkill,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.5,
-                    ),
-                  ),
+
                   const SizedBox(height: 24),
 
                   Text(
@@ -153,7 +139,6 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
                     controller: _controller,
                     labelText: localization.skills,
                     hintText: localization.skillHint,
-
                     validator: (v) {
                       if (v == null || v.trim().isEmpty) {
                         return localization.requiredField;
@@ -167,46 +152,32 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
                     },
                   ),
                   const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _submit,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        elevation: 0,
-                      ),
-                      child: Text(
-                        localization.add,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    width: double.infinity,
-                    child: TextButton(
-                      onPressed: _handlePop,
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      child: Text(
-                        localization.cancel,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
+                  SheetActionButtons(
+                    onSave: _submit,
+                    onCancel: _handlePop,
+                    saveLabel: localization.add,
+                    voiceEntityType: 'skill',
+                    onVoiceParsed: (data) {
+                      setState(() {
+                        if (data['name'] != null &&
+                            data['name'].toString().isNotEmpty) {
+                          _controller.text = data['name'];
+                        }
+                        if (data['category'] != null &&
+                            data['category'].toString().isNotEmpty) {
+                          final categoryStr = data['category']
+                              .toString()
+                              .toLowerCase();
+                          try {
+                            _selectedCategory = SkillCategory.values.firstWhere(
+                              (c) => c.name.toLowerCase() == categoryStr,
+                            );
+                          } catch (_) {
+                            // Fallback to existing or default
+                          }
+                        }
+                      });
+                    },
                   ),
                 ],
               ),

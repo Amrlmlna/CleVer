@@ -14,6 +14,7 @@ import '../widgets/experience_bottom_sheet.dart';
 import '../widgets/education_bottom_sheet.dart';
 import '../widgets/certification_bottom_sheet.dart';
 import '../widgets/skills_bottom_sheet.dart';
+import '../../common/widgets/voice_input_pill.dart';
 import '../../../../domain/entities/user_profile.dart';
 
 class SectionEditPage extends ConsumerStatefulWidget {
@@ -357,52 +358,150 @@ class _SectionEditPageState extends ConsumerState<SectionEditPage> {
       ),
       child: SafeArea(
         top: false,
-        child: SizedBox(
-          width: double.infinity,
-          child: Material(
-            color: isSaving
-                ? Colors.black.withValues(alpha: 0.5)
-                : Colors.black,
-            borderRadius: BorderRadius.circular(16),
-            child: InkWell(
-              onTap: isSaving ? null : _handleSave,
-              borderRadius: BorderRadius.circular(16),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                child: isSaving
-                    ? const Center(
-                        child: SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2.5,
-                          ),
+        child: widget.sectionType == SectionType.personalInfo
+            ? Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: _handlePop,
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        side: BorderSide(
+                          color: Colors.black.withValues(alpha: 0.1),
                         ),
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            l10n.saveProfile.toUpperCase(),
-                            style: textTheme.titleSmall?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: 1.2,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          const Icon(
-                            Icons.check_circle_outline_rounded,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                        ],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                       ),
+                      child: Text(
+                        l10n.cancel.toUpperCase(),
+                        style: textTheme.titleSmall?.copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  VoiceInputPill(
+                    entityType: 'contact',
+                    isCompact: true,
+                    onParsed: (data) {
+                      setState(() {
+                        if (data['fullName'] != null &&
+                            data['fullName'].toString().isNotEmpty) {
+                          _nameController.text = data['fullName'];
+                        }
+                        if (data['email'] != null &&
+                            data['email'].toString().isNotEmpty) {
+                          _emailController.text = data['email'];
+                        }
+                        if (data['phoneNumber'] != null &&
+                            data['phoneNumber'].toString().isNotEmpty) {
+                          _phoneController.text = data['phoneNumber'];
+                        }
+                        if (data['location'] != null &&
+                            data['location'].toString().isNotEmpty) {
+                          _locationController.text = data['location'];
+                        }
+                        if (data['birthDate'] != null &&
+                            data['birthDate'].toString().isNotEmpty) {
+                          _birthDateController.text = data['birthDate'];
+                        }
+                        if (data['gender'] != null &&
+                            data['gender'].toString().isNotEmpty) {
+                          _genderController.text = data['gender'];
+                        }
+                      });
+                    },
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 2,
+                    child: Material(
+                      color: isSaving
+                          ? Colors.black.withValues(alpha: 0.5)
+                          : Colors.black,
+                      borderRadius: BorderRadius.circular(16),
+                      child: InkWell(
+                        onTap: isSaving ? null : _handleSave,
+                        borderRadius: BorderRadius.circular(16),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 18),
+                          child: isSaving
+                              ? const Center(
+                                  child: SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2.5,
+                                    ),
+                                  ),
+                                )
+                              : Center(
+                                  child: Text(
+                                    l10n.saveProfile.toUpperCase(),
+                                    style: textTheme.titleSmall?.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w900,
+                                      letterSpacing: 1.2,
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : SizedBox(
+                width: double.infinity,
+                child: Material(
+                  color: isSaving
+                      ? Colors.black.withValues(alpha: 0.5)
+                      : Colors.black,
+                  borderRadius: BorderRadius.circular(16),
+                  child: InkWell(
+                    onTap: isSaving ? null : _handleSave,
+                    borderRadius: BorderRadius.circular(16),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 18),
+                      child: isSaving
+                          ? const Center(
+                              child: SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2.5,
+                                ),
+                              ),
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  l10n.saveProfile.toUpperCase(),
+                                  style: textTheme.titleSmall?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 1.2,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                const Icon(
+                                  Icons.check_circle_outline_rounded,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                              ],
+                            ),
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }

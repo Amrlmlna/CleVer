@@ -29,7 +29,9 @@
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>We need photo library access to select job posting images</string>
 		<key>NSMicrophoneUsageDescription</key>
-		<string>We need microphone access for video recording</string>
+		<string>We need microphone access to help you build your profile with voice input.</string>
+		<key>NSSpeechRecognitionUsageDescription</key>
+		<string>We use speech recognition to help you build your profile with voice commands.</string>
 		<key>com.posthog.posthog.API_KEY</key>
 		<string>phc_A9UtLCSpCu6NQTmfEK35OXBfVUd7ZoJEqHHslWoAaEz</string>
 		<key>com.posthog.posthog.POSTHOG_HOST</key>

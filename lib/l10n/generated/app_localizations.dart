@@ -3221,6 +3221,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'you just created your first cv! let\'s keep the momentum going.'**
   String get mascotExcitingSub;
+
+  /// No description provided for @voiceInput.
+  ///
+  /// In en, this message translates to:
+  /// **'voice input'**
+  String get voiceInput;
+
+  /// No description provided for @voiceListening.
+  ///
+  /// In en, this message translates to:
+  /// **'listening...'**
+  String get voiceListening;
+
+  /// No description provided for @voiceProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'processing...'**
+  String get voiceProcessing;
+
+  /// No description provided for @voiceError.
+  ///
+  /// In en, this message translates to:
+  /// **'sorry, i couldn\'t catch that.'**
+  String get voiceError;
+
+  /// No description provided for @voicePermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'microphone permission is required for voice input.'**
+  String get voicePermissionRequired;
+
+  /// No description provided for @voiceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'tap to speak your details'**
+  String get voiceHint;
+
+  /// No description provided for @voiceExplainExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'ex: \"I worked as a Senior Dev at Google for 2 years...\"'**
+  String get voiceExplainExperience;
+
+  /// No description provided for @voiceExplainEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'ex: \"I studied Computer Science at UI from 2018 to 2022...\"'**
+  String get voiceExplainEducation;
 }
 
 class _AppLocalizationsDelegate

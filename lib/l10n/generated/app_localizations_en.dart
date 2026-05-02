@@ -1691,4 +1691,31 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get mascotExcitingSub =>
       'you just created your first cv! let\'s keep the momentum going.';
+
+  @override
+  String get voiceInput => 'voice input';
+
+  @override
+  String get voiceListening => 'listening...';
+
+  @override
+  String get voiceProcessing => 'processing...';
+
+  @override
+  String get voiceError => 'sorry, i couldn\'t catch that.';
+
+  @override
+  String get voicePermissionRequired =>
+      'microphone permission is required for voice input.';
+
+  @override
+  String get voiceHint => 'tap to speak your details';
+
+  @override
+  String get voiceExplainExperience =>
+      'ex: \"I worked as a Senior Dev at Google for 2 years...\"';
+
+  @override
+  String get voiceExplainEducation =>
+      'ex: \"I studied Computer Science at UI from 2018 to 2022...\"';
 }

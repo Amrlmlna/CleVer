@@ -39,7 +39,11 @@ class RemoteCVDataSource {
     }
   }
 
-  Future<String> rewriteContent(String originalText, {String? locale, String? instruction}) async {
+  Future<String> rewriteContent(
+    String originalText, {
+    String? locale,
+    String? instruction,
+  }) async {
     final response = await _httpClient.post(
       Uri.parse('$_cvBaseUrl/rewrite'),
       headers: await ApiConfig.getAuthHeaders(),
@@ -90,6 +94,26 @@ class RemoteCVDataSource {
     } else {
       throw http.ClientException(
         'Failed to parse Study Card: ${response.statusCode}',
+        response.request?.url,
+      );
+    }
+  }
+
+  Future<Map<String, dynamic>> parseEntity({
+    required String text,
+    required String entityType,
+  }) async {
+    final response = await _httpClient.post(
+      Uri.parse('$_cvBaseUrl/parse-entity'),
+      headers: await ApiConfig.getAuthHeaders(),
+      body: jsonEncode({'text': text, 'type': entityType}),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw http.ClientException(
+        'Failed to parse entity: ${response.statusCode}',
         response.request?.url,
       );
     }

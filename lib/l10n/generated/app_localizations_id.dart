@@ -1699,4 +1699,30 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get mascotExcitingSub =>
       'kamu baru saja membuat cv pertama! yuk, lanjut terus semangatnya.';
+
+  @override
+  String get voiceInput => 'input suara';
+
+  @override
+  String get voiceListening => 'mendengarkan...';
+
+  @override
+  String get voiceProcessing => 'memproses...';
+
+  @override
+  String get voiceError => 'maaf, kurang kedengeran nih.';
+
+  @override
+  String get voicePermissionRequired => 'butuh izin mikrofon buat input suara.';
+
+  @override
+  String get voiceHint => 'ketuk buat ngomong detailnya';
+
+  @override
+  String get voiceExplainExperience =>
+      'cth: \"saya kerja jadi Senior Dev di Google selama 2 tahun...\"';
+
+  @override
+  String get voiceExplainEducation =>
+      'cth: \"saya kuliah Ilmu Komputer di UI dari 2018 sampe 2022...\"';
 }

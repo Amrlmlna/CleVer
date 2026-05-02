@@ -10,6 +10,8 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../common/widgets/sheet/sheet_header.dart';
 import '../../common/widgets/sheet/sheet_action_buttons.dart';
+import '../../common/widgets/voice_input_pill.dart';
+
 import './education/subject_list_section.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/utils/custom_snackbar.dart';
@@ -167,10 +169,11 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
     try {
       final repository = ref.read(cvRepositoryProvider);
       final locale = ref.read(localeNotifierProvider);
-      
+
       String? instruction;
       if (_schoolCtrl.text.isNotEmpty || _degreeCtrl.text.isNotEmpty) {
-        instruction = "Rewrite this education description to be professional for a ${_degreeCtrl.text} degree${_schoolCtrl.text.isNotEmpty ? " from ${_schoolCtrl.text}" : ""}. Focus on relevant coursework, academic achievements, and skills acquired.";
+        instruction =
+            "Rewrite this education description to be professional for a ${_degreeCtrl.text} degree${_schoolCtrl.text.isNotEmpty ? " from ${_schoolCtrl.text}" : ""}. Focus on relevant coursework, academic achievements, and skills acquired.";
       }
 
       final newText = await repository.rewriteContent(
@@ -231,6 +234,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                         : localization.editEducation,
                     onClosing: _handlePop,
                   ),
+
                   const SizedBox(height: 24),
                   UniversityPicker(controller: _schoolCtrl),
                   const SizedBox(height: 16),
@@ -371,7 +375,39 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                     },
                   ),
                   const SizedBox(height: 32),
-                  SheetActionButtons(onSave: _save, onCancel: _handlePop),
+                  SheetActionButtons(
+                    onSave: _save,
+                    onCancel: _handlePop,
+                    voiceEntityType: 'education',
+                    onVoiceParsed: (data) {
+                      setState(() {
+                        if (data['schoolName'] != null &&
+                            data['schoolName'].toString().isNotEmpty) {
+                          _schoolCtrl.text = data['schoolName'];
+                        }
+                        if (data['degree'] != null &&
+                            data['degree'].toString().isNotEmpty) {
+                          _degreeCtrl.text = data['degree'];
+                        }
+                        if (data['startDate'] != null &&
+                            data['startDate'].toString().isNotEmpty) {
+                          _startCtrl.text = data['startDate'];
+                        }
+                        if (data['endDate'] != null &&
+                            data['endDate'].toString().isNotEmpty) {
+                          _endCtrl.text = data['endDate'];
+                        }
+                        if (data['gpa'] != null &&
+                            data['gpa'].toString().isNotEmpty) {
+                          _gpaCtrl.text = data['gpa'];
+                        }
+                        if (data['description'] != null &&
+                            data['description'].toString().isNotEmpty) {
+                          _descCtrl.text = data['description'];
+                        }
+                      });
+                    },
+                  ),
                 ],
               ),
             ),

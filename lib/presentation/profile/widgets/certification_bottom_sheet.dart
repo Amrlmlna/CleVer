@@ -8,6 +8,8 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../common/widgets/sheet/sheet_header.dart';
 import '../../common/widgets/sheet/sheet_action_buttons.dart';
+import '../../common/widgets/voice_input_pill.dart';
+
 import '../../../../core/utils/custom_snackbar.dart';
 import '../../common/widgets/spinning_text_loader.dart';
 import '../../cv/providers/cv_generation_provider.dart';
@@ -49,7 +51,8 @@ class CertificationBottomSheet extends ConsumerStatefulWidget {
       _CertificationBottomSheetState();
 }
 
-class _CertificationBottomSheetState extends ConsumerState<CertificationBottomSheet> {
+class _CertificationBottomSheetState
+    extends ConsumerState<CertificationBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _issuerController;
@@ -65,7 +68,9 @@ class _CertificationBottomSheetState extends ConsumerState<CertificationBottomSh
     _issuerController = TextEditingController(
       text: widget.existing?.issuer ?? '',
     );
-    _descController = TextEditingController(text: widget.existing?.description ?? '');
+    _descController = TextEditingController(
+      text: widget.existing?.description ?? '',
+    );
     _selectedDate = widget.existing?.date ?? DateTime.now();
   }
 
@@ -134,10 +139,12 @@ class _CertificationBottomSheetState extends ConsumerState<CertificationBottomSh
     try {
       final repository = ref.read(cvRepositoryProvider);
       final locale = ref.read(localeNotifierProvider);
-      
+
       String? instruction;
-      if (_nameController.text.isNotEmpty || _issuerController.text.isNotEmpty) {
-        instruction = "Rewrite this certification description to be professional for the ${_nameController.text} certificate${_issuerController.text.isNotEmpty ? " issued by ${_issuerController.text}" : ""}. Focus on the skills validated and the professional significance of this certification.";
+      if (_nameController.text.isNotEmpty ||
+          _issuerController.text.isNotEmpty) {
+        instruction =
+            "Rewrite this certification description to be professional for the ${_nameController.text} certificate${_issuerController.text.isNotEmpty ? " issued by ${_issuerController.text}" : ""}. Focus on the skills validated and the professional significance of this certification.";
       }
 
       final newText = await repository.rewriteContent(
@@ -215,6 +222,7 @@ class _CertificationBottomSheetState extends ConsumerState<CertificationBottomSh
                         : localization.editCertification,
                     onClosing: _handlePop,
                   ),
+
                   const SizedBox(height: 24),
                   CustomTextFormField(
                     controller: _nameController,
@@ -346,7 +354,33 @@ class _CertificationBottomSheetState extends ConsumerState<CertificationBottomSh
                     maxLines: 3,
                   ),
                   const SizedBox(height: 32),
-                  SheetActionButtons(onSave: _save, onCancel: _handlePop),
+                  SheetActionButtons(
+                    onSave: _save,
+                    onCancel: _handlePop,
+                    voiceEntityType: 'certification',
+                    onVoiceParsed: (data) {
+                      setState(() {
+                        if (data['name'] != null &&
+                            data['name'].toString().isNotEmpty) {
+                          _nameController.text = data['name'];
+                        }
+                        if (data['issuer'] != null &&
+                            data['issuer'].toString().isNotEmpty) {
+                          _issuerController.text = data['issuer'];
+                        }
+                        if (data['date'] != null &&
+                            data['date'].toString().isNotEmpty) {
+                          try {
+                            _selectedDate = DateTime.parse(data['date']);
+                          } catch (_) {}
+                        }
+                        if (data['description'] != null &&
+                            data['description'].toString().isNotEmpty) {
+                          _descController.text = data['description'];
+                        }
+                      });
+                    },
+                  ),
                 ],
               ),
             ),

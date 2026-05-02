@@ -8,7 +8,11 @@ import '../entities/subject.dart';
 import '../entities/pdf_generation_result.dart';
 
 abstract class CVRepository {
-  Future<String> rewriteContent(String originalText, {String? locale, String? instruction});
+  Future<String> rewriteContent(
+    String originalText, {
+    String? locale,
+    String? instruction,
+  });
 
   Future<TailoredCVResult> tailorProfile({
     required UserProfile masterProfile,
