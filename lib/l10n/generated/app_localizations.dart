@@ -3269,6 +3269,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ex: \"I studied Computer Science at UI from 2018 to 2022...\"'**
   String get voiceExplainEducation;
+
+  /// No description provided for @voiceUseSuara.
+  ///
+  /// In en, this message translates to:
+  /// **'Use voice'**
+  String get voiceUseSuara;
+
+  /// No description provided for @voiceAnalyzing.
+  ///
+  /// In en, this message translates to:
+  /// **'analyzing...'**
+  String get voiceAnalyzing;
+
+  /// No description provided for @voiceAlmostDone.
+  ///
+  /// In en, this message translates to:
+  /// **'almost done...'**
+  String get voiceAlmostDone;
 }
 
 class _AppLocalizationsDelegate

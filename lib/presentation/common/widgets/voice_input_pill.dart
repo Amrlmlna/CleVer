@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../data/datasources/remote_cv_datasource.dart';
 import '../../cv/providers/cv_generation_provider.dart';
+import 'spinning_text_loader.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 typedef OnEntityParsed = void Function(Map<String, dynamic> data);
@@ -25,94 +27,62 @@ class VoiceInputPill extends ConsumerStatefulWidget {
   ConsumerState<VoiceInputPill> createState() => _VoiceInputPillState();
 }
 
-class _VoiceInputPillState extends ConsumerState<VoiceInputPill> {
+class _VoiceInputPillState extends ConsumerState<VoiceInputPill>
+    with SingleTickerProviderStateMixin {
   final SpeechToText _speechToText = SpeechToText();
   bool _isListening = false;
   bool _isProcessing = false;
   String _lastWords = '';
   String? _error;
-  String? _selectedLocaleId;
-  List<LocaleName> _availableLocales = [];
+
+  late AnimationController _animationController;
+  late Animation<double> _expansionAnimation;
 
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+    _expansionAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutQuart,
+    );
     _initSpeech();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   void _initSpeech() async {
     try {
-      bool hasSpeech = await _speechToText.initialize(
+      await _speechToText.initialize(
         onError: (error) {
           if (mounted) {
             setState(() {
               _error = error.errorMsg;
               _isListening = false;
             });
+            _animationController.reverse();
           }
         },
         onStatus: (status) {
           if (status == 'notListening' && _isListening) {
             if (mounted) {
-              setState(() {
-                _isListening = false;
-                if (_lastWords.isNotEmpty) {
-                  _stopListeningAndProcess();
-                }
-              });
+              _stopListeningAndProcess();
             }
           }
         },
       );
-
-      if (hasSpeech && mounted) {
-        final locales = await _speechToText.locales();
-        final systemLocale = await _speechToText.systemLocale();
-        setState(() {
-          _availableLocales = locales;
-          // Default to system locale if it matches our targets, otherwise app locale
-          _selectedLocaleId = systemLocale?.localeId;
-        });
-      }
     } catch (e) {
       if (mounted) {
         setState(() => _error = e.toString());
       }
     }
-  }
-
-  void _cycleLanguage() {
-    if (_availableLocales.isEmpty) return;
-
-    setState(() {
-      // Logic: System -> ID -> EN -> System
-      if (_selectedLocaleId == null ||
-          !_selectedLocaleId!.contains('id') &&
-              !_selectedLocaleId!.contains('en')) {
-        _selectedLocaleId = _availableLocales
-            .firstWhere(
-              (l) => l.localeId.contains('id'),
-              orElse: () => _availableLocales.first,
-            )
-            .localeId;
-      } else if (_selectedLocaleId!.contains('id')) {
-        _selectedLocaleId = _availableLocales
-            .firstWhere(
-              (l) => l.localeId.contains('en'),
-              orElse: () => _availableLocales.first,
-            )
-            .localeId;
-      } else {
-        _selectedLocaleId = null; // Back to system default
-      }
-    });
-  }
-
-  String _getLocaleLabel() {
-    if (_selectedLocaleId == null) return 'AUTO';
-    if (_selectedLocaleId!.contains('id')) return 'ID';
-    if (_selectedLocaleId!.contains('en')) return 'EN';
-    return _selectedLocaleId!.split('-').first.toUpperCase();
   }
 
   void _startListening() async {
@@ -124,9 +94,7 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill> {
     bool available = await _speechToText.initialize();
     if (available) {
       setState(() => _isListening = true);
-
-      // Use selected locale or system default
-      final String? localeId = _selectedLocaleId;
+      _animationController.forward();
 
       await _speechToText.listen(
         onResult: (result) {
@@ -134,7 +102,7 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill> {
             _lastWords = result.recognizedWords;
           });
         },
-        localeId: localeId,
+        localeId: null,
         listenFor: const Duration(seconds: 30),
         pauseFor: const Duration(seconds: 5),
       );
@@ -157,6 +125,9 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill> {
           _isProcessing = true;
         }
       });
+      if (_lastWords.isEmpty) {
+        _animationController.reverse();
+      }
     }
 
     if (_lastWords.isEmpty) return;
@@ -180,9 +151,8 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill> {
       }
     } finally {
       if (mounted) {
-        setState(() {
-          _isProcessing = false;
-        });
+        setState(() => _isProcessing = false);
+        _animationController.reverse();
       }
     }
   }
@@ -191,171 +161,207 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Stack(
-      alignment: Alignment.bottomRight,
-      clipBehavior: Clip.none,
-      children: [
-        // Transcription Overlay (Absolute positioned to avoid pushing UI)
-        if (_isListening && _lastWords.isNotEmpty)
-          Positioned(
-            bottom: 60,
-            right: 0,
-            child: Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.7,
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: AppColors.sheetSurface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: AppColors.accentBlue.withOpacity(0.3),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return AnimatedBuilder(
+          animation: _expansionAnimation,
+          builder: (context, child) {
+            final double expandedWidth = constraints.maxWidth;
+            final double currentWidth = lerpDouble(
+              widget.isCompact ? 130.0 : 160.0,
+              expandedWidth,
+              _expansionAnimation.value,
+            )!;
+
+            final colorScheme = Theme.of(context).colorScheme;
+            final isExpanded = _expansionAnimation.value > 0.5;
+
+            return GestureDetector(
+              onTap: _isProcessing
+                  ? null
+                  : (_isListening ? _stopListeningAndProcess : _startListening),
+              child: Container(
+                width: currentWidth,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: Color.lerp(
+                    colorScheme.surface,
+                    colorScheme.inverseSurface,
+                    _expansionAnimation.value,
+                  ),
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(
+                    color: Color.lerp(
+                      colorScheme.outlineVariant,
+                      colorScheme.onSurface.withValues(alpha: 0.1),
+                      _expansionAnimation.value,
+                    )!,
+                    width: 1.5,
+                  ),
+                  boxShadow: _isListening
+                      ? [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.2),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ]
+                      : null,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Text(
-                _lastWords,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: AppColors.sheetOnSurface,
-                  fontStyle: FontStyle.italic,
-                  height: 1.4,
-                ),
-                textAlign: TextAlign.right,
-              ),
-            ).animate().fadeIn(duration: 200.ms).slideY(begin: 0.1, end: 0),
-          ),
-
-        // The Pill/Button
-        GestureDetector(
-          onTap: _isProcessing
-              ? null
-              : (_isListening ? _stopListeningAndProcess : _startListening),
-          child: AnimatedContainer(
-            duration: 300.ms,
-            height: 48,
-            padding: EdgeInsets.symmetric(
-              horizontal: widget.isCompact && !_isListening ? 12 : 16,
-            ),
-            decoration: BoxDecoration(
-              color: _isListening
-                  ? AppColors.accentBlue.withOpacity(0.1)
-                  : (_isProcessing
-                        ? AppColors.grey100
-                        : AppColors.sheetSurface),
-              borderRadius: BorderRadius.circular(100),
-              border: Border.all(
-                color: _isListening
-                    ? AppColors.accentBlue
-                    : (_isProcessing
-                          ? AppColors.grey300
-                          : AppColors.sheetDivider),
-                width: 1.5,
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (_isListening)
-                  const Icon(
-                        Icons.mic_rounded,
-                        color: AppColors.accentBlue,
-                        size: 20,
-                      )
-                      .animate(onPlay: (controller) => controller.repeat())
-                      .scale(
-                        begin: const Offset(0.8, 0.8),
-                        end: const Offset(1.2, 1.2),
-                        duration: 600.ms,
-                        curve: Curves.easeInOut,
-                      )
-                      .then()
-                      .scale(
-                        begin: const Offset(1.2, 1.2),
-                        end: const Offset(0.8, 0.8),
-                      )
-                else if (_isProcessing)
-                  const SizedBox(
-                    width: 18,
-                    height: 18,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
-                      color: AppColors.primaryLight,
-                    ),
-                  )
-                else
-                  const Icon(
-                    Icons.mic_none_rounded,
-                    color: AppColors.sheetOnSurfaceVar,
-                    size: 20,
-                  ),
-
-                if (!widget.isCompact || _isListening) ...[
-                  const SizedBox(width: 10),
-                  Text(
-                    _isListening
-                        ? l10n.voiceListening
-                        : (_isProcessing
-                              ? l10n.voiceProcessing
-                              : l10n.voiceInput),
-                    style: TextStyle(
-                      color: _isListening
-                          ? AppColors.accentBlue
-                          : AppColors.sheetOnSurface,
-                      fontWeight: FontWeight.w700,
-                      fontSize: widget.isCompact ? 13 : 14,
-                      letterSpacing: -0.3,
-                    ),
-                  ),
-                ],
-
-                // Language Switcher Badge (Industrial Minimalist)
-                if (!_isProcessing) ...[
-                  SizedBox(width: widget.isCompact ? 6 : 8),
-                  GestureDetector(
-                    onTap: _isListening ? null : _cycleLanguage,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 4,
-                        vertical: 1,
-                      ),
-                      decoration: BoxDecoration(
-                        color: _selectedLocaleId == null
-                            ? AppColors.grey100
-                            : AppColors.accentBlue.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                          color: _selectedLocaleId == null
-                              ? AppColors.grey300
-                              : AppColors.accentBlue.withOpacity(0.3),
-                          width: 0.5,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    if (_expansionAnimation.value > 0.5)
+                      _isProcessing
+                          ? SpinningTextLoader(
+                              texts: [
+                                l10n.voiceProcessing,
+                                l10n.voiceAnalyzing,
+                                l10n.voiceAlmostDone,
+                              ],
+                              style: TextStyle(
+                                color: colorScheme.onInverseSurface,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
+                          : ShaderMask(
+                              shaderCallback: (Rect bounds) {
+                                return const LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Colors.transparent,
+                                    Colors.black,
+                                    Colors.black,
+                                    Colors.transparent,
+                                  ],
+                                  stops: [0.0, 0.35, 0.65, 1.0],
+                                ).createShader(bounds);
+                              },
+                              blendMode: BlendMode.dstIn,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 45,
+                                ),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  reverse: true,
+                                  child: Text(
+                                    _lastWords.isEmpty
+                                        ? l10n.voiceListening
+                                        : _lastWords,
+                                    style: TextStyle(
+                                      color: colorScheme.onInverseSurface,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: -0.2,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                    else
+                      Opacity(
+                        opacity:
+                            1.0 -
+                            (_expansionAnimation.value * 2).clamp(0.0, 1.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.mic_none_rounded,
+                              color: colorScheme.onSurfaceVariant,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 8),
+                            Flexible(
+                              child: Text(
+                                l10n.voiceUseSuara,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: colorScheme.onSurface,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 13,
+                                  letterSpacing: -0.3,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      child: Text(
-                        _getLocaleLabel(),
-                        style: TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w800,
-                          color: _selectedLocaleId == null
-                              ? AppColors.grey500
-                              : AppColors.accentBlue,
-                          letterSpacing: 0.5,
-                        ),
+
+                    Positioned(
+                      right: lerpDouble(
+                        (currentWidth / 2) - (widget.isCompact ? 40 : 60),
+                        12,
+                        _expansionAnimation.value,
                       ),
+                      child:
+                          Container(
+                                width: 24,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: _isListening
+                                      ? colorScheme.onInverseSurface
+                                      : Colors.transparent,
+                                ),
+                                child: Center(
+                                  child: _isProcessing
+                                      ? const SizedBox(
+                                          width: 14,
+                                          height: 14,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : (_isListening
+                                            ? null
+                                            : const SizedBox.shrink()),
+                                ),
+                              )
+                              .animate(target: _isListening ? 1 : 0)
+                              .scale(
+                                begin: const Offset(0.0, 0.0),
+                                end: const Offset(1.0, 1.0),
+                                duration: 300.ms,
+                                curve: Curves.easeOutBack,
+                              ),
                     ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-        ),
-      ],
+
+                    if (_isListening)
+                      Positioned(
+                        right: 12,
+                        child:
+                            Container(
+                                  width: 24,
+                                  height: 24,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: colorScheme.onInverseSurface,
+                                      width: 2,
+                                    ),
+                                  ),
+                                )
+                                .animate(onPlay: (c) => c.repeat())
+                                .scale(
+                                  begin: const Offset(1.0, 1.0),
+                                  end: const Offset(2.0, 2.0),
+                                  duration: 1.seconds,
+                                )
+                                .fadeOut(),
+                      ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

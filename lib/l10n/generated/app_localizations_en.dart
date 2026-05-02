@@ -1718,4 +1718,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get voiceExplainEducation =>
       'ex: \"I studied Computer Science at UI from 2018 to 2022...\"';
+
+  @override
+  String get voiceUseSuara => 'Use voice';
+
+  @override
+  String get voiceAnalyzing => 'analyzing...';
+
+  @override
+  String get voiceAlmostDone => 'almost done...';
 }

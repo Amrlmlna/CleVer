@@ -634,7 +634,8 @@
   "voicePermissionRequired": "microphone permission is required for voice input.",
   "voiceHint": "tap to speak your details",
   "voiceExplainExperience": "ex: \"I worked as a Senior Dev at Google for 2 years...\"",
-  "voiceExplainEducation": "ex: \"I studied Computer Science at UI from 2018 to 2022...\""
+  "voiceExplainEducation": "ex: \"I studied Computer Science at UI from 2018 to 2022...\"",
+  "voiceUseSuara": "Use voice",
+  "voiceAnalyzing": "analyzing...",
+  "voiceAlmostDone": "almost done..."
 }
-
-

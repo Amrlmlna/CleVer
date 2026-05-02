@@ -630,6 +630,9 @@
   "voicePermissionRequired": "butuh izin mikrofon buat input suara.",
   "voiceHint": "ketuk buat ngomong detailnya",
   "voiceExplainExperience": "cth: \"saya kerja jadi Senior Dev di Google selama 2 tahun...\"",
-  "voiceExplainEducation": "cth: \"saya kuliah Ilmu Komputer di UI dari 2018 sampe 2022...\""
+  "voiceExplainEducation": "cth: \"saya kuliah Ilmu Komputer di UI dari 2018 sampe 2022...\"",
+  "voiceUseSuara": "dikte AI",
+  "voiceAnalyzing": "menganalisa...",
+  "voiceAlmostDone": "hampir selesai..."
 }
 

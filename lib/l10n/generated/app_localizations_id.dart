@@ -1725,4 +1725,13 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get voiceExplainEducation =>
       'cth: \"saya kuliah Ilmu Komputer di UI dari 2018 sampe 2022...\"';
+
+  @override
+  String get voiceUseSuara => 'dikte AI';
+
+  @override
+  String get voiceAnalyzing => 'menganalisa...';
+
+  @override
+  String get voiceAlmostDone => 'hampir selesai...';
 }
