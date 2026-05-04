@@ -81,6 +81,7 @@ class WalletPage extends ConsumerWidget {
                             final purchased =
                                 await PaymentService.presentPaywall(context);
                             if (purchased) {
+                              await Future.delayed(const Duration(seconds: 2));
                               ref.invalidate(templatesProvider);
                             }
                           },

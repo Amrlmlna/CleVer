@@ -1,4 +1,5 @@
 import 'package:posthog_flutter/posthog_flutter.dart';
+import 'package:flutter/foundation.dart';
 
 class AnalyticsService {
   static final AnalyticsService _instance = AnalyticsService._internal();
@@ -13,6 +14,7 @@ class AnalyticsService {
     String eventName, {
     Map<String, Object>? properties,
   }) async {
+    debugPrint('📊 Analytics: Tracking $eventName with $properties');
     await Posthog().capture(eventName: eventName, properties: properties);
   }
 
@@ -98,7 +100,7 @@ class AnalyticsService {
   }) async {
     await trackEvent(
       'momentum_step_viewed',
-      properties: {'step': stepName, ...?properties},
+      properties: {'momentum_step': stepName, ...?properties},
     );
   }
 
@@ -120,6 +122,18 @@ class AnalyticsService {
     await trackEvent(
       'homepage_tutorial_viewed',
       properties: {'tip_target': target},
+    );
+  }
+
+  /// Sends a dummy event to force PostHog to register property names for suggestions.
+  Future<void> debugWarmup() async {
+    await trackEvent(
+      'analytics_debug_ping',
+      properties: {
+        'momentum_step': 'warmup',
+        'feature': 'warmup',
+        'action': 'warmup',
+      },
     );
   }
 }

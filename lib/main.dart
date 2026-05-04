@@ -13,6 +13,7 @@ import 'presentation/profile/providers/profile_sync_provider.dart';
 import 'presentation/drafts/providers/draft_sync_provider.dart';
 import 'presentation/drafts/providers/completed_cv_sync_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'presentation/wallet/providers/payment_sync_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'core/providers/locale_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -117,6 +118,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       ref.read(draftSyncProvider).init();
       ref.read(completedCVSyncProvider).init();
       ref.read(localeNotifierProvider.notifier).init();
+      ref.read(paymentSyncProvider).init();
 
       _initBackgroundServices();
     });

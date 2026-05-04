@@ -30,6 +30,7 @@ class _HomePageState extends ConsumerState<HomePage>
       AnalyticsService().trackHomepageViewed(
         isNewUserFlow: ref.read(onboardingAuthCaptureProvider),
       );
+      AnalyticsService().debugWarmup(); // Force PostHog property ingestion
       _checkAndShowSequentialPrompts();
     });
   }
