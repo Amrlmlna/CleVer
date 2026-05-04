@@ -10,6 +10,7 @@ import '../../../core/providers/locale_provider.dart';
 import '../../../../core/services/payment_service.dart';
 import '../../../../core/services/analytics_service.dart';
 import '../../auth/utils/auth_guard.dart';
+import '../../home/providers/paywall_provider.dart';
 import '../../home/providers/review_check_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -93,6 +94,10 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
           usePhoto: _usePhoto,
           onSuccess: () async {
             if (mounted) {
+              if (template.userCredits == 0) {
+                ref.read(pendingPaywallProvider.notifier).state = true;
+              }
+
               final prefs = await SharedPreferences.getInstance();
               await prefs.setBool('has_generated_at_least_one_cv', true);
 
