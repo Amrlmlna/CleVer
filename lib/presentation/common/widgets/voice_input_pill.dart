@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../data/datasources/remote_cv_datasource.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import 'spinning_text_loader.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
@@ -33,7 +32,6 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill>
   bool _isListening = false;
   bool _isProcessing = false;
   String _lastWords = '';
-  String? _error;
 
   late AnimationController _animationController;
   late Animation<double> _expansionAnimation;
@@ -64,7 +62,6 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill>
         onError: (error) {
           if (mounted) {
             setState(() {
-              _error = error.errorMsg;
               _isListening = false;
             });
             _animationController.reverse();
@@ -79,15 +76,12 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill>
         },
       );
     } catch (e) {
-      if (mounted) {
-        setState(() => _error = e.toString());
-      }
+      // Error handled via snackbar in stopListeningAndProcess if needed
     }
   }
 
   void _startListening() async {
     setState(() {
-      _error = null;
       _lastWords = '';
     });
 
@@ -108,9 +102,7 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill>
       );
     } else {
       if (mounted) {
-        setState(() {
-          _error = "Speech recognition not available";
-        });
+        // Handle error silently or show snackbar
       }
     }
   }
@@ -141,7 +133,6 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill>
       widget.onParsed(result);
     } catch (e) {
       if (mounted) {
-        setState(() => _error = e.toString());
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),
@@ -174,7 +165,6 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill>
             )!;
 
             final colorScheme = Theme.of(context).colorScheme;
-            final isExpanded = _expansionAnimation.value > 0.5;
 
             return GestureDetector(
               onTap: _isProcessing

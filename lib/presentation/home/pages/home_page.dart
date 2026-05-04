@@ -6,6 +6,8 @@ import '../providers/paywall_provider.dart';
 import '../providers/review_check_provider.dart';
 import '../../wallet/widgets/credit_purchase_bottom_sheet.dart';
 import '../../dashboard/providers/dashboard_tutorial_provider.dart';
+import '../../../core/services/analytics_service.dart';
+import '../../onboarding/providers/onboarding_auth_capture_provider.dart';
 
 import '../widgets/huge_profile_header.dart';
 import '../widgets/bento_quick_actions.dart';
@@ -24,9 +26,12 @@ class _HomePageState extends ConsumerState<HomePage>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => _checkAndShowSequentialPrompts(),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AnalyticsService().trackHomepageViewed(
+        isNewUserFlow: ref.read(onboardingAuthCaptureProvider),
+      );
+      _checkAndShowSequentialPrompts();
+    });
   }
 
   @override
@@ -75,6 +80,7 @@ class _HomePageState extends ConsumerState<HomePage>
     final hasGenerated = await ReviewService().hasGeneratedAtLeastOneCv();
     final hasShown = await TutorialService().hasShownNavTutorial();
     if (hasGenerated && !hasShown && mounted) {
+      AnalyticsService().trackTutorialViewed('draft_master');
       ref.read(navigationTutorialPendingProvider.notifier).state = true;
     }
   }

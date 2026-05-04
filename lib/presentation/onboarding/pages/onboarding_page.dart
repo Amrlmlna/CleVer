@@ -7,6 +7,7 @@ import '../../../core/utils/custom_snackbar.dart';
 import '../../../core/router/app_routes.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../providers/onboarding_auth_capture_provider.dart';
+import '../../../core/services/analytics_service.dart';
 
 import '../widgets/onboarding_personal_step.dart';
 import '../widgets/onboarding_import_step.dart';
@@ -78,6 +79,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     );
 
     _prefillFromAuth();
+    AnalyticsService().trackOnboardingStep('data_input', 0);
   }
 
   void _prefillFromAuth() {
@@ -153,6 +155,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   Future<void> _finishOnboarding() async {
     await ref.read(onboardingFormProvider.notifier).submit();
+    AnalyticsService().trackEvent('onboarding_completed');
 
     if (mounted) {
       ref.read(onboardingAuthCaptureProvider.notifier).state = true;
@@ -178,6 +181,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
+        AnalyticsService().trackOnboardingStep('data_input', next.currentPage);
       }
     });
 

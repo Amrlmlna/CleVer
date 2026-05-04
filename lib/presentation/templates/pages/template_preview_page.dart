@@ -8,6 +8,7 @@ import '../providers/template_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../../core/providers/locale_provider.dart';
 import '../../../../core/services/payment_service.dart';
+import '../../../../core/services/analytics_service.dart';
 import '../../auth/utils/auth_guard.dart';
 import '../../home/providers/review_check_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
@@ -55,6 +56,8 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
       orElse: () => templates.first,
     );
 
+    AnalyticsService().trackCvExportStarted(templateId: template.id);
+
     if (template.isLocked) {
       if (mounted) {
         if (!AuthGuard.check(
@@ -66,6 +69,10 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
         ))
           return;
 
+        AnalyticsService().trackPaywallViewed(
+          templateId: template.id,
+          source: 'pdf_download_attempt',
+        );
         final purchased = await PaymentService.presentPaywall(context);
         if (purchased) {
           ref.invalidate(templatesProvider);
@@ -104,6 +111,12 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
     final templatesAsync = ref.watch(templatesProvider);
     final creationState = ref.watch(cvCreationProvider);
     final downloadState = ref.watch(cvDownloadProvider);
+
+    AnalyticsService().trackMomentumStep(
+      'template_preview',
+      properties: {'template_id': creationState.selectedStyle},
+    );
+
     final photoUrl = ref
         .watch(profileControllerProvider)
         .currentProfile

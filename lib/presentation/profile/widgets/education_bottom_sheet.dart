@@ -10,7 +10,6 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../common/widgets/sheet/sheet_header.dart';
 import '../../common/widgets/sheet/sheet_action_buttons.dart';
-import '../../common/widgets/voice_input_pill.dart';
 
 import './education/subject_list_section.dart';
 import 'package:intl/intl.dart';

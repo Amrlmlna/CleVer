@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../core/providers/locale_provider.dart';
 import '../../../core/services/payment_service.dart';
+import '../../../core/services/analytics_service.dart';
 import '../models/credit_package.dart';
 import 'benefit_item.dart';
 import 'package_card.dart';
@@ -20,6 +21,11 @@ class CreditPurchaseBottomSheet extends ConsumerStatefulWidget {
       barrierColor: colorScheme.scrim.withValues(alpha: 0.6),
       builder: (_) => const CreditPurchaseBottomSheet(),
     );
+
+    if (result == null || result == false) {
+      AnalyticsService().trackPaywallInteraction('dismissed');
+    }
+
     return result ?? false;
   }
 
@@ -76,14 +82,29 @@ class _CreditPurchaseBottomSheetState
     if (_isPurchasing) return;
     setState(() => _isPurchasing = true);
 
+    final package = _packages[_selectedIndex];
+    AnalyticsService().trackPaywallInteraction(
+      'purchase_attempt',
+      packageId: package.id,
+    );
+
     try {
-      final package = _packages[_selectedIndex];
       final success = await PaymentService.purchasePackage(package.id);
       if (mounted) {
+        AnalyticsService().trackPaywallInteraction(
+          success ? 'purchase_success' : 'purchase_failed',
+          packageId: package.id,
+        );
         Navigator.of(context).pop(success);
       }
     } catch (_) {
-      if (mounted) setState(() => _isPurchasing = false);
+      if (mounted) {
+        AnalyticsService().trackPaywallInteraction(
+          'purchase_error',
+          packageId: package.id,
+        );
+        setState(() => _isPurchasing = false);
+      }
     }
   }
 
@@ -208,7 +229,10 @@ class _CreditPurchaseBottomSheetState
                   const SizedBox(height: 12),
 
                   TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
+                    onPressed: () {
+                      AnalyticsService().trackPaywallInteraction('dismissed');
+                      Navigator.of(context).pop(false);
+                    },
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),

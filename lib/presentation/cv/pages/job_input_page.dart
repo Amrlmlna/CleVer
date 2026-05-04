@@ -11,6 +11,7 @@ import '../widgets/job/job_input_content.dart';
 import '../widgets/job/job_scan_bottom_sheet.dart';
 import '../widgets/job/job_submit_button.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../core/services/analytics_service.dart';
 
 import '../../../domain/entities/job_input.dart';
 
@@ -78,6 +79,11 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
 
   void _checkTutorial() async {
     final hasShown = await TutorialService().hasShownJobOcr();
+    AnalyticsService().trackMomentumStep(
+      'job_input',
+      properties: {'has_tutorial': !hasShown},
+    );
+
     if (!hasShown && mounted) {
       _initTutorial();
       _tutorialCoachMark.show(context: context);

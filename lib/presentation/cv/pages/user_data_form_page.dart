@@ -10,6 +10,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 
 import '../../../domain/entities/tailored_cv_result.dart';
 import '../../auth/utils/auth_guard.dart';
+import '../../../core/services/analytics_service.dart';
 
 class UserDataFormPage extends ConsumerStatefulWidget {
   final TailoredCVResult? tailoredResult;
@@ -40,6 +41,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      AnalyticsService().trackMomentumStep('data_review');
       final masterProfile = ref.read(masterProfileProvider);
       final creationState = ref.read(cvCreationProvider);
 

@@ -8,6 +8,7 @@ import '../../auth/providers/auth_state_provider.dart';
 import '../../auth/widgets/auth_wall_bottom_sheet.dart';
 import '../../../core/router/app_routes.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../core/services/analytics_service.dart';
 
 class DashboardNavigationHandler {
   static Future<void> onTabTap({
@@ -54,14 +55,24 @@ class DashboardNavigationHandler {
     final user = ref.read(authStateProvider).value;
 
     if (user == null) {
+      AnalyticsService().trackAuthGuardViewed(feature: 'momentum_forced_auth');
       AuthWallBottomSheet.show(
         context,
         featureTitle: AppLocalizations.of(context)!.authWallCreateCV,
         featureDescription: AppLocalizations.of(context)!.authWallCreateCVDesc,
         onAuthenticated: () {
+          AnalyticsService().trackAuthGuardInteraction(
+            'success',
+            feature: 'momentum_forced_auth',
+          );
           context.push(AppRoutes.createJobInput);
         },
-        onDismiss: () {},
+        onDismiss: () {
+          AnalyticsService().trackAuthGuardInteraction(
+            'dismiss',
+            feature: 'momentum_forced_auth',
+          );
+        },
       );
     } else {
       context.push(AppRoutes.createJobInput);

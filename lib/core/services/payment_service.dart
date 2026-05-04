@@ -32,7 +32,6 @@ class PaymentService {
       if (user != null) {
         await Purchases.logIn(user.uid);
       }
-      _analytics.trackEvent('payment_service_init_success');
     } catch (e) {
       _analytics.trackEvent(
         'payment_service_init_error',
@@ -138,12 +137,7 @@ class PaymentService {
 
   static Future<bool> presentPaywall(BuildContext context) async {
     try {
-      _analytics.trackEvent('paywall_viewed');
       final success = await CreditPurchaseBottomSheet.show(context);
-      _analytics.trackEvent(
-        'paywall_dismissed',
-        properties: {'purchased': success},
-      );
       return success;
     } catch (e) {
       _analytics.trackEvent(
@@ -157,7 +151,6 @@ class PaymentService {
   static Future<void> login(String uid) async {
     try {
       await Purchases.logIn(uid);
-      _analytics.trackEvent('payment_login_success', properties: {'uid': uid});
     } catch (e) {
       _analytics.trackEvent(
         'payment_login_error',
@@ -169,7 +162,6 @@ class PaymentService {
   static Future<void> logout() async {
     try {
       await Purchases.logOut();
-      _analytics.trackEvent('payment_logout_success');
     } catch (e) {
       _analytics.trackEvent(
         'payment_logout_error',

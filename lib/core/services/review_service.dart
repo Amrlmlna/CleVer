@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../presentation/common/widgets/review_success_dialog.dart';
 import '../../l10n/generated/app_localizations.dart';
+import 'analytics_service.dart';
 
 class ReviewService {
   static final ReviewService _instance = ReviewService._internal();
@@ -40,14 +41,19 @@ class ReviewService {
     }
 
     if (context.mounted) {
+      AnalyticsService().trackEvent('review_prompt_viewed');
       final result = await ReviewSuccessDialog.show(context);
 
       await prefs.setBool(_reviewFlagKey, true);
 
       if (result == true) {
+        AnalyticsService().trackReviewInteraction('positive');
         await requestReview();
       } else if (result == false) {
+        AnalyticsService().trackReviewInteraction('constructive');
         await sendFeedback(context);
+      } else {
+        AnalyticsService().trackReviewInteraction('dismissed');
       }
     }
   }

@@ -3,7 +3,6 @@ import '../../common/widgets/custom_text_form_field.dart';
 import '../../common/widgets/location_picker.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'profile_photo_uploader.dart';
-import '../../common/widgets/voice_input_pill.dart';
 
 class PersonalInfoForm extends StatefulWidget {
   final TextEditingController? nameController;

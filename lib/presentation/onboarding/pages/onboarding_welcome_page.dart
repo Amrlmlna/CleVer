@@ -27,7 +27,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
   @override
   void initState() {
     super.initState();
-    AnalyticsService().trackEvent('onboarding_started');
+    AnalyticsService().trackOnboardingStep('welcome', 0);
   }
 
   void _nextStep() {
@@ -35,10 +35,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
       setState(() {
         _currentStep++;
       });
-      AnalyticsService().trackEvent(
-        'onboarding_step_reached',
-        properties: {'step': _currentStep},
-      );
+      AnalyticsService().trackOnboardingStep('welcome', _currentStep);
     } else {
       setState(() => _showForm = true);
     }

@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../core/services/analytics_service.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../profile/providers/profile_provider.dart';
 
@@ -25,8 +24,6 @@ class OnboardingNotifier extends StateNotifier<bool> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_key, true);
     state = true;
-
-    AnalyticsService().trackEvent('onboarding_completed');
   }
 }
 

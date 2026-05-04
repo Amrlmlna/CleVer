@@ -8,6 +8,7 @@ import '../../common/widgets/app_loading_screen.dart';
 import '../../../../core/router/app_routes.dart';
 
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../core/services/analytics_service.dart';
 
 class StyleSelectionPage extends ConsumerWidget {
   const StyleSelectionPage({super.key});
@@ -19,6 +20,7 @@ class StyleSelectionPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final downloadState = ref.watch(cvDownloadProvider);
+    AnalyticsService().trackMomentumStep('template_selection');
 
     return Stack(
       children: [

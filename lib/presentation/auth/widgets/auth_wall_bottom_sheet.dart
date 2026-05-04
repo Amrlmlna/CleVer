@@ -10,6 +10,7 @@ import '../providers/auth_state_provider.dart';
 import '../widgets/social_login_button.dart';
 import '../../home/widgets/mascot_header.dart';
 import '../../home/models/mascot_state.dart';
+import '../../../core/services/analytics_service.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class AuthWallBottomSheet extends ConsumerStatefulWidget {
@@ -47,7 +48,11 @@ class AuthWallBottomSheet extends ConsumerStatefulWidget {
       ),
     );
 
-    if (result == null) {
+    if (result == null || result == false) {
+      AnalyticsService().trackAuthGuardInteraction(
+        'dismissed',
+        feature: featureTitle,
+      );
       onDismiss?.call();
     }
   }
@@ -59,6 +64,12 @@ class AuthWallBottomSheet extends ConsumerStatefulWidget {
 
 class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    AnalyticsService().trackAuthGuardViewed(feature: widget.featureTitle);
+  }
 
   Future<void> _signInWithGoogle() async {
     setState(() => _isLoading = true);
@@ -75,6 +86,11 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
         }
 
         if (mounted) {
+          AnalyticsService().trackAuthGuardInteraction(
+            'success',
+            feature: widget.featureTitle,
+            method: 'google',
+          );
           Navigator.of(context).pop(true);
           widget.onAuthenticated?.call();
         }
@@ -213,6 +229,11 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                               onPressed: _isLoading
                                   ? null
                                   : () {
+                                      AnalyticsService()
+                                          .trackAuthGuardInteraction(
+                                            'login_redirect',
+                                            feature: widget.featureTitle,
+                                          );
                                       Navigator.of(context).pop(false);
                                       context.push(AppRoutes.login);
                                     },
@@ -254,6 +275,10 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                         ),
                         TextButton(
                           onPressed: () {
+                            AnalyticsService().trackAuthGuardInteraction(
+                              'signup_redirect',
+                              feature: widget.featureTitle,
+                            );
                             Navigator.of(context).pop(false);
                             context.push(AppRoutes.signup);
                           },
