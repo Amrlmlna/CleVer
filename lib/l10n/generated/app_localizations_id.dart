@@ -839,6 +839,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get noMatchingJobs => 'ga ada lowongan yang cocok.';
 
   @override
+  String get noMatchingPdfs => 'ga ada pdf yang cocok.';
+
+  @override
+  String get searchGeneratedCvs => 'cari cv yang dihasilkan...';
+
+  @override
+  String get allFilter => 'semua';
+
+  @override
   String get noNotifications => 'belum ada notifikasi';
 
   @override

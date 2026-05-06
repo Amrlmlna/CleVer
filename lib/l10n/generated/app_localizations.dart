@@ -1638,6 +1638,24 @@ abstract class AppLocalizations {
   /// **'no matching jobs found.'**
   String get noMatchingJobs;
 
+  /// No description provided for @noMatchingPdfs.
+  ///
+  /// In en, this message translates to:
+  /// **'no pdfs match your search.'**
+  String get noMatchingPdfs;
+
+  /// No description provided for @searchGeneratedCvs.
+  ///
+  /// In en, this message translates to:
+  /// **'search generated cvs...'**
+  String get searchGeneratedCvs;
+
+  /// No description provided for @allFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'all'**
+  String get allFilter;
+
   /// No description provided for @noNotifications.
   ///
   /// In en, this message translates to:

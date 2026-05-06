@@ -836,6 +836,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noMatchingJobs => 'no matching jobs found.';
 
   @override
+  String get noMatchingPdfs => 'no pdfs match your search.';
+
+  @override
+  String get searchGeneratedCvs => 'search generated cvs...';
+
+  @override
+  String get allFilter => 'all';
+
+  @override
   String get noNotifications => 'no notifications yet';
 
   @override
