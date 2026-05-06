@@ -54,15 +54,12 @@ class TemplateCarouselPreview extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: colorScheme.surfaceContainerHighest,
                             borderRadius: BorderRadius.circular(4),
-                            boxShadow: [
-                              BoxShadow(
-                                color: colorScheme.shadow.withValues(
-                                  alpha: 0.1,
-                                ),
-                                blurRadius: 15,
-                                offset: const Offset(0, 8),
+                            border: Border.all(
+                              color: colorScheme.outlineVariant.withValues(
+                                alpha: 0.5,
                               ),
-                            ],
+                              width: 1.0,
+                            ),
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(4),
@@ -90,20 +87,22 @@ class TemplateCarouselPreview extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      previewUrls.length,
-                      (index) => Container(
+                    children: List.generate(previewUrls.length, (index) {
+                      final isActive = usePhoto ? (index == 1) : (index == 0);
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOutCubic,
                         margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: 8,
+                        width: isActive ? 24 : 8,
                         height: 8,
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: (usePhoto ? (index == 1) : (index == 0))
+                          borderRadius: BorderRadius.circular(4),
+                          color: isActive
                               ? colorScheme.primary
-                              : colorScheme.onSurface.withValues(alpha: 0.2),
+                              : colorScheme.onSurface.withValues(alpha: 0.15),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                   ),
                 ),
             ],

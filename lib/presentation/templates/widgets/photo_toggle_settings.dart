@@ -107,17 +107,16 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
   }
 
   Widget _buildEmptyState(AppLocalizations l10n, ColorScheme colorScheme) {
-    final primaryColor = colorScheme.primary;
     return InkWell(
       onTap: _pickAndUploadPhoto,
       borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
         decoration: BoxDecoration(
-          color: primaryColor.withValues(alpha: 0.05),
+          color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: primaryColor.withValues(alpha: 0.3),
+            color: colorScheme.outlineVariant.withValues(alpha: 0.5),
             width: 1.5,
           ),
         ),
@@ -126,22 +125,23 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: primaryColor.withValues(alpha: 0.1),
+                color: colorScheme.onSurface,
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.add_a_photo_outlined,
-                color: primaryColor,
-                size: 32,
+                color: colorScheme.surface,
+                size: 28,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             Text(
               l10n.includeProfilePhoto,
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: primaryColor,
+                fontWeight: FontWeight.w800,
+                fontSize: 15,
+                letterSpacing: -0.5,
+                color: colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 4),
@@ -162,26 +162,31 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainer,
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: colorScheme.outlineVariant),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+          width: 1.5,
+        ),
       ),
       child: Column(
         children: [
           SizedBox(
-            width: 40,
-            height: 40,
+            width: 32,
+            height: 32,
             child: CircularProgressIndicator(
               strokeWidth: 3,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                Theme.of(context).primaryColor,
-              ),
+              valueColor: AlwaysStoppedAnimation<Color>(colorScheme.onSurface),
             ),
           ),
           const SizedBox(height: 16),
           Text(
             l10n.uploadingPhoto,
-            style: TextStyle(color: colorScheme.onSurfaceVariant),
+            style: TextStyle(
+              color: colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w600,
+              fontSize: 13,
+            ),
           ),
         ],
       ),
@@ -189,86 +194,105 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
   }
 
   Widget _buildFilledState(AppLocalizations l10n, ColorScheme colorScheme) {
-    final primaryColor = colorScheme.primary;
     return Container(
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainer,
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: colorScheme.outlineVariant),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+          width: 1.5,
+        ),
       ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: _pickAndUploadPhoto,
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: primaryColor, width: 2),
-                          image: DecorationImage(
-                            image: CachedNetworkImageProvider(widget.photoUrl!),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            GestureDetector(
+              onTap: _pickAndUploadPhoto,
+              child: Stack(
+                children: [
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: colorScheme.onSurface.withValues(alpha: 0.1),
+                        width: 2,
                       ),
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: primaryColor,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.camera_alt,
-                            size: 12,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                        ),
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider(widget.photoUrl!),
+                        fit: BoxFit.cover,
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.includeProfilePhoto,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                  Positioned(
+                    right: -2,
+                    bottom: -2,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: colorScheme.surface,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: colorScheme.outlineVariant.withValues(
+                            alpha: 0.2,
+                          ),
+                          width: 1,
                         ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: colorScheme.shadow.withValues(alpha: 0.1),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
-                      Text(
-                        l10n.usingMasterPhoto,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: colorScheme.onSurfaceVariant,
-                        ),
+                      child: Icon(
+                        Icons.edit_outlined,
+                        size: 14,
+                        color: colorScheme.onSurface,
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                Switch.adaptive(
-                  value: widget.usePhoto,
-                  onChanged: widget.onToggleChanged,
-                  activeTrackColor: primaryColor.withValues(alpha: 0.5),
-                  activeThumbColor: primaryColor,
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.includeProfilePhoto,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 15,
+                      letterSpacing: -0.5,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    l10n.usingMasterPhoto,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Switch.adaptive(
+              value: widget.usePhoto,
+              onChanged: widget.onToggleChanged,
+              activeTrackColor: colorScheme.onSurface,
+              activeThumbColor: colorScheme.surface,
+              inactiveTrackColor: colorScheme.onSurface.withValues(alpha: 0.1),
+              inactiveThumbColor: colorScheme.onSurfaceVariant,
+            ),
+          ],
+        ),
       ),
     );
   }

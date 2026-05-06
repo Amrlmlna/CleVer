@@ -91,7 +91,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'ai will write your cv content in this language';
 
   @override
-  String get cvOutputLanguageAuto => 'auto (device language)';
+  String get cvOutputLanguageAuto => 'auto';
 
   @override
   String get almostThere => 'almost there...';

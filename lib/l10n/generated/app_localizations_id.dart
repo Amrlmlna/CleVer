@@ -91,7 +91,7 @@ class AppLocalizationsId extends AppLocalizations {
       'ai akan menulis konten cv kamu dalam bahasa ini';
 
   @override
-  String get cvOutputLanguageAuto => 'otomatis (bahasa perangkat)';
+  String get cvOutputLanguageAuto => 'otomatis';
 
   @override
   String get almostThere => 'sesaat lagi...';

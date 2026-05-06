@@ -26,7 +26,7 @@
   "conciseFormatDesc": "fokus pada singkat & dampak",
   "cvOutputLanguage": "bahasa output cv",
   "cvOutputLanguageDesc": "ai akan menulis konten cv kamu dalam bahasa ini",
-  "cvOutputLanguageAuto": "otomatis (bahasa perangkat)",
+  "cvOutputLanguageAuto": "otomatis",
   "almostThere": "sesaat lagi...",
   "alreadyHaveAccount": "sudah punya akun?",
   "alreadyHaveCV": "sudah punya cv?",

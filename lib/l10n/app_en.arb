@@ -26,7 +26,7 @@
   "conciseFormatDesc": "focus on brevity & impact",
   "cvOutputLanguage": "cv output language",
   "cvOutputLanguageDesc": "ai will write your cv content in this language",
-  "cvOutputLanguageAuto": "auto (device language)",
+  "cvOutputLanguageAuto": "auto",
   "almostThere": "almost there...",
   "alreadyHaveAccount": "already have an account?",
   "alreadyHaveCV": "already have a cv?",

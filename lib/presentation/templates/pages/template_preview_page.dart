@@ -163,15 +163,70 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                 ),
                 const SizedBox(height: 32),
 
+                Text(
+                  template.name,
+                  style: textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: -1.0,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  template.description,
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    height: 1.5,
+                  ),
+                ),
+                if (template.tags.isNotEmpty) ...[
+                  const SizedBox(height: 16),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: template.tags
+                        .map(
+                          (tag) => Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: colorScheme.onSurface.withValues(
+                                alpha: 0.04,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: colorScheme.outlineVariant.withValues(
+                                  alpha: 0.5,
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              tag.toUpperCase(),
+                              style: textTheme.labelSmall?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 1.0,
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ],
+                const SizedBox(height: 32),
+
                 if (template.supportsPhoto) ...[
                   Text(
                     AppLocalizations.of(context)!.photoSettings,
                     style: textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.5,
+                      color: colorScheme.onSurface,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                   PhotoToggleSettings(
                     photoUrl: photoUrl,
                     usePhoto: _usePhoto,
@@ -213,150 +268,150 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
           ),
         ),
       ),
-      bottomSheet: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-        decoration: BoxDecoration(
-          color: colorScheme.surfaceContainerHighest,
-          boxShadow: [
-            BoxShadow(
-              color: colorScheme.shadow.withValues(alpha: 0.1),
-              offset: const Offset(0, -4),
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: SafeArea(
-          child: SizedBox(
-            width: double.infinity,
-            height: 56,
-            child: SwipeToConfirmButton(
-              isLoading:
-                  downloadState.status == DownloadStatus.generating ||
-                  _isUploading,
-              onConfirm: _handleDownload,
-              child: downloadState.status == DownloadStatus.generating
-                  ? SpinningTextLoader(
-                      texts: [
-                        AppLocalizations.of(
-                          context,
-                        )!.generatingPdfBadge.toUpperCase(),
-                        AppLocalizations.of(
-                          context,
-                        )!.processingData.toUpperCase(),
-                        AppLocalizations.of(
-                          context,
-                        )!.finalizingPdf.toUpperCase(),
-                      ],
-                      style: textTheme.labelLarge?.copyWith(
-                        color: colorScheme.onSurface,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 2.0,
-                        fontSize: 13,
-                      ),
-                    )
-                  : Builder(
-                      builder: (context) {
-                        final currentTemplates =
-                            ref.watch(templatesProvider).valueOrNull ?? [];
-                        if (currentTemplates.isEmpty) {
-                          return Text(
-                            AppLocalizations.of(
-                              context,
-                            )!.exportPdf.toUpperCase(),
-                            style: textTheme.labelLarge?.copyWith(
-                              color: colorScheme.onSurface,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 2.0,
-                              fontSize: 13,
-                            ),
-                          );
-                        }
-                        final currentTemplate = currentTemplates.firstWhere(
-                          (t) =>
-                              t.id ==
-                              ref.watch(cvCreationProvider).selectedStyle,
-                          orElse: () => currentTemplates.first,
-                        );
+      bottomSheet: _buildDownloadBottomSheet(context, downloadState),
+    );
+  }
 
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
+  Widget _buildDownloadBottomSheet(
+    BuildContext context,
+    dynamic downloadState,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHighest,
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.shadow.withValues(alpha: 0.1),
+            offset: const Offset(0, -4),
+            blurRadius: 10,
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: SizedBox(
+          width: double.infinity,
+          height: 56,
+          child: SwipeToConfirmButton(
+            isLoading:
+                downloadState.status == DownloadStatus.generating ||
+                _isUploading,
+            onConfirm: _handleDownload,
+            child: downloadState.status == DownloadStatus.generating
+                ? SpinningTextLoader(
+                    texts: [
+                      AppLocalizations.of(
+                        context,
+                      )!.generatingPdfBadge.toUpperCase(),
+                      AppLocalizations.of(
+                        context,
+                      )!.processingData.toUpperCase(),
+                      AppLocalizations.of(context)!.finalizingPdf.toUpperCase(),
+                    ],
+                    style: textTheme.labelLarge?.copyWith(
+                      color: colorScheme.onSurface,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 2.0,
+                      fontSize: 13,
+                    ),
+                  )
+                : Builder(
+                    builder: (context) {
+                      final currentTemplates =
+                          ref.watch(templatesProvider).valueOrNull ?? [];
+                      if (currentTemplates.isEmpty) {
+                        return Text(
+                          AppLocalizations.of(context)!.exportPdf.toUpperCase(),
+                          style: textTheme.labelLarge?.copyWith(
+                            color: colorScheme.onSurface,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 2.0,
+                            fontSize: 13,
+                          ),
+                        );
+                      }
+                      final currentTemplate = currentTemplates.firstWhere(
+                        (t) =>
+                            t.id == ref.watch(cvCreationProvider).selectedStyle,
+                        orElse: () => currentTemplates.first,
+                      );
+
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                currentTemplate.hasFreeGeneration
+                                    ? AppLocalizations.of(
+                                        context,
+                                      )!.generateCvFree.toUpperCase()
+                                    : AppLocalizations.of(context)!
+                                          .generateCvCost(0)
+                                          .replaceAll(RegExp(r'\s*\(.*?\)'), '')
+                                          .toUpperCase(),
+                                style: textTheme.labelLarge?.copyWith(
+                                  color: colorScheme.onSurface,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 2.0,
+                                  fontSize: 13,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.onSurface.withValues(
+                                    alpha: 0.05,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
                                   currentTemplate.hasFreeGeneration
                                       ? AppLocalizations.of(
                                           context,
-                                        )!.generateCvFree.toUpperCase()
+                                        )!.free.toUpperCase()
                                       : AppLocalizations.of(context)!
-                                            .generateCvCost(
-                                              0,
-                                            ) // We only use this for baseline translation, bypassing the cost parser safely as it was removed from the arb payload.
-                                            .replaceAll(
-                                              RegExp(r'\s*\(.*?\)'),
-                                              '',
+                                            .creditsCount(
+                                              currentTemplate.requiredCredits,
                                             )
                                             .toUpperCase(),
-                                  style: textTheme.labelLarge?.copyWith(
-                                    color: colorScheme.onSurface,
-                                    fontWeight: FontWeight.w800,
-                                    letterSpacing: 2.0,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: colorScheme.onSurface.withValues(
-                                      alpha: 0.05,
-                                    ),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    currentTemplate.hasFreeGeneration
-                                        ? AppLocalizations.of(
-                                            context,
-                                          )!.free.toUpperCase()
-                                        : AppLocalizations.of(context)!
-                                              .creditsCount(
-                                                currentTemplate.requiredCredits,
-                                              )
-                                              .toUpperCase(),
-                                    style: textTheme.labelSmall?.copyWith(
-                                      color: colorScheme.onSurfaceVariant,
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: 1.0,
-                                      fontSize: 11,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            if (currentTemplate.hasFreeGeneration)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 2.0),
-                                child: Text(
-                                  AppLocalizations.of(context)!.freeExportsLeft(
-                                    2 - currentTemplate.currentUsage,
-                                  ),
                                   style: textTheme.labelSmall?.copyWith(
-                                    fontWeight: FontWeight.w600,
                                     color: colorScheme.onSurfaceVariant,
-                                    letterSpacing: 0.5,
-                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 1.0,
+                                    fontSize: 11,
                                   ),
                                 ),
                               ),
-                          ],
-                        );
-                      },
-                    ),
-            ),
+                            ],
+                          ),
+                          if (currentTemplate.hasFreeGeneration)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2.0),
+                              child: Text(
+                                AppLocalizations.of(context)!.freeExportsLeft(
+                                  2 - currentTemplate.currentUsage,
+                                ),
+                                style: textTheme.labelSmall?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: colorScheme.onSurfaceVariant,
+                                  letterSpacing: 0.5,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
+                  ),
           ),
         ),
       ),

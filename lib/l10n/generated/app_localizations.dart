@@ -257,7 +257,7 @@ abstract class AppLocalizations {
   /// No description provided for @cvOutputLanguageAuto.
   ///
   /// In en, this message translates to:
-  /// **'auto (device language)'**
+  /// **'auto'**
   String get cvOutputLanguageAuto;
 
   /// No description provided for @almostThere.
