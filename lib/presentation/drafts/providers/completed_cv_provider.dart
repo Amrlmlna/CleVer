@@ -156,15 +156,32 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
     final current = state.value ?? [];
     final cv = current.firstWhere((c) => c.id == id);
 
+    // 1. Delete from GCS bucket (fire-and-forget — don't block UI)
+    if (cv.remotePath != null && cv.remotePath!.isNotEmpty) {
+      final storageService = StorageService();
+      storageService.deleteCompletedCVFromStorage(cv.remotePath!).then((ok) {
+        if (!ok) {
+          debugPrint(
+            '[Delete] GCS cleanup failed for ${cv.remotePath} — orphan may remain',
+          );
+        }
+      });
+    }
+
+    // 2. Delete local PDF file
     final pdfFile = File(cv.pdfPath);
     if (await pdfFile.exists()) await pdfFile.delete();
+
+    // 3. Delete local thumbnail
     if (cv.thumbnailPath != null) {
       final thumbFile = File(cv.thumbnailPath!);
       if (await thumbFile.exists()) await thumbFile.delete();
     }
 
+    // 4. Delete Firestore record
     await ref.read(completedCVSyncProvider).deleteCV(id);
 
+    // 5. Update local state
     final updated = current.where((c) => c.id != id).toList();
     await _saveToStorage(updated);
     state = AsyncData(updated);

@@ -98,4 +98,30 @@ class StorageService {
       'Profile photo deletion requested for $userId (Not yet implemented in backend)',
     );
   }
+
+  /// Deletes a completed CV's PDF file from the GCS bucket via the backend.
+  /// Returns true if the backend confirmed deletion (or the file was already gone).
+  Future<bool> deleteCompletedCVFromStorage(String remotePath) async {
+    try {
+      final headers = await ApiConfig.getAuthHeaders();
+      final uri = Uri.parse(
+        '${ApiConfig.baseUrl}/cv/delete',
+      ).replace(queryParameters: {'path': remotePath});
+
+      final response = await http.delete(uri, headers: headers);
+
+      if (response.statusCode == 200) {
+        debugPrint('[StorageService] GCS file deleted: $remotePath');
+        return true;
+      } else {
+        debugPrint(
+          '[StorageService] GCS delete failed: ${response.statusCode} - ${response.body}',
+        );
+        return false;
+      }
+    } catch (e) {
+      debugPrint('[StorageService] Error deleting GCS file: $e');
+      return false;
+    }
+  }
 }
