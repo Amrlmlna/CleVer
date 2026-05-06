@@ -17,7 +17,6 @@ import 'package:go_router/go_router.dart';
 import '../../../core/router/app_routes.dart';
 
 import '../widgets/template_carousel_preview.dart';
-import '../widgets/language_selector.dart';
 import '../widgets/photo_toggle_settings.dart';
 import '../../common/widgets/spinning_text_loader.dart';
 import '../../common/widgets/swipe_to_confirm_button.dart';
@@ -31,7 +30,6 @@ class TemplatePreviewPage extends ConsumerStatefulWidget {
 }
 
 class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
-  String? _manualLocaleOverride;
   bool _usePhoto = true;
   bool _isUploading = false;
   late PageController _pageController;
@@ -83,7 +81,8 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
     }
 
     final globalLocale = ref.read(localeNotifierProvider).languageCode;
-    final effectiveLocale = _manualLocaleOverride ?? globalLocale;
+    final effectiveLocale =
+        ref.read(cvCreationProvider).contentLocale ?? globalLocale;
 
     await ref
         .read(cvDownloadProvider.notifier)
@@ -163,21 +162,6 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                   },
                 ),
                 const SizedBox(height: 32),
-
-                Text(
-                  AppLocalizations.of(context)!.cvLanguage,
-                  style: textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                LanguageSelector(
-                  manualLocaleOverride: _manualLocaleOverride,
-                  onLocaleChanged: (code) =>
-                      setState(() => _manualLocaleOverride = code),
-                ),
-                const SizedBox(height: 24),
 
                 if (template.supportsPhoto) ...[
                   Text(

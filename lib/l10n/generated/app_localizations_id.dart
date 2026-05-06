@@ -84,6 +84,16 @@ class AppLocalizationsId extends AppLocalizations {
   String get conciseFormatDesc => 'fokus pada singkat & dampak';
 
   @override
+  String get cvOutputLanguage => 'bahasa output cv';
+
+  @override
+  String get cvOutputLanguageDesc =>
+      'ai akan menulis konten cv kamu dalam bahasa ini';
+
+  @override
+  String get cvOutputLanguageAuto => 'otomatis (bahasa perangkat)';
+
+  @override
   String get almostThere => 'sesaat lagi...';
 
   @override
@@ -284,9 +294,6 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get cvImportedSuccess =>
       'cv berhasil diimport! mari lengkapi profilmu.';
-
-  @override
-  String get cvLanguage => 'bahasa cv';
 
   @override
   String cvReadyMessage(Object jobTitle) {

@@ -22,6 +22,7 @@ class CVCreationState {
   final String selectedStyle;
   final String? currentDraftId;
   final TailoringOptions tailoringOptions;
+  final String? contentLocale;
 
   const CVCreationState({
     this.jobInput,
@@ -30,6 +31,7 @@ class CVCreationState {
     this.selectedStyle = 'ATS',
     this.currentDraftId,
     this.tailoringOptions = const TailoringOptions(),
+    this.contentLocale,
   });
 
   CVCreationState copyWith({
@@ -39,6 +41,7 @@ class CVCreationState {
     String? selectedStyle,
     String? currentDraftId,
     TailoringOptions? tailoringOptions,
+    String? contentLocale,
   }) {
     return CVCreationState(
       jobInput: jobInput ?? this.jobInput,
@@ -47,6 +50,7 @@ class CVCreationState {
       selectedStyle: selectedStyle ?? this.selectedStyle,
       currentDraftId: currentDraftId ?? this.currentDraftId,
       tailoringOptions: tailoringOptions ?? this.tailoringOptions,
+      contentLocale: contentLocale ?? this.contentLocale,
     );
   }
 }
@@ -79,6 +83,10 @@ class CVCreationNotifier extends Notifier<CVCreationState> {
 
   void setTailoringOptions(TailoringOptions options) {
     state = state.copyWith(tailoringOptions: options);
+  }
+
+  void setContentLocale(String locale) {
+    state = state.copyWith(contentLocale: locale);
   }
 }
 

@@ -242,6 +242,24 @@ abstract class AppLocalizations {
   /// **'focus on brevity & impact'**
   String get conciseFormatDesc;
 
+  /// No description provided for @cvOutputLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'cv output language'**
+  String get cvOutputLanguage;
+
+  /// No description provided for @cvOutputLanguageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'ai will write your cv content in this language'**
+  String get cvOutputLanguageDesc;
+
+  /// No description provided for @cvOutputLanguageAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'auto (device language)'**
+  String get cvOutputLanguageAuto;
+
   /// No description provided for @almostThere.
   ///
   /// In en, this message translates to:
@@ -619,12 +637,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'cv imported successfully! let\'s complete your profile.'**
   String get cvImportedSuccess;
-
-  /// No description provided for @cvLanguage.
-  ///
-  /// In en, this message translates to:
-  /// **'cv language'**
-  String get cvLanguage;
 
   /// No description provided for @cvReadyMessage.
   ///

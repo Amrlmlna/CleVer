@@ -84,6 +84,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get conciseFormatDesc => 'focus on brevity & impact';
 
   @override
+  String get cvOutputLanguage => 'cv output language';
+
+  @override
+  String get cvOutputLanguageDesc =>
+      'ai will write your cv content in this language';
+
+  @override
+  String get cvOutputLanguageAuto => 'auto (device language)';
+
+  @override
   String get almostThere => 'almost there...';
 
   @override
@@ -282,9 +292,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cvImportedSuccess =>
       'cv imported successfully! let\'s complete your profile.';
-
-  @override
-  String get cvLanguage => 'cv language';
 
   @override
   String cvReadyMessage(Object jobTitle) {

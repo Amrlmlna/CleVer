@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'job_input_hero_card.dart';
 import 'job_description_field.dart';
 import 'job_tailoring_options_section.dart';
+import 'job_output_language_selector.dart';
 
 class JobInputContent extends ConsumerStatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -106,6 +107,8 @@ class _JobInputContentState extends ConsumerState<JobInputContent> {
             ),
             const SizedBox(height: 20),
             JobDescriptionField(controller: widget.descController),
+            const SizedBox(height: 20),
+            const JobOutputLanguageSelector(),
             const SizedBox(height: 20),
             const JobTailoringOptionsSection(),
           ],

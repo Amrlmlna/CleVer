@@ -92,10 +92,15 @@ class JobInputController extends AutoDisposeAsyncNotifier<void> {
       final locale = ref.read(localeNotifierProvider);
       final creationState = ref.read(cvCreationProvider);
 
+      final effectiveLocale =
+          creationState.tailoringOptions.outputLanguage ?? locale.languageCode;
+
+      ref.read(cvCreationProvider.notifier).setContentLocale(effectiveLocale);
+
       final tailoredResult = await repository.tailorProfile(
         masterProfile: masterProfile,
         jobInput: jobInput,
-        locale: locale.languageCode,
+        locale: effectiveLocale,
         options: creationState.tailoringOptions,
       );
 
