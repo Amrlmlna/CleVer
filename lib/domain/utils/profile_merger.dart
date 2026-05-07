@@ -1,10 +1,6 @@
 import '../../../domain/entities/user_profile.dart';
 import '../../../core/utils/deduplication_utils.dart';
-import 'package:clever/domain/entities/education.dart';
 import 'package:clever/domain/entities/subject.dart';
-import 'package:clever/domain/entities/experience.dart';
-import 'package:clever/domain/entities/certification.dart';
-import 'package:clever/domain/entities/skill.dart';
 
 class ProfileMerger {
   static UserProfile merge(
