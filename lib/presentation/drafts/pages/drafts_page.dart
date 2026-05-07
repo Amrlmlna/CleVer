@@ -8,6 +8,8 @@ import '../../../domain/entities/job_input.dart';
 import '../../../domain/entities/tailored_cv_result.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../providers/draft_provider.dart';
+import '../providers/draft_sync_provider.dart';
+import '../../../core/services/analytics_service.dart';
 import '../widgets/drafts_content.dart';
 import '../widgets/completed_cvs_grid.dart';
 
@@ -59,8 +61,33 @@ class _DraftsPageState extends ConsumerState<DraftsPage>
   }
 
   void _handleDelete(String id, int currentFolderCount) {
+    // 1. Analytics
+    AnalyticsService().trackDraftDeleted(id);
+
+    // 2. Immediate Cloud Sync
+    ref.read(draftSyncProvider).deleteDraftNow(id);
+
+    // 3. Local Delete
     ref.read(draftsProvider.notifier).deleteDraft(id);
+
     if (currentFolderCount <= 1 && _selectedFolder != null) {
+      setState(() {
+        _selectedFolder = null;
+      });
+    }
+  }
+
+  void _handleFolderDelete(String title, List<String> ids) {
+    // 1. Analytics
+    AnalyticsService().trackFolderDeleted(title, ids.length);
+
+    // 2. Immediate Cloud Sync
+    ref.read(draftSyncProvider).deleteFolderNow(ids);
+
+    // 3. Local Delete
+    ref.read(draftsProvider.notifier).deleteDraftsByJobTitle(title);
+
+    if (_selectedFolder == title) {
       setState(() {
         _selectedFolder = null;
       });
@@ -241,6 +268,7 @@ class _DraftsPageState extends ConsumerState<DraftsPage>
           onFolderSelected: (val) => setState(() => _selectedFolder = val),
           onDraftSelected: _handleDraftSelection,
           onDraftDeleted: (id) => _handleDelete(id, currentDrafts.length),
+          onFolderDeleted: _handleFolderDelete,
         );
       },
     );

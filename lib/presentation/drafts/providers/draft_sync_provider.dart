@@ -144,6 +144,49 @@ class DraftSyncManager {
     }
   }
 
+  Future<void> deleteDraftNow(String draftId) async {
+    final user = _ref.read(authStateProvider).value;
+    if (user == null) return;
+
+    try {
+      print(
+        "[DraftSyncManager] Deleting draft $draftId immediately from cloud...",
+      );
+      await _firestoreRepo.deleteDraft(user.uid, draftId);
+
+      // Update cache immediately to prevent heartbeat from re-syncing
+      if (_lastSyncedDrafts != null) {
+        _lastSyncedDrafts!.removeWhere((d) => d.id == draftId);
+        await _updateLastSyncedCache(_lastSyncedDrafts!);
+      }
+    } catch (e) {
+      print("[DraftSyncManager] Immediate delete error: $e");
+    }
+  }
+
+  Future<void> deleteFolderNow(List<String> draftIds) async {
+    final user = _ref.read(authStateProvider).value;
+    if (user == null) return;
+
+    try {
+      print(
+        "[DraftSyncManager] Deleting ${draftIds.length} drafts immediately from cloud...",
+      );
+      for (final id in draftIds) {
+        await _firestoreRepo.deleteDraft(user.uid, id);
+      }
+
+      // Update cache
+      if (_lastSyncedDrafts != null) {
+        final idSet = draftIds.toSet();
+        _lastSyncedDrafts!.removeWhere((d) => idSet.contains(d.id));
+        await _updateLastSyncedCache(_lastSyncedDrafts!);
+      }
+    } catch (e) {
+      print("[DraftSyncManager] Immediate folder delete error: $e");
+    }
+  }
+
   Future<void> _heartbeat() async {
     final draftsAsync = _ref.read(draftsProvider);
     final user = _ref.read(authStateProvider).value;

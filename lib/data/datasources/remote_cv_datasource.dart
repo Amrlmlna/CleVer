@@ -141,6 +141,7 @@ class RemoteCVDataSource {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       final String? pdfUrl = data['pdfUrl'];
+      String? remotePath = data['remotePath'];
 
       if (pdfUrl == null || pdfUrl.isEmpty) {
         throw http.ClientException('Generated PDF URL is empty');
@@ -161,7 +162,13 @@ class RemoteCVDataSource {
           throw http.ClientException('Downloaded file is not a valid PDF.');
         }
 
-        return PDFGenerationResult(bytes: bytes, pdfUrl: pdfUrl);
+        remotePath ??= _recoverPathFromUrl(pdfUrl);
+
+        return PDFGenerationResult(
+          bytes: bytes,
+          pdfUrl: pdfUrl,
+          remotePath: remotePath,
+        );
       } else {
         throw http.ClientException(
           'Failed to download PDF from GCS: ${pdfResponse.statusCode}',
@@ -173,5 +180,22 @@ class RemoteCVDataSource {
         response.request?.url,
       );
     }
+  }
+
+  String? _recoverPathFromUrl(String url) {
+    try {
+      final uri = Uri.parse(url);
+      if (uri.host == 'storage.googleapis.com') {
+        final segments = uri.pathSegments;
+        if (segments.length >= 2) {
+          return segments.skip(1).join('/');
+        }
+      } else if (uri.host.contains('.storage.googleapis.com')) {
+        return uri.pathSegments.join('/');
+      }
+    } catch (e) {
+      // Ignore recovery failures
+    }
+    return null;
   }
 }

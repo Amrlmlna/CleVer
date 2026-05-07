@@ -191,6 +191,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       jobTitle: cvData.jobTitle,
       styleId: styleId,
       remotePdfUrl: result.pdfUrl,
+      remotePath: result.remotePath,
     );
 
     await ref.read(completedCVProvider.notifier).addCompletedCV(completedCV);

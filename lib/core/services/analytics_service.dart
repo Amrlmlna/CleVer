@@ -125,6 +125,17 @@ class AnalyticsService {
     );
   }
 
+  Future<void> trackDraftDeleted(String draftId) async {
+    await trackEvent('draft_deleted', properties: {'draft_id': draftId});
+  }
+
+  Future<void> trackFolderDeleted(String jobTitle, int count) async {
+    await trackEvent(
+      'folder_deleted',
+      properties: {'job_title': jobTitle, 'draft_count': count},
+    );
+  }
+
   /// Sends a dummy event to force PostHog to register property names for suggestions.
   Future<void> debugWarmup() async {
     await trackEvent(

@@ -52,6 +52,19 @@ class DraftsNotifier extends AsyncNotifier<List<CVData>> {
     });
   }
 
+  Future<void> deleteDraftsByJobTitle(String jobTitle) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final drafts = await _repository.getDrafts();
+      for (final draft in drafts) {
+        if (draft.jobTitle == jobTitle) {
+          await _repository.deleteDraft(draft.id);
+        }
+      }
+      return _repository.getDrafts();
+    });
+  }
+
   Future<void> saveFromState(CVCreationState creationState) async {
     if (creationState.jobInput == null || creationState.userProfile == null) {
       return;

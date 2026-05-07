@@ -15,6 +15,7 @@ class DraftsContent extends StatelessWidget {
   final ValueChanged<String?> onFolderSelected;
   final ValueChanged<CVData> onDraftSelected;
   final ValueChanged<String> onDraftDeleted;
+  final Function(String jobTitle, List<String> ids) onFolderDeleted;
 
   const DraftsContent({
     super.key,
@@ -28,6 +29,7 @@ class DraftsContent extends StatelessWidget {
     required this.onFolderSelected,
     required this.onDraftSelected,
     required this.onDraftDeleted,
+    required this.onFolderDeleted,
   });
 
   @override
@@ -139,6 +141,8 @@ class DraftsContent extends StatelessWidget {
 
         return InkWell(
           onTap: () => onFolderSelected(title),
+          onLongPress: () =>
+              _showFolderOptions(context, title, folders[title]!),
           borderRadius: BorderRadius.circular(24),
           child: Container(
             padding: const EdgeInsets.all(20),
@@ -251,6 +255,7 @@ class DraftsContent extends StatelessWidget {
           onDismissed: (_) => onDraftDeleted(draft.id),
           child: InkWell(
             onTap: () => onDraftSelected(draft),
+            onLongPress: () => _showOptions(context, draft),
             borderRadius: BorderRadius.circular(20),
             child: Container(
               padding: const EdgeInsets.all(20),
@@ -344,5 +349,175 @@ class DraftsContent extends StatelessWidget {
       default:
         return id;
     }
+  }
+
+  void _showOptions(BuildContext context, CVData draft) {
+    final l10n = AppLocalizations.of(context)!;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 12),
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 24),
+            ListTile(
+              leading: const Icon(Icons.edit_document),
+              title: Text(
+                l10n.viewDrafts.toUpperCase(),
+                style: const TextStyle(fontWeight: FontWeight.w900),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                onDraftSelected(draft);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete_outline, color: Colors.red),
+              title: Text(
+                l10n.delete.toUpperCase(),
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                onDraftDeleted(draft.id);
+              },
+            ),
+            const SizedBox(height: 32),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showFolderOptions(
+    BuildContext context,
+    String title,
+    List<CVData> drafts,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 12),
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Text(
+                title.toUpperCase(),
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 16,
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.5),
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: const Icon(Icons.folder_open),
+              title: Text(
+                l10n.viewDrafts.toUpperCase(),
+                style: const TextStyle(fontWeight: FontWeight.w900),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                onFolderSelected(title);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete_sweep, color: Colors.red),
+              title: Text(
+                "${l10n.delete} FOLDER".toUpperCase(),
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                _confirmFolderDelete(context, title, drafts);
+              },
+            ),
+            const SizedBox(height: 32),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _confirmFolderDelete(
+    BuildContext context,
+    String title,
+    List<CVData> drafts,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.confirmDelete.toUpperCase()),
+        content: Text(
+          "ARE YOU SURE YOU WANT TO DELETE ALL ${drafts.length} DRAFTS IN '$title'?",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.cancel.toUpperCase()),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              onFolderDeleted(title, drafts.map((d) => d.id).toList());
+            },
+            child: Text(
+              l10n.delete.toUpperCase(),
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
