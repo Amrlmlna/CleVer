@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/datasources/remote_template_datasource.dart';
@@ -46,14 +47,9 @@ class ProfileSyncManager {
   }
 
   void init() {
-    print("[SyncManager] Initializing...");
-
     _ref.listen(authStateProvider, (prev, next) {
       final user = next.value;
       if (user != null && (prev == null || prev.value == null)) {
-        print(
-          "[SyncManager] User logged in: ${user.uid}. Triggering initial cloud fetch...",
-        );
         initialCloudFetch(user.uid);
       }
     });
@@ -74,7 +70,7 @@ class ProfileSyncManager {
       try {
         _lastSyncedProfile = UserProfile.fromJson(jsonDecode(json));
       } catch (e) {
-        print("[SyncManager] Error loading sync cache: $e");
+        debugPrint("[SyncManager] Error loading sync cache: $e");
       }
     }
   }
@@ -89,16 +85,13 @@ class ProfileSyncManager {
     try {
       final cloudProfile = await _firestoreRepo.getProfile(uid);
       if (cloudProfile != null) {
-        print("[SyncManager] Cloud data found. Merging into local...");
         await _ref
             .read(masterProfileProvider.notifier)
             .mergeProfile(cloudProfile);
         _updateLastSyncedCache(_ref.read(masterProfileProvider)!);
-      } else {
-        print("[SyncManager] Cloud is empty for this user.");
       }
     } catch (e) {
-      print("[SyncManager] Initial fetch error: $e");
+      debugPrint("[SyncManager] Initial fetch error: $e");
     }
   }
 
@@ -113,15 +106,11 @@ class ProfileSyncManager {
     if (currentProfile == null || user == null) return;
 
     if (currentProfile != _lastSyncedProfile) {
-      print(
-        "[SyncManager] Sync triggered! Pushing to Cloud for ${user.uid}...",
-      );
       try {
         await _firestoreRepo.saveProfile(user.uid, currentProfile);
         await _updateLastSyncedCache(currentProfile);
-        print("[SyncManager] Cloud sync SUCCESSFUL.");
       } catch (e) {
-        print("[SyncManager] Sync error: $e");
+        debugPrint("[SyncManager] Sync error: $e");
         rethrow;
       }
     }

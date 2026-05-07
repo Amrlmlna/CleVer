@@ -45,7 +45,6 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     final mergedProfile = ProfileMerger.merge(current, newProfile);
 
     if (mergedProfile != current) {
-      print("[DEBUG] Profile updated via merge!");
       await saveProfile(mergedProfile);
       return true;
     }

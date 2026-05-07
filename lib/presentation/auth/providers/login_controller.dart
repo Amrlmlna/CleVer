@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../profile/providers/profile_sync_provider.dart';
 import './auth_state_provider.dart';
@@ -21,7 +22,7 @@ class LoginController extends AutoDisposeAsyncNotifier<void> {
         try {
           await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
         } catch (e) {
-          print("Sync failed on login: $e");
+          debugPrint("Sync failed on login: $e");
         }
       }
     });
@@ -41,7 +42,7 @@ class LoginController extends AutoDisposeAsyncNotifier<void> {
         try {
           await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
         } catch (e) {
-          print("Sync failed on Google login: $e");
+          debugPrint("Sync failed on Google login: $e");
         }
       }
     });

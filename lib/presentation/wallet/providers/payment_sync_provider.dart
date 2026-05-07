@@ -14,9 +14,6 @@ class PaymentSyncManager {
 
   void init() {
     Purchases.addCustomerInfoUpdateListener((customerInfo) {
-      if (kDebugMode) {
-        print("[PaymentSync] Customer info updated! Invalidating templates...");
-      }
       _ref.invalidate(templatesProvider);
     });
   }

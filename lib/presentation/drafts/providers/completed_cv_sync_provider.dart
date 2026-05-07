@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/repositories/firestore_completed_cv_repository.dart';
 import '../../../domain/entities/completed_cv.dart';
@@ -37,13 +38,10 @@ class CompletedCVSyncManager {
     try {
       final cloudCVs = await _firestoreRepo.getCompletedCVs(uid);
       if (cloudCVs.isNotEmpty) {
-        print(
-          "[CompletedCVSync] Found ${cloudCVs.length} CVs in cloud. Merging...",
-        );
         await _ref.read(completedCVProvider.notifier).mergeRemoteCVs(cloudCVs);
       }
     } catch (e) {
-      print("[CompletedCVSync] Initial fetch error: $e");
+      debugPrint("[CompletedCVSync] Initial fetch error: $e");
     }
   }
 
@@ -53,9 +51,8 @@ class CompletedCVSyncManager {
 
     try {
       await _firestoreRepo.saveCompletedCV(user.uid, cv);
-      print("[CompletedCVSync] CV ${cv.id} synced to cloud.");
     } catch (e) {
-      print("[CompletedCVSync] Sync error for CV ${cv.id}: $e");
+      debugPrint("[CompletedCVSync] Sync error for CV ${cv.id}: $e");
       rethrow;
     }
   }
@@ -67,7 +64,7 @@ class CompletedCVSyncManager {
     try {
       await _firestoreRepo.deleteCompletedCV(user.uid, cvId);
     } catch (e) {
-      print("[CompletedCVSync] Delete error for CV $cvId: $e");
+      debugPrint("[CompletedCVSync] Delete error for CV $cvId: $e");
     }
   }
 }

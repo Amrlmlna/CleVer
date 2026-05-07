@@ -9,7 +9,7 @@ import '../../presentation/wallet/widgets/credit_purchase_bottom_sheet.dart';
 
 class PaymentService {
   static String get _androidApiKey => dotenv.get('REVENUECAT_GOOGLE_KEY');
-  static const _iosApiKey = 'appl_your_actual_key_here';
+  static const _iosApiKey = 'tak ada api key ios';
 
   static final _analytics = AnalyticsService();
 
