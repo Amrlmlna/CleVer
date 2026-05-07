@@ -5,14 +5,52 @@ class DeduplicationUtils {
   static String normalizeText(String? text) {
     if (text == null || text.isEmpty) return '';
 
-    // Normalize abbreviations
+    // Normalize abbreviations and strip common institution suffixes
     String result = text.toLowerCase();
+
+    // Standard abbreviations
     result = result.replaceAll(RegExp(r'\bsr\b\.?'), 'senior');
     result = result.replaceAll(RegExp(r'\bjr\b\.?'), 'junior');
-    result = result.replaceAll(RegExp(r'\binc\b\.?'), '');
-    result = result.replaceAll(RegExp(r'\bllc\b\.?'), '');
-    result = result.replaceAll(RegExp(r'\bltd\b\.?'), '');
-    result = result.replaceAll(RegExp(r'\bcorp\b\.?'), '');
+
+    // Degree prefixes/noise (with optional dots)
+    result = result.replaceAll(
+      RegExp(r'\b(b\.?s\.?c\.?|b\.?a\.?|m\.?s\.?c\.?|m\.?a\.?|ph\.?d\.?)\b'),
+      '',
+    );
+    result = result.replaceAll(
+      RegExp(
+        r'\b(bachelor of science|bachelor of arts|master of science|master of arts|bachelor of|master of|doctor of|associate of|associate degree in)\b',
+      ),
+      '',
+    );
+
+    // Company suffixes
+    result = result.replaceAll(
+      RegExp(
+        r'\b(inc|corp|ltd|llc|plc|gmbh|co|company|corporation|incorporated|limited)\b\.?',
+      ),
+      '',
+    );
+
+    // School suffixes
+    result = result.replaceAll(
+      RegExp(
+        r'\b(university|college|school|institute|academy|uni|polytechnic|faculty)\b\.?',
+      ),
+      '',
+    );
+
+    // Strip "noise" like coursework mentions or specializations in parentheses/dashes
+    // e.g. "Computer Science - AI Coursework" -> "computer science"
+    result = result.split(RegExp(r'[\-\(\):]')).first;
+
+    // Strip specific noise keywords
+    result = result.replaceAll(
+      RegExp(
+        r'\b(coursework|specialization|major|minor|focus|track|emphasis|degree in|degree)\b.*$',
+      ),
+      '',
+    );
 
     return result
         .replaceAll(RegExp(r'[^a-z0-9\s]'), '')

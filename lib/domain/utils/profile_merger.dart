@@ -1,5 +1,10 @@
 import '../../../domain/entities/user_profile.dart';
 import '../../../core/utils/deduplication_utils.dart';
+import 'package:clever/domain/entities/education.dart';
+import 'package:clever/domain/entities/subject.dart';
+import 'package:clever/domain/entities/experience.dart';
+import 'package:clever/domain/entities/certification.dart';
+import 'package:clever/domain/entities/skill.dart';
 
 class ProfileMerger {
   static UserProfile merge(
@@ -130,6 +135,12 @@ class ProfileMerger {
       if (existsIndex != -1) {
         final oldExp = merged[existsIndex];
         merged[existsIndex] = oldExp.copyWith(
+          jobTitle: newExp.jobTitle.length > oldExp.jobTitle.length
+              ? newExp.jobTitle
+              : oldExp.jobTitle,
+          companyName: newExp.companyName.length > oldExp.companyName.length
+              ? newExp.companyName
+              : oldExp.companyName,
           description: newExp.description.length > oldExp.description.length
               ? newExp.description
               : oldExp.description,
@@ -178,16 +189,38 @@ class ProfileMerger {
       if (existsIndex != -1) {
         final oldEdu = merged[existsIndex];
         merged[existsIndex] = oldEdu.copyWith(
+          degree: newEdu.degree.length > oldEdu.degree.length
+              ? newEdu.degree
+              : oldEdu.degree,
+          schoolName: newEdu.schoolName.length > oldEdu.schoolName.length
+              ? newEdu.schoolName
+              : oldEdu.schoolName,
           gpa: newEdu.gpa ?? oldEdu.gpa,
-          subjects: newEdu.subjects.length > oldEdu.subjects.length
-              ? newEdu.subjects
-              : oldEdu.subjects,
+          subjects: _mergeSubjects(oldEdu.subjects, newEdu.subjects),
           description: newEdu.description.length > oldEdu.description.length
               ? newEdu.description
               : oldEdu.description,
         );
       } else {
         merged.add(newEdu);
+      }
+    }
+    return merged;
+  }
+
+  static List<Subject> _mergeSubjects(
+    List<Subject> current,
+    List<Subject> incoming,
+  ) {
+    final List<Subject> merged = List.from(current);
+    for (final newSub in incoming) {
+      final exists = merged.any(
+        (oldSub) =>
+            DeduplicationUtils.normalizeText(oldSub.name) ==
+            DeduplicationUtils.normalizeText(newSub.name),
+      );
+      if (!exists) {
+        merged.add(newSub);
       }
     }
     return merged;

@@ -58,15 +58,18 @@ class Experience extends Equatable {
           json['id'] as String? ??
           DateTime.now().millisecondsSinceEpoch.toString(),
       jobTitle: FormatUtils.ensureString(
-        json['jobTitle'],
+        json['jobTitle'] ?? json['job_title'],
         fallback: 'Job Title',
       ),
       companyName: FormatUtils.ensureString(
-        json['companyName'],
+        json['companyName'] ?? json['company_name'] ?? json['company'],
         fallback: 'Company',
       ),
-      startDate: json['startDate'] as String? ?? '2000-01',
-      endDate: json['endDate'] as String?,
+      startDate:
+          json['startDate'] as String? ??
+          json['start_date'] as String? ??
+          '2000-01',
+      endDate: json['endDate'] as String? ?? json['end_date'] as String?,
       description: FormatUtils.ensureString(json['description']),
       fingerprint: json['fingerprint'] as String?,
     );
