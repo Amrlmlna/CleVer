@@ -2,9 +2,7 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../presentation/common/widgets/review_success_dialog.dart';
-import '../../l10n/generated/app_localizations.dart';
 import 'analytics_service.dart';
 
 class ReviewService {
@@ -51,7 +49,7 @@ class ReviewService {
         await requestReview();
       } else if (result == false) {
         AnalyticsService().trackReviewInteraction('constructive');
-        await sendFeedback(context);
+        await requestReview();
       } else {
         AnalyticsService().trackReviewInteraction('dismissed');
       }
@@ -78,41 +76,6 @@ class ReviewService {
       debugPrint('ReviewService Error: $e');
       await openStoreListing();
     }
-  }
-
-  Future<void> sendFeedback(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
-    final Uri emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: 'cvfast.contact@gmail.com',
-      query: encodeQueryParameters({
-        'subject': l10n.feedbackEmailSubject,
-        'body': l10n.feedbackEmailBody,
-      }),
-    );
-
-    try {
-      if (await canLaunchUrl(emailLaunchUri)) {
-        await launchUrl(emailLaunchUri);
-      } else {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Could not open email app')),
-          );
-        }
-      }
-    } catch (e) {
-      debugPrint('Feedback Error: $e');
-    }
-  }
-
-  String? encodeQueryParameters(Map<String, String> params) {
-    return params.entries
-        .map(
-          (MapEntry<String, String> e) =>
-              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',
-        )
-        .join('&');
   }
 
   Future<void> openStoreListing() async {
