@@ -64,6 +64,7 @@ class DashboardTutorialFactory {
       textSkip: AppLocalizations.of(context)!.skipIntro,
       paddingFocus: 10,
       opacityShadow: 0.8,
+      isDismissible: false,
       onFinish: () {
         TutorialService().markNavTutorialAsShown();
         onComplete();

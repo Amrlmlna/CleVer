@@ -81,7 +81,9 @@ class _HomePageState extends ConsumerState<HomePage>
     final hasGenerated = await ReviewService().hasGeneratedAtLeastOneCv();
     final hasShown = await TutorialService().hasShownNavTutorial();
     if (hasGenerated && !hasShown && mounted) {
+      debugPrint('[HomePage] Triggering NavTutorial for the FIRST TIME');
       AnalyticsService().trackTutorialViewed('draft_master');
+      await TutorialService().markNavTutorialAsShown();
       ref.read(navigationTutorialPendingProvider.notifier).state = true;
     }
   }

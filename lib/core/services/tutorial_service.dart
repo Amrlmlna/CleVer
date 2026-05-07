@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TutorialService {
@@ -20,11 +21,14 @@ class TutorialService {
 
   Future<bool> hasShownNavTutorial() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_kNavTutorialKey) ?? false;
+    final hasShown = prefs.getBool(_kNavTutorialKey) ?? false;
+    debugPrint('[TutorialService] Checking hasShownNavTutorial: $hasShown');
+    return hasShown;
   }
 
   Future<void> markNavTutorialAsShown() async {
     final prefs = await SharedPreferences.getInstance();
+    debugPrint('[TutorialService] Marking NavTutorial as SHOWN');
     await prefs.setBool(_kNavTutorialKey, true);
   }
 }
