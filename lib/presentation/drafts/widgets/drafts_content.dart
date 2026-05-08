@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:clever/l10n/generated/app_localizations.dart';
+import 'package:clever/core/theme/app_colors.dart';
 import '../../../domain/entities/cv_data.dart';
 
 class DraftsContent extends StatelessWidget {
@@ -353,57 +354,63 @@ class DraftsContent extends StatelessWidget {
 
   void _showOptions(BuildContext context, CVData draft) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 12),
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const SizedBox(height: 24),
-            ListTile(
-              leading: const Icon(Icons.edit_document),
-              title: Text(
-                l10n.viewDrafts.toUpperCase(),
-                style: const TextStyle(fontWeight: FontWeight.w900),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                onDraftSelected(draft);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.delete_outline, color: Colors.red),
-              title: Text(
-                l10n.delete.toUpperCase(),
-                style: const TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.w900,
+      useRootNavigator: true,
+      backgroundColor: colorScheme.surfaceContainerHigh,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 36,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: colorScheme.outlineVariant,
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              onTap: () {
-                Navigator.pop(context);
-                onDraftDeleted(draft.id);
-              },
-            ),
-            const SizedBox(height: 32),
-          ],
+              const SizedBox(height: 16),
+              ListTile(
+                leading: Icon(
+                  Icons.edit_document,
+                  color: colorScheme.onSurface,
+                ),
+                title: Text(
+                  l10n.viewDrafts.toUpperCase(),
+                  style: TextStyle(
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  onDraftSelected(draft);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.delete_outline, color: colorScheme.error),
+                title: Text(
+                  l10n.delete.toUpperCase(),
+                  style: TextStyle(
+                    color: colorScheme.error,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  onDraftDeleted(draft.id);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -415,73 +422,74 @@ class DraftsContent extends StatelessWidget {
     List<CVData> drafts,
   ) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 12),
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Text(
-                title.toUpperCase(),
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16,
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.5),
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const SizedBox(height: 16),
-            ListTile(
-              leading: const Icon(Icons.folder_open),
-              title: Text(
-                l10n.viewDrafts.toUpperCase(),
-                style: const TextStyle(fontWeight: FontWeight.w900),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                onFolderSelected(title);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.delete_sweep, color: Colors.red),
-              title: Text(
-                "${l10n.delete} FOLDER".toUpperCase(),
-                style: const TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.w900,
+      useRootNavigator: true,
+      backgroundColor: colorScheme.surfaceContainerHigh,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 36,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: colorScheme.outlineVariant,
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              onTap: () {
-                Navigator.pop(context);
-                _confirmFolderDelete(context, title, drafts);
-              },
-            ),
-            const SizedBox(height: 32),
-          ],
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  title.toUpperCase(),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 14,
+                    color: colorScheme.onSurface.withValues(alpha: 0.5),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(height: 8),
+              ListTile(
+                leading: Icon(Icons.folder_open, color: colorScheme.onSurface),
+                title: Text(
+                  l10n.viewDrafts.toUpperCase(),
+                  style: TextStyle(
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  onFolderSelected(title);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.delete_sweep, color: colorScheme.error),
+                title: Text(
+                  "${l10n.delete} FOLDER".toUpperCase(),
+                  style: TextStyle(
+                    color: colorScheme.error,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  _confirmFolderDelete(context, title, drafts);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -493,18 +501,34 @@ class DraftsContent extends StatelessWidget {
     List<CVData> drafts,
   ) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(l10n.confirmDelete.toUpperCase()),
+        backgroundColor: colorScheme.surfaceContainerHigh,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+        title: Text(
+          l10n.confirmDelete.toUpperCase(),
+          style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
+        ),
         content: Text(
           "ARE YOU SURE YOU WANT TO DELETE ALL ${drafts.length} DRAFTS IN '$title'?",
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: colorScheme.onSurface.withValues(alpha: 0.7),
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel.toUpperCase()),
+            child: Text(
+              l10n.cancel.toUpperCase(),
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+                color: colorScheme.onSurface,
+              ),
+            ),
           ),
           TextButton(
             onPressed: () {
@@ -513,7 +537,10 @@ class DraftsContent extends StatelessWidget {
             },
             child: Text(
               l10n.delete.toUpperCase(),
-              style: const TextStyle(color: Colors.red),
+              style: const TextStyle(
+                color: AppColors.error,
+                fontWeight: FontWeight.w900,
+              ),
             ),
           ),
         ],

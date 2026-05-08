@@ -2397,13 +2397,13 @@ abstract class AppLocalizations {
   /// No description provided for @startFromScratch.
   ///
   /// In en, this message translates to:
-  /// **'start from scratch'**
+  /// **'Form Input'**
   String get startFromScratch;
 
   /// No description provided for @startFromScratchDesc.
   ///
   /// In en, this message translates to:
-  /// **'fill in each section manually, step by step.'**
+  /// **'Input once, use forever. Includes AI Dictation for effortless entry.'**
   String get startFromScratchDesc;
 
   /// No description provided for @startNow.
@@ -2925,7 +2925,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingTweetContent1.
   ///
   /// In en, this message translates to:
-  /// **'Spent 5 hours editing my CV layout, only for it to fall apart when saving as PDF. I\'m so done... 😭 #CVRelatable'**
+  /// **'Finally, an app that builds my CV perfectly in minutes. The layout is just 🤌 #CleverApp'**
   String get onboardingTweetContent1;
 
   /// No description provided for @onboardingTweetHandle2.
@@ -2937,7 +2937,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingTweetContent2.
   ///
   /// In en, this message translates to:
-  /// **'Why is \'Updating CV\' the worst part of job hunting? It\'s just tiny changes but I have to copy-paste everything from scratch.'**
+  /// **'Interview invite 2 days after using Clever! The keyword optimization is actual magic. ✨'**
   String get onboardingTweetContent2;
 
   /// No description provided for @onboardingTweetHandle3.
@@ -2949,7 +2949,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingTweetContent3.
   ///
   /// In en, this message translates to:
-  /// **'Found a great job post, but looking at my messy CV format gave me a headache. Ended up not applying because I was too tired. Ugh.'**
+  /// **'Stop manually editing layouts. Just focus on your skills, let Clever handle the rest. Best investment! 🚀'**
   String get onboardingTweetContent3;
 
   /// No description provided for @onboardingBurnoutTitle.
@@ -3057,13 +3057,13 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingStepWallTitle.
   ///
   /// In en, this message translates to:
-  /// **'You are not alone.'**
+  /// **'Your career shortcut.'**
   String get onboardingStepWallTitle;
 
   /// No description provided for @onboardingStepWallSub.
   ///
   /// In en, this message translates to:
-  /// **'Millions feel the same exhaustion.'**
+  /// **'Join others who land jobs faster with Clever AI.'**
   String get onboardingStepWallSub;
 
   /// No description provided for @onboardingComparisonTitle.
@@ -3317,6 +3317,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'almost done...'**
   String get voiceAlmostDone;
+
+  /// No description provided for @onboardingNewBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'NEW'**
+  String get onboardingNewBadge;
 }
 
 class _AppLocalizationsDelegate

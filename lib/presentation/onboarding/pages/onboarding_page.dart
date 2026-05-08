@@ -20,7 +20,8 @@ import '../widgets/onboarding_shell.dart';
 import '../widgets/onboarding_navigation_bar.dart';
 
 class OnboardingPage extends ConsumerStatefulWidget {
-  const OnboardingPage({super.key});
+  final bool shouldTrackOnInit;
+  const OnboardingPage({super.key, this.shouldTrackOnInit = true});
 
   @override
   ConsumerState<OnboardingPage> createState() => _OnboardingPageState();
@@ -79,7 +80,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     );
 
     _prefillFromAuth();
-    AnalyticsService().trackOnboardingStep('data_input', 0);
+    if (widget.shouldTrackOnInit) {
+      AnalyticsService().trackOnboardingStep('data_input', 0);
+    }
   }
 
   void _prefillFromAuth() {

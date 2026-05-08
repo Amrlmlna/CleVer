@@ -1242,11 +1242,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startDate => 'start date';
 
   @override
-  String get startFromScratch => 'start from scratch';
+  String get startFromScratch => 'Form Input';
 
   @override
   String get startFromScratchDesc =>
-      'fill in each section manually, step by step.';
+      'Input once, use forever. Includes AI Dictation for effortless entry.';
 
   @override
   String get startNow => 'start now';
@@ -1525,21 +1525,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingTweetContent1 =>
-      'Spent 5 hours editing my CV layout, only for it to fall apart when saving as PDF. I\'m so done... 😭 #CVRelatable';
+      'Finally, an app that builds my CV perfectly in minutes. The layout is just 🤌 #CleverApp';
 
   @override
   String get onboardingTweetHandle2 => '@intern_life';
 
   @override
   String get onboardingTweetContent2 =>
-      'Why is \'Updating CV\' the worst part of job hunting? It\'s just tiny changes but I have to copy-paste everything from scratch.';
+      'Interview invite 2 days after using Clever! The keyword optimization is actual magic. ✨';
 
   @override
   String get onboardingTweetHandle3 => '@stressed_grad';
 
   @override
   String get onboardingTweetContent3 =>
-      'Found a great job post, but looking at my messy CV format gave me a headache. Ended up not applying because I was too tired. Ugh.';
+      'Stop manually editing layouts. Just focus on your skills, let Clever handle the rest. Best investment! 🚀';
 
   @override
   String get onboardingBurnoutTitle =>
@@ -1600,10 +1600,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingSolutionHeadline => 'Leave it to CleVer.\nIn seconds.';
 
   @override
-  String get onboardingStepWallTitle => 'You are not alone.';
+  String get onboardingStepWallTitle => 'Your career shortcut.';
 
   @override
-  String get onboardingStepWallSub => 'Millions feel the same exhaustion.';
+  String get onboardingStepWallSub =>
+      'Join others who land jobs faster with Clever AI.';
 
   @override
   String get onboardingComparisonTitle =>
@@ -1743,4 +1744,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get voiceAlmostDone => 'almost done...';
+
+  @override
+  String get onboardingNewBadge => 'NEW';
 }

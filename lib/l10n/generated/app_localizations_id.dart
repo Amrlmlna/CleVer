@@ -1248,11 +1248,11 @@ class AppLocalizationsId extends AppLocalizations {
   String get startDate => 'masuk';
 
   @override
-  String get startFromScratch => 'mulai dari awal';
+  String get startFromScratch => 'Form Input';
 
   @override
   String get startFromScratchDesc =>
-      'tambahin manual, cukup sekali, dan pakai pengalamannya berkali-kali dengan bantuan AI.';
+      'Tersedia fitur AI Dikte biar gak capek ngetik. Isi sekali, pakai selamanya. ';
 
   @override
   String get startNow => 'mulai sekarang';
@@ -1532,21 +1532,21 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get onboardingTweetContent1 =>
-      'udah 5 jam edit layout cv, pas di-save pdf malah berantakan. capek banget asli... 😭 #cvrelatable';
+      'cape bgt, lolos screening katanya perlu cv yg relevan sama kebutuhan lowongan, terus gua harus bikin 100 cv relevan buat 100 lowongan gitu?😭🥲';
 
   @override
   String get onboardingTweetHandle2 => '@anak_magang';
 
   @override
   String get onboardingTweetContent2 =>
-      'kenapa ya tiap mau apply kerja, yang paling bikin males itu \'update cv\'. padahal cuma beda tipis tapi harus copy-paste dari nol.';
+      'ketawa bgt temen gua pake cv gado2 buat apply ke 4 perusahaan berbeda dengan kebutuhan yg beda2 terus heran pas ditolak, ya iyalah anj*r😭😭';
 
   @override
   String get onboardingTweetHandle3 => '@freshgrad_stres';
 
   @override
   String get onboardingTweetContent3 =>
-      'dapet loker bagus, giliran buka file cv malah pusing sendiri liat formatnya. akhirnya nggak jadi apply karena telanjur capek duluan.';
+      'udah mah template nya bayar, kalau mau buat cv tetep harus di edit manual lagi, ga msword ga di canva sama aja cape nya, hadeh😫';
 
   @override
   String get onboardingBurnoutTitle =>
@@ -1607,15 +1607,15 @@ class AppLocalizationsId extends AppLocalizations {
       'serahkan pada clever.\nberes dalam sekejap.';
 
   @override
-  String get onboardingStepWallTitle => 'kamu tidak sendirian.';
+  String get onboardingStepWallTitle => 'kamu ga sendirian kok.';
 
   @override
   String get onboardingStepWallSub =>
-      'jutaan orang merasakan kelelahan yang sama.';
+      'ribuan orang diluar sana juga punya problem yang sama';
 
   @override
   String get onboardingComparisonTitle =>
-      'capai fokus dan kejelasan 2X lebih baik dengan clever';
+      'kenapa clever cocok banget buat gen-z yang mageran';
 
   @override
   String get onboardingComparisonLabelLeft => 'tanpa clever';
@@ -1631,7 +1631,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get onboardingComparisonFooter =>
-      'CleVer memudahkan segalanya dan menjagamu tetap akuntabel.';
+      'Buat cv dengan lebih gampang, kamu sampe lupa cape nya proses bikin CV.';
 
   @override
   String get onboardingViewSolution => 'lihat solusi';
@@ -1696,18 +1696,18 @@ class AppLocalizationsId extends AppLocalizations {
   String get supportAndLegal => 'dukungan & hukum';
 
   @override
-  String get mascotWelcome => 'mari kita mulai';
+  String get mascotWelcome => 'tetap update ya';
 
   @override
   String get mascotWelcomeSub =>
-      'perjalanan karir yang lebih baik dimulai dari sini.';
+      'jangan lupa update profil master kamu setiap kali ada pengalaman baru!';
 
   @override
-  String get mascotEncourage => 'tetap update ya';
+  String get mascotEncourage => 'mari kita mulai';
 
   @override
   String get mascotEncourageSub =>
-      'jangan lupa update profil master kamu setiap kali ada pengalaman baru!';
+      'perjalanan karir yang lebih baik dimulai dari sini.';
 
   @override
   String get mascotExciting => 'wih, keren!';
@@ -1750,4 +1750,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get voiceAlmostDone => 'hampir selesai...';
+
+  @override
+  String get onboardingNewBadge => 'BARU';
 }

@@ -18,6 +18,7 @@ class OnboardingImportStep extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
@@ -25,7 +26,7 @@ class OnboardingImportStep extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            AppLocalizations.of(context)!.alreadyHaveCV.toUpperCase(),
+            l10n.alreadyHaveCV.toUpperCase(),
             style: TextStyle(
               fontWeight: FontWeight.w900,
               fontSize: 24,
@@ -36,7 +37,7 @@ class OnboardingImportStep extends ConsumerWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            AppLocalizations.of(context)!.alreadyHaveCVSubtitle,
+            l10n.alreadyHaveCVSubtitle,
             style: TextStyle(
               color: colorScheme.onSurfaceVariant,
               fontSize: 14,
@@ -46,8 +47,8 @@ class OnboardingImportStep extends ConsumerWidget {
           const SizedBox(height: 32),
 
           _OptionCard(
-            title: AppLocalizations.of(context)!.importExistingCV,
-            subtitle: AppLocalizations.of(context)!.importExistingCVDesc,
+            title: l10n.importExistingCV,
+            subtitle: l10n.importExistingCVDesc,
             onTap: () => CVImportHandler.showImportDialog(
               context: context,
               ref: ref,
@@ -58,8 +59,9 @@ class OnboardingImportStep extends ConsumerWidget {
           const SizedBox(height: 16),
 
           _OptionCard(
-            title: AppLocalizations.of(context)!.startFromScratch,
-            subtitle: AppLocalizations.of(context)!.startFromScratchDesc,
+            title: l10n.startFromScratch,
+            subtitle: l10n.startFromScratchDesc,
+            badgeText: l10n.onboardingNewBadge,
             onTap: onManualEntry,
           ),
         ],
@@ -71,11 +73,13 @@ class OnboardingImportStep extends ConsumerWidget {
 class _OptionCard extends StatelessWidget {
   final String title;
   final String subtitle;
+  final String? badgeText;
   final VoidCallback onTap;
 
   const _OptionCard({
     required this.title,
     required this.subtitle,
+    this.badgeText,
     required this.onTap,
   });
 
@@ -101,14 +105,40 @@ class _OptionCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title.toUpperCase(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 14,
-                        color: colorScheme.onSurface,
-                        letterSpacing: 0.5,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          title.toUpperCase(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
+                            color: colorScheme.onSurface,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                        if (badgeText != null) ...[
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: colorScheme.primary,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              badgeText!,
+                              style: TextStyle(
+                                color: colorScheme.onPrimary,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
                     const SizedBox(height: 8),
                     Text(

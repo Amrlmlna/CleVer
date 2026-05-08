@@ -38,6 +38,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
       AnalyticsService().trackOnboardingStep('welcome', _currentStep);
     } else {
       setState(() => _showForm = true);
+      AnalyticsService().trackOnboardingStep('data_input', 0);
     }
   }
 
@@ -158,7 +159,10 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
             ),
           ],
         ),
-        child: Theme(data: AppTheme.sheetTheme, child: const OnboardingPage()),
+        child: Theme(
+          data: AppTheme.sheetTheme,
+          child: const OnboardingPage(shouldTrackOnInit: false),
+        ),
       ),
     );
   }
