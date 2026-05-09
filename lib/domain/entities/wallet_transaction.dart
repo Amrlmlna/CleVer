@@ -6,6 +6,8 @@ class WalletTransaction extends Equatable {
   final int amount;
   final String? source;
   final String? description;
+  final String? durationAdded;
+  final String? productDisplayName;
   final DateTime timestamp;
 
   const WalletTransaction({
@@ -14,11 +16,15 @@ class WalletTransaction extends Equatable {
     required this.amount,
     this.source,
     this.description,
+    this.durationAdded,
+    this.productDisplayName,
     required this.timestamp,
   });
 
   bool get isAddition =>
-      type == 'subscription_buy' || (amount > 0 && type != 'cv_export');
+      type == 'subscription_buy' ||
+      type == 'subscription_update' ||
+      (amount > 0 && type != 'cv_export');
 
   factory WalletTransaction.fromJson(Map<String, dynamic> json) {
     DateTime parseTimestamp(dynamic ts) {
@@ -36,10 +42,21 @@ class WalletTransaction extends Equatable {
       amount: json['amount'] as int? ?? 0,
       source: json['source'] as String?,
       description: json['description'] as String?,
+      durationAdded: json['durationAdded'] as String?,
+      productDisplayName: json['productDisplayName'] as String?,
       timestamp: parseTimestamp(json['timestamp']),
     );
   }
 
   @override
-  List<Object?> get props => [id, type, amount, source, description, timestamp];
+  List<Object?> get props => [
+        id,
+        type,
+        amount,
+        source,
+        description,
+        durationAdded,
+        productDisplayName,
+        timestamp
+      ];
 }

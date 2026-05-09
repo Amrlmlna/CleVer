@@ -272,6 +272,24 @@ abstract class AppLocalizations {
   /// **'add'**
   String get add;
 
+  /// No description provided for @added.
+  ///
+  /// In en, this message translates to:
+  /// **'added'**
+  String get added;
+
+  /// No description provided for @activate.
+  ///
+  /// In en, this message translates to:
+  /// **'activate'**
+  String get activate;
+
+  /// No description provided for @subscriptionExpiryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'expires in {time}'**
+  String subscriptionExpiryCount(String time);
+
   /// No description provided for @addCertification.
   ///
   /// In en, this message translates to:
@@ -2951,12 +2969,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'no interruptions, just pure focus on your career'**
   String get benefitSkipAdsDesc;
-
-  /// No description provided for @subscriptionExpiryCount.
-  ///
-  /// In en, this message translates to:
-  /// **'expires in {time}'**
-  String subscriptionExpiryCount(String time);
 
   /// No description provided for @pass24h.
   ///

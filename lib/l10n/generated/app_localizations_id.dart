@@ -137,6 +137,17 @@ class AppLocalizationsId extends AppLocalizations {
   String get add => 'tambah';
 
   @override
+  String get added => 'ditambahkan';
+
+  @override
+  String get activate => 'aktifkan';
+
+  @override
+  String subscriptionExpiryCount(String time) {
+    return 'berakhir dalam $time';
+  }
+
+  @override
   String get addCertification => 'tambah sertifikasi';
 
   @override
@@ -1577,11 +1588,6 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get benefitSkipAdsDesc => 'tanpa gangguan, fokus ke karir kamu';
-
-  @override
-  String subscriptionExpiryCount(String time) {
-    return 'berakhir dalam $time';
-  }
 
   @override
   String get pass24h => '24 jam';

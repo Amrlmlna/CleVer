@@ -64,6 +64,16 @@
   "quickActions": "aksi cepat",
   "cleverUser": "pengguna clever",
   "add": "tambah",
+  "added": "ditambahkan",
+  "activate": "aktifkan",
+  "subscriptionExpiryCount": "berakhir dalam {timeLeft}",
+  "@subscriptionExpiryCount": {
+    "placeholders": {
+      "timeLeft": {
+        "type": "String"
+      }
+    }
+  },
   "addCertification": "tambah sertifikasi",
   "addEducation": "tambah pendidikan",
   "addExperience": "tambah pengalaman",

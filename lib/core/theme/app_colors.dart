@@ -49,6 +49,7 @@ class AppColors {
   static const Color vibrantBlack = Color(0xFF1E1E1E);
   static const Color vibrantGreen = Color(0xFFB9D870);
   static const Color vibrantBlue = Color(0xFF44A1F6);
+  static const Color premiumGold = Color(0xFFD4AF37);
 
   // Semantic Colors
   static const Color success = Color(0xFF10B981);

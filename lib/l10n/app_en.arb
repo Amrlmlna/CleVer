@@ -64,6 +64,16 @@
   "quickActions": "quick actions",
   "cleverUser": "clever user",
   "add": "add",
+  "added": "added",
+  "activate": "activate",
+  "subscriptionExpiryCount": "expires in {timeLeft}",
+  "@subscriptionExpiryCount": {
+    "placeholders": {
+      "timeLeft": {
+        "type": "String"
+      }
+    }
+  },
   "addCertification": "add certification",
   "addEducation": "add education",
   "addExperience": "add experience",

@@ -142,6 +142,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get add => 'add';
 
   @override
+  String get added => 'added';
+
+  @override
+  String get activate => 'activate';
+
+  @override
+  String subscriptionExpiryCount(String time) {
+    return 'expires in $time';
+  }
+
+  @override
   String get addCertification => 'add certification';
 
   @override
@@ -1575,11 +1586,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get benefitSkipAdsDesc =>
       'no interruptions, just pure focus on your career';
-
-  @override
-  String subscriptionExpiryCount(String time) {
-    return 'expires in $time';
-  }
 
   @override
   String get pass24h => '24 hours';

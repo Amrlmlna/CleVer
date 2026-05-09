@@ -18,6 +18,8 @@ class AppTheme {
       surfaceContainerHighest: AppColors.grey100,
       outlineVariant: AppColors.grey200, // subtle border in light mode
       outline: AppColors.grey400,
+      tertiary: AppColors.premiumGold,
+      onTertiary: AppColors.white,
     );
 
     final textTheme = TextTheme(
@@ -151,6 +153,8 @@ class AppTheme {
       surfaceContainerHighest: const Color(0xFF2C2C2C),
       outlineVariant: AppColors.grey800, // subtle border in dark mode
       outline: AppColors.grey600,
+      tertiary: AppColors.premiumGold,
+      onTertiary: AppColors.black,
     );
 
     final textTheme = TextTheme(
