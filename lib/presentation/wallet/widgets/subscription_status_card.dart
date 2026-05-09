@@ -35,6 +35,11 @@ class _SubscriptionStatusCardState extends State<SubscriptionStatusCard>
       vsync: this,
       duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _updateTimeLeft();
   }
 

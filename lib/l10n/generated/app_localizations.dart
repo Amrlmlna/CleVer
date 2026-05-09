@@ -236,6 +236,72 @@ abstract class AppLocalizations {
   /// **'cancel anytime'**
   String get cancelAnytime;
 
+  /// No description provided for @paywallHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Land Your Dream Job'**
+  String get paywallHeadline;
+
+  /// No description provided for @paywallSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited AI-crafted CVs that get past ATS filters'**
+  String get paywallSubtitle;
+
+  /// No description provided for @bestValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Best Value'**
+  String get bestValue;
+
+  /// No description provided for @cancelAnytimeSecure.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel anytime · Secured by Google Play'**
+  String get cancelAnytimeSecure;
+
+  /// No description provided for @downsellHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Just Need It Today?'**
+  String get downsellHeadline;
+
+  /// No description provided for @downsellSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get full access for 24 hours — no strings attached'**
+  String get downsellSubtitle;
+
+  /// No description provided for @downsellBenefitAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything included'**
+  String get downsellBenefitAll;
+
+  /// No description provided for @downsellBenefitSame.
+  ///
+  /// In en, this message translates to:
+  /// **'Same AI, same templates'**
+  String get downsellBenefitSame;
+
+  /// No description provided for @downsellBenefitInstant.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant activation'**
+  String get downsellBenefitInstant;
+
+  /// No description provided for @downsellCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Try It for 24 Hours'**
+  String get downsellCta;
+
+  /// No description provided for @downsellTrust.
+  ///
+  /// In en, this message translates to:
+  /// **'No auto-renew · One-time pass'**
+  String get downsellTrust;
+
   /// No description provided for @cv.
   ///
   /// In en, this message translates to:

@@ -93,7 +93,19 @@ class PaymentService {
 
   static Future<bool> presentPaywall(BuildContext context) async {
     try {
-      final success = await SubscriptionPaywall.show(context);
+      // Load offerings BEFORE showing the paywall
+      final offerings = await Purchases.getOfferings();
+      final packages = offerings.current?.availablePackages ?? [];
+
+      if (packages.isEmpty) {
+        _analytics.trackEvent(
+          'paywall_error',
+          properties: {'reason': 'no_packages_available'},
+        );
+        return false;
+      }
+
+      final success = await SubscriptionPaywall.show(context, packages);
       return success ?? false;
     } catch (e) {
       _analytics.trackEvent(

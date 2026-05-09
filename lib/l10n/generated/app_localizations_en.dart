@@ -130,6 +130,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancelAnytime => 'cancel anytime';
 
   @override
+  String get paywallHeadline => 'Land Your Dream Job';
+
+  @override
+  String get paywallSubtitle =>
+      'Unlimited AI-crafted CVs that get past ATS filters';
+
+  @override
+  String get bestValue => 'Best Value';
+
+  @override
+  String get cancelAnytimeSecure => 'Cancel anytime · Secured by Google Play';
+
+  @override
+  String get downsellHeadline => 'Just Need It Today?';
+
+  @override
+  String get downsellSubtitle =>
+      'Get full access for 24 hours — no strings attached';
+
+  @override
+  String get downsellBenefitAll => 'Everything included';
+
+  @override
+  String get downsellBenefitSame => 'Same AI, same templates';
+
+  @override
+  String get downsellBenefitInstant => 'Instant activation';
+
+  @override
+  String get downsellCta => 'Try It for 24 Hours';
+
+  @override
+  String get downsellTrust => 'No auto-renew · One-time pass';
+
+  @override
   String get cv => 'cv';
 
   @override

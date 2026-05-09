@@ -124,6 +124,41 @@ class AppLocalizationsId extends AppLocalizations {
   String get cancelAnytime => 'batalkan kapan saja';
 
   @override
+  String get paywallHeadline => 'Raih Pekerjaan Impianmu';
+
+  @override
+  String get paywallSubtitle =>
+      'CV buatan AI tanpa batas yang tembus filter ATS';
+
+  @override
+  String get bestValue => 'Nilai Terbaik';
+
+  @override
+  String get cancelAnytimeSecure =>
+      'Batalkan kapan saja · Dilindungi Google Play';
+
+  @override
+  String get downsellHeadline => 'Butuh Buat Hari Ini Aja?';
+
+  @override
+  String get downsellSubtitle => 'Akses penuh selama 24 jam — tanpa komitmen';
+
+  @override
+  String get downsellBenefitAll => 'Semua fitur termasuk';
+
+  @override
+  String get downsellBenefitSame => 'AI dan template yang sama';
+
+  @override
+  String get downsellBenefitInstant => 'Langsung aktif';
+
+  @override
+  String get downsellCta => 'Coba Selama 24 Jam';
+
+  @override
+  String get downsellTrust => 'Tanpa perpanjangan otomatis · Sekali beli';
+
+  @override
   String get cv => 'cv';
 
   @override
