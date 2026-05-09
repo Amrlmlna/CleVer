@@ -163,10 +163,15 @@ class ProfileController extends StateNotifier<ProfileState> {
     }
   }
 
-  Future<void> deleteAccount({required bool keepLocalData}) async {
+  Future<void> deleteAccount({
+    required bool keepLocalData,
+    bool confirmSubscriptionLoss = false,
+  }) async {
     state = state.copyWith(isSaving: true);
     try {
-      await ref.read(authRepositoryProvider).deleteAccount();
+      await ref
+          .read(authRepositoryProvider)
+          .deleteAccount(confirmSubscriptionLoss: confirmSubscriptionLoss);
 
       if (!keepLocalData) {
         await ref.read(masterProfileProvider.notifier).clearProfile();

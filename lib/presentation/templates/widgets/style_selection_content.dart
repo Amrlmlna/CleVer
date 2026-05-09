@@ -4,6 +4,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../providers/template_selection_controller.dart';
 import '../../../core/services/payment_service.dart';
+import '../../../core/utils/subscription_formatter.dart';
 import 'template_grid_item.dart';
 import 'dart:async';
 
@@ -147,29 +148,13 @@ class _SubscriptionBadgeState extends State<_SubscriptionBadge> {
       return;
     }
 
-    final now = DateTime.now();
-    final difference = widget.expiryDate!.difference(now);
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
 
-    if (difference.isNegative) {
-      if (mounted) setState(() => _timeLeft = '');
-      return;
-    }
-
-    String timeStr;
-    if (difference.inDays >= 30) {
-      final months = (difference.inDays / 30).floor();
-      timeStr = l10n.months(months);
-    } else if (difference.inDays >= 7) {
-      final weeks = (difference.inDays / 7).floor();
-      timeStr = l10n.weeks(weeks);
-    } else if (difference.inDays >= 1) {
-      timeStr = l10n.days(difference.inDays);
-    } else if (difference.inHours >= 1) {
-      timeStr = l10n.hours(difference.inHours);
-    } else {
-      timeStr = l10n.minutes(difference.inMinutes);
-    }
+    final timeStr = SubscriptionFormatter.formatRemainingTime(
+      widget.expiryDate!,
+      l10n,
+    );
 
     if (mounted) setState(() => _timeLeft = timeStr);
   }

@@ -1,5 +1,13 @@
 {
   "@@locale": "id",
+  "years": "{count, plural, other{{count} tahun}}",
+  "@years": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "months": "{count, plural, other{{count} bulan}}",
   "@months": {
     "placeholders": {

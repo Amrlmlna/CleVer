@@ -4,6 +4,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:clever/core/theme/app_colors.dart';
+import 'package:clever/core/utils/subscription_formatter.dart';
 import '../providers/transaction_provider.dart';
 
 class TransactionHistoryPage extends ConsumerStatefulWidget {
@@ -14,7 +15,8 @@ class TransactionHistoryPage extends ConsumerStatefulWidget {
       _TransactionHistoryPageState();
 }
 
-class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage> {
+class _TransactionHistoryPageState
+    extends ConsumerState<TransactionHistoryPage> {
   @override
   Widget build(BuildContext context) {
     final transactionAsync = ref.watch(transactionHistoryProvider);
@@ -95,8 +97,10 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                 }
 
                 return ListView.separated(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 24,
+                  ),
                   itemCount: sortedTxns.length,
                   separatorBuilder: (_, __) => Divider(
                     color: colorScheme.onSurface.withValues(alpha: 0.03),
@@ -121,8 +125,8 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                             isSubUpdate
                                 ? Icons.verified_user_rounded
                                 : (isAdd
-                                    ? Icons.add_rounded
-                                    : Icons.file_upload_outlined),
+                                      ? Icons.add_rounded
+                                      : Icons.file_upload_outlined),
                             color: isAdd
                                 ? colorScheme.primary
                                 : colorScheme.onSurface,
@@ -137,10 +141,10 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                               Text(
                                 (isSubUpdate
                                         ? (txn.productDisplayName ??
-                                            l10n.jobHunterPass)
+                                              l10n.jobHunterPass)
                                         : (isAdd
-                                            ? l10n.unlockFeatures
-                                            : l10n.cvExport))
+                                              ? l10n.unlockFeatures
+                                              : l10n.cvExport))
                                     .toUpperCase(),
                                 style: textTheme.titleSmall?.copyWith(
                                   fontWeight: FontWeight.w900,
@@ -151,11 +155,13 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                DateFormat('dd MMM yyyy, HH:mm')
-                                    .format(txn.timestamp),
+                                DateFormat(
+                                  'dd MMM yyyy, HH:mm',
+                                ).format(txn.timestamp),
                                 style: textTheme.bodySmall?.copyWith(
-                                  color: colorScheme.onSurface
-                                      .withValues(alpha: 0.4),
+                                  color: colorScheme.onSurface.withValues(
+                                    alpha: 0.4,
+                                  ),
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
@@ -167,7 +173,12 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                           children: [
                             Text(
                               isSubUpdate
-                                  ? (txn.durationAdded ?? l10n.active)
+                                  ? (txn.durationAdded != null
+                                        ? SubscriptionFormatter.formatProductDuration(
+                                            txn.durationAdded!,
+                                            l10n,
+                                          )
+                                        : l10n.active)
                                   : '${isAdd ? '+' : '-'}${txn.amount}',
                               style: textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w900,
@@ -180,8 +191,9 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                               Text(
                                 l10n.added.toUpperCase(),
                                 style: textTheme.labelSmall?.copyWith(
-                                  color: colorScheme.onSurface
-                                      .withValues(alpha: 0.3),
+                                  color: colorScheme.onSurface.withValues(
+                                    alpha: 0.3,
+                                  ),
                                   fontWeight: FontWeight.w800,
                                   fontSize: 9,
                                 ),
@@ -190,8 +202,9 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                               Text(
                                 l10n.cv.toUpperCase(),
                                 style: textTheme.labelSmall?.copyWith(
-                                  color: colorScheme.onSurface
-                                      .withValues(alpha: 0.3),
+                                  color: colorScheme.onSurface.withValues(
+                                    alpha: 0.3,
+                                  ),
                                   fontWeight: FontWeight.w800,
                                   fontSize: 9,
                                 ),

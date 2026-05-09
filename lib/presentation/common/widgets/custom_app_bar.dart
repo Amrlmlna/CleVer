@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import '../../profile/providers/profile_sync_provider.dart';
+import '../../templates/providers/template_provider.dart';
 import '../../common/widgets/language_selector.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../../core/utils/custom_snackbar.dart';
@@ -210,11 +211,23 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   ) async {
     bool keepData = true;
 
+    final templatesState = ref.read(templatesProvider);
+    final isSubscribed = templatesState.maybeWhen(
+      data: (templates) => templates.isNotEmpty && templates.first.isSubscribed,
+      orElse: () => false,
+    );
+
+    final description = isSubscribed
+        ? "${AppLocalizations.of(context)!.subscriptionWarning}\n\n${AppLocalizations.of(context)!.deleteAccountWarning}"
+        : AppLocalizations.of(context)!.deleteAccountWarning;
+
     await EmailVerificationBottomSheet.show(
       context,
       title: AppLocalizations.of(context)!.deleteAccountQuestion,
-      description: AppLocalizations.of(context)!.deleteAccountWarning,
-      icon: Icons.delete_sweep_rounded,
+      description: description,
+      icon: isSubscribed
+          ? Icons.warning_amber_rounded
+          : Icons.delete_sweep_rounded,
       extensionContent: StatefulBuilder(
         builder: (context, setInternalState) =>
             DeleteAccountVerificationContent(
@@ -228,7 +241,10 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
         try {
           await ref
               .read(profileControllerProvider.notifier)
-              .deleteAccount(keepLocalData: keepData);
+              .deleteAccount(
+                keepLocalData: keepData,
+                confirmSubscriptionLoss: isSubscribed,
+              );
           if (context.mounted) {
             CustomSnackBar.showSuccess(
               context,

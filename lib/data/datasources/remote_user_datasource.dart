@@ -9,10 +9,14 @@ class RemoteUserDataSource {
 
   static String get _baseUrl => ApiConfig.baseUrl;
 
-  Future<void> deleteAccount() async {
+  Future<void> deleteAccount({bool confirmSubscriptionLoss = false}) async {
     final response = await _httpClient.delete(
       Uri.parse('$_baseUrl/user/account'),
-      headers: await ApiConfig.getAuthHeaders(),
+      headers: {
+        ...await ApiConfig.getAuthHeaders(),
+        'Content-Type': 'application/json',
+      },
+      body: '{"confirmSubscriptionLoss": $confirmSubscriptionLoss}',
     );
 
     if (response.statusCode != 200) {

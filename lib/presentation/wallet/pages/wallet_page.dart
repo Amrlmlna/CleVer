@@ -7,6 +7,7 @@ import '../../profile/providers/profile_provider.dart';
 import '../widgets/subscription_status_card.dart';
 import '../providers/transaction_provider.dart';
 import '../../../core/services/payment_service.dart';
+import '../../../core/utils/subscription_formatter.dart';
 import '../../auth/utils/auth_guard.dart';
 import '../../../core/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
@@ -216,8 +217,8 @@ class WalletPage extends ConsumerWidget {
                                         txn.type == 'subscription_update'
                                             ? Icons.verified_user_rounded
                                             : (isAdd
-                                                ? Icons.add_rounded
-                                                : Icons.file_upload_outlined),
+                                                  ? Icons.add_rounded
+                                                  : Icons.file_upload_outlined),
                                         color: colorScheme.surface,
                                         size: 24,
                                       ),
@@ -231,10 +232,10 @@ class WalletPage extends ConsumerWidget {
                                           Text(
                                             (txn.type == 'subscription_update'
                                                     ? (txn.productDisplayName ??
-                                                        l10n.unlockFeatures)
+                                                          l10n.unlockFeatures)
                                                     : (isAdd
-                                                        ? l10n.unlockFeatures
-                                                        : l10n.cvExport))
+                                                          ? l10n.unlockFeatures
+                                                          : l10n.cvExport))
                                                 .toUpperCase(),
                                             style: TextStyle(
                                               fontWeight: FontWeight.w900,
@@ -258,9 +259,13 @@ class WalletPage extends ConsumerWidget {
                                           const SizedBox(height: 2),
                                           Text(
                                             txn.type == 'subscription_update'
-                                                ? (txn.durationAdded ??
-                                                        l10n.active)
-                                                    .toUpperCase()
+                                                ? (txn.durationAdded != null
+                                                          ? SubscriptionFormatter.formatProductDuration(
+                                                              txn.durationAdded!,
+                                                              l10n,
+                                                            )
+                                                          : l10n.active)
+                                                      .toUpperCase()
                                                 : '${isAdd ? '+' : '-'}${txn.amount} ${l10n.cv.toUpperCase()}',
                                             style: TextStyle(
                                               fontSize: 11,

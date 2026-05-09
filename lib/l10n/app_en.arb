@@ -1,5 +1,13 @@
 {
   "@@locale": "en",
+  "years": "{count, plural, =1{1 year} other{{count} years}}",
+  "@years": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "months": "{count, plural, =1{1 month} other{{count} months}}",
   "@months": {
     "placeholders": {

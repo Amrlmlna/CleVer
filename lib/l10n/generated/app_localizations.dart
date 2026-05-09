@@ -98,6 +98,12 @@ abstract class AppLocalizations {
     Locale('id'),
   ];
 
+  /// No description provided for @years.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 year} other{{count} years}}'**
+  String years(int count);
+
   /// No description provided for @months.
   ///
   /// In en, this message translates to:

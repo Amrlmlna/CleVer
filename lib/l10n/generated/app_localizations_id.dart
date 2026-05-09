@@ -9,6 +9,16 @@ class AppLocalizationsId extends AppLocalizations {
   AppLocalizationsId([String locale = 'id']) : super(locale);
 
   @override
+  String years(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tahun',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String months(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import 'package:clever/core/utils/subscription_formatter.dart';
 import 'dart:math' as math;
 
 class SubscriptionStatusCard extends StatefulWidget {
@@ -44,22 +45,20 @@ class _SubscriptionStatusCardState extends State<SubscriptionStatusCard>
   }
 
   void _updateTimeLeft() {
-    if (widget.expiryDate == null) {
+    if (widget.expiryDate == null || !widget.isSubscribed) {
       _timeLeft = '';
       return;
     }
 
-    final expiry = widget.expiryDate!;
-    final now = DateTime.now();
-    final difference = expiry.difference(now);
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
 
-    if (difference.isNegative) {
-      _timeLeft = '';
-    } else if (difference.inDays > 0) {
-      _timeLeft = '${difference.inDays}d';
-    } else {
-      _timeLeft = '${difference.inHours}h';
-    }
+    setState(() {
+      _timeLeft = SubscriptionFormatter.formatRemainingTime(
+        widget.expiryDate!,
+        l10n,
+      );
+    });
   }
 
   @override
@@ -79,7 +78,9 @@ class _SubscriptionStatusCardState extends State<SubscriptionStatusCard>
     // Use theme aware colors - STRICTLY NO HARDCODED COLORS
     // Gold for Premium (from tertiary), OnSurface/Surface for Monochrome
     final premiumGold = colorScheme.tertiary;
-    final accentColor = widget.isSubscribed ? premiumGold : colorScheme.onSurface;
+    final accentColor = widget.isSubscribed
+        ? premiumGold
+        : colorScheme.onSurface;
     final backgroundColor = colorScheme.surface;
     final onBackgroundColor = colorScheme.onSurface;
 
@@ -147,7 +148,9 @@ class _SubscriptionStatusCardState extends State<SubscriptionStatusCard>
                                 child: Text(
                                   l10n.subscriptionExpiryCount(_timeLeft),
                                   style: textTheme.labelMedium?.copyWith(
-                                    color: onBackgroundColor.withValues(alpha: 0.5),
+                                    color: onBackgroundColor.withValues(
+                                      alpha: 0.5,
+                                    ),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -168,7 +171,9 @@ class _SubscriptionStatusCardState extends State<SubscriptionStatusCard>
                   ),
 
                   // Perforation Line
-                  _PerforationLine(color: onBackgroundColor.withValues(alpha: 0.1)),
+                  _PerforationLine(
+                    color: onBackgroundColor.withValues(alpha: 0.1),
+                  ),
 
                   // Action Section (The Stub)
                   Expanded(
@@ -182,7 +187,9 @@ class _SubscriptionStatusCardState extends State<SubscriptionStatusCard>
                           RotatedBox(
                             quarterTurns: 1,
                             child: Text(
-                              (widget.isSubscribed ? l10n.active : l10n.activate)
+                              (widget.isSubscribed
+                                      ? l10n.active
+                                      : l10n.activate)
                                   .toUpperCase(),
                               style: textTheme.labelSmall?.copyWith(
                                 fontWeight: FontWeight.w900,
@@ -278,15 +285,26 @@ class TicketStubClipperManual extends CustomClipper<Path> {
 
     path.moveTo(radius, 0);
     path.lineTo(notchX - notchRadius, 0);
-    path.arcToPoint(Offset(notchX + notchRadius, 0),
-        radius: const Radius.circular(notchRadius), clockwise: false);
+    path.arcToPoint(
+      Offset(notchX + notchRadius, 0),
+      radius: const Radius.circular(notchRadius),
+      clockwise: false,
+    );
     path.lineTo(size.width - radius, 0);
     path.quadraticBezierTo(size.width, 0, size.width, radius);
     path.lineTo(size.width, size.height - radius);
-    path.quadraticBezierTo(size.width, size.height, size.width - radius, size.height);
+    path.quadraticBezierTo(
+      size.width,
+      size.height,
+      size.width - radius,
+      size.height,
+    );
     path.lineTo(notchX + notchRadius, size.height);
-    path.arcToPoint(Offset(notchX - notchRadius, size.height),
-        radius: const Radius.circular(notchRadius), clockwise: false);
+    path.arcToPoint(
+      Offset(notchX - notchRadius, size.height),
+      radius: const Radius.circular(notchRadius),
+      clockwise: false,
+    );
     path.lineTo(radius, size.height);
     path.quadraticBezierTo(0, size.height, 0, size.height - radius);
     path.lineTo(0, radius);

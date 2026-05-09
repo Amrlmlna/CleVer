@@ -128,9 +128,11 @@ class FirebaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<void> deleteAccount() async {
+  Future<void> deleteAccount({bool confirmSubscriptionLoss = false}) async {
     try {
-      await remoteDataSource.deleteAccount();
+      await remoteDataSource.deleteAccount(
+        confirmSubscriptionLoss: confirmSubscriptionLoss,
+      );
       await signOut();
     } catch (e) {
       throw DataErrorMapper.map(e);
