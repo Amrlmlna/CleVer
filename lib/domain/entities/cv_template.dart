@@ -8,8 +8,10 @@ class CVTemplate extends Equatable {
   final List<String> previewUrls;
   final bool isPremium;
   final List<String> tags;
-  final int currentUsage; // Global usage across all templates
-  final int userCredits;
+  final int currentUsage;
+  final bool isSubscribed;
+  final DateTime? subscriptionExpiry;
+  final String? subscriptionType;
   final bool supportsPhoto;
 
   const CVTemplate({
@@ -21,15 +23,22 @@ class CVTemplate extends Equatable {
     this.isPremium = false,
     this.tags = const [],
     this.currentUsage = 0,
-    this.userCredits = 0,
+    this.isSubscribed = false,
+    this.subscriptionExpiry,
+    this.subscriptionType,
     this.supportsPhoto = false,
   });
 
-  int get requiredCredits => isPremium ? 4 : 2;
   bool get hasFreeGeneration => currentUsage < 2;
-  bool get isLocked => !hasFreeGeneration && userCredits < requiredCredits;
+  bool get isLocked => !hasFreeGeneration && !isSubscribed;
 
   factory CVTemplate.fromJson(Map<String, dynamic> json) {
+    DateTime? parseDate(dynamic date) {
+      if (date == null) return null;
+      if (date is String) return DateTime.tryParse(date);
+      return null;
+    }
+
     return CVTemplate(
       id: json['id'] as String,
       name: json['name'] as String,
@@ -39,7 +48,9 @@ class CVTemplate extends Equatable {
       isPremium: json['isPremium'] as bool? ?? false,
       tags: List<String>.from(json['tags'] ?? []),
       currentUsage: json['currentUsage'] as int? ?? 0,
-      userCredits: json['userCredits'] as int? ?? 0,
+      isSubscribed: json['isSubscribed'] as bool? ?? false,
+      subscriptionExpiry: parseDate(json['subscriptionExpiry']),
+      subscriptionType: json['subscriptionType'] as String?,
       supportsPhoto: json['supportsPhoto'] as bool? ?? false,
     );
   }
@@ -53,7 +64,9 @@ class CVTemplate extends Equatable {
     bool? isPremium,
     List<String>? tags,
     int? currentUsage,
-    int? userCredits,
+    bool? isSubscribed,
+    DateTime? subscriptionExpiry,
+    String? subscriptionType,
     bool? supportsPhoto,
   }) {
     return CVTemplate(
@@ -65,7 +78,9 @@ class CVTemplate extends Equatable {
       isPremium: isPremium ?? this.isPremium,
       tags: tags ?? this.tags,
       currentUsage: currentUsage ?? this.currentUsage,
-      userCredits: userCredits ?? this.userCredits,
+      isSubscribed: isSubscribed ?? this.isSubscribed,
+      subscriptionExpiry: subscriptionExpiry ?? this.subscriptionExpiry,
+      subscriptionType: subscriptionType ?? this.subscriptionType,
       supportsPhoto: supportsPhoto ?? this.supportsPhoto,
     );
   }
@@ -80,7 +95,9 @@ class CVTemplate extends Equatable {
     isPremium,
     tags,
     currentUsage,
-    userCredits,
+    isSubscribed,
+    subscriptionExpiry,
+    subscriptionType,
     supportsPhoto,
   ];
 }

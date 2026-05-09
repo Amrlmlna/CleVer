@@ -90,10 +90,7 @@ class TemplateGridItem extends StatelessWidget {
                         child: _PhotoIconBadge(colorScheme: colorScheme),
                       ),
                     if (template.isLocked)
-                      LockedOverlay(
-                        isPremium: template.isPremium,
-                        requiredCredits: template.requiredCredits,
-                      ),
+                      LockedOverlay(isPremium: template.isPremium),
                   ],
                 ),
               ),

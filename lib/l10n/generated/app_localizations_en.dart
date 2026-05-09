@@ -9,6 +9,119 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String months(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count months',
+      one: '1 month',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String weeks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count weeks',
+      one: '1 week',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String days(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hours',
+      one: '1 hour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String minutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minutes',
+      one: '1 minute',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get active => 'active';
+
+  @override
+  String get activePass => 'active pass';
+
+  @override
+  String get free => 'free';
+
+  @override
+  String get membershipStatus => 'membership status';
+
+  @override
+  String get subscriptionWarning =>
+      'you have an active job hunter pass. deleting your account will terminate your access immediately and cannot be refunded.';
+
+  @override
+  String get jobHunterPass => 'job hunter pass';
+
+  @override
+  String get unlockYourPotential => 'unlock your career potential';
+
+  @override
+  String get unlimitedGenerations => 'unlimited generations';
+
+  @override
+  String get unlimitedGenerationsDesc =>
+      'create as many tailored cvs as you need';
+
+  @override
+  String get premiumTemplates => 'premium templates';
+
+  @override
+  String get premiumTemplatesDesc =>
+      'access all exclusive and high-converting designs';
+
+  @override
+  String get aiOptimization => 'ai optimization';
+
+  @override
+  String get aiOptimizationDesc => 'advanced ats-friendly content generation';
+
+  @override
+  String get instantPdfExport => 'instant pdf export';
+
+  @override
+  String get instantPdfExportDesc =>
+      'download your cv in high-quality pdf format';
+
+  @override
+  String get getJobHunterPassNow => 'get job hunter pass now';
+
+  @override
+  String get cancelAnytime => 'cancel anytime';
+
+  @override
+  String get cv => 'cv';
+
+  @override
   String accountDeleteError(Object error) {
     return 'failed to delete account: $error';
   }
@@ -124,11 +237,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get atsStandard => 'ats standard';
 
   @override
-  String get authWallBuyCredits => 'sign in to buy credits';
+  String get authWallBuyCredits => 'sign in to get pass';
 
   @override
   String get authWallBuyCreditsDesc =>
-      'an account is required to purchase credits';
+      'an account is required to activate a job hunter pass';
 
   @override
   String get authWallCreateCV => 'sign in to create your cv';
@@ -357,7 +470,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteAccountWarning =>
-      'this action is irreversible. all your data, including generated cvs and credits, will be permanently deleted.';
+      'this action is irreversible. all your data, including generated cvs and active subscriptions, will be permanently deleted.';
 
   @override
   String get deleteConfirmation => 'are you sure you want to delete this item?';
@@ -539,9 +652,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forgotPassword => 'forgot password';
-
-  @override
-  String get free => 'free';
 
   @override
   String get forgotPasswordResetMessage =>
@@ -1026,7 +1136,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premium => 'premium';
 
   @override
-  String get premiumBadge => 'get credits';
+  String get premiumBadge => 'get pass';
 
   @override
   String get preparingGallery => 'preparing gallery...';
@@ -1333,7 +1443,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalCVs => 'total cvs';
 
   @override
-  String get totalCreditsLabel => 'total credits';
+  String get totalCreditsLabel => 'active pass';
 
   @override
   String get tue => 'tue';
@@ -1352,7 +1462,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get update => 'update';
 
   @override
-  String get unlockFeatures => 'refill generation credits';
+  String get unlockFeatures => 'activate job hunter pass';
 
   @override
   String get untilNow => 'until now';
@@ -1443,33 +1553,66 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingFreeLabel => '2 free cvs, no credit card.';
 
   @override
-  String get getCredits => 'get credits';
+  String get getCredits => 'get job hunter pass';
 
   @override
-  String get benefitRegularTitle => '2 credits for regular templates';
+  String get benefitRegularTitle => 'unlimited tailored generations';
 
   @override
   String get benefitRegularDesc =>
-      'access clean, professional layouts for everyday use';
+      'create as many cvs as you need, perfectly matched to every job';
 
   @override
-  String get benefitPremiumTitle => '4 credits for premium templates';
+  String get benefitPremiumTitle => 'access all premium templates';
 
   @override
   String get benefitPremiumDesc =>
-      'unlock exclusive designs that stand out to recruiters';
+      'stand out with exclusive designs used by top professionals';
 
   @override
-  String get benefitSkipAdsTitle => 'skip ads';
+  String get benefitSkipAdsTitle => 'ad-free experience';
 
   @override
   String get benefitSkipAdsDesc =>
-      'enjoy a seamless experience without interruptions';
+      'no interruptions, just pure focus on your career';
 
   @override
-  String creditsCount(int count) {
-    return '$count credits';
+  String subscriptionExpiryCount(String time) {
+    return 'expires in $time';
   }
+
+  @override
+  String get pass24h => '24 hours';
+
+  @override
+  String get passWeekly => 'weekly';
+
+  @override
+  String get passYearly => 'yearly';
+
+  @override
+  String get subscriptionRequired => 'subscription required';
+
+  @override
+  String get upgradeNow => 'upgrade now';
+
+  @override
+  String get accessAllTemplates => 'access all templates';
+
+  @override
+  String get noAdsForever => 'no ads forever';
+
+  @override
+  String get daily => 'daily';
+
+  @override
+  String get weekly => 'weekly';
+
+  @override
+  String get yearly => 'yearly';
+
+  @override
+  String get creditsCount => 'active';
 
   @override
   String get popularBadge => 'popular';
@@ -1486,13 +1629,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get packageSmall => 'small';
+  String get packageSmall => '24h';
 
   @override
-  String get packageMedium => 'medium';
+  String get packageMedium => 'weekly';
 
   @override
-  String get packagePro => 'pro';
+  String get packagePro => 'yearly';
 
   @override
   String get noTransactionsYet => 'no transactions yet';

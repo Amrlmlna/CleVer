@@ -59,11 +59,13 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                   onPressed: () => context.pop(),
                   icon: const Icon(
                     Icons.arrow_back_ios_new_rounded,
-                    color: Colors.black,
+                    color: AppColors.accentPeachDark,
                     size: 20,
                   ),
                   style: IconButton.styleFrom(
-                    backgroundColor: Colors.black.withValues(alpha: 0.1),
+                    backgroundColor: AppColors.accentPeachDark.withValues(
+                      alpha: 0.1,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -71,7 +73,7 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                   l10n.transactionHistory.toUpperCase(),
                   style: textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w900,
-                    color: Colors.black,
+                    color: AppColors.accentPeachDark,
                     letterSpacing: 1.0,
                   ),
                 ),
@@ -110,7 +112,7 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                 ),
                 tabs: [
                   Tab(text: l10n.exports.toUpperCase()),
-                  Tab(text: l10n.topUps.toUpperCase()),
+                  Tab(text: l10n.jobHunterPass.toUpperCase()),
                 ],
               ),
             ),
@@ -119,10 +121,10 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
             child: transactionAsync.when(
               data: (transactions) {
                 final exports = transactions
-                    .where((t) => t.type == 'credit_deduct')
+                    .where((t) => t.type == 'cv_export')
                     .toList();
                 final topUps = transactions
-                    .where((t) => t.type == 'credit_add')
+                    .where((t) => t.type == 'subscription_buy')
                     .toList();
 
                 return TabBarView(
@@ -201,13 +203,13 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: isAdd
-                    ? Colors.green.withValues(alpha: 0.1)
+                    ? colorScheme.primary.withValues(alpha: 0.1)
                     : colorScheme.onSurface.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Icon(
                 isAdd ? Icons.add_rounded : Icons.file_upload_outlined,
-                color: isAdd ? Colors.green : colorScheme.onSurface,
+                color: isAdd ? colorScheme.primary : colorScheme.onSurface,
                 size: 20,
               ),
             ),
@@ -218,7 +220,7 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
                 children: [
                   Text(
                     isAdd
-                        ? l10n.topUp.toUpperCase()
+                        ? l10n.unlockFeatures.toUpperCase()
                         : l10n.cvExport.toUpperCase(),
                     style: textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w900,
@@ -242,14 +244,17 @@ class _TransactionHistoryPageState extends ConsumerState<TransactionHistoryPage>
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '${isAdd ? '+' : '-'}${txn.amount}',
+                  txn.type == 'subscription_buy'
+                      ? '1'
+                      : '${isAdd ? '+' : '-'}${txn.amount}',
                   style: textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
-                    color: isAdd ? Colors.green : colorScheme.onSurface,
+                    color: isAdd ? colorScheme.primary : colorScheme.onSurface,
                   ),
                 ),
                 Text(
-                  l10n.credits.toUpperCase(),
+                  (txn.type == 'subscription_buy' ? l10n.active : l10n.cv)
+                      .toUpperCase(),
                   style: textTheme.labelSmall?.copyWith(
                     color: colorScheme.onSurface.withValues(alpha: 0.3),
                     fontWeight: FontWeight.w800,

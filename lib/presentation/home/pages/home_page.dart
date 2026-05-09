@@ -4,7 +4,7 @@ import '../../../core/services/review_service.dart';
 import '../../../core/services/tutorial_service.dart';
 import '../providers/paywall_provider.dart';
 import '../providers/review_check_provider.dart';
-import '../../wallet/widgets/credit_purchase_bottom_sheet.dart';
+import '../../../core/services/payment_service.dart';
 import '../../dashboard/providers/dashboard_tutorial_provider.dart';
 import '../../../core/services/analytics_service.dart';
 import '../../onboarding/providers/onboarding_auth_capture_provider.dart';
@@ -58,7 +58,7 @@ class _HomePageState extends ConsumerState<HomePage>
       final hasPendingPaywall = ref.read(pendingPaywallProvider);
       if (hasPendingPaywall) {
         ref.read(pendingPaywallProvider.notifier).state = false;
-        await CreditPurchaseBottomSheet.show(context);
+        await PaymentService.presentPaywall(context);
       }
 
       final reviewSignal = ref.read(reviewCheckProvider);

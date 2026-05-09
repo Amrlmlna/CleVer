@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../common/widgets/app_loading_screen.dart';
-import '../../wallet/widgets/credit_purchase_bottom_sheet.dart';
-import './template_grid_item.dart';
 import '../providers/template_selection_controller.dart';
+import '../../../core/services/payment_service.dart';
+import 'template_grid_item.dart';
+import 'dart:async';
 
 class StyleSelectionContent extends ConsumerWidget {
   final VoidCallback onExport;
@@ -51,7 +52,10 @@ class StyleSelectionContent extends ConsumerWidget {
         iconTheme: IconThemeData(color: colorScheme.onSurface),
         actions: [
           if (templates.isNotEmpty)
-            _CreditBadge(credits: templates.first.userCredits),
+            _SubscriptionBadge(
+              isSubscribed: templates.first.isSubscribed,
+              expiryDate: templates.first.subscriptionExpiry,
+            ),
         ],
       ),
       body: Column(
@@ -71,9 +75,14 @@ class StyleSelectionContent extends ConsumerWidget {
                 return TemplateGridItem(
                   template: template,
                   isSelected: template.id == selectedStyleId,
-                  onTap: () {
+                  onTap: () async {
                     if (template.isLocked) {
-                      CreditPurchaseBottomSheet.show(context);
+                      final purchased = await PaymentService.presentPaywall(
+                        context,
+                      );
+                      if (purchased) {
+                        ref.invalidate(templateSelectionControllerProvider);
+                      }
                     } else {
                       ref
                           .read(templateSelectionControllerProvider.notifier)
@@ -94,15 +103,82 @@ class StyleSelectionContent extends ConsumerWidget {
   }
 }
 
-class _CreditBadge extends StatelessWidget {
-  final int credits;
+class _SubscriptionBadge extends StatefulWidget {
+  final bool isSubscribed;
+  final DateTime? expiryDate;
 
-  const _CreditBadge({required this.credits});
+  const _SubscriptionBadge({required this.isSubscribed, this.expiryDate});
+
+  @override
+  State<_SubscriptionBadge> createState() => _SubscriptionBadgeState();
+}
+
+class _SubscriptionBadgeState extends State<_SubscriptionBadge> {
+  late Timer _timer;
+  String _timeLeft = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _updateTimeLeft();
+    _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+      if (mounted) _updateTimeLeft();
+    });
+  }
+
+  @override
+  void didUpdateWidget(_SubscriptionBadge oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.expiryDate != widget.expiryDate ||
+        oldWidget.isSubscribed != widget.isSubscribed) {
+      _updateTimeLeft();
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _updateTimeLeft() {
+    if (!widget.isSubscribed || widget.expiryDate == null) {
+      if (mounted) setState(() => _timeLeft = '');
+      return;
+    }
+
+    final now = DateTime.now();
+    final difference = widget.expiryDate!.difference(now);
+    final l10n = AppLocalizations.of(context)!;
+
+    if (difference.isNegative) {
+      if (mounted) setState(() => _timeLeft = '');
+      return;
+    }
+
+    String timeStr;
+    if (difference.inDays >= 30) {
+      final months = (difference.inDays / 30).floor();
+      timeStr = l10n.months(months);
+    } else if (difference.inDays >= 7) {
+      final weeks = (difference.inDays / 7).floor();
+      timeStr = l10n.weeks(weeks);
+    } else if (difference.inDays >= 1) {
+      timeStr = l10n.days(difference.inDays);
+    } else if (difference.inHours >= 1) {
+      timeStr = l10n.hours(difference.inHours);
+    } else {
+      timeStr = l10n.minutes(difference.inMinutes);
+    }
+
+    if (mounted) setState(() => _timeLeft = timeStr);
+  }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.only(right: 24),
@@ -110,22 +186,39 @@ class _CreditBadge extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
-            color: colorScheme.onSurface.withValues(alpha: 0.05),
+            color: widget.isSubscribed
+                ? colorScheme.primary.withValues(alpha: 0.1)
+                : colorScheme.onSurface.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: colorScheme.onSurface.withValues(alpha: 0.1),
+              color: widget.isSubscribed
+                  ? colorScheme.primary.withValues(alpha: 0.3)
+                  : colorScheme.onSurface.withValues(alpha: 0.1),
             ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.stars_rounded, size: 14, color: colorScheme.onSurface),
+              Icon(
+                widget.isSubscribed ? Icons.bolt_rounded : Icons.stars_rounded,
+                size: 14,
+                color: widget.isSubscribed
+                    ? colorScheme.primary
+                    : colorScheme.onSurface,
+              ),
               const SizedBox(width: 4),
               Text(
-                '$credits',
+                widget.isSubscribed
+                    ? (_timeLeft.isEmpty
+                          ? l10n.active.toUpperCase()
+                          : _timeLeft.toUpperCase())
+                    : l10n.free.toUpperCase(),
                 style: textTheme.labelLarge?.copyWith(
                   fontWeight: FontWeight.w900,
-                  color: colorScheme.onSurface,
+                  color: widget.isSubscribed
+                      ? colorScheme.primary
+                      : colorScheme.onSurface,
+                  fontSize: 10,
                 ),
               ),
             ],
@@ -156,11 +249,11 @@ class _BottomExportButton extends StatelessWidget {
           child: ElevatedButton(
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: colorScheme.primary,
-              foregroundColor: colorScheme.onPrimary,
+              backgroundColor: colorScheme.onSurface,
+              foregroundColor: colorScheme.surface,
               elevation: 0,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
               ),
             ),
             child: Text(

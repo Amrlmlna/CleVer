@@ -134,9 +134,9 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
           photoUrl: photoUrl,
         );
 
-    if (template.hasFreeGeneration ||
-        template.userCredits >= template.requiredCredits) {
-      if (template.userCredits > 0) {
+    if (template.isSubscribed || template.hasFreeGeneration) {
+      if (template.isSubscribed) {
+        // Subscribers: Generate directly (No ads)
         state = state.copyWith(status: DownloadStatus.generating);
         try {
           final result = await pdfFuture;
@@ -152,6 +152,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
           _handleError(context, e, effectiveLocale, styleId);
         }
       } else {
+        // Free Users: Show Mandatory Ad before generation
         await adService.showInterstitialAd(
           context,
           onAdClosed: () async {

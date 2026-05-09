@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../services/analytics_service.dart';
-import '../../presentation/wallet/widgets/credit_purchase_bottom_sheet.dart';
+import '../../presentation/wallet/widgets/subscription_paywall.dart';
 
 class PaymentService {
   static String get _androidApiKey => dotenv.get('REVENUECAT_GOOGLE_KEY');
@@ -38,50 +38,6 @@ class PaymentService {
         properties: {'error': e.toString()},
       );
     }
-  }
-
-  static Future<bool> purchaseCredits() async {
-    try {
-      Offerings offerings = await Purchases.getOfferings();
-      if (offerings.current != null &&
-          offerings.current!.availablePackages.isNotEmpty) {
-        final package = offerings.current!.availablePackages.firstWhere(
-          (pkg) => pkg.identifier.contains('credits'),
-          orElse: () => offerings.current!.availablePackages.first,
-        );
-
-        await Purchases.purchase(PurchaseParams.package(package));
-
-        _analytics.trackEvent(
-          'purchase_completed',
-          properties: {'package': package.identifier},
-        );
-        return true;
-      }
-      _analytics.trackEvent(
-        'purchase_failed',
-        properties: {'reason': 'no_packages'},
-      );
-    } on PlatformException catch (e) {
-      var errorCode = PurchasesErrorHelper.getErrorCode(e);
-      if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
-        _analytics.trackEvent(
-          'purchase_failed',
-          properties: {
-            'code': errorCode.toString(),
-            'message': e.message ?? '',
-          },
-        );
-        rethrow;
-      }
-      _analytics.trackEvent('purchase_cancelled');
-    } catch (e) {
-      _analytics.trackEvent(
-        'purchase_failed',
-        properties: {'error': e.toString(), 'reason': 'generic'},
-      );
-    }
-    return false;
   }
 
   static Future<bool> purchasePackage(String packageIdentifier) async {
@@ -137,8 +93,8 @@ class PaymentService {
 
   static Future<bool> presentPaywall(BuildContext context) async {
     try {
-      final success = await CreditPurchaseBottomSheet.show(context);
-      return success;
+      final success = await SubscriptionPaywall.show(context);
+      return success ?? false;
     } catch (e) {
       _analytics.trackEvent(
         'paywall_error',

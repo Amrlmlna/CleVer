@@ -18,7 +18,7 @@ class WalletTransaction extends Equatable {
   });
 
   bool get isAddition =>
-      type == 'credit_add' || amount > 0 && type != 'credit_deduct';
+      type == 'subscription_buy' || (amount > 0 && type != 'cv_export');
 
   factory WalletTransaction.fromJson(Map<String, dynamic> json) {
     DateTime parseTimestamp(dynamic ts) {

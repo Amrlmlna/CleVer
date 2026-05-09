@@ -15,14 +15,15 @@ class DeleteAccountVerificationContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final templatesAsync = ref.watch(templatesProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
-    final totalCredits = templatesAsync.maybeWhen(
-      data: (templates) =>
-          templates.isNotEmpty ? templates.first.userCredits : 0,
-      orElse: () => 0,
+    final template = templatesAsync.maybeWhen(
+      data: (templates) => templates.isNotEmpty ? templates.first : null,
+      orElse: () => null,
     );
+    final isSubscribed = template?.isSubscribed ?? false;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -37,7 +38,7 @@ class DeleteAccountVerificationContent extends ConsumerWidget {
           child: Column(
             children: [
               Text(
-                AppLocalizations.of(context)!.creditBalance.toUpperCase(),
+                AppLocalizations.of(context)!.membershipStatus.toUpperCase(),
                 style: TextStyle(
                   color: colorScheme.onSurfaceVariant,
                   fontSize: 10,
@@ -47,30 +48,33 @@ class DeleteAccountVerificationContent extends ConsumerWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                "$totalCredits",
+                (isSubscribed ? l10n.activePass : l10n.free).toUpperCase(),
                 style: TextStyle(
-                  color: colorScheme.onSurface,
-                  fontSize: 48,
+                  color: isSubscribed
+                      ? Colors.greenAccent
+                      : colorScheme.onSurface,
+                  fontSize: 32,
                   fontWeight: FontWeight.w900,
-                  letterSpacing: -2,
+                  letterSpacing: -1,
                   height: 1,
                 ),
               ),
               const SizedBox(height: 4),
-              Text(
-                AppLocalizations.of(context)!.totalCreditsLabel.toUpperCase(),
-                style: TextStyle(
-                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
-                  fontSize: 10,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 2,
+              if (isSubscribed)
+                Text(
+                  l10n.jobHunterPass.toUpperCase(),
+                  style: TextStyle(
+                    color: colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 2,
+                  ),
                 ),
-              ),
             ],
           ),
         ),
         const SizedBox(height: 20),
-        if (totalCredits > 0) ...[
+        if (isSubscribed) ...[
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -88,7 +92,7 @@ class DeleteAccountVerificationContent extends ConsumerWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(
-                    AppLocalizations.of(context)!.creditWarning(totalCredits),
+                    l10n.subscriptionWarning,
                     style: TextStyle(
                       color: colorScheme.onSurfaceVariant,
                       fontSize: 12,

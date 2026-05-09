@@ -9,6 +9,114 @@ class AppLocalizationsId extends AppLocalizations {
   AppLocalizationsId([String locale = 'id']) : super(locale);
 
   @override
+  String months(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bulan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String weeks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minggu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String days(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hari',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jam',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String minutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count menit',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get active => 'aktif';
+
+  @override
+  String get activePass => 'pass aktif';
+
+  @override
+  String get free => 'gratis';
+
+  @override
+  String get membershipStatus => 'status keanggotaan';
+
+  @override
+  String get subscriptionWarning =>
+      'anda memiliki job hunter pass yang aktif. menghapus akun akan menghentikan akses anda segera dan tidak dapat dikembalikan.';
+
+  @override
+  String get jobHunterPass => 'job hunter pass';
+
+  @override
+  String get unlockYourPotential => 'buka potensi karir anda';
+
+  @override
+  String get unlimitedGenerations => 'generasi tanpa batas';
+
+  @override
+  String get unlimitedGenerationsDesc => 'buat cv sebanyak yang anda butuhkan';
+
+  @override
+  String get premiumTemplates => 'template premium';
+
+  @override
+  String get premiumTemplatesDesc =>
+      'akses semua desain eksklusif dan berkualitas tinggi';
+
+  @override
+  String get aiOptimization => 'optimasi ai';
+
+  @override
+  String get aiOptimizationDesc =>
+      'pembuatan konten ats-friendly tingkat lanjut';
+
+  @override
+  String get instantPdfExport => 'ekspor pdf instan';
+
+  @override
+  String get instantPdfExportDesc =>
+      'unduh cv anda dalam format pdf berkualitas tinggi';
+
+  @override
+  String get getJobHunterPassNow => 'dapatkan job hunter pass sekarang';
+
+  @override
+  String get cancelAnytime => 'batalkan kapan saja';
+
+  @override
+  String get cv => 'cv';
+
+  @override
   String accountDeleteError(Object error) {
     return 'gagal menghapus akun: $error';
   }
@@ -124,25 +232,25 @@ class AppLocalizationsId extends AppLocalizations {
   String get atsStandard => 'ats standard';
 
   @override
-  String get authWallBuyCredits => 'login untuk beli kredit';
+  String get authWallBuyCredits => 'masuk untuk dapat pass';
 
   @override
   String get authWallBuyCreditsDesc =>
-      'kamu perlu login untuk bisa membeli kredit';
+      'kamu perlu masuk untuk mengaktifkan job hunter pass';
 
   @override
-  String get authWallCreateCV => 'login untuk membuat cv';
+  String get authWallCreateCV => 'masuk untuk membuat cv';
 
   @override
   String get authWallCreateCVDesc =>
-      'login biar kamu bisa akses master profile dan draft kamu dimana aja.';
+      'masuk biar kamu bisa akses master profile dan draft kamu dimana aja.';
 
   @override
-  String get authWallSelectTemplate => 'login untuk pilih template';
+  String get authWallSelectTemplate => 'masuk untuk pilih template';
 
   @override
   String get authWallSelectTemplateDesc =>
-      'kamu perlu login untuk bisa memilih template';
+      'kamu perlu masuk untuk bisa memilih template';
 
   @override
   String get autoFillFromMaster =>
@@ -272,15 +380,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get creativeDesign => 'creative design';
 
   @override
-  String get creditBalance => 'saldo kredit';
+  String get creditBalance => 'status pass';
 
   @override
   String creditWarning(int count) {
-    return 'peringatan: anda masih memiliki $count kredit. kredit ini tidak dapat diuangkan kembali.';
+    return 'peringatan: akun kamu akan dihapus permanen dan langganan aktif kamu akan hilang.';
   }
 
   @override
-  String get credits => 'kredit';
+  String get credits => 'pass';
 
   @override
   String get currentLevel => 'level saat ini';
@@ -359,7 +467,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get deleteAccountWarning =>
-      'tindakan ini tidak dapat dibatalkan. semua data anda, termasuk cv yang dihasilkan dan kredit, akan dihapus secara permanen.';
+      'tindakan ini tidak dapat dibatalkan. semua data anda, termasuk cv yang dihasilkan dan langganan aktif, akan dihapus secara permanen.';
 
   @override
   String get deleteConfirmation =>
@@ -543,9 +651,6 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get forgotPassword => 'lupa kata sandi';
-
-  @override
-  String get free => 'gratis';
 
   @override
   String get forgotPasswordResetMessage =>
@@ -1031,7 +1136,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get premium => 'premium';
 
   @override
-  String get premiumBadge => 'beli kredit';
+  String get premiumBadge => 'dapat pass';
 
   @override
   String get preparingGallery => 'menyiapkan galeri...';
@@ -1340,7 +1445,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get totalCVs => 'total cv';
 
   @override
-  String get totalCreditsLabel => 'total kredit';
+  String get totalCreditsLabel => 'pass aktif';
 
   @override
   String get tue => 'sel';
@@ -1359,7 +1464,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get update => 'perbarui';
 
   @override
-  String get unlockFeatures => 'isi ulang kredit cv kamu';
+  String get unlockFeatures => 'aktifkan job hunter pass';
 
   @override
   String get untilNow => 'sampai sekarang';
@@ -1451,32 +1556,65 @@ class AppLocalizationsId extends AppLocalizations {
   String get onboardingFreeLabel => '2 cv gratis, tanpa kartu kredit.';
 
   @override
-  String get getCredits => 'beli kredit';
+  String get getCredits => 'dapat job hunter pass';
 
   @override
-  String get benefitRegularTitle => '2 kredit untuk template reguler';
+  String get benefitRegularTitle => 'generasi cv tanpa batas';
 
   @override
   String get benefitRegularDesc =>
-      'akses desain profesional dan rapi untuk kebutuhan sehari-hari';
+      'buat cv sebanyak yang kamu mau, pas banget buat setiap loker';
 
   @override
-  String get benefitPremiumTitle => '4 kredit untuk template premium';
+  String get benefitPremiumTitle => 'akses semua template premium';
 
   @override
   String get benefitPremiumDesc =>
-      'buka desain eksklusif yang bikin cv kamu standout';
+      'standout dengan desain eksklusif yang dipake para pro';
 
   @override
-  String get benefitSkipAdsTitle => 'lewati iklan';
+  String get benefitSkipAdsTitle => 'pengalaman tanpa iklan';
 
   @override
-  String get benefitSkipAdsDesc => 'nikmati pengalaman mulus tanpa gangguan';
+  String get benefitSkipAdsDesc => 'tanpa gangguan, fokus ke karir kamu';
 
   @override
-  String creditsCount(int count) {
-    return '$count kredit';
+  String subscriptionExpiryCount(String time) {
+    return 'berakhir dalam $time';
   }
+
+  @override
+  String get pass24h => '24 jam';
+
+  @override
+  String get passWeekly => 'mingguan';
+
+  @override
+  String get passYearly => 'tahunan';
+
+  @override
+  String get subscriptionRequired => 'langganan diperlukan';
+
+  @override
+  String get upgradeNow => 'upgrade sekarang';
+
+  @override
+  String get accessAllTemplates => 'akses semua template';
+
+  @override
+  String get noAdsForever => 'tanpa iklan selamanya';
+
+  @override
+  String get daily => 'harian';
+
+  @override
+  String get weekly => 'mingguan';
+
+  @override
+  String get yearly => 'tahunan';
+
+  @override
+  String get creditsCount => 'aktif';
 
   @override
   String get popularBadge => 'populer';
@@ -1493,13 +1631,13 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get packageSmall => 'kecil';
+  String get packageSmall => '24 jam';
 
   @override
-  String get packageMedium => 'sedang';
+  String get packageMedium => 'mingguan';
 
   @override
-  String get packagePro => 'pro';
+  String get packagePro => 'tahunan';
 
   @override
   String get noTransactionsYet => 'belum ada transaksi';

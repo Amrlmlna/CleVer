@@ -93,7 +93,7 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
           usePhoto: _usePhoto,
           onSuccess: () async {
             if (mounted) {
-              if (template.userCredits == 0) {
+              if (!template.isSubscribed) {
                 ref.read(pendingPaywallProvider.notifier).state = true;
               }
 
@@ -350,10 +350,9 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                                     ? AppLocalizations.of(
                                         context,
                                       )!.generateCvFree.toUpperCase()
-                                    : AppLocalizations.of(context)!
-                                          .generateCvCost(0)
-                                          .replaceAll(RegExp(r'\s*\(.*?\)'), '')
-                                          .toUpperCase(),
+                                    : AppLocalizations.of(
+                                        context,
+                                      )!.exportPdf.toUpperCase(),
                                 style: textTheme.labelLarge?.copyWith(
                                   color: colorScheme.onSurface,
                                   fontWeight: FontWeight.w800,
@@ -378,13 +377,13 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                                       ? AppLocalizations.of(
                                           context,
                                         )!.free.toUpperCase()
-                                      : AppLocalizations.of(context)!
-                                            .creditsCount(
-                                              currentTemplate.requiredCredits,
-                                            )
-                                            .toUpperCase(),
+                                      : AppLocalizations.of(
+                                          context,
+                                        )!.jobHunterPass.toUpperCase(),
                                   style: textTheme.labelSmall?.copyWith(
-                                    color: colorScheme.onSurfaceVariant,
+                                    color: currentTemplate.hasFreeGeneration
+                                        ? colorScheme.onSurfaceVariant
+                                        : Colors.greenAccent,
                                     fontWeight: FontWeight.w800,
                                     letterSpacing: 1.0,
                                     fontSize: 11,

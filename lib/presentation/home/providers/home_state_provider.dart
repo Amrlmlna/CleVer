@@ -7,7 +7,7 @@ final isPremiumUserProvider = Provider<bool>((ref) {
   return templatesAsync.maybeWhen(
     data: (templates) {
       if (templates.isEmpty) return false;
-      return templates.any((t) => t.userCredits > 0);
+      return templates.any((t) => t.isSubscribed);
     },
     orElse: () => false,
   );

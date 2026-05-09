@@ -1,5 +1,63 @@
 {
   "@@locale": "id",
+  "months": "{count, plural, other{{count} bulan}}",
+  "@months": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "weeks": "{count, plural, other{{count} minggu}}",
+  "@weeks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "days": "{count, plural, other{{count} hari}}",
+  "@days": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count, plural, other{{count} jam}}",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "minutes": "{count, plural, other{{count} menit}}",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "active": "aktif",
+  "activePass": "pass aktif",
+  "free": "pengguna gratis",
+  "membershipStatus": "status keanggotaan",
+  "subscriptionWarning": "anda memiliki job hunter pass yang aktif. menghapus akun akan menghentikan akses anda segera dan tidak dapat dikembalikan.",
+  "jobHunterPass": "job hunter pass",
+  "unlockYourPotential": "buka potensi karir anda",
+  "unlimitedGenerations": "generasi tanpa batas",
+  "unlimitedGenerationsDesc": "buat cv sebanyak yang anda butuhkan",
+  "premiumTemplates": "template premium",
+  "premiumTemplatesDesc": "akses semua desain eksklusif dan berkualitas tinggi",
+  "aiOptimization": "optimasi ai",
+  "aiOptimizationDesc": "pembuatan konten ats-friendly tingkat lanjut",
+  "instantPdfExport": "ekspor pdf instan",
+  "instantPdfExportDesc": "unduh cv anda dalam format pdf berkualitas tinggi",
+  "getJobHunterPassNow": "dapatkan job hunter pass sekarang",
+  "cancelAnytime": "batalkan kapan saja",
+  "cv": "cv",
   "accountDeleteError": "gagal menghapus akun: {error}",
   "accountDeletedGoodbye": "akun berhasil dihapus. sampai jumpa!",
   "activityOverview": "ringkasan aktivitas",
@@ -36,12 +94,12 @@
   "and": " dan ",
   "applyingDesign": "menerapkan desain...",
   "atsStandard": "ats standard",
-  "authWallBuyCredits": "login untuk beli kredit",
-  "authWallBuyCreditsDesc": "kamu perlu login untuk bisa membeli kredit",
-  "authWallCreateCV": "login untuk membuat cv",
-  "authWallCreateCVDesc": "login biar kamu bisa akses master profile dan draft kamu dimana aja.",
-  "authWallSelectTemplate": "login untuk pilih template",
-  "authWallSelectTemplateDesc": "kamu perlu login untuk bisa memilih template",
+  "authWallBuyCredits": "masuk untuk dapat pass",
+  "authWallBuyCreditsDesc": "kamu perlu masuk untuk mengaktifkan job hunter pass",
+  "authWallCreateCV": "masuk untuk membuat cv",
+  "authWallCreateCVDesc": "masuk biar kamu bisa akses master profile dan draft kamu dimana aja.",
+  "authWallSelectTemplate": "masuk untuk pilih template",
+  "authWallSelectTemplateDesc": "kamu perlu masuk untuk bisa memilih template",
   "autoFillFromMaster": "data otomatis diisi dari master profile kamu",
   "back": "kembali",
   "bold": "tebal",
@@ -83,16 +141,9 @@
   "created": "dibuat",
   "creatingPages": "membuat halaman...",
   "creativeDesign": "creative design",
-  "creditBalance": "saldo kredit",
-  "creditWarning": "peringatan: anda masih memiliki {count} kredit. kredit ini tidak dapat diuangkan kembali.",
-  "@creditWarning": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "credits": "kredit",
+  "creditBalance": "status pass",
+  "creditWarning": "peringatan: akun kamu akan dihapus permanen dan langganan aktif kamu akan hilang.",
+  "credits": "pass",
   "currentLevel": "level saat ini",
   "cvDataExists": "data cv sudah ada di profilmu.",
   "cvGeneratedSuccess": "cv berhasil dibuat",
@@ -119,7 +170,7 @@
   "delete": "hapus",
   "deleteAccount": "hapus akun",
   "deleteAccountQuestion": "hapus akun?",
-  "deleteAccountWarning": "tindakan ini tidak dapat dibatalkan. semua data anda, termasuk cv yang dihasilkan dan kredit, akan dihapus secara permanen.",
+  "deleteAccountWarning": "tindakan ini tidak dapat dibatalkan. semua data anda, termasuk cv yang dihasilkan dan langganan aktif, akan dihapus secara permanen.",
   "deleteConfirmation": "apakah anda yakin ingin menghapus item ini?",
   "descriptionHint": "jelaskan tanggung jawab utama dan pencapaianmu...",
   "dontHaveAccount": "belum punya akun?",
@@ -374,7 +425,7 @@
   "polishing": "memoles...",
   "positionHint": "posisi (misal: ui designer)",
   "premium": "premium",
-  "premiumBadge": "beli kredit",
+  "premiumBadge": "dapat pass",
   "preparingGallery": "menyiapkan galeri...",
   "preparingProfile": "menyiapkan profil...",
   "present": "sekarang",
@@ -473,13 +524,13 @@
   "thankYou": "terima kasih!",
   "thu": "kam",
   "totalCVs": "total cv",
-  "totalCreditsLabel": "total kredit",
+  "totalCreditsLabel": "pass aktif",
   "tue": "sel",
   "typeHere": "ketik di sini...",
   "unknownError": "kesalahan tidak diketahui",
   "unknownErrorDesc": "terjadi kesalahan, tapi kami tidak yakin apa penyebabnya.",
   "update": "perbarui",
-  "unlockFeatures": "isi ulang kredit cv kamu",
+  "unlockFeatures": "aktifkan job hunter pass",
   "untilNow": "sampai sekarang",
   "untitled": "tanpa judul",
   "uploadInstruction": "ketuk untuk mengunggah foto profesional anda",
@@ -525,21 +576,35 @@
   "generateCvFree": "buat cv",
   "onboardingStartFree": "mulai, ini gratis",
   "onboardingFreeLabel": "2 cv gratis, tanpa kartu kredit.",
-  "getCredits": "beli kredit",
-  "benefitRegularTitle": "2 kredit untuk template reguler",
-  "benefitRegularDesc": "akses desain profesional dan rapi untuk kebutuhan sehari-hari",
-  "benefitPremiumTitle": "4 kredit untuk template premium",
-  "benefitPremiumDesc": "buka desain eksklusif yang bikin cv kamu standout",
-  "benefitSkipAdsTitle": "lewati iklan",
-  "benefitSkipAdsDesc": "nikmati pengalaman mulus tanpa gangguan",
-  "creditsCount": "{count} kredit",
-  "@creditsCount": {
+  "getCredits": "dapat job hunter pass",
+  "benefitRegularTitle": "generasi cv tanpa batas",
+  "benefitRegularDesc": "buat cv sebanyak yang kamu mau, pas banget buat setiap loker",
+  "benefitPremiumTitle": "akses semua template premium",
+  "benefitPremiumDesc": "standout dengan desain eksklusif yang dipake para pro",
+  "benefitSkipAdsTitle": "pengalaman tanpa iklan",
+  "benefitSkipAdsDesc": "tanpa gangguan, fokus ke karir kamu",
+  "jobHunterPass": "job hunter pass",
+  "activePass": "pass aktif",
+  "subscriptionExpiryCount": "berakhir dalam {time}",
+  "@subscriptionExpiryCount": {
     "placeholders": {
-      "count": {
-        "type": "int"
+      "time": {
+        "type": "String"
       }
     }
   },
+  "pass24h": "24 jam",
+  "passWeekly": "mingguan",
+  "passYearly": "tahunan",
+  "subscriptionRequired": "langganan diperlukan",
+  "upgradeNow": "upgrade sekarang",
+  "unlimitedGenerations": "generasi tanpa batas",
+  "accessAllTemplates": "akses semua template",
+  "noAdsForever": "tanpa iklan selamanya",
+  "daily": "harian",
+  "weekly": "mingguan",
+  "yearly": "tahunan",
+  "creditsCount": "aktif",
   "popularBadge": "populer",
   "securePayment": "pembayaran aman via google play",
   "perCredit": "/kredit",
@@ -551,9 +616,9 @@
       }
     }
   },
-  "packageSmall": "kecil",
-  "packageMedium": "sedang",
-  "packagePro": "pro",
+  "packageSmall": "24 jam",
+  "packageMedium": "mingguan",
+  "packagePro": "tahunan",
   "noTransactionsYet": "belum ada transaksi",
   "topUp": "isi ulang",
   "cvExport": "ekspor cv",

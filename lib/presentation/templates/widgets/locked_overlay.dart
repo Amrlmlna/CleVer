@@ -4,13 +4,8 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 
 class LockedOverlay extends StatelessWidget {
   final bool isPremium;
-  final int requiredCredits;
 
-  const LockedOverlay({
-    super.key,
-    required this.isPremium,
-    required this.requiredCredits,
-  });
+  const LockedOverlay({super.key, required this.isPremium});
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +60,7 @@ class LockedOverlay extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  AppLocalizations.of(
-                    context,
-                  )!.creditsCount(requiredCredits).toUpperCase(),
+                  AppLocalizations.of(context)!.jobHunterPass.toUpperCase(),
                   style: TextStyle(
                     color: colorScheme.surface.withValues(alpha: 0.9),
                     fontSize: 11,

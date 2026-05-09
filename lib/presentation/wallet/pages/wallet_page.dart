@@ -4,7 +4,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:intl/intl.dart';
 import '../../templates/providers/template_provider.dart';
 import '../../profile/providers/profile_provider.dart';
-import '../widgets/wallet_card.dart';
+import '../widgets/subscription_status_card.dart';
 import '../providers/transaction_provider.dart';
 import '../../../core/services/payment_service.dart';
 import '../../auth/utils/auth_guard.dart';
@@ -49,7 +49,7 @@ class WalletPage extends ConsumerWidget {
                         l10n.wallet,
                         style: textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.w900,
-                          color: Colors.black,
+                          color: AppColors.accentPeachDark,
                           fontSize: 32,
                         ),
                       ),
@@ -57,11 +57,13 @@ class WalletPage extends ConsumerWidget {
                         onPressed: () => context.push('/wallet/history'),
                         icon: const Icon(
                           Icons.history_rounded,
-                          color: Colors.black,
+                          color: AppColors.accentPeachDark,
                           size: 24,
                         ),
                         style: IconButton.styleFrom(
-                          backgroundColor: Colors.black.withValues(alpha: 0.1),
+                          backgroundColor: AppColors.accentPeachDark.withValues(
+                            alpha: 0.1,
+                          ),
                         ),
                       ),
                     ],
@@ -69,13 +71,17 @@ class WalletPage extends ConsumerWidget {
                   const SizedBox(height: 32),
                   templatesAsync.when(
                     data: (templates) {
-                      final totalCredits = templates.isNotEmpty
-                          ? templates.first.userCredits
-                          : 0;
-                      return WalletCard(
-                        totalCredits: totalCredits,
+                      final template = templates.isNotEmpty
+                          ? templates.first
+                          : null;
+                      final isSubscribed = template?.isSubscribed ?? false;
+                      final expiryDate = template?.subscriptionExpiry;
+
+                      return SubscriptionStatusCard(
+                        isSubscribed: isSubscribed,
+                        expiryDate: expiryDate,
                         cardHolder: cardHolder,
-                        onTopUp: AuthGuard.protected(
+                        onAction: AuthGuard.protected(
                           context,
                           () async {
                             final purchased =
@@ -90,13 +96,17 @@ class WalletPage extends ConsumerWidget {
                         ),
                       );
                     },
-                    loading: () => WalletCard(
-                      totalCredits: 0,
+                    loading: () => SubscriptionStatusCard(
+                      isSubscribed: false,
                       cardHolder: cardHolder,
+                      onAction: () {},
                       isLoading: true,
                     ),
-                    error: (error, stack) =>
-                        WalletCard(totalCredits: 0, cardHolder: cardHolder),
+                    error: (error, stack) => SubscriptionStatusCard(
+                      isSubscribed: false,
+                      cardHolder: cardHolder,
+                      onAction: () {},
+                    ),
                   ),
                 ],
               ),
@@ -217,8 +227,8 @@ class WalletPage extends ConsumerWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            (txn.type == 'credit_add'
-                                                    ? l10n.topUp
+                                            (txn.type == 'subscription_buy'
+                                                    ? l10n.unlockFeatures
                                                     : l10n.cvExport)
                                                 .toUpperCase(),
                                             style: TextStyle(
@@ -242,7 +252,9 @@ class WalletPage extends ConsumerWidget {
                                           ),
                                           const SizedBox(height: 2),
                                           Text(
-                                            '${isAdd ? '+' : '-'}${txn.amount} ${l10n.credits.toUpperCase()}',
+                                            txn.type == 'subscription_buy'
+                                                ? l10n.active.toUpperCase()
+                                                : '${isAdd ? '+' : '-'}${txn.amount} ${l10n.cv.toUpperCase()}',
                                             style: TextStyle(
                                               fontSize: 11,
                                               fontWeight: FontWeight.w900,

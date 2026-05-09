@@ -98,6 +98,144 @@ abstract class AppLocalizations {
     Locale('id'),
   ];
 
+  /// No description provided for @months.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 month} other{{count} months}}'**
+  String months(int count);
+
+  /// No description provided for @weeks.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 week} other{{count} weeks}}'**
+  String weeks(int count);
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}}'**
+  String days(int count);
+
+  /// No description provided for @hours.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hour} other{{count} hours}}'**
+  String hours(int count);
+
+  /// No description provided for @minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 minute} other{{count} minutes}}'**
+  String minutes(int count);
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'active'**
+  String get active;
+
+  /// No description provided for @activePass.
+  ///
+  /// In en, this message translates to:
+  /// **'active pass'**
+  String get activePass;
+
+  /// No description provided for @free.
+  ///
+  /// In en, this message translates to:
+  /// **'free'**
+  String get free;
+
+  /// No description provided for @membershipStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'membership status'**
+  String get membershipStatus;
+
+  /// No description provided for @subscriptionWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'you have an active job hunter pass. deleting your account will terminate your access immediately and cannot be refunded.'**
+  String get subscriptionWarning;
+
+  /// No description provided for @jobHunterPass.
+  ///
+  /// In en, this message translates to:
+  /// **'job hunter pass'**
+  String get jobHunterPass;
+
+  /// No description provided for @unlockYourPotential.
+  ///
+  /// In en, this message translates to:
+  /// **'unlock your career potential'**
+  String get unlockYourPotential;
+
+  /// No description provided for @unlimitedGenerations.
+  ///
+  /// In en, this message translates to:
+  /// **'unlimited generations'**
+  String get unlimitedGenerations;
+
+  /// No description provided for @unlimitedGenerationsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'create as many tailored cvs as you need'**
+  String get unlimitedGenerationsDesc;
+
+  /// No description provided for @premiumTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'premium templates'**
+  String get premiumTemplates;
+
+  /// No description provided for @premiumTemplatesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'access all exclusive and high-converting designs'**
+  String get premiumTemplatesDesc;
+
+  /// No description provided for @aiOptimization.
+  ///
+  /// In en, this message translates to:
+  /// **'ai optimization'**
+  String get aiOptimization;
+
+  /// No description provided for @aiOptimizationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'advanced ats-friendly content generation'**
+  String get aiOptimizationDesc;
+
+  /// No description provided for @instantPdfExport.
+  ///
+  /// In en, this message translates to:
+  /// **'instant pdf export'**
+  String get instantPdfExport;
+
+  /// No description provided for @instantPdfExportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'download your cv in high-quality pdf format'**
+  String get instantPdfExportDesc;
+
+  /// No description provided for @getJobHunterPassNow.
+  ///
+  /// In en, this message translates to:
+  /// **'get job hunter pass now'**
+  String get getJobHunterPassNow;
+
+  /// No description provided for @cancelAnytime.
+  ///
+  /// In en, this message translates to:
+  /// **'cancel anytime'**
+  String get cancelAnytime;
+
+  /// No description provided for @cv.
+  ///
+  /// In en, this message translates to:
+  /// **'cv'**
+  String get cv;
+
   /// No description provided for @accountDeleteError.
   ///
   /// In en, this message translates to:
@@ -317,13 +455,13 @@ abstract class AppLocalizations {
   /// No description provided for @authWallBuyCredits.
   ///
   /// In en, this message translates to:
-  /// **'sign in to buy credits'**
+  /// **'sign in to get pass'**
   String get authWallBuyCredits;
 
   /// No description provided for @authWallBuyCreditsDesc.
   ///
   /// In en, this message translates to:
-  /// **'an account is required to purchase credits'**
+  /// **'an account is required to activate a job hunter pass'**
   String get authWallBuyCreditsDesc;
 
   /// No description provided for @authWallCreateCV.
@@ -755,7 +893,7 @@ abstract class AppLocalizations {
   /// No description provided for @deleteAccountWarning.
   ///
   /// In en, this message translates to:
-  /// **'this action is irreversible. all your data, including generated cvs and credits, will be permanently deleted.'**
+  /// **'this action is irreversible. all your data, including generated cvs and active subscriptions, will be permanently deleted.'**
   String get deleteAccountWarning;
 
   /// No description provided for @deleteConfirmation.
@@ -1099,12 +1237,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'forgot password'**
   String get forgotPassword;
-
-  /// No description provided for @free.
-  ///
-  /// In en, this message translates to:
-  /// **'free'**
-  String get free;
 
   /// No description provided for @forgotPasswordResetMessage.
   ///
@@ -1977,7 +2109,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumBadge.
   ///
   /// In en, this message translates to:
-  /// **'get credits'**
+  /// **'get pass'**
   String get premiumBadge;
 
   /// No description provided for @preparingGallery.
@@ -2571,7 +2703,7 @@ abstract class AppLocalizations {
   /// No description provided for @totalCreditsLabel.
   ///
   /// In en, this message translates to:
-  /// **'total credits'**
+  /// **'active pass'**
   String get totalCreditsLabel;
 
   /// No description provided for @tue.
@@ -2607,7 +2739,7 @@ abstract class AppLocalizations {
   /// No description provided for @unlockFeatures.
   ///
   /// In en, this message translates to:
-  /// **'refill generation credits'**
+  /// **'activate job hunter pass'**
   String get unlockFeatures;
 
   /// No description provided for @untilNow.
@@ -2781,50 +2913,116 @@ abstract class AppLocalizations {
   /// No description provided for @getCredits.
   ///
   /// In en, this message translates to:
-  /// **'get credits'**
+  /// **'get job hunter pass'**
   String get getCredits;
 
   /// No description provided for @benefitRegularTitle.
   ///
   /// In en, this message translates to:
-  /// **'2 credits for regular templates'**
+  /// **'unlimited tailored generations'**
   String get benefitRegularTitle;
 
   /// No description provided for @benefitRegularDesc.
   ///
   /// In en, this message translates to:
-  /// **'access clean, professional layouts for everyday use'**
+  /// **'create as many cvs as you need, perfectly matched to every job'**
   String get benefitRegularDesc;
 
   /// No description provided for @benefitPremiumTitle.
   ///
   /// In en, this message translates to:
-  /// **'4 credits for premium templates'**
+  /// **'access all premium templates'**
   String get benefitPremiumTitle;
 
   /// No description provided for @benefitPremiumDesc.
   ///
   /// In en, this message translates to:
-  /// **'unlock exclusive designs that stand out to recruiters'**
+  /// **'stand out with exclusive designs used by top professionals'**
   String get benefitPremiumDesc;
 
   /// No description provided for @benefitSkipAdsTitle.
   ///
   /// In en, this message translates to:
-  /// **'skip ads'**
+  /// **'ad-free experience'**
   String get benefitSkipAdsTitle;
 
   /// No description provided for @benefitSkipAdsDesc.
   ///
   /// In en, this message translates to:
-  /// **'enjoy a seamless experience without interruptions'**
+  /// **'no interruptions, just pure focus on your career'**
   String get benefitSkipAdsDesc;
+
+  /// No description provided for @subscriptionExpiryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'expires in {time}'**
+  String subscriptionExpiryCount(String time);
+
+  /// No description provided for @pass24h.
+  ///
+  /// In en, this message translates to:
+  /// **'24 hours'**
+  String get pass24h;
+
+  /// No description provided for @passWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'weekly'**
+  String get passWeekly;
+
+  /// No description provided for @passYearly.
+  ///
+  /// In en, this message translates to:
+  /// **'yearly'**
+  String get passYearly;
+
+  /// No description provided for @subscriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'subscription required'**
+  String get subscriptionRequired;
+
+  /// No description provided for @upgradeNow.
+  ///
+  /// In en, this message translates to:
+  /// **'upgrade now'**
+  String get upgradeNow;
+
+  /// No description provided for @accessAllTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'access all templates'**
+  String get accessAllTemplates;
+
+  /// No description provided for @noAdsForever.
+  ///
+  /// In en, this message translates to:
+  /// **'no ads forever'**
+  String get noAdsForever;
+
+  /// No description provided for @daily.
+  ///
+  /// In en, this message translates to:
+  /// **'daily'**
+  String get daily;
+
+  /// No description provided for @weekly.
+  ///
+  /// In en, this message translates to:
+  /// **'weekly'**
+  String get weekly;
+
+  /// No description provided for @yearly.
+  ///
+  /// In en, this message translates to:
+  /// **'yearly'**
+  String get yearly;
 
   /// No description provided for @creditsCount.
   ///
   /// In en, this message translates to:
-  /// **'{count} credits'**
-  String creditsCount(int count);
+  /// **'active'**
+  String get creditsCount;
 
   /// No description provided for @popularBadge.
   ///
@@ -2853,19 +3051,19 @@ abstract class AppLocalizations {
   /// No description provided for @packageSmall.
   ///
   /// In en, this message translates to:
-  /// **'small'**
+  /// **'24h'**
   String get packageSmall;
 
   /// No description provided for @packageMedium.
   ///
   /// In en, this message translates to:
-  /// **'medium'**
+  /// **'weekly'**
   String get packageMedium;
 
   /// No description provided for @packagePro.
   ///
   /// In en, this message translates to:
-  /// **'pro'**
+  /// **'yearly'**
   String get packagePro;
 
   /// No description provided for @noTransactionsYet.

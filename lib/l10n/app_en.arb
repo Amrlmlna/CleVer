@@ -1,5 +1,63 @@
 {
   "@@locale": "en",
+  "months": "{count, plural, =1{1 month} other{{count} months}}",
+  "@months": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "weeks": "{count, plural, =1{1 week} other{{count} weeks}}",
+  "@weeks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "days": "{count, plural, =1{1 day} other{{count} days}}",
+  "@days": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count, plural, =1{1 hour} other{{count} hours}}",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "minutes": "{count, plural, =1{1 minute} other{{count} minutes}}",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "active": "active",
+  "activePass": "active pass",
+  "free": "free user",
+  "membershipStatus": "membership status",
+  "subscriptionWarning": "you have an active job hunter pass. deleting your account will terminate your access immediately and cannot be refunded.",
+  "jobHunterPass": "job hunter pass",
+  "unlockYourPotential": "unlock your career potential",
+  "unlimitedGenerations": "unlimited generations",
+  "unlimitedGenerationsDesc": "create as many tailored cvs as you need",
+  "premiumTemplates": "premium templates",
+  "premiumTemplatesDesc": "access all exclusive and high-converting designs",
+  "aiOptimization": "ai optimization",
+  "aiOptimizationDesc": "advanced ats-friendly content generation",
+  "instantPdfExport": "instant pdf export",
+  "instantPdfExportDesc": "download your cv in high-quality pdf format",
+  "getJobHunterPassNow": "get job hunter pass now",
+  "cancelAnytime": "cancel anytime",
+  "cv": "cv",
   "accountDeleteError": "failed to delete account: {error}",
   "accountDeletedGoodbye": "account successfully deleted. goodbye!",
   "activityOverview": "activity overview",
@@ -36,8 +94,8 @@
   "and": " and ",
   "applyingDesign": "applying design...",
   "atsStandard": "ats standard",
-  "authWallBuyCredits": "sign in to buy credits",
-  "authWallBuyCreditsDesc": "an account is required to purchase credits",
+  "authWallBuyCredits": "sign in to get pass",
+  "authWallBuyCreditsDesc": "an account is required to activate a job hunter pass",
   "authWallCreateCV": "sign in to create your cv",
   "authWallCreateCVDesc": "an account is required to create and save your cv",
   "authWallSelectTemplate": "sign in to select a template",
@@ -123,7 +181,7 @@
   "delete": "delete",
   "deleteAccount": "delete account",
   "deleteAccountQuestion": "delete account?",
-  "deleteAccountWarning": "this action is irreversible. all your data, including generated cvs and credits, will be permanently deleted.",
+  "deleteAccountWarning": "this action is irreversible. all your data, including generated cvs and active subscriptions, will be permanently deleted.",
   "deleteConfirmation": "are you sure you want to delete this item?",
   "descriptionHint": "explain your main responsibilities and achievements...",
   "dontHaveAccount": "don't have an account?",
@@ -378,7 +436,7 @@
   "polishing": "polishing...",
   "positionHint": "position (ex: ui designer)",
   "premium": "premium",
-  "premiumBadge": "get credits",
+  "premiumBadge": "get pass",
   "preparingGallery": "preparing gallery...",
   "preparingProfile": "preparing profile...",
   "present": "present",
@@ -477,13 +535,13 @@
   "thankYou": "thank you!",
   "thu": "thu",
   "totalCVs": "total cvs",
-  "totalCreditsLabel": "total credits",
+  "totalCreditsLabel": "active pass",
   "tue": "tue",
   "typeHere": "type here...",
   "unknownError": "unknown error",
   "unknownErrorDesc": "something went wrong, but we aren't sure what.",
   "update": "update",
-  "unlockFeatures": "refill generation credits",
+  "unlockFeatures": "activate job hunter pass",
   "untilNow": "until now",
   "untitled": "untitled",
   "uploadInstruction": "tap to upload your professional photo",
@@ -529,21 +587,35 @@
   "generateCvFree": "generate",
   "onboardingStartFree": "get started, it's free",
   "onboardingFreeLabel": "2 free cvs, no credit card.",
-  "getCredits": "get credits",
-  "benefitRegularTitle": "2 credits for regular templates",
-  "benefitRegularDesc": "access clean, professional layouts for everyday use",
-  "benefitPremiumTitle": "4 credits for premium templates",
-  "benefitPremiumDesc": "unlock exclusive designs that stand out to recruiters",
-  "benefitSkipAdsTitle": "skip ads",
-  "benefitSkipAdsDesc": "enjoy a seamless experience without interruptions",
-  "creditsCount": "{count} credits",
-  "@creditsCount": {
+  "getCredits": "get job hunter pass",
+  "benefitRegularTitle": "unlimited tailored generations",
+  "benefitRegularDesc": "create as many cvs as you need, perfectly matched to every job",
+  "benefitPremiumTitle": "access all premium templates",
+  "benefitPremiumDesc": "stand out with exclusive designs used by top professionals",
+  "benefitSkipAdsTitle": "ad-free experience",
+  "benefitSkipAdsDesc": "no interruptions, just pure focus on your career",
+  "jobHunterPass": "job hunter pass",
+  "activePass": "active pass",
+  "subscriptionExpiryCount": "expires in {time}",
+  "@subscriptionExpiryCount": {
     "placeholders": {
-      "count": {
-        "type": "int"
+      "time": {
+        "type": "String"
       }
     }
   },
+  "pass24h": "24 hours",
+  "passWeekly": "weekly",
+  "passYearly": "yearly",
+  "subscriptionRequired": "subscription required",
+  "upgradeNow": "upgrade now",
+  "unlimitedGenerations": "unlimited generations",
+  "accessAllTemplates": "access all templates",
+  "noAdsForever": "no ads forever",
+  "daily": "daily",
+  "weekly": "weekly",
+  "yearly": "yearly",
+  "creditsCount": "active",
   "popularBadge": "popular",
   "securePayment": "secure payment via google play",
   "perCredit": "/credit",
@@ -555,9 +627,9 @@
       }
     }
   },
-  "packageSmall": "small",
-  "packageMedium": "medium",
-  "packagePro": "pro",
+  "packageSmall": "24h",
+  "packageMedium": "weekly",
+  "packagePro": "yearly",
   "noTransactionsYet": "no transactions yet",
   "topUp": "top up",
   "cvExport": "cv export",
