@@ -23,6 +23,17 @@ class SubscriptionPaywall extends ConsumerStatefulWidget {
     );
   }
 
+  static String getDisplayName(String? rawName, AppLocalizations l10n) {
+    if (rawName == null) return l10n.jobHunterPass;
+    final lower = rawName.toLowerCase();
+    if (lower.contains('24h') || lower.contains('24 jam')) return l10n.product24hTitle;
+    if (lower.contains('3d') || lower.contains('3 hari')) return l10n.product3dTitle;
+    if (lower.contains('weekly') || lower.contains('minggu')) return l10n.productWeeklyTitle;
+    if (lower.contains('monthly') || lower.contains('bulan')) return l10n.productMonthlyTitle;
+    if (lower.contains('yearly') || lower.contains('tahun')) return l10n.productYearlyTitle;
+    return l10n.jobHunterPass;
+  }
+
   @override
   ConsumerState<SubscriptionPaywall> createState() =>
       _SubscriptionPaywallState();
@@ -33,12 +44,30 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
   bool _isLoading = false;
   bool _showDownsell = false;
 
+  late final List<Package> _mainPackages;
+
   @override
   void initState() {
     super.initState();
-    if (widget.packages.isNotEmpty) {
-      _selectedPackage = widget.packages.first;
+    // Filter out 24h pass — it's handled by the downsell
+    _mainPackages = widget.packages.where((p) {
+      final id = p.identifier.toLowerCase();
+      final productId = p.storeProduct.identifier.toLowerCase();
+      return !(id.contains('24h') || productId.contains('24h'));
+    }).toList();
+    if (_mainPackages.isNotEmpty) {
+      _selectedPackage = _mainPackages.first;
     }
+  }
+
+  static (String, String) _getProductName(Package package, AppLocalizations l10n) {
+    final id = '${package.identifier} ${package.storeProduct.identifier}'.toLowerCase();
+    if (id.contains('24h')) return (l10n.product24hTitle, l10n.product24hDesc);
+    if (id.contains('3d')) return (l10n.product3dTitle, l10n.product3dDesc);
+    if (id.contains('weekly')) return (l10n.productWeeklyTitle, l10n.productWeeklyDesc);
+    if (id.contains('monthly')) return (l10n.productMonthlyTitle, l10n.productMonthlyDesc);
+    if (id.contains('yearly')) return (l10n.productYearlyTitle, l10n.productYearlyDesc);
+    return (l10n.jobHunterPass, '');
   }
 
   Package? get _downsellPackage {
@@ -100,7 +129,7 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
       onPopInvokedWithResult: (didPop, _) => _onPopInvoked(didPop),
       child: Container(
         constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.9,
+          maxHeight: MediaQuery.of(context).size.height * 0.95,
         ),
         decoration: BoxDecoration(
           color: colorScheme.surface,
@@ -349,6 +378,9 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     ColorScheme colorScheme,
     TextTheme textTheme,
   ) {
+    final l10n = AppLocalizations.of(context)!;
+    final (title, desc) = _getProductName(package, l10n);
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
@@ -364,18 +396,20 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  package.storeProduct.title,
+                  title,
                   style: textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  package.storeProduct.description,
-                  style: textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+                if (desc.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    desc,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
           ),
@@ -502,11 +536,12 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     AppLocalizations l10n,
   ) {
     return Column(
-      children: widget.packages.map((package) {
+      children: _mainPackages.map((package) {
         final isSelected =
             _selectedPackage?.identifier == package.identifier;
         final isBestValue =
-            package == widget.packages.last && widget.packages.length > 1;
+            package == _mainPackages.last && _mainPackages.length > 1;
+        final (title, desc) = _getProductName(package, l10n);
 
         return GestureDetector(
           onTap: () => setState(() => _selectedPackage = package),
@@ -534,7 +569,7 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
                       Row(
                         children: [
                           Text(
-                            package.storeProduct.title,
+                            title,
                             style: textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.w900,
                             ),
@@ -565,13 +600,15 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
                           ],
                         ],
                       ),
-                      const SizedBox(height: 2),
-                      Text(
-                        package.storeProduct.description,
-                        style: textTheme.bodySmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
+                      if (desc.isNotEmpty) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          desc,
+                          style: textTheme.bodySmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                          ),
                         ),
-                      ),
+                      ],
                     ],
                   ),
                 ),

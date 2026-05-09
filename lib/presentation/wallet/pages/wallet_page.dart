@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../templates/providers/template_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../widgets/subscription_status_card.dart';
+import '../widgets/subscription_paywall.dart';
 import '../providers/transaction_provider.dart';
 import '../../../core/services/payment_service.dart';
 import '../../../core/utils/subscription_formatter.dart';
@@ -236,8 +237,9 @@ class WalletPage extends ConsumerWidget {
                                         children: [
                                           Text(
                                             (txn.type == 'subscription_update'
-                                                    ? (txn.productDisplayName ??
-                                                          l10n.unlockFeatures)
+                                                    ? SubscriptionPaywall.getDisplayName(
+                                                        txn.productDisplayName,
+                                                        l10n)
                                                     : (isAdd
                                                           ? l10n.unlockFeatures
                                                           : l10n.cvExport))

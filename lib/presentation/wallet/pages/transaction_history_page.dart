@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:clever/core/theme/app_colors.dart';
 import 'package:clever/core/utils/subscription_formatter.dart';
 import '../providers/transaction_provider.dart';
+import '../widgets/subscription_paywall.dart';
 import '../../templates/providers/template_provider.dart';
 
 class TransactionHistoryPage extends ConsumerStatefulWidget {
@@ -146,8 +147,8 @@ class _TransactionHistoryPageState
                             children: [
                               Text(
                                 (isSubUpdate
-                                        ? (txn.productDisplayName ??
-                                              l10n.jobHunterPass)
+                                        ? SubscriptionPaywall.getDisplayName(
+                                            txn.productDisplayName, l10n)
                                         : (isAdd
                                               ? l10n.unlockFeatures
                                               : l10n.cvExport))

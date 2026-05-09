@@ -165,6 +165,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get downsellTrust => 'No auto-renew · One-time pass';
 
   @override
+  String get product24hTitle => '24 Hour Pass';
+
+  @override
+  String get product24hDesc => 'Full access for 24 hours';
+
+  @override
+  String get product3dTitle => '3 Day Pass';
+
+  @override
+  String get product3dDesc => 'Full access for 3 days';
+
+  @override
+  String get productWeeklyTitle => 'Weekly';
+
+  @override
+  String get productWeeklyDesc => 'Full access for 1 week';
+
+  @override
+  String get productMonthlyTitle => 'Monthly';
+
+  @override
+  String get productMonthlyDesc => 'Full access for 1 month';
+
+  @override
+  String get productYearlyTitle => 'Yearly';
+
+  @override
+  String get productYearlyDesc => 'Full access for 1 year';
+
+  @override
   String get cv => 'cv';
 
   @override

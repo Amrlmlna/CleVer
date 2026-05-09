@@ -159,6 +159,36 @@ class AppLocalizationsId extends AppLocalizations {
   String get downsellTrust => 'Tanpa perpanjangan otomatis · Sekali beli';
 
   @override
+  String get product24hTitle => 'Pass 24 Jam';
+
+  @override
+  String get product24hDesc => 'Akses penuh selama 24 jam';
+
+  @override
+  String get product3dTitle => 'Pass 3 Hari';
+
+  @override
+  String get product3dDesc => 'Akses penuh selama 3 hari';
+
+  @override
+  String get productWeeklyTitle => 'Mingguan';
+
+  @override
+  String get productWeeklyDesc => 'Akses penuh selama 1 minggu';
+
+  @override
+  String get productMonthlyTitle => 'Bulanan';
+
+  @override
+  String get productMonthlyDesc => 'Akses penuh selama 1 bulan';
+
+  @override
+  String get productYearlyTitle => 'Tahunan';
+
+  @override
+  String get productYearlyDesc => 'Akses penuh selama 1 tahun';
+
+  @override
   String get cv => 'cv';
 
   @override

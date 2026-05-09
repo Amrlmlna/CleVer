@@ -302,6 +302,66 @@ abstract class AppLocalizations {
   /// **'No auto-renew · One-time pass'**
   String get downsellTrust;
 
+  /// No description provided for @product24hTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'24 Hour Pass'**
+  String get product24hTitle;
+
+  /// No description provided for @product24hDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Full access for 24 hours'**
+  String get product24hDesc;
+
+  /// No description provided for @product3dTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'3 Day Pass'**
+  String get product3dTitle;
+
+  /// No description provided for @product3dDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Full access for 3 days'**
+  String get product3dDesc;
+
+  /// No description provided for @productWeeklyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get productWeeklyTitle;
+
+  /// No description provided for @productWeeklyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Full access for 1 week'**
+  String get productWeeklyDesc;
+
+  /// No description provided for @productMonthlyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get productMonthlyTitle;
+
+  /// No description provided for @productMonthlyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Full access for 1 month'**
+  String get productMonthlyDesc;
+
+  /// No description provided for @productYearlyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get productYearlyTitle;
+
+  /// No description provided for @productYearlyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Full access for 1 year'**
+  String get productYearlyDesc;
+
   /// No description provided for @cv.
   ///
   /// In en, this message translates to:
