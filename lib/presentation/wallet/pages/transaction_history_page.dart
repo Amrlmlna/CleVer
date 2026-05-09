@@ -179,19 +179,7 @@ class _TransactionHistoryPageState
                           children: [
                             Text(
                               isSubUpdate
-                                  ? (txn.expiryDate != null &&
-                                            txn.expiryDate!.isAfter(DateTime.now())
-                                        ? SubscriptionFormatter.formatRemainingTime(
-                                            txn.expiryDate!,
-                                            l10n,
-                                          ).toUpperCase()
-                                        : (txn.durationAdded != null
-                                            ? SubscriptionFormatter.formatProductDuration(
-                                                txn.durationAdded!,
-                                                l10n,
-                                              )
-                                            : (txn.productDisplayName ?? l10n.active)
-                                                  .toUpperCase()))
+                                  ? SubscriptionFormatter.formatTransactionStatus(txn, l10n)
                                   : '${isAdd ? '+' : '-'}${txn.amount}',
                               style: textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w900,

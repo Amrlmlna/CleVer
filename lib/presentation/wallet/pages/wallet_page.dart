@@ -78,11 +78,10 @@ class WalletPage extends ConsumerWidget {
                   const SizedBox(height: 32),
                   templatesAsync.when(
                     data: (templates) {
-                      final template = templates.isNotEmpty
-                          ? templates.first
+                      final isSubscribed = templates.any((t) => t.isSubscribed);
+                      final expiryDate = templates.isNotEmpty
+                          ? templates.first.subscriptionExpiry
                           : null;
-                      final isSubscribed = template?.isSubscribed ?? false;
-                      final expiryDate = template?.subscriptionExpiry;
 
                       return SubscriptionStatusCard(
                         isSubscribed: isSubscribed,
@@ -265,19 +264,7 @@ class WalletPage extends ConsumerWidget {
                                           const SizedBox(height: 2),
                                           Text(
                                             txn.type == 'subscription_update'
-                                                ? (txn.expiryDate != null &&
-                                                          txn.expiryDate!.isAfter(DateTime.now())
-                                                      ? SubscriptionFormatter.formatRemainingTime(
-                                                          txn.expiryDate!,
-                                                          l10n,
-                                                        ).toUpperCase()
-                                                      : (txn.durationAdded != null
-                                                          ? SubscriptionFormatter.formatProductDuration(
-                                                              txn.durationAdded!,
-                                                              l10n,
-                                                            )
-                                                          : (txn.productDisplayName ?? l10n.active)
-                                                                .toUpperCase()))
+                                                ? SubscriptionFormatter.formatTransactionStatus(txn, l10n)
                                                 : '${isAdd ? '+' : '-'}${txn.amount} ${l10n.cv.toUpperCase()}',
                                             style: TextStyle(
                                               fontSize: 11,

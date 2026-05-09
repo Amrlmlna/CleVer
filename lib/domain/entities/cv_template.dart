@@ -9,6 +9,7 @@ class CVTemplate extends Equatable {
   final bool isPremium;
   final List<String> tags;
   final int currentUsage;
+  final int maxFreeGenerations;
   final bool isSubscribed;
   final DateTime? subscriptionExpiry;
   final String? subscriptionType;
@@ -23,13 +24,14 @@ class CVTemplate extends Equatable {
     this.isPremium = false,
     this.tags = const [],
     this.currentUsage = 0,
+    this.maxFreeGenerations = 2,
     this.isSubscribed = false,
     this.subscriptionExpiry,
     this.subscriptionType,
     this.supportsPhoto = false,
   });
 
-  bool get hasFreeGeneration => currentUsage < 2;
+  bool get hasFreeGeneration => currentUsage < maxFreeGenerations;
   bool get isLocked => !hasFreeGeneration && !isSubscribed;
 
   factory CVTemplate.fromJson(Map<String, dynamic> json) {
@@ -48,6 +50,7 @@ class CVTemplate extends Equatable {
       isPremium: json['isPremium'] as bool? ?? false,
       tags: List<String>.from(json['tags'] ?? []),
       currentUsage: json['currentUsage'] as int? ?? 0,
+      maxFreeGenerations: json['maxFreeGenerations'] as int? ?? 2,
       isSubscribed: json['isSubscribed'] as bool? ?? false,
       subscriptionExpiry: parseDate(json['subscriptionExpiry']),
       subscriptionType: json['subscriptionType'] as String?,
@@ -64,6 +67,7 @@ class CVTemplate extends Equatable {
     bool? isPremium,
     List<String>? tags,
     int? currentUsage,
+    int? maxFreeGenerations,
     bool? isSubscribed,
     DateTime? subscriptionExpiry,
     String? subscriptionType,
@@ -78,6 +82,7 @@ class CVTemplate extends Equatable {
       isPremium: isPremium ?? this.isPremium,
       tags: tags ?? this.tags,
       currentUsage: currentUsage ?? this.currentUsage,
+      maxFreeGenerations: maxFreeGenerations ?? this.maxFreeGenerations,
       isSubscribed: isSubscribed ?? this.isSubscribed,
       subscriptionExpiry: subscriptionExpiry ?? this.subscriptionExpiry,
       subscriptionType: subscriptionType ?? this.subscriptionType,
@@ -95,6 +100,7 @@ class CVTemplate extends Equatable {
     isPremium,
     tags,
     currentUsage,
+    maxFreeGenerations,
     isSubscribed,
     subscriptionExpiry,
     subscriptionType,

@@ -54,7 +54,7 @@ class StyleSelectionContent extends ConsumerWidget {
         actions: [
           if (templates.isNotEmpty)
             _SubscriptionBadge(
-              isSubscribed: templates.first.isSubscribed,
+              isSubscribed: templates.any((t) => t.isSubscribed),
               expiryDate: templates.first.subscriptionExpiry,
             ),
         ],
@@ -115,15 +115,19 @@ class _SubscriptionBadge extends StatefulWidget {
 }
 
 class _SubscriptionBadgeState extends State<_SubscriptionBadge> {
-  late Timer _timer;
+  Timer? _timer;
   String _timeLeft = '';
 
   @override
   void initState() {
     super.initState();
-    _updateTimeLeft();
-    _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
-      if (mounted) _updateTimeLeft();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _updateTimeLeft();
+        _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+          if (mounted) _updateTimeLeft();
+        });
+      }
     });
   }
 
@@ -138,7 +142,7 @@ class _SubscriptionBadgeState extends State<_SubscriptionBadge> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 

@@ -6,7 +6,6 @@ class WalletTransaction extends Equatable {
   final int amount;
   final String? source;
   final String? description;
-  final String? durationAdded;
   final String? productDisplayName;
   final DateTime timestamp;
   final DateTime? expiryDate;
@@ -18,7 +17,6 @@ class WalletTransaction extends Equatable {
     required this.amount,
     this.source,
     this.description,
-    this.durationAdded,
     this.productDisplayName,
     required this.timestamp,
     this.expiryDate,
@@ -55,7 +53,6 @@ class WalletTransaction extends Equatable {
       amount: json['amount'] as int? ?? 0,
       source: json['source'] as String?,
       description: json['description'] as String?,
-      durationAdded: json['durationAdded'] as String?,
       productDisplayName: json['productDisplayName'] as String?,
       timestamp: parseTimestamp(json['timestamp']),
       expiryDate: parseOptionalTimestamp(json['expiryDate']),
@@ -70,7 +67,6 @@ class WalletTransaction extends Equatable {
     amount,
     source,
     description,
-    durationAdded,
     productDisplayName,
     timestamp,
     expiryDate,

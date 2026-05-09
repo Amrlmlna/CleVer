@@ -211,11 +211,9 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   ) async {
     bool keepData = true;
 
-    final templatesState = ref.read(templatesProvider);
-    final isSubscribed = templatesState.maybeWhen(
-      data: (templates) => templates.isNotEmpty && templates.first.isSubscribed,
-      orElse: () => false,
-    );
+    // Force fresh fetch — never use stale cache for destructive actions
+    final templates = await ref.refresh(templatesProvider.future);
+    final isSubscribed = templates.any((t) => t.isSubscribed);
 
     final description = isSubscribed
         ? "${AppLocalizations.of(context)!.subscriptionWarning}\n\n${AppLocalizations.of(context)!.deleteAccountWarning}"
