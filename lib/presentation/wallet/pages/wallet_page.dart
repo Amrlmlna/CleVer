@@ -27,8 +27,14 @@ class WalletPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      body: SingleChildScrollView(
-        child: Column(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(transactionHistoryProvider);
+          ref.invalidate(templatesProvider);
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
           children: [
             // --- TOP ACCENT SECTION ---
             Container(
@@ -259,13 +265,19 @@ class WalletPage extends ConsumerWidget {
                                           const SizedBox(height: 2),
                                           Text(
                                             txn.type == 'subscription_update'
-                                                ? (txn.durationAdded != null
+                                                ? (txn.expiryDate != null &&
+                                                          txn.expiryDate!.isAfter(DateTime.now())
+                                                      ? SubscriptionFormatter.formatRemainingTime(
+                                                          txn.expiryDate!,
+                                                          l10n,
+                                                        ).toUpperCase()
+                                                      : (txn.durationAdded != null
                                                           ? SubscriptionFormatter.formatProductDuration(
                                                               txn.durationAdded!,
                                                               l10n,
                                                             )
-                                                          : l10n.active)
-                                                      .toUpperCase()
+                                                          : (txn.productDisplayName ?? l10n.active)
+                                                                .toUpperCase()))
                                                 : '${isAdd ? '+' : '-'}${txn.amount} ${l10n.cv.toUpperCase()}',
                                             style: TextStyle(
                                               fontSize: 11,
@@ -325,6 +337,7 @@ class WalletPage extends ConsumerWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }

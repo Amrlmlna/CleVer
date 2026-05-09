@@ -46,6 +46,18 @@ class SubscriptionFormatter {
     if (productId.contains('1m')) return l10n.months(1).toUpperCase();
     if (productId.contains('1y')) return l10n.years(1).toUpperCase();
 
+    // Parse Indonesian duration strings from backend (e.g., "+24 Jam", "+3 Hari")
+    final match = RegExp(r'\+?(\d+)\s*(Jam|Hari|Minggu|Bulan|Tahun)', caseSensitive: false).firstMatch(productId);
+    if (match != null) {
+      final value = int.parse(match.group(1)!);
+      final unit = match.group(2)!.toLowerCase();
+      if (unit == 'jam') return l10n.days(1).toUpperCase();
+      if (unit == 'hari') return l10n.days(value).toUpperCase();
+      if (unit == 'minggu') return l10n.weeks(value).toUpperCase();
+      if (unit == 'bulan') return l10n.months(value).toUpperCase();
+      if (unit == 'tahun') return l10n.years(value).toUpperCase();
+    }
+
     return productId.toUpperCase();
   }
 }

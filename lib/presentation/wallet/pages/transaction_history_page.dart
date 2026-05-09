@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:clever/core/theme/app_colors.dart';
 import 'package:clever/core/utils/subscription_formatter.dart';
 import '../providers/transaction_provider.dart';
+import '../../templates/providers/template_provider.dart';
 
 class TransactionHistoryPage extends ConsumerStatefulWidget {
   const TransactionHistoryPage({super.key});
@@ -96,7 +97,12 @@ class _TransactionHistoryPageState
                   );
                 }
 
-                return ListView.separated(
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    ref.invalidate(transactionHistoryProvider);
+                    ref.invalidate(templatesProvider);
+                  },
+                  child: ListView.separated(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 32,
                     vertical: 24,
@@ -173,12 +179,19 @@ class _TransactionHistoryPageState
                           children: [
                             Text(
                               isSubUpdate
-                                  ? (txn.durationAdded != null
-                                        ? SubscriptionFormatter.formatProductDuration(
-                                            txn.durationAdded!,
+                                  ? (txn.expiryDate != null &&
+                                            txn.expiryDate!.isAfter(DateTime.now())
+                                        ? SubscriptionFormatter.formatRemainingTime(
+                                            txn.expiryDate!,
                                             l10n,
-                                          )
-                                        : l10n.active)
+                                          ).toUpperCase()
+                                        : (txn.durationAdded != null
+                                            ? SubscriptionFormatter.formatProductDuration(
+                                                txn.durationAdded!,
+                                                l10n,
+                                              )
+                                            : (txn.productDisplayName ?? l10n.active)
+                                                  .toUpperCase()))
                                   : '${isAdd ? '+' : '-'}${txn.amount}',
                               style: textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w900,
@@ -214,6 +227,7 @@ class _TransactionHistoryPageState
                       ],
                     );
                   },
+                ),
                 );
               },
               loading: () => Center(

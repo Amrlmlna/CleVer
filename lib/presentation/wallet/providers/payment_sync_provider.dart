@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../templates/providers/template_provider.dart';
+import 'transaction_provider.dart';
 
 final paymentSyncProvider = Provider<PaymentSyncManager>((ref) {
   return PaymentSyncManager(ref);
@@ -14,6 +15,7 @@ class PaymentSyncManager {
   void init() {
     Purchases.addCustomerInfoUpdateListener((customerInfo) {
       _ref.invalidate(templatesProvider);
+      _ref.invalidate(transactionHistoryProvider);
     });
   }
 }
