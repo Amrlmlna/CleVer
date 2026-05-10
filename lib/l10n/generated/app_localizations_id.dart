@@ -1607,7 +1607,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get viewDrafts => 'lihat draft';
 
   @override
-  String get wallet => 'dompet';
+  String get wallet => 'premium';
 
   @override
   String get wed => 'rab';
