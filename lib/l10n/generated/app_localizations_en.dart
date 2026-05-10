@@ -124,7 +124,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'download your cv in high-quality pdf format';
 
   @override
-  String get getJobHunterPassNow => 'get job hunter pass now';
+  String get getJobHunterPassNow => 'subscribe';
 
   @override
   String get cancelAnytime => 'cancel anytime';
@@ -163,6 +163,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get downsellTrust => 'No auto-renew · One-time pass';
+
+  @override
+  String get noThanks => 'No thanks';
 
   @override
   String get product24hTitle => '24 Hour Pass';

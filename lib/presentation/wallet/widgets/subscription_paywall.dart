@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import '../../../core/services/analytics_service.dart';
+import 'package:clever/core/theme/app_colors.dart';
 import '../../home/widgets/mascot_header.dart';
 import '../../home/models/mascot_state.dart';
+import '../providers/paywall_state_provider.dart';
+import '../utils/product_name_resolver.dart';
+import 'confetti_overlay.dart';
+import 'package_pill_selector.dart';
+import 'paywall_benefit_card.dart';
+import 'paywall_transition.dart';
+import 'subscription_status_card.dart';
 
 class SubscriptionPaywall extends ConsumerStatefulWidget {
   final List<Package> packages;
@@ -12,26 +19,10 @@ class SubscriptionPaywall extends ConsumerStatefulWidget {
   const SubscriptionPaywall({super.key, required this.packages});
 
   static Future<bool?> show(BuildContext context, List<Package> packages) {
-    return showModalBottomSheet<bool>(
-      context: context,
-      isScrollControlled: true,
-      useRootNavigator: true,
-      backgroundColor: Colors.transparent,
-      isDismissible: false,
-      enableDrag: false,
-      builder: (context) => SubscriptionPaywall(packages: packages),
+    return PaywallTransition.show(
+      context,
+      SubscriptionPaywall(packages: packages),
     );
-  }
-
-  static String getDisplayName(String? rawName, AppLocalizations l10n) {
-    if (rawName == null) return l10n.jobHunterPass;
-    final lower = rawName.toLowerCase();
-    if (lower.contains('24h') || lower.contains('24 jam')) return l10n.product24hTitle;
-    if (lower.contains('3d') || lower.contains('3 hari')) return l10n.product3dTitle;
-    if (lower.contains('weekly') || lower.contains('minggu')) return l10n.productWeeklyTitle;
-    if (lower.contains('monthly') || lower.contains('bulan')) return l10n.productMonthlyTitle;
-    if (lower.contains('yearly') || lower.contains('tahun')) return l10n.productYearlyTitle;
-    return l10n.jobHunterPass;
   }
 
   @override
@@ -40,93 +31,30 @@ class SubscriptionPaywall extends ConsumerStatefulWidget {
 }
 
 class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
-  Package? _selectedPackage;
-  bool _isLoading = false;
-  bool _showDownsell = false;
-
-  late final List<Package> _mainPackages;
-
-  @override
-  void initState() {
-    super.initState();
-    // Filter out 24h pass — it's handled by the downsell
-    _mainPackages = widget.packages.where((p) {
-      final id = p.identifier.toLowerCase();
-      final productId = p.storeProduct.identifier.toLowerCase();
-      return !(id.contains('24h') || productId.contains('24h'));
-    }).toList();
-    if (_mainPackages.isNotEmpty) {
-      _selectedPackage = _mainPackages.first;
-    }
-  }
-
-  static (String, String) _getProductName(Package package, AppLocalizations l10n) {
-    final id = '${package.identifier} ${package.storeProduct.identifier}'.toLowerCase();
-    if (id.contains('24h')) return (l10n.product24hTitle, l10n.product24hDesc);
-    if (id.contains('3d')) return (l10n.product3dTitle, l10n.product3dDesc);
-    if (id.contains('weekly')) return (l10n.productWeeklyTitle, l10n.productWeeklyDesc);
-    if (id.contains('monthly')) return (l10n.productMonthlyTitle, l10n.productMonthlyDesc);
-    if (id.contains('yearly')) return (l10n.productYearlyTitle, l10n.productYearlyDesc);
-    return (l10n.jobHunterPass, '');
-  }
-
-  Package? get _downsellPackage {
-    try {
-      return widget.packages.firstWhere((p) {
-        final id = p.identifier.toLowerCase();
-        final productId = p.storeProduct.identifier.toLowerCase();
-        return id.contains('24h') || productId.contains('24h');
-      });
-    } catch (_) {
-      return null;
-    }
-  }
-
-  Future<void> _handlePurchase(Package package, String source) async {
-    setState(() => _isLoading = true);
-    try {
-      PurchaseResult result = await Purchases.purchase(
-        PurchaseParams.package(package),
-      );
-      if (result.customerInfo.entitlements.all['job_hunter_pass']?.isActive ??
-          false) {
-        AnalyticsService().trackEvent(
-          'subscription_purchased',
-          properties: {
-            'package': package.identifier,
-            'product_id': package.storeProduct.identifier,
-            'source': source,
-          },
-        );
-        if (mounted) Navigator.pop(context, true);
-      }
-    } catch (e) {
-      debugPrint('Purchase error: $e');
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
-    }
-  }
-
-  void _onPopInvoked(bool didPop) {
+  void _onPopInvoked(bool didPop, PaywallStateNotifier notifier) {
     if (didPop) return;
-
-    // Intercept dismissal — switch to downsell if available
-    final downsell = _downsellPackage;
-    if (!_showDownsell && downsell != null) {
-      setState(() => _showDownsell = true);
-    } else {
-      // Already on downsell or no downsell available — actually close
+    if (!notifier.triggerDownsell()) {
       Navigator.pop(context, false);
     }
   }
 
+  Future<void> _handlePurchase(
+    PaywallStateNotifier notifier,
+    String source,
+  ) async {
+    final success = await notifier.purchase(source);
+    if (success && mounted) Navigator.pop(context, true);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final notifier = ref.read(paywallStateProvider(widget.packages).notifier);
+    final state = ref.watch(paywallStateProvider(widget.packages));
     final colorScheme = Theme.of(context).colorScheme;
 
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, _) => _onPopInvoked(didPop),
+      onPopInvokedWithResult: (didPop, _) => _onPopInvoked(didPop, notifier),
       child: Container(
         constraints: BoxConstraints(
           maxHeight: MediaQuery.of(context).size.height * 0.95,
@@ -135,8 +63,18 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
           color: colorScheme.surface,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
         ),
-        child: SafeArea(
-          child: _showDownsell ? _buildDownsell() : _buildMain(),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+          child: Stack(
+            children: [
+              SafeArea(
+                child: state.showDownsell
+                    ? _buildDownsell(state, notifier)
+                    : _buildMain(state, notifier),
+              ),
+              ConfettiOverlay(show: state.showConfetti),
+            ],
+          ),
         ),
       ),
     );
@@ -144,7 +82,7 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
 
   // ─── MAIN PAYWALL ──────────────────────────────────────────────────────
 
-  Widget _buildMain() {
+  Widget _buildMain(PaywallState state, PaywallStateNotifier notifier) {
     final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
@@ -163,22 +101,22 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
         ),
         const SizedBox(height: 20),
         _buildMainHeadline(l10n, colorScheme, textTheme),
-        const SizedBox(height: 24),
-        _buildBenefits(l10n, colorScheme, textTheme),
-        const SizedBox(height: 24),
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: _buildPricing(colorScheme, textTheme, l10n),
+        const SizedBox(height: 20),
+        _buildBenefitsGrid(l10n),
+        const SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: PackagePillSelector(
+            packages: state.mainPackages,
+            selectedPackage: state.selectedPackage,
+            onSelected: notifier.selectPackage,
+            l10n: l10n,
           ),
         ),
-        _buildMainCTA(l10n, colorScheme, textTheme),
-        _buildTrust(
-          l10n.cancelAnytimeSecure,
-          colorScheme,
-          textTheme,
-        ),
-        _buildCloseHint(colorScheme, textTheme),
+        const SizedBox(height: 20),
+        _buildMainCTA(l10n, colorScheme, textTheme, state, notifier),
+        _buildTrust(l10n.cancelAnytimeSecure, colorScheme, textTheme),
+        _buildCloseHint(l10n, colorScheme, textTheme, notifier),
       ],
     );
   }
@@ -215,10 +153,68 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     );
   }
 
+  Widget _buildBenefitsGrid(AppLocalizations l10n) {
+    final benefits = [
+      (
+        l10n.unlimitedGenerations,
+        l10n.unlimitedGenerationsDesc,
+        Icons.auto_awesome_rounded,
+        AppColors.accentSage,
+        AppColors.accentSageDark,
+      ),
+      (
+        l10n.premiumTemplates,
+        l10n.premiumTemplatesDesc,
+        Icons.design_services_rounded,
+        AppColors.accentLavender,
+        AppColors.accentLavenderDark,
+      ),
+      (
+        l10n.aiOptimization,
+        l10n.aiOptimizationDesc,
+        Icons.psychology_rounded,
+        AppColors.accentMist,
+        AppColors.accentMistDark,
+      ),
+      (
+        l10n.instantPdfExport,
+        l10n.instantPdfExportDesc,
+        Icons.picture_as_pdf_rounded,
+        AppColors.accentLemon,
+        AppColors.accentLemonDark,
+      ),
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: GridView.count(
+        crossAxisCount: 2,
+        childAspectRatio: 1.6,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        children: benefits
+            .map(
+              (b) => PaywallBenefitCard(
+                title: b.$1,
+                description: b.$2,
+                icon: b.$3,
+                bgColor: b.$4,
+                iconColor: b.$5,
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
+
   Widget _buildMainCTA(
     AppLocalizations l10n,
     ColorScheme colorScheme,
     TextTheme textTheme,
+    PaywallState state,
+    PaywallStateNotifier notifier,
   ) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
@@ -226,9 +222,9 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
         width: double.infinity,
         height: 56,
         child: ElevatedButton(
-          onPressed: _isLoading || _selectedPackage == null
+          onPressed: state.isLoading || state.selectedPackage == null
               ? null
-              : () => _handlePurchase(_selectedPackage!, 'main_paywall'),
+              : () => _handlePurchase(notifier, 'main_paywall'),
           style: ElevatedButton.styleFrom(
             backgroundColor: colorScheme.onSurface,
             foregroundColor: colorScheme.surface,
@@ -237,7 +233,7 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
             ),
             elevation: 0,
           ),
-          child: _isLoading
+          child: state.isLoading
               ? SizedBox(
                   height: 20,
                   width: 20,
@@ -260,41 +256,36 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
 
   // ─── DOWNSELL PAYWALL ──────────────────────────────────────────────────
 
-  Widget _buildDownsell() {
+  Widget _buildDownsell(PaywallState state, PaywallStateNotifier notifier) {
     final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    final downsell = _downsellPackage!;
+    final downsell = state.downsellPackage!;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         _buildHandle(colorScheme),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 100,
-          child: MascotHeader(
-            expression: MascotExpression.encouraging,
-            mascotColor: colorScheme.primary,
-          ),
-        ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         _buildDownsellHeadline(l10n, colorScheme, textTheme),
-        const SizedBox(height: 24),
-        _buildDownsellBenefits(l10n, colorScheme, textTheme),
-        const SizedBox(height: 24),
+        const SizedBox(height: 20),
+        _buildDownsellBenefits(l10n),
+        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: _buildDownsellCard(downsell, colorScheme, textTheme),
         ),
         const SizedBox(height: 20),
-        _buildDownsellCTA(downsell, l10n, colorScheme, textTheme),
-        _buildTrust(
-          l10n.downsellTrust,
+        _buildDownsellCTA(
+          downsell,
+          l10n,
           colorScheme,
           textTheme,
+          state,
+          notifier,
         ),
-        _buildCloseHint(colorScheme, textTheme),
+        _buildTrust(l10n.downsellTrust, colorScheme, textTheme),
+        _buildCloseHint(l10n, colorScheme, textTheme, notifier),
       ],
     );
   }
@@ -306,65 +297,109 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
   ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          Text(
-            l10n.downsellHeadline.toUpperCase(),
-            style: textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w900,
-              letterSpacing: -0.5,
-              color: colorScheme.onSurface,
-              height: 1.1,
+          Positioned.fill(
+            child: ClipRect(
+              child: CustomPaint(
+                painter: GuillochePainter(
+                  color: colorScheme.onSurface.withValues(alpha: 0.03),
+                ),
+              ),
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            l10n.downsellSubtitle,
-            style: textTheme.bodyMedium?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              height: 1.4,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.downsellHeadline.toUpperCase(),
+                style: textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -1.5,
+                  color: colorScheme.onSurface,
+                  height: 1.1,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.downsellSubtitle,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                  height: 1.4,
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildDownsellBenefits(
-    AppLocalizations l10n,
-    ColorScheme colorScheme,
-    TextTheme textTheme,
-  ) {
+  Widget _buildDownsellBenefits(AppLocalizations l10n) {
     final benefits = [
-      l10n.downsellBenefitAll,
-      l10n.downsellBenefitSame,
-      l10n.downsellBenefitInstant,
+      (
+        l10n.downsellBenefitAll,
+        Icons.all_inclusive_rounded,
+        AppColors.accentSage,
+        AppColors.accentSageDark,
+      ),
+      (
+        l10n.downsellBenefitSame,
+        Icons.copy_all_rounded,
+        AppColors.accentLavender,
+        AppColors.accentLavenderDark,
+      ),
+      (
+        l10n.downsellBenefitInstant,
+        Icons.bolt_rounded,
+        AppColors.accentLemon,
+        AppColors.accentLemonDark,
+      ),
     ];
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
+      child: Row(
         children: benefits
             .map(
-              (benefit) => Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.check_circle_rounded,
-                      size: 18,
-                      color: colorScheme.primary,
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      benefit,
-                      style: textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: colorScheme.onSurface,
+              (b) => Expanded(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 14,
+                    horizontal: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: b.$3,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: b.$4.withValues(alpha: 0.12),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(b.$2, size: 18, color: b.$4),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 8),
+                      Text(
+                        b.$1,
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: b.$4,
+                          letterSpacing: -0.2,
+                          height: 1.2,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             )
@@ -379,7 +414,7 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     TextTheme textTheme,
   ) {
     final l10n = AppLocalizations.of(context)!;
-    final (title, desc) = _getProductName(package, l10n);
+    final (title, desc) = ProductNameResolver.resolve(package, l10n);
 
     return Container(
       width: double.infinity,
@@ -430,6 +465,8 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     AppLocalizations l10n,
     ColorScheme colorScheme,
     TextTheme textTheme,
+    PaywallState state,
+    PaywallStateNotifier notifier,
   ) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
@@ -437,9 +474,12 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
         width: double.infinity,
         height: 56,
         child: ElevatedButton(
-          onPressed: _isLoading
+          onPressed: state.isLoading
               ? null
-              : () => _handlePurchase(package, 'downsell'),
+              : () async {
+                  notifier.selectPackage(package);
+                  await _handlePurchase(notifier, 'downsell');
+                },
           style: ElevatedButton.styleFrom(
             backgroundColor: colorScheme.onSurface,
             foregroundColor: colorScheme.surface,
@@ -448,7 +488,7 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
             ),
             elevation: 0,
           ),
-          child: _isLoading
+          child: state.isLoading
               ? SizedBox(
                   height: 20,
                   width: 20,
@@ -487,148 +527,6 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     );
   }
 
-  Widget _buildBenefits(
-    AppLocalizations l10n,
-    ColorScheme colorScheme,
-    TextTheme textTheme,
-  ) {
-    final benefits = [
-      l10n.unlimitedGenerations,
-      l10n.premiumTemplates,
-      l10n.aiOptimization,
-      l10n.instantPdfExport,
-    ];
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        children: benefits
-            .map(
-              (benefit) => Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.check_circle_rounded,
-                      size: 18,
-                      color: colorScheme.primary,
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      benefit,
-                      style: textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: colorScheme.onSurface,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-
-  Widget _buildPricing(
-    ColorScheme colorScheme,
-    TextTheme textTheme,
-    AppLocalizations l10n,
-  ) {
-    return Column(
-      children: _mainPackages.map((package) {
-        final isSelected =
-            _selectedPackage?.identifier == package.identifier;
-        final isBestValue =
-            package == _mainPackages.last && _mainPackages.length > 1;
-        final (title, desc) = _getProductName(package, l10n);
-
-        return GestureDetector(
-          onTap: () => setState(() => _selectedPackage = package),
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? colorScheme.primary.withValues(alpha: 0.05)
-                  : colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: isSelected
-                    ? colorScheme.primary
-                    : colorScheme.outlineVariant,
-                width: isSelected ? 2 : 1,
-              ),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            title,
-                            style: textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                          if (isBestValue) ...[
-                            const SizedBox(width: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: colorScheme.tertiary.withValues(
-                                  alpha: 0.1,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                l10n.bestValue.toUpperCase(),
-                                style: TextStyle(
-                                  fontSize: 9,
-                                  fontWeight: FontWeight.w900,
-                                  color: colorScheme.tertiary,
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                      if (desc.isNotEmpty) ...[
-                        const SizedBox(height: 2),
-                        Text(
-                          desc,
-                          style: textTheme.bodySmall?.copyWith(
-                            color: colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                Text(
-                  package.storeProduct.priceString,
-                  style: textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    color: isSelected
-                        ? colorScheme.primary
-                        : colorScheme.onSurface,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
   Widget _buildTrust(
     String text,
     ColorScheme colorScheme,
@@ -646,13 +544,18 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     );
   }
 
-  Widget _buildCloseHint(ColorScheme colorScheme, TextTheme textTheme) {
+  Widget _buildCloseHint(
+    AppLocalizations l10n,
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+    PaywallStateNotifier notifier,
+  ) {
     return GestureDetector(
-      onTap: () => _onPopInvoked(false),
+      onTap: () => _onPopInvoked(false, notifier),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 16),
         child: Text(
-          'No thanks',
+          l10n.noThanks,
           style: textTheme.bodySmall?.copyWith(
             color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
             fontSize: 11,

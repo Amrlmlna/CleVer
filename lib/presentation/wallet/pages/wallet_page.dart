@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import '../../templates/providers/template_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../widgets/subscription_status_card.dart';
-import '../widgets/subscription_paywall.dart';
+import '../utils/product_name_resolver.dart';
 import '../providers/transaction_provider.dart';
 import '../../../core/services/payment_service.dart';
 import '../../../core/utils/subscription_formatter.dart';
@@ -36,297 +36,315 @@ class WalletPage extends ConsumerWidget {
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
-          children: [
-            // --- TOP ACCENT SECTION ---
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColors.accentPeach,
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(48),
+            children: [
+              // --- TOP ACCENT SECTION ---
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.accentPeach,
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(48),
+                  ),
                 ),
-              ),
-              padding: const EdgeInsets.fromLTRB(32, 80, 32, 40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        l10n.wallet,
-                        style: textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.accentPeachDark,
-                          fontSize: 32,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () => context.push('/wallet/history'),
-                        icon: const Icon(
-                          Icons.history_rounded,
-                          color: AppColors.accentPeachDark,
-                          size: 24,
-                        ),
-                        style: IconButton.styleFrom(
-                          backgroundColor: AppColors.accentPeachDark.withValues(
-                            alpha: 0.1,
+                padding: const EdgeInsets.fromLTRB(32, 80, 32, 40),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          l10n.wallet,
+                          style: textTheme.headlineMedium?.copyWith(
+                            fontWeight: FontWeight.w900,
+                            color: AppColors.accentPeachDark,
+                            fontSize: 32,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-                  templatesAsync.when(
-                    data: (templates) {
-                      final isSubscribed = templates.any((t) => t.isSubscribed);
-                      final expiryDate = templates.isNotEmpty
-                          ? templates.first.subscriptionExpiry
-                          : null;
-
-                      return SubscriptionStatusCard(
-                        isSubscribed: isSubscribed,
-                        expiryDate: expiryDate,
-                        cardHolder: cardHolder,
-                        onAction: AuthGuard.protected(
-                          context,
-                          () async {
-                            final purchased =
-                                await PaymentService.presentPaywall(context);
-                            if (purchased) {
-                              await Future.delayed(const Duration(seconds: 2));
-                              ref.invalidate(templatesProvider);
-                            }
-                          },
-                          featureTitle: l10n.authWallBuyCredits,
-                          featureDescription: l10n.authWallBuyCreditsDesc,
-                        ),
-                      );
-                    },
-                    loading: () => SubscriptionStatusCard(
-                      isSubscribed: false,
-                      cardHolder: cardHolder,
-                      onAction: () {},
-                      isLoading: true,
-                    ),
-                    error: (error, stack) => SubscriptionStatusCard(
-                      isSubscribed: false,
-                      cardHolder: cardHolder,
-                      onAction: () {},
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // --- BOTTOM LIST SECTION ---
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        l10n.recentTransactions.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w900,
-                          color: colorScheme.onSurface.withValues(alpha: 0.5),
-                          letterSpacing: 1.0,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () => context.push('/wallet/history'),
-                        child: Text(
-                          l10n.viewAll.toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                            color: colorScheme.onSurface.withValues(alpha: 0.4),
-                            letterSpacing: 0.5,
+                        IconButton(
+                          onPressed: () => context.push('/wallet/history'),
+                          icon: const Icon(
+                            Icons.history_rounded,
+                            color: AppColors.accentPeachDark,
+                            size: 24,
+                          ),
+                          style: IconButton.styleFrom(
+                            backgroundColor: AppColors.accentPeachDark
+                                .withValues(alpha: 0.1),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  transactionAsync.when(
-                    data: (transactions) {
-                      if (transactions.isEmpty) {
-                        return Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(vertical: 48),
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.receipt_long_rounded,
-                                size: 40,
-                                color: colorScheme.onSurface.withValues(
-                                  alpha: 0.1,
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                l10n.noTransactionsYet.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w800,
-                                  color: colorScheme.onSurface.withValues(
-                                    alpha: 0.3,
-                                  ),
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                            ],
+                      ],
+                    ),
+                    const SizedBox(height: 32),
+                    templatesAsync.when(
+                      data: (templates) {
+                        final isSubscribed = templates.any(
+                          (t) => t.isSubscribed,
+                        );
+                        final expiryDate = templates.isNotEmpty
+                            ? templates.first.subscriptionExpiry
+                            : null;
+
+                        return SubscriptionStatusCard(
+                          isSubscribed: isSubscribed,
+                          expiryDate: expiryDate,
+                          cardHolder: cardHolder,
+                          onAction: AuthGuard.protected(
+                            context,
+                            () async {
+                              final purchased =
+                                  await PaymentService.presentPaywall(context);
+                              if (purchased) {
+                                await Future.delayed(
+                                  const Duration(seconds: 2),
+                                );
+                                ref.invalidate(templatesProvider);
+                              }
+                            },
+                            featureTitle: l10n.authWallBuyCredits,
+                            featureDescription: l10n.authWallBuyCreditsDesc,
                           ),
                         );
-                      }
-
-                      final latestTransactions = transactions.take(5).toList();
-
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: latestTransactions.length,
-                        padding: EdgeInsets.zero,
-                        itemBuilder: (context, index) {
-                          final txn = latestTransactions[index];
-                          final isAdd = txn.isAddition;
-
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 16.0),
-                            child: InkWell(
-                              onTap: () => context.push('/wallet/history'),
-                              borderRadius: BorderRadius.circular(16),
-                              child: Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: colorScheme.onSurface.withValues(
-                                    alpha: 0.03,
-                                  ),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 56,
-                                      height: 56,
-                                      decoration: BoxDecoration(
-                                        color: colorScheme.onSurface,
-                                        borderRadius: BorderRadius.circular(18),
-                                      ),
-                                      child: Icon(
-                                        txn.type == 'subscription_update'
-                                            ? Icons.verified_user_rounded
-                                            : (isAdd
-                                                  ? Icons.add_rounded
-                                                  : Icons.file_upload_outlined),
-                                        color: colorScheme.surface,
-                                        size: 24,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            (txn.type == 'subscription_update'
-                                                    ? SubscriptionPaywall.getDisplayName(
-                                                        txn.productDisplayName,
-                                                        l10n)
-                                                    : (isAdd
-                                                          ? l10n.unlockFeatures
-                                                          : l10n.cvExport))
-                                                .toUpperCase(),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 15,
-                                              color: colorScheme.onSurface,
-                                              letterSpacing: -0.2,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            DateFormat(
-                                              'MMM d, h:mm a',
-                                            ).format(txn.timestamp),
-                                            style: TextStyle(
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w600,
-                                              color: colorScheme.onSurface
-                                                  .withValues(alpha: 0.4),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 2),
-                                          Text(
-                                            txn.type == 'subscription_update'
-                                                ? SubscriptionFormatter.formatTransactionStatus(txn, l10n)
-                                                : '${isAdd ? '+' : '-'}${txn.amount} ${l10n.cv.toUpperCase()}',
-                                            style: TextStyle(
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w900,
-                                              color: colorScheme.onSurface
-                                                  .withValues(alpha: 0.6),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: colorScheme.onSurface.withValues(
-                                          alpha: 0.1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Icon(
-                                        Icons.chevron_right_rounded,
-                                        color: colorScheme.onSurface,
-                                        size: 16,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    loading: () => const Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(32.0),
-                        child: CircularProgressIndicator(),
+                      },
+                      loading: () => SubscriptionStatusCard(
+                        isSubscribed: false,
+                        cardHolder: cardHolder,
+                        onAction: () {},
+                        isLoading: true,
+                      ),
+                      error: (error, stack) => SubscriptionStatusCard(
+                        isSubscribed: false,
+                        cardHolder: cardHolder,
+                        onAction: () {},
                       ),
                     ),
-                    error: (err, _) => Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(32.0),
-                        child: Text(
-                          l10n.failedToLoadTransactions.toUpperCase(),
+                  ],
+                ),
+              ),
+
+              // --- BOTTOM LIST SECTION ---
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 40,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          l10n.recentTransactions.toUpperCase(),
                           style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                            color: colorScheme.error,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w900,
+                            color: colorScheme.onSurface.withValues(alpha: 0.5),
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => context.push('/wallet/history'),
+                          child: Text(
+                            l10n.viewAll.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                              color: colorScheme.onSurface.withValues(
+                                alpha: 0.4,
+                              ),
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    transactionAsync.when(
+                      data: (transactions) {
+                        if (transactions.isEmpty) {
+                          return Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(vertical: 48),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.receipt_long_rounded,
+                                  size: 40,
+                                  color: colorScheme.onSurface.withValues(
+                                    alpha: 0.1,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  l10n.noTransactionsYet.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w800,
+                                    color: colorScheme.onSurface.withValues(
+                                      alpha: 0.3,
+                                    ),
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                        final latestTransactions = transactions
+                            .take(5)
+                            .toList();
+
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: latestTransactions.length,
+                          padding: EdgeInsets.zero,
+                          itemBuilder: (context, index) {
+                            final txn = latestTransactions[index];
+                            final isAdd = txn.isAddition;
+
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 16.0),
+                              child: InkWell(
+                                onTap: () => context.push('/wallet/history'),
+                                borderRadius: BorderRadius.circular(16),
+                                child: Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: colorScheme.onSurface.withValues(
+                                      alpha: 0.03,
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 56,
+                                        height: 56,
+                                        decoration: BoxDecoration(
+                                          color: colorScheme.onSurface,
+                                          borderRadius: BorderRadius.circular(
+                                            18,
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          txn.type == 'subscription_update'
+                                              ? Icons.verified_user_rounded
+                                              : (isAdd
+                                                    ? Icons.add_rounded
+                                                    : Icons
+                                                          .file_upload_outlined),
+                                          color: colorScheme.surface,
+                                          size: 24,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 16),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              (txn.type == 'subscription_update'
+                                                      ? ProductNameResolver.getDisplayName(
+                                                          txn.productDisplayName,
+                                                          l10n,
+                                                        )
+                                                      : (isAdd
+                                                            ? l10n.unlockFeatures
+                                                            : l10n.cvExport))
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 15,
+                                                color: colorScheme.onSurface,
+                                                letterSpacing: -0.2,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              DateFormat(
+                                                'MMM d, h:mm a',
+                                              ).format(txn.timestamp),
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w600,
+                                                color: colorScheme.onSurface
+                                                    .withValues(alpha: 0.4),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              txn.type == 'subscription_update'
+                                                  ? SubscriptionFormatter.formatTransactionStatus(
+                                                      txn,
+                                                      l10n,
+                                                    )
+                                                  : '${isAdd ? '+' : '-'}${txn.amount} ${l10n.cv.toUpperCase()}',
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w900,
+                                                color: colorScheme.onSurface
+                                                    .withValues(alpha: 0.6),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: colorScheme.onSurface
+                                              .withValues(alpha: 0.1),
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.chevron_right_rounded,
+                                          color: colorScheme.onSurface,
+                                          size: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      loading: () => const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(32.0),
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                      error: (err, _) => Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(32.0),
+                          child: Text(
+                            l10n.failedToLoadTransactions.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                              color: colorScheme.error,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 }

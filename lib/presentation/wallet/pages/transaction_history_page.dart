@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:clever/core/theme/app_colors.dart';
 import 'package:clever/core/utils/subscription_formatter.dart';
 import '../providers/transaction_provider.dart';
-import '../widgets/subscription_paywall.dart';
+import '../utils/product_name_resolver.dart';
 import '../../templates/providers/template_provider.dart';
 
 class TransactionHistoryPage extends ConsumerStatefulWidget {
@@ -104,119 +104,126 @@ class _TransactionHistoryPageState
                     ref.invalidate(templatesProvider);
                   },
                   child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 32,
-                    vertical: 24,
-                  ),
-                  itemCount: sortedTxns.length,
-                  separatorBuilder: (_, __) => Divider(
-                    color: colorScheme.onSurface.withValues(alpha: 0.03),
-                    height: 48,
-                  ),
-                  itemBuilder: (context, index) {
-                    final txn = sortedTxns[index];
-                    final isAdd = txn.isAddition;
-                    final isSubUpdate = txn.type == 'subscription_update';
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 24,
+                    ),
+                    itemCount: sortedTxns.length,
+                    separatorBuilder: (_, __) => Divider(
+                      color: colorScheme.onSurface.withValues(alpha: 0.03),
+                      height: 48,
+                    ),
+                    itemBuilder: (context, index) {
+                      final txn = sortedTxns[index];
+                      final isAdd = txn.isAddition;
+                      final isSubUpdate = txn.type == 'subscription_update';
 
-                    return Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: isAdd
-                                ? colorScheme.primary.withValues(alpha: 0.1)
-                                : colorScheme.onSurface.withValues(alpha: 0.05),
-                            borderRadius: BorderRadius.circular(16),
+                      return Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: isAdd
+                                  ? colorScheme.primary.withValues(alpha: 0.1)
+                                  : colorScheme.onSurface.withValues(
+                                      alpha: 0.05,
+                                    ),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Icon(
+                              isSubUpdate
+                                  ? Icons.verified_user_rounded
+                                  : (isAdd
+                                        ? Icons.add_rounded
+                                        : Icons.file_upload_outlined),
+                              color: isAdd
+                                  ? colorScheme.primary
+                                  : colorScheme.onSurface,
+                              size: 20,
+                            ),
                           ),
-                          child: Icon(
-                            isSubUpdate
-                                ? Icons.verified_user_rounded
-                                : (isAdd
-                                      ? Icons.add_rounded
-                                      : Icons.file_upload_outlined),
-                            color: isAdd
-                                ? colorScheme.primary
-                                : colorScheme.onSurface,
-                            size: 20,
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  (isSubUpdate
+                                          ? ProductNameResolver.getDisplayName(
+                                              txn.productDisplayName,
+                                              l10n,
+                                            )
+                                          : (isAdd
+                                                ? l10n.unlockFeatures
+                                                : l10n.cvExport))
+                                      .toUpperCase(),
+                                  style: textTheme.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    color: colorScheme.onSurface,
+                                    letterSpacing: 0.5,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  DateFormat(
+                                    'dd MMM yyyy, HH:mm',
+                                  ).format(txn.timestamp),
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: colorScheme.onSurface.withValues(
+                                      alpha: 0.4,
+                                    ),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                (isSubUpdate
-                                        ? SubscriptionPaywall.getDisplayName(
-                                            txn.productDisplayName, l10n)
-                                        : (isAdd
-                                              ? l10n.unlockFeatures
-                                              : l10n.cvExport))
-                                    .toUpperCase(),
-                                style: textTheme.titleSmall?.copyWith(
+                                isSubUpdate
+                                    ? SubscriptionFormatter.formatTransactionStatus(
+                                        txn,
+                                        l10n,
+                                      )
+                                    : '${isAdd ? '+' : '-'}${txn.amount}',
+                                style: textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.w900,
-                                  color: colorScheme.onSurface,
-                                  letterSpacing: 0.5,
-                                  fontSize: 13,
+                                  color: isAdd
+                                      ? colorScheme.primary
+                                      : colorScheme.onSurface,
                                 ),
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                DateFormat(
-                                  'dd MMM yyyy, HH:mm',
-                                ).format(txn.timestamp),
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: colorScheme.onSurface.withValues(
-                                    alpha: 0.4,
+                              if (isSubUpdate)
+                                Text(
+                                  l10n.added.toUpperCase(),
+                                  style: textTheme.labelSmall?.copyWith(
+                                    color: colorScheme.onSurface.withValues(
+                                      alpha: 0.3,
+                                    ),
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 9,
                                   ),
-                                  fontWeight: FontWeight.w700,
+                                )
+                              else
+                                Text(
+                                  l10n.cv.toUpperCase(),
+                                  style: textTheme.labelSmall?.copyWith(
+                                    color: colorScheme.onSurface.withValues(
+                                      alpha: 0.3,
+                                    ),
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 9,
+                                  ),
                                 ),
-                              ),
                             ],
                           ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              isSubUpdate
-                                  ? SubscriptionFormatter.formatTransactionStatus(txn, l10n)
-                                  : '${isAdd ? '+' : '-'}${txn.amount}',
-                              style: textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w900,
-                                color: isAdd
-                                    ? colorScheme.primary
-                                    : colorScheme.onSurface,
-                              ),
-                            ),
-                            if (isSubUpdate)
-                              Text(
-                                l10n.added.toUpperCase(),
-                                style: textTheme.labelSmall?.copyWith(
-                                  color: colorScheme.onSurface.withValues(
-                                    alpha: 0.3,
-                                  ),
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 9,
-                                ),
-                              )
-                            else
-                              Text(
-                                l10n.cv.toUpperCase(),
-                                style: textTheme.labelSmall?.copyWith(
-                                  color: colorScheme.onSurface.withValues(
-                                    alpha: 0.3,
-                                  ),
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 9,
-                                ),
-                              ),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                        ],
+                      );
+                    },
+                  ),
                 );
               },
               loading: () => Center(

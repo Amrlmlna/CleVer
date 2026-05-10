@@ -227,7 +227,7 @@ abstract class AppLocalizations {
   /// No description provided for @getJobHunterPassNow.
   ///
   /// In en, this message translates to:
-  /// **'get job hunter pass now'**
+  /// **'subscribe'**
   String get getJobHunterPassNow;
 
   /// No description provided for @cancelAnytime.
@@ -301,6 +301,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No auto-renew · One-time pass'**
   String get downsellTrust;
+
+  /// No description provided for @noThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'No thanks'**
+  String get noThanks;
 
   /// No description provided for @product24hTitle.
   ///

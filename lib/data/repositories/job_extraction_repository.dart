@@ -12,7 +12,7 @@ class JobExtractionRepository {
       final data = await remoteDataSource.extractFromText(text);
       return JobInput(
         jobTitle: data['jobTitle'] ?? '',
-        company: data['company'],
+        company: data['company'] ?? data['companyName'] ?? data['company_name'],
         jobDescription: data['jobDescription'] ?? data['description'] ?? '',
       );
     } catch (e) {

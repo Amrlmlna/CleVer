@@ -118,7 +118,7 @@ class AppLocalizationsId extends AppLocalizations {
       'unduh cv anda dalam format pdf berkualitas tinggi';
 
   @override
-  String get getJobHunterPassNow => 'dapatkan job hunter pass sekarang';
+  String get getJobHunterPassNow => 'berlangganan';
 
   @override
   String get cancelAnytime => 'batalkan kapan saja';
@@ -157,6 +157,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get downsellTrust => 'Tanpa perpanjangan otomatis · Sekali beli';
+
+  @override
+  String get noThanks => 'Tidak, terima kasih';
 
   @override
   String get product24hTitle => 'Pass 24 Jam';
