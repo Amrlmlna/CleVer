@@ -55,7 +55,7 @@ class PaywallStateNotifier extends StateNotifier<PaywallState> {
       final id = p.identifier.toLowerCase();
       final productId = p.storeProduct.identifier.toLowerCase();
       return !(id.contains('24h') || productId.contains('24h'));
-    }).toList();
+    }).toList()..sort((a, b) => _sortOrder(a).compareTo(_sortOrder(b)));
 
     Package? downsell;
     try {
@@ -75,6 +75,15 @@ class PaywallStateNotifier extends StateNotifier<PaywallState> {
 
   void selectPackage(Package package) {
     state = state.copyWith(selectedPackage: package);
+  }
+
+  static int _sortOrder(Package p) {
+    final id = '${p.identifier} ${p.storeProduct.identifier}'.toLowerCase();
+    if (id.contains('weekly') || id.contains('minggu')) return 0;
+    if (id.contains('monthly') || id.contains('bulan')) return 1;
+    if (id.contains('yearly') || id.contains('tahun')) return 2;
+    if (id.contains('3d') || id.contains('3 hari')) return 3;
+    return 99;
   }
 
   /// Returns true if purchase succeeded and entitlement is active.

@@ -121,9 +121,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get getJobHunterPassNow => 'berlangganan';
 
   @override
-  String get cancelAnytime => 'batalkan kapan saja';
-
-  @override
   String get paywallHeadline => 'Raih Pekerjaan Impianmu';
 
   @override
@@ -132,10 +129,6 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get bestValue => 'Nilai Terbaik';
-
-  @override
-  String get cancelAnytimeSecure =>
-      'Batalkan kapan saja · Dilindungi Google Play';
 
   @override
   String get downsellHeadline => 'Butuh Buat Hari Ini Aja?';
@@ -162,6 +155,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get noThanks => 'Tidak, terima kasih';
 
   @override
+  String get paywallSimpleBenefit =>
+      'akses semua fitur dan template secara unlimited. tanpa iklan';
+
+  @override
   String get product24hTitle => 'Pass 24 Jam';
 
   @override
@@ -177,19 +174,25 @@ class AppLocalizationsId extends AppLocalizations {
   String get productWeeklyTitle => 'Mingguan';
 
   @override
-  String get productWeeklyDesc => 'Akses penuh selama 1 minggu';
+  String productWeeklyDesc(String price) {
+    return 'setara $price/hari';
+  }
 
   @override
   String get productMonthlyTitle => 'Bulanan';
 
   @override
-  String get productMonthlyDesc => 'Akses penuh selama 1 bulan';
+  String productMonthlyDesc(String price) {
+    return 'setara $price/hari';
+  }
 
   @override
   String get productYearlyTitle => 'Tahunan';
 
   @override
-  String get productYearlyDesc => 'Akses penuh selama 1 tahun';
+  String productYearlyDesc(String price) {
+    return 'setara $price/hari';
+  }
 
   @override
   String get cv => 'cv';

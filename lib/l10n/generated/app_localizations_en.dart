@@ -127,9 +127,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get getJobHunterPassNow => 'subscribe';
 
   @override
-  String get cancelAnytime => 'cancel anytime';
-
-  @override
   String get paywallHeadline => 'Land Your Dream Job';
 
   @override
@@ -138,9 +135,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bestValue => 'Best Value';
-
-  @override
-  String get cancelAnytimeSecure => 'Cancel anytime · Secured by Google Play';
 
   @override
   String get downsellHeadline => 'Just Need It Today?';
@@ -168,6 +162,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noThanks => 'No thanks';
 
   @override
+  String get paywallSimpleBenefit =>
+      'access all features and templates unlimited. no ads';
+
+  @override
   String get product24hTitle => '24 Hour Pass';
 
   @override
@@ -183,19 +181,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get productWeeklyTitle => 'Weekly';
 
   @override
-  String get productWeeklyDesc => 'Full access for 1 week';
+  String productWeeklyDesc(String price) {
+    return '≈ $price/day';
+  }
 
   @override
   String get productMonthlyTitle => 'Monthly';
 
   @override
-  String get productMonthlyDesc => 'Full access for 1 month';
+  String productMonthlyDesc(String price) {
+    return '≈ $price/day';
+  }
 
   @override
   String get productYearlyTitle => 'Yearly';
 
   @override
-  String get productYearlyDesc => 'Full access for 1 year';
+  String productYearlyDesc(String price) {
+    return '≈ $price/day';
+  }
 
   @override
   String get cv => 'cv';

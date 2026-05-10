@@ -230,12 +230,6 @@ abstract class AppLocalizations {
   /// **'subscribe'**
   String get getJobHunterPassNow;
 
-  /// No description provided for @cancelAnytime.
-  ///
-  /// In en, this message translates to:
-  /// **'cancel anytime'**
-  String get cancelAnytime;
-
   /// No description provided for @paywallHeadline.
   ///
   /// In en, this message translates to:
@@ -253,12 +247,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Best Value'**
   String get bestValue;
-
-  /// No description provided for @cancelAnytimeSecure.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel anytime · Secured by Google Play'**
-  String get cancelAnytimeSecure;
 
   /// No description provided for @downsellHeadline.
   ///
@@ -308,6 +296,12 @@ abstract class AppLocalizations {
   /// **'No thanks'**
   String get noThanks;
 
+  /// No description provided for @paywallSimpleBenefit.
+  ///
+  /// In en, this message translates to:
+  /// **'access all features and templates unlimited. no ads'**
+  String get paywallSimpleBenefit;
+
   /// No description provided for @product24hTitle.
   ///
   /// In en, this message translates to:
@@ -341,8 +335,8 @@ abstract class AppLocalizations {
   /// No description provided for @productWeeklyDesc.
   ///
   /// In en, this message translates to:
-  /// **'Full access for 1 week'**
-  String get productWeeklyDesc;
+  /// **'≈ {price}/day'**
+  String productWeeklyDesc(String price);
 
   /// No description provided for @productMonthlyTitle.
   ///
@@ -353,8 +347,8 @@ abstract class AppLocalizations {
   /// No description provided for @productMonthlyDesc.
   ///
   /// In en, this message translates to:
-  /// **'Full access for 1 month'**
-  String get productMonthlyDesc;
+  /// **'≈ {price}/day'**
+  String productMonthlyDesc(String price);
 
   /// No description provided for @productYearlyTitle.
   ///
@@ -365,8 +359,8 @@ abstract class AppLocalizations {
   /// No description provided for @productYearlyDesc.
   ///
   /// In en, this message translates to:
-  /// **'Full access for 1 year'**
-  String get productYearlyDesc;
+  /// **'≈ {price}/day'**
+  String productYearlyDesc(String price);
 
   /// No description provided for @cv.
   ///

@@ -9,15 +9,49 @@ class ProductNameResolver {
     if (id.contains('24h')) return (l10n.product24hTitle, l10n.product24hDesc);
     if (id.contains('3d')) return (l10n.product3dTitle, l10n.product3dDesc);
     if (id.contains('weekly')) {
-      return (l10n.productWeeklyTitle, l10n.productWeeklyDesc);
+      return (
+        l10n.productWeeklyTitle,
+        l10n.productWeeklyDesc(_formatPerDay(package, 7)),
+      );
     }
     if (id.contains('monthly')) {
-      return (l10n.productMonthlyTitle, l10n.productMonthlyDesc);
+      return (
+        l10n.productMonthlyTitle,
+        l10n.productMonthlyDesc(_formatPerDay(package, 30)),
+      );
     }
     if (id.contains('yearly')) {
-      return (l10n.productYearlyTitle, l10n.productYearlyDesc);
+      return (
+        l10n.productYearlyTitle,
+        l10n.productYearlyDesc(_formatPerDay(package, 365)),
+      );
     }
     return (l10n.jobHunterPass, '');
+  }
+
+  /// Computes per-day price and formats as "Rp 3.500" style.
+  static String _formatPerDay(Package package, int days) {
+    final raw = package.storeProduct.price;
+    final perDay = (raw / days).round();
+
+    // Extract currency prefix from the full price string.
+    // e.g. "Rp 25.000" → "Rp", "$9.99" → "$"
+    final fullPrice = package.storeProduct.priceString;
+    final prefix = fullPrice.replaceFirst(RegExp(r'[\d.,\s]+'), '').trim();
+
+    // Format number with dot thousands separator (Indonesian style).
+    final formatted = _formatThousands(perDay);
+    return '$prefix $formatted'.trim();
+  }
+
+  static String _formatThousands(int n) {
+    final s = n.toString();
+    final buf = StringBuffer();
+    for (var i = 0; i < s.length; i++) {
+      if (i > 0 && (s.length - i) % 3 == 0) buf.write('.');
+      buf.write(s[i]);
+    }
+    return buf.toString();
   }
 
   /// Returns a short display name from a raw product identifier string.

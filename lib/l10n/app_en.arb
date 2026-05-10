@@ -64,11 +64,9 @@
   "instantPdfExport": "instant pdf export",
   "instantPdfExportDesc": "download your cv in high-quality pdf format",
   "getJobHunterPassNow": "subscribe",
-  "cancelAnytime": "cancel anytime",
   "paywallHeadline": "Land Your Dream Job",
   "paywallSubtitle": "Unlimited AI-crafted CVs that get past ATS filters",
   "bestValue": "Best Value",
-  "cancelAnytimeSecure": "Cancel anytime · Secured by Google Play",
   "downsellHeadline": "Just Need It Today?",
   "downsellSubtitle": "Get full access for 24 hours — no strings attached",
   "downsellBenefitAll": "Everything included",
@@ -77,16 +75,38 @@
   "downsellCta": "Try It for 24 Hours",
   "downsellTrust": "No auto-renew · One-time pass",
   "noThanks": "No thanks",
+  "paywallSimpleBenefit": "access all features and templates unlimited. no ads",
   "product24hTitle": "24 Hour Pass",
   "product24hDesc": "Full access for 24 hours",
   "product3dTitle": "3 Day Pass",
   "product3dDesc": "Full access for 3 days",
   "productWeeklyTitle": "Weekly",
-  "productWeeklyDesc": "Full access for 1 week",
+  "productWeeklyDesc": "≈ {price}/day",
+  "@productWeeklyDesc": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
   "productMonthlyTitle": "Monthly",
-  "productMonthlyDesc": "Full access for 1 month",
+  "productMonthlyDesc": "≈ {price}/day",
+  "@productMonthlyDesc": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
   "productYearlyTitle": "Yearly",
-  "productYearlyDesc": "Full access for 1 year",
+  "productYearlyDesc": "≈ {price}/day",
+  "@productYearlyDesc": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
   "cv": "cv",
   "accountDeleteError": "failed to delete account: {error}",
   "accountDeletedGoodbye": "account successfully deleted. goodbye!",

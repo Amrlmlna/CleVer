@@ -64,11 +64,9 @@
   "instantPdfExport": "ekspor pdf instan",
   "instantPdfExportDesc": "unduh cv anda dalam format pdf berkualitas tinggi",
   "getJobHunterPassNow": "berlangganan",
-  "cancelAnytime": "batalkan kapan saja",
   "paywallHeadline": "Raih Pekerjaan Impianmu",
   "paywallSubtitle": "CV buatan AI tanpa batas yang tembus filter ATS",
   "bestValue": "Nilai Terbaik",
-  "cancelAnytimeSecure": "Batalkan kapan saja · Dilindungi Google Play",
   "downsellHeadline": "Butuh Buat Hari Ini Aja?",
   "downsellSubtitle": "Akses penuh selama 24 jam — tanpa komitmen",
   "downsellBenefitAll": "Semua fitur termasuk",
@@ -77,16 +75,38 @@
   "downsellCta": "Coba Selama 24 Jam",
   "downsellTrust": "Tanpa perpanjangan otomatis · Sekali beli",
   "noThanks": "Tidak, terima kasih",
+  "paywallSimpleBenefit": "akses semua fitur dan template secara unlimited. tanpa iklan",
   "product24hTitle": "Pass 24 Jam",
   "product24hDesc": "Akses penuh selama 24 jam",
   "product3dTitle": "Pass 3 Hari",
   "product3dDesc": "Akses penuh selama 3 hari",
   "productWeeklyTitle": "Mingguan",
-  "productWeeklyDesc": "Akses penuh selama 1 minggu",
+  "productWeeklyDesc": "setara {price}/hari",
+  "@productWeeklyDesc": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
   "productMonthlyTitle": "Bulanan",
-  "productMonthlyDesc": "Akses penuh selama 1 bulan",
+  "productMonthlyDesc": "setara {price}/hari",
+  "@productMonthlyDesc": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
   "productYearlyTitle": "Tahunan",
-  "productYearlyDesc": "Akses penuh selama 1 tahun",
+  "productYearlyDesc": "setara {price}/hari",
+  "@productYearlyDesc": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
   "cv": "cv",
   "accountDeleteError": "gagal menghapus akun: {error}",
   "accountDeletedGoodbye": "akun berhasil dihapus. sampai jumpa!",

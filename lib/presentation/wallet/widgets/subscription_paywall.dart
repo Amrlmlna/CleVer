@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import 'package:clever/core/theme/app_colors.dart';
 import '../../home/widgets/mascot_header.dart';
 import '../../home/models/mascot_state.dart';
 import '../providers/paywall_state_provider.dart';
 import '../utils/product_name_resolver.dart';
 import 'confetti_overlay.dart';
-import 'package_pill_selector.dart';
-import 'paywall_benefit_card.dart';
 import 'paywall_transition.dart';
 import 'subscription_status_card.dart';
 
@@ -31,10 +28,16 @@ class SubscriptionPaywall extends ConsumerStatefulWidget {
 }
 
 class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
-  void _onPopInvoked(bool didPop, PaywallStateNotifier notifier) {
+  void _onPopInvoked(
+    bool didPop,
+    PaywallStateNotifier notifier,
+    bool showDownsell,
+  ) {
     if (didPop) return;
-    if (!notifier.triggerDownsell()) {
-      Navigator.pop(context, false);
+
+    // If we're not showing downsell yet, trigger it
+    if (!showDownsell) {
+      notifier.triggerDownsell();
     }
   }
 
@@ -53,71 +56,66 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, _) => _onPopInvoked(didPop, notifier),
+      canPop: state.showDownsell,
+      onPopInvokedWithResult: (didPop, _) =>
+          _onPopInvoked(didPop, notifier, state.showDownsell),
       child: Container(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.95,
-        ),
-        decoration: BoxDecoration(
-          color: colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-        ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-          child: Stack(
-            children: [
-              SafeArea(
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(32),
+              ),
+              child: Container(
+                color: colorScheme.surface,
                 child: state.showDownsell
                     ? _buildDownsell(state, notifier)
                     : _buildMain(state, notifier),
               ),
-              ConfettiOverlay(show: state.showConfetti),
-            ],
-          ),
+            ),
+            if (state.showConfetti)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: MediaQuery.of(context).size.height,
+                child: ConfettiOverlay(show: true),
+              ),
+          ],
         ),
       ),
     );
   }
-
-  // ─── MAIN PAYWALL ──────────────────────────────────────────────────────
 
   Widget _buildMain(PaywallState state, PaywallStateNotifier notifier) {
     final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildHandle(colorScheme),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 120,
-          child: MascotHeader(
-            expression: MascotExpression.exciting,
-            mascotColor: colorScheme.primary,
+    return SafeArea(
+      top: false,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildHandle(colorScheme),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 120,
+            child: MascotHeader(
+              expression: MascotExpression.exciting,
+              mascotColor: colorScheme.primary,
+            ),
           ),
-        ),
-        const SizedBox(height: 20),
-        _buildMainHeadline(l10n, colorScheme, textTheme),
-        const SizedBox(height: 20),
-        _buildBenefitsGrid(l10n),
-        const SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: PackagePillSelector(
-            packages: state.mainPackages,
-            selectedPackage: state.selectedPackage,
-            onSelected: notifier.selectPackage,
-            l10n: l10n,
-          ),
-        ),
-        const SizedBox(height: 20),
-        _buildMainCTA(l10n, colorScheme, textTheme, state, notifier),
-        _buildTrust(l10n.cancelAnytimeSecure, colorScheme, textTheme),
-        _buildCloseHint(l10n, colorScheme, textTheme, notifier),
-      ],
+          const SizedBox(height: 20),
+          _buildMainHeadline(l10n, colorScheme, textTheme),
+          const SizedBox(height: 20),
+          _buildPricingCards(state, notifier, l10n, colorScheme, textTheme),
+          const SizedBox(height: 20),
+          _buildMainCTA(l10n, colorScheme, textTheme, state, notifier),
+          _buildCloseHint(l10n, colorScheme, textTheme, notifier),
+        ],
+      ),
     );
   }
 
@@ -141,70 +139,145 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            l10n.paywallSubtitle,
-            style: textTheme.bodyMedium?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              height: 1.4,
-            ),
+          Row(
+            children: [
+              Icon(
+                Icons.check_circle_rounded,
+                size: 16,
+                color: colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  l10n.paywallSimpleBenefit,
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    height: 1.4,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBenefitsGrid(AppLocalizations l10n) {
-    final benefits = [
-      (
-        l10n.unlimitedGenerations,
-        l10n.unlimitedGenerationsDesc,
-        Icons.auto_awesome_rounded,
-        AppColors.accentSage,
-        AppColors.accentSageDark,
-      ),
-      (
-        l10n.premiumTemplates,
-        l10n.premiumTemplatesDesc,
-        Icons.design_services_rounded,
-        AppColors.accentLavender,
-        AppColors.accentLavenderDark,
-      ),
-      (
-        l10n.aiOptimization,
-        l10n.aiOptimizationDesc,
-        Icons.psychology_rounded,
-        AppColors.accentMist,
-        AppColors.accentMistDark,
-      ),
-      (
-        l10n.instantPdfExport,
-        l10n.instantPdfExportDesc,
-        Icons.picture_as_pdf_rounded,
-        AppColors.accentLemon,
-        AppColors.accentLemonDark,
-      ),
-    ];
-
+  Widget _buildPricingCards(
+    PaywallState state,
+    PaywallStateNotifier notifier,
+    AppLocalizations l10n,
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: GridView.count(
-        crossAxisCount: 2,
-        childAspectRatio: 1.6,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        children: benefits
-            .map(
-              (b) => PaywallBenefitCard(
-                title: b.$1,
-                description: b.$2,
-                icon: b.$3,
-                bgColor: b.$4,
-                iconColor: b.$5,
+      child: Column(
+        children: List.generate(state.mainPackages.length, (index) {
+          final package = state.mainPackages[index];
+          final isSelected =
+              state.selectedPackage?.identifier == package.identifier;
+          final isBestValue =
+              index == state.mainPackages.length - 1 &&
+              state.mainPackages.length > 1;
+          final (title, desc) = ProductNameResolver.resolve(package, l10n);
+
+          return Padding(
+            padding: EdgeInsets.only(
+              bottom: index < state.mainPackages.length - 1 ? 10 : 0,
+            ),
+            child: GestureDetector(
+              onTap: () => notifier.selectPackage(package),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeOut,
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? colorScheme.primary.withValues(alpha: 0.03)
+                      : colorScheme.surface,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isSelected
+                        ? colorScheme.primary
+                        : colorScheme.outlineVariant,
+                    width: isSelected ? 2 : 1.5,
+                  ),
+                ),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                title.toUpperCase(),
+                                style: textTheme.labelLarge?.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                  color: colorScheme.onSurface,
+                                  letterSpacing: -0.2,
+                                ),
+                              ),
+                              if (desc.isNotEmpty) ...[
+                                const SizedBox(height: 2),
+                                Text(
+                                  desc,
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: colorScheme.onSurfaceVariant,
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                        Text(
+                          package.storeProduct.priceString,
+                          style: textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w900,
+                            color: isSelected
+                                ? colorScheme.primary
+                                : colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (isBestValue)
+                      Positioned(
+                        top: -10,
+                        right: -8,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
+                          decoration: BoxDecoration(
+                            color: colorScheme.tertiary,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            l10n.bestValue.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 8,
+                              fontWeight: FontWeight.w900,
+                              color: colorScheme.onTertiary,
+                              letterSpacing: 0.3,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            )
-            .toList(),
+            ),
+          );
+        }),
       ),
     );
   }
@@ -254,39 +327,35 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     );
   }
 
-  // ─── DOWNSELL PAYWALL ──────────────────────────────────────────────────
-
   Widget _buildDownsell(PaywallState state, PaywallStateNotifier notifier) {
     final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final downsell = state.downsellPackage!;
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildHandle(colorScheme),
-        const SizedBox(height: 12),
-        _buildDownsellHeadline(l10n, colorScheme, textTheme),
-        const SizedBox(height: 20),
-        _buildDownsellBenefits(l10n),
-        const SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: _buildDownsellCard(downsell, colorScheme, textTheme),
-        ),
-        const SizedBox(height: 20),
-        _buildDownsellCTA(
-          downsell,
-          l10n,
-          colorScheme,
-          textTheme,
-          state,
-          notifier,
-        ),
-        _buildTrust(l10n.downsellTrust, colorScheme, textTheme),
-        _buildCloseHint(l10n, colorScheme, textTheme, notifier),
-      ],
+    return SafeArea(
+      top: false,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildHandle(colorScheme),
+          const SizedBox(height: 8),
+          _buildDownsellHeadline(l10n, colorScheme, textTheme),
+          const SizedBox(height: 16),
+          _buildDownsellPricingCard(downsell, colorScheme, textTheme),
+          const SizedBox(height: 16),
+          _buildDownsellCTA(
+            downsell,
+            l10n,
+            colorScheme,
+            textTheme,
+            state,
+            notifier,
+          ),
+          _buildTrust(l10n.downsellTrust, colorScheme, textTheme),
+          _buildCloseHint(l10n, colorScheme, textTheme, notifier),
+        ],
+      ),
     );
   }
 
@@ -321,12 +390,24 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
-                l10n.downsellSubtitle,
-                style: textTheme.bodyMedium?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                  height: 1.4,
-                ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.check_circle_rounded,
+                    size: 16,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      l10n.paywallSimpleBenefit,
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -335,80 +416,7 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     );
   }
 
-  Widget _buildDownsellBenefits(AppLocalizations l10n) {
-    final benefits = [
-      (
-        l10n.downsellBenefitAll,
-        Icons.all_inclusive_rounded,
-        AppColors.accentSage,
-        AppColors.accentSageDark,
-      ),
-      (
-        l10n.downsellBenefitSame,
-        Icons.copy_all_rounded,
-        AppColors.accentLavender,
-        AppColors.accentLavenderDark,
-      ),
-      (
-        l10n.downsellBenefitInstant,
-        Icons.bolt_rounded,
-        AppColors.accentLemon,
-        AppColors.accentLemonDark,
-      ),
-    ];
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Row(
-        children: benefits
-            .map(
-              (b) => Expanded(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 14,
-                    horizontal: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: b.$3,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                          color: b.$4.withValues(alpha: 0.12),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(b.$2, size: 18, color: b.$4),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        b.$1,
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: b.$4,
-                          letterSpacing: -0.2,
-                          height: 1.2,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-
-  Widget _buildDownsellCard(
+  Widget _buildDownsellPricingCard(
     Package package,
     ColorScheme colorScheme,
     TextTheme textTheme,
@@ -416,46 +424,51 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     final l10n = AppLocalizations.of(context)!;
     final (title, desc) = ProductNameResolver.resolve(package, l10n);
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-      decoration: BoxDecoration(
-        color: colorScheme.primary.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: colorScheme.primary, width: 2),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                if (desc.isNotEmpty) ...[
-                  const SizedBox(height: 2),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        decoration: BoxDecoration(
+          color: colorScheme.primary.withValues(alpha: 0.03),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: colorScheme.primary, width: 2),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    desc,
-                    style: textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
+                    title.toUpperCase(),
+                    style: textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      color: colorScheme.onSurface,
+                      letterSpacing: -0.2,
                     ),
                   ),
+                  if (desc.isNotEmpty) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      desc,
+                      style: textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
-          ),
-          Text(
-            package.storeProduct.priceString,
-            style: textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w900,
-              color: colorScheme.primary,
+            Text(
+              package.storeProduct.priceString,
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w900,
+                color: colorScheme.primary,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -513,7 +526,7 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
 
   Widget _buildHandle(ColorScheme colorScheme) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.only(top: 10, bottom: 8),
       child: Center(
         child: Container(
           width: 40,
@@ -551,7 +564,7 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     PaywallStateNotifier notifier,
   ) {
     return GestureDetector(
-      onTap: () => _onPopInvoked(false, notifier),
+      onTap: () => Navigator.maybePop(context),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 16),
         child: Text(
