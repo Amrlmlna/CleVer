@@ -4,7 +4,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 
 class SelectionOption {
   final String text;
-  final IconData icon;
+  final dynamic icon;
 
   SelectionOption({required this.text, required this.icon});
 }

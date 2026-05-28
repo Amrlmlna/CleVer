@@ -1978,4 +1978,28 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get onboardingNewBadge => 'BARU';
+
+  @override
+  String get onboardingDiscoveryTitle => 'Dari mana kamu tahu CleVer?';
+
+  @override
+  String get onboardingDiscoveryThreads => 'Threads';
+
+  @override
+  String get onboardingDiscoveryInstagram => 'Instagram';
+
+  @override
+  String get onboardingDiscoveryYouTube => 'YouTube';
+
+  @override
+  String get onboardingDiscoveryTikTok => 'TikTok';
+
+  @override
+  String get onboardingDiscoveryReddit => 'Reddit';
+
+  @override
+  String get onboardingDiscoveryFriends => 'Teman';
+
+  @override
+  String get onboardingDiscoveryOthers => 'Lainnya';
 }

@@ -775,5 +775,13 @@
   "voiceUseSuara": "Use voice",
   "voiceAnalyzing": "analyzing...",
   "voiceAlmostDone": "almost done...",
-  "onboardingNewBadge": "NEW"
+  "onboardingNewBadge": "NEW",
+  "onboardingDiscoveryTitle": "Where did you discover CleVer?",
+  "onboardingDiscoveryThreads": "Threads",
+  "onboardingDiscoveryInstagram": "Instagram",
+  "onboardingDiscoveryYouTube": "YouTube",
+  "onboardingDiscoveryTikTok": "TikTok",
+  "onboardingDiscoveryReddit": "Reddit",
+  "onboardingDiscoveryFriends": "Friends",
+  "onboardingDiscoveryOthers": "Others"
 }

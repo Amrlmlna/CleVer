@@ -3665,6 +3665,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'NEW'**
   String get onboardingNewBadge;
+
+  /// No description provided for @onboardingDiscoveryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Where did you discover CleVer?'**
+  String get onboardingDiscoveryTitle;
+
+  /// No description provided for @onboardingDiscoveryThreads.
+  ///
+  /// In en, this message translates to:
+  /// **'Threads'**
+  String get onboardingDiscoveryThreads;
+
+  /// No description provided for @onboardingDiscoveryInstagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram'**
+  String get onboardingDiscoveryInstagram;
+
+  /// No description provided for @onboardingDiscoveryYouTube.
+  ///
+  /// In en, this message translates to:
+  /// **'YouTube'**
+  String get onboardingDiscoveryYouTube;
+
+  /// No description provided for @onboardingDiscoveryTikTok.
+  ///
+  /// In en, this message translates to:
+  /// **'TikTok'**
+  String get onboardingDiscoveryTikTok;
+
+  /// No description provided for @onboardingDiscoveryReddit.
+  ///
+  /// In en, this message translates to:
+  /// **'Reddit'**
+  String get onboardingDiscoveryReddit;
+
+  /// No description provided for @onboardingDiscoveryFriends.
+  ///
+  /// In en, this message translates to:
+  /// **'Friends'**
+  String get onboardingDiscoveryFriends;
+
+  /// No description provided for @onboardingDiscoveryOthers.
+  ///
+  /// In en, this message translates to:
+  /// **'Others'**
+  String get onboardingDiscoveryOthers;
 }
 
 class _AppLocalizationsDelegate

@@ -92,6 +92,16 @@ class AnalyticsService {
     );
   }
 
+  Future<void> setDiscoverySource(String source) async {
+    await trackEvent(
+      'onboarding_discovery_selected',
+      properties: {
+        'platform': source,
+        '\$set': {'discovery_source': source},
+      },
+    );
+  }
+
   // MARK: - Momentum Flow
 
   Future<void> trackMomentumStep(

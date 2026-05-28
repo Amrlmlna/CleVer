@@ -106,6 +106,10 @@ class PaywallStateNotifier extends StateNotifier<PaywallState> {
             'source': source,
           },
         );
+        AnalyticsService().trackPaywallInteraction(
+          'purchase_success',
+          packageId: package.identifier,
+        );
       }
       return active;
     } catch (e) {

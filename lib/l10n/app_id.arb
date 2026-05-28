@@ -764,6 +764,14 @@
   "voiceUseSuara": "dikte AI",
   "voiceAnalyzing": "menganalisa...",
   "voiceAlmostDone": "hampir selesai...",
-  "onboardingNewBadge": "BARU"
+  "onboardingNewBadge": "BARU",
+  "onboardingDiscoveryTitle": "Dari mana kamu tahu CleVer?",
+  "onboardingDiscoveryThreads": "Threads",
+  "onboardingDiscoveryInstagram": "Instagram",
+  "onboardingDiscoveryYouTube": "YouTube",
+  "onboardingDiscoveryTikTok": "TikTok",
+  "onboardingDiscoveryReddit": "Reddit",
+  "onboardingDiscoveryFriends": "Teman",
+  "onboardingDiscoveryOthers": "Lainnya"
 }
 

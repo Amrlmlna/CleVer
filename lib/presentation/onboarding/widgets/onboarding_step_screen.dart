@@ -90,7 +90,7 @@ class OnboardingStepScreen extends StatelessWidget {
                     },
                     blendMode: BlendMode.dstIn,
                     child: ListView(
-                      physics: const NeverScrollableScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
                       children: children.asMap().entries.map((entry) {
@@ -127,7 +127,7 @@ class OnboardingStepScreen extends StatelessWidget {
 
 class OnboardingSelectionCard extends StatelessWidget {
   final String text;
-  final IconData? icon;
+  final dynamic icon;
   final VoidCallback onTap;
   final bool isSelected;
 
@@ -178,7 +178,7 @@ class OnboardingSelectionCard extends StatelessWidget {
                       children: [
                         if (icon != null) ...[
                           Icon(
-                            icon,
+                            icon as IconData?,
                             color: isSelected
                                 ? colorScheme.surface
                                 : colorScheme.onSurface.withValues(alpha: 0.5),
