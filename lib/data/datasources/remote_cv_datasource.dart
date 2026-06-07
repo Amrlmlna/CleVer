@@ -3,6 +3,33 @@ import 'package:http/http.dart' as http;
 import '../../core/config/api_config.dart';
 import '../../domain/entities/pdf_generation_result.dart';
 
+class ApiException implements Exception {
+  final int statusCode;
+  final String? responseBody;
+
+  ApiException(this.statusCode, {this.responseBody});
+
+  String? get errorCode {
+    if (responseBody == null) return null;
+    try {
+      final body = jsonDecode(responseBody!);
+      return body['code'] as String?;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  String get errorMessage {
+    if (responseBody == null) return 'Request failed ($statusCode)';
+    try {
+      final body = jsonDecode(responseBody!);
+      return body['error'] as String? ?? 'Request failed ($statusCode)';
+    } catch (_) {
+      return 'Request failed ($statusCode)';
+    }
+  }
+}
+
 class RemoteCVDataSource {
   final http.Client _httpClient;
 
@@ -32,10 +59,7 @@ class RemoteCVDataSource {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw http.ClientException(
-        'Failed to tailor profile: ${response.statusCode}',
-        response.request?.url,
-      );
+      throw ApiException(response.statusCode, responseBody: response.body);
     }
   }
 
@@ -58,10 +82,7 @@ class RemoteCVDataSource {
       final data = jsonDecode(response.body);
       return data['rewrittenText'] as String;
     } else {
-      throw http.ClientException(
-        'Failed to rewrite content: ${response.statusCode}',
-        response.request?.url,
-      );
+      throw ApiException(response.statusCode, responseBody: response.body);
     }
   }
 
@@ -75,10 +96,7 @@ class RemoteCVDataSource {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw http.ClientException(
-        'Failed to parse CV: ${response.statusCode}',
-        response.request?.url,
-      );
+      throw ApiException(response.statusCode, responseBody: response.body);
     }
   }
 
@@ -92,10 +110,7 @@ class RemoteCVDataSource {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw http.ClientException(
-        'Failed to parse Study Card: ${response.statusCode}',
-        response.request?.url,
-      );
+      throw ApiException(response.statusCode, responseBody: response.body);
     }
   }
 
@@ -112,10 +127,7 @@ class RemoteCVDataSource {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw http.ClientException(
-        'Failed to parse entity: ${response.statusCode}',
-        response.request?.url,
-      );
+      throw ApiException(response.statusCode, responseBody: response.body);
     }
   }
 
@@ -175,10 +187,7 @@ class RemoteCVDataSource {
         );
       }
     } else {
-      throw http.ClientException(
-        'Failed to generate PDF: ${response.statusCode}',
-        response.request?.url,
-      );
+      throw ApiException(response.statusCode, responseBody: response.body);
     }
   }
 

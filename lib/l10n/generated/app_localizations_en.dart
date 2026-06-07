@@ -1981,30 +1981,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingNewBadge => 'NEW';
 
   @override
-  String get onboardingDiscoveryTitle => 'Where did you discover CleVer?';
-
-  @override
-  String get onboardingDiscoveryThreads => 'Threads';
-
-  @override
-  String get onboardingDiscoveryInstagram => 'Instagram';
-
-  @override
-  String get onboardingDiscoveryYouTube => 'YouTube';
-
-  @override
-  String get onboardingDiscoveryTikTok => 'TikTok';
-
-  @override
-  String get onboardingDiscoveryReddit => 'Reddit';
-
-  @override
-  String get onboardingDiscoveryFriends => 'Friends';
-
-  @override
-  String get onboardingDiscoveryOthers => 'Others';
-
-  @override
   String get templateRequiresPhoto => 'this template needs a photo';
 
   @override

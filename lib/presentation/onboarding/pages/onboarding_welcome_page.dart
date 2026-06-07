@@ -6,7 +6,6 @@ import '../widgets/welcome_steps/step_comparison.dart';
 import '../widgets/welcome_steps/step_final_reveal.dart';
 import 'onboarding_page.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/services/analytics_service.dart';
 import '../../../core/theme/app_theme.dart';
 
@@ -24,7 +23,6 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
   String? _selectedBurnout;
   String? _selectedTime;
   String? _selectedProcrastination;
-  String? _selectedDiscovery;
 
   @override
   void initState() {
@@ -33,7 +31,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
   }
 
   void _nextStep() {
-    if (_currentStep < 6) {
+    if (_currentStep < 5) {
       setState(() {
         _currentStep++;
       });
@@ -262,52 +260,9 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
         );
 
       case 4:
-        return StepSelectionList(
-          title: l10n.onboardingDiscoveryTitle,
-          options: [
-            SelectionOption(
-              text: l10n.onboardingDiscoveryThreads,
-              icon: FontAwesomeIcons.threads,
-            ),
-            SelectionOption(
-              text: l10n.onboardingDiscoveryInstagram,
-              icon: FontAwesomeIcons.instagram,
-            ),
-            SelectionOption(
-              text: l10n.onboardingDiscoveryYouTube,
-              icon: FontAwesomeIcons.youtube,
-            ),
-            SelectionOption(
-              text: l10n.onboardingDiscoveryTikTok,
-              icon: FontAwesomeIcons.tiktok,
-            ),
-            SelectionOption(
-              text: l10n.onboardingDiscoveryReddit,
-              icon: FontAwesomeIcons.reddit,
-            ),
-            SelectionOption(
-              text: l10n.onboardingDiscoveryFriends,
-              icon: FontAwesomeIcons.users,
-            ),
-            SelectionOption(
-              text: l10n.onboardingDiscoveryOthers,
-              icon: FontAwesomeIcons.ellipsis,
-            ),
-          ],
-          selectedOption: _selectedDiscovery,
-          onSelect: (val) => setState(() => _selectedDiscovery = val),
-          onNext: () {
-            if (_selectedDiscovery != null) {
-              AnalyticsService().setDiscoverySource(_selectedDiscovery!);
-            }
-            _nextStep();
-          },
-        );
-
-      case 5:
         return StepComparison(onNext: _nextStep);
 
-      case 6:
+      case 5:
         return StepFinalReveal(onNext: _nextStep);
 
       default:

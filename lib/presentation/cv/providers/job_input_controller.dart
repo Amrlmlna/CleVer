@@ -7,9 +7,11 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../domain/entities/job_input.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../../../data/utils/data_error_mapper.dart';
 import '../providers/cv_generation_provider.dart';
 import '../providers/ocr_provider.dart';
 import '../../profile/providers/profile_provider.dart';
+import '../../auth/widgets/email_verification_bottom_sheet.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../../../core/providers/locale_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
@@ -112,10 +114,14 @@ class JobInputController extends AutoDisposeAsyncNotifier<void> {
     } catch (e) {
       if (context.mounted) {
         Navigator.of(context).pop();
-        CustomSnackBar.showError(
-          context,
-          l10n.analyzeProfileError(e.toString()),
-        );
+        if (e is DataError && e.code == 'email_not_verified') {
+          EmailVerificationBottomSheet.show(context);
+        } else {
+          CustomSnackBar.showError(
+            context,
+            l10n.analyzeProfileError(e.toString()),
+          );
+        }
       }
     }
   }

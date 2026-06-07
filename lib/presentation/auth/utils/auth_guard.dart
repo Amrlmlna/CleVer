@@ -1,8 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../auth/widgets/auth_wall_bottom_sheet.dart';
+import '../../auth/widgets/email_verification_bottom_sheet.dart';
 
 class AuthGuard {
+  static bool _isUnverifiedPasswordUser(User user) {
+    final isPasswordProvider = user.providerData.any(
+      (p) => p.providerId == 'password',
+    );
+    return isPasswordProvider && !user.emailVerified;
+  }
+
   static bool check(
     BuildContext context, {
     String? featureTitle,
@@ -21,6 +29,10 @@ class AuthGuard {
       );
       return false;
     }
+    if (_isUnverifiedPasswordUser(user)) {
+      EmailVerificationBottomSheet.show(context);
+      return false;
+    }
     return true;
   }
 
@@ -33,9 +45,7 @@ class AuthGuard {
   }) {
     return () {
       final user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        action();
-      } else {
+      if (user == null) {
         AuthWallBottomSheet.show(
           context,
           featureTitle: featureTitle,
@@ -43,6 +53,10 @@ class AuthGuard {
           onAuthenticated: action,
           onDismiss: onDismiss,
         );
+      } else if (_isUnverifiedPasswordUser(user)) {
+        EmailVerificationBottomSheet.show(context);
+      } else {
+        action();
       }
     };
   }
