@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../core/services/storage_service.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../../../core/utils/image_normalizer.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -24,6 +25,7 @@ class _ProfilePhotoUploaderState extends ConsumerState<ProfilePhotoUploader> {
   bool _isUploading = false;
 
   Future<void> _pickAndUploadImage() async {
+    File? normalizedFile;
     try {
       final authState = ref.read(authStateProvider);
       final userId = authState.value?.uid;
@@ -49,9 +51,9 @@ class _ProfilePhotoUploaderState extends ConsumerState<ProfilePhotoUploader> {
 
       setState(() => _isUploading = true);
 
-      final file = File(image.path);
+      normalizedFile = await ImageNormalizer.cropToSquare(File(image.path));
       final downloadUrl = await _storageService.uploadProfilePhoto(
-        file,
+        normalizedFile,
         userId,
       );
 
@@ -70,6 +72,13 @@ class _ProfilePhotoUploaderState extends ConsumerState<ProfilePhotoUploader> {
         );
       }
     } finally {
+      if (normalizedFile != null) {
+        try {
+          if (await normalizedFile.exists()) {
+            await normalizedFile.delete();
+          }
+        } catch (_) {}
+      }
       if (mounted) {
         setState(() => _isUploading = false);
       }

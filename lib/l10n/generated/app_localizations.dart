@@ -3713,6 +3713,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Others'**
   String get onboardingDiscoveryOthers;
+
+  /// No description provided for @templateRequiresPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'this template needs a photo'**
+  String get templateRequiresPhoto;
+
+  /// No description provided for @templateRequiresPhotoDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'you selected a style with a profile photo, but no photo has been uploaded yet.'**
+  String get templateRequiresPhotoDesc;
+
+  /// No description provided for @uploadPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'upload photo'**
+  String get uploadPhoto;
+
+  /// No description provided for @useStyleWithoutPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'use style without photo'**
+  String get useStyleWithoutPhoto;
 }
 
 class _AppLocalizationsDelegate

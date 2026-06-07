@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../core/services/storage_service.dart';
 import '../../../../core/utils/custom_snackbar.dart';
+import '../../../../core/utils/image_normalizer.dart';
 import '../../profile/providers/profile_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -48,18 +49,22 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
     if (image == null) return;
 
     _setUploading(true);
+    File? normalizedFile;
 
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        if (mounted)
+        if (mounted) {
           throw Exception(AppLocalizations.of(context)!.userNotLoggedIn);
+        }
         return;
       }
 
+      normalizedFile = await ImageNormalizer.cropToSquare(File(image.path));
+
       final storageService = StorageService();
       final downloadUrl = await storageService.uploadProfilePhoto(
-        File(image.path),
+        normalizedFile,
         userId,
       );
 
@@ -84,6 +89,13 @@ class _PhotoToggleSettingsState extends ConsumerState<PhotoToggleSettings> {
         );
       }
     } finally {
+      if (normalizedFile != null) {
+        try {
+          if (await normalizedFile.exists()) {
+            await normalizedFile.delete();
+          }
+        } catch (_) {}
+      }
       if (mounted) {
         _setUploading(false);
       }

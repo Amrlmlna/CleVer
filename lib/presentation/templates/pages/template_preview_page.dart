@@ -18,6 +18,13 @@ import '../../../core/router/app_routes.dart';
 
 import '../widgets/template_carousel_preview.dart';
 import '../widgets/photo_toggle_settings.dart';
+import '../widgets/photo_required_bottom_sheet.dart';
+import '../../../../core/utils/image_normalizer.dart';
+import '../../../../core/utils/custom_snackbar.dart';
+import '../../../../core/services/storage_service.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../common/widgets/spinning_text_loader.dart';
 import '../../common/widgets/swipe_to_confirm_button.dart';
 
@@ -46,6 +53,62 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
     super.dispose();
   }
 
+  Future<void> _pickAndUploadPhoto() async {
+    final picker = ImagePicker();
+    final image = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1024,
+      maxHeight: 1024,
+      imageQuality: 85,
+    );
+    if (image == null) return;
+
+    setState(() => _isUploading = true);
+    File? normalizedFile;
+
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId == null) return;
+
+      normalizedFile = await ImageNormalizer.cropToSquare(File(image.path));
+
+      final storageService = StorageService();
+      final downloadUrl = await storageService.uploadProfilePhoto(
+        normalizedFile,
+        userId,
+      );
+
+      if (downloadUrl != null) {
+        ref.read(profileControllerProvider.notifier).updatePhoto(downloadUrl);
+        await ref.read(profileControllerProvider.notifier).saveProfile();
+        if (mounted) {
+          CustomSnackBar.showSuccess(
+            context,
+            AppLocalizations.of(context)!.photoUpdateSuccess,
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        CustomSnackBar.showError(
+          context,
+          AppLocalizations.of(context)!.photoUpdateError(e.toString()),
+        );
+      }
+    } finally {
+      if (normalizedFile != null) {
+        try {
+          if (await normalizedFile.exists()) {
+            await normalizedFile.delete();
+          }
+        } catch (_) {}
+      }
+      if (mounted) {
+        setState(() => _isUploading = false);
+      }
+    }
+  }
+
   Future<void> _handleDownload() async {
     final creationState = ref.read(cvCreationProvider);
     final selectedStyleId = creationState.selectedStyle;
@@ -56,6 +119,40 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
     );
 
     AnalyticsService().trackCvExportStarted(templateId: template.id);
+
+    if (_usePhoto && template.supportsPhoto) {
+      final photoUrl = ref
+          .read(profileControllerProvider)
+          .currentProfile
+          .photoUrl;
+      final hasPhoto = photoUrl != null && photoUrl.isNotEmpty;
+
+      if (!hasPhoto) {
+        if (!mounted) return;
+        final result = await PhotoRequiredBottomSheet.show(context);
+
+        if (result == null) return; // dismissed
+
+        if (result == 'upload') {
+          await _pickAndUploadPhoto();
+          final newPhotoUrl = ref
+              .read(profileControllerProvider)
+              .currentProfile
+              .photoUrl;
+          if (newPhotoUrl == null || newPhotoUrl.isEmpty)
+            return; // cancelled or failed
+        } else if (result == 'switch') {
+          setState(() => _usePhoto = false);
+          if (template.previewUrls.length > 1) {
+            _pageController.animateToPage(
+              0,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          }
+        }
+      }
+    }
 
     if (template.isLocked) {
       if (mounted) {

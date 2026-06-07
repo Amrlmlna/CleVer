@@ -2002,4 +2002,17 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get onboardingDiscoveryOthers => 'Lainnya';
+
+  @override
+  String get templateRequiresPhoto => 'template ini membutuhkan gambar';
+
+  @override
+  String get templateRequiresPhotoDesc =>
+      'kamu memilih versi template dengan foto profil, tapi belum ada foto yang diunggah.';
+
+  @override
+  String get uploadPhoto => 'unggah foto';
+
+  @override
+  String get useStyleWithoutPhoto => 'gunakan versi template tanpa foto';
 }

@@ -772,6 +772,11 @@
   "onboardingDiscoveryTikTok": "TikTok",
   "onboardingDiscoveryReddit": "Reddit",
   "onboardingDiscoveryFriends": "Teman",
-  "onboardingDiscoveryOthers": "Lainnya"
+  "onboardingDiscoveryOthers": "Lainnya",
+  "templateRequiresPhoto": "template ini membutuhkan gambar",
+  "templateRequiresPhotoDesc": "kamu memilih versi template dengan foto profil, tapi belum ada foto yang diunggah.",
+  "uploadPhoto": "unggah foto",
+  "useStyleWithoutPhoto": "gunakan versi template tanpa foto"
 }
+
 

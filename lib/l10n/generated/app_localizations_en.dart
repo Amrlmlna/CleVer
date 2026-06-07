@@ -2003,4 +2003,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingDiscoveryOthers => 'Others';
+
+  @override
+  String get templateRequiresPhoto => 'this template needs a photo';
+
+  @override
+  String get templateRequiresPhotoDesc =>
+      'you selected a style with a profile photo, but no photo has been uploaded yet.';
+
+  @override
+  String get uploadPhoto => 'upload photo';
+
+  @override
+  String get useStyleWithoutPhoto => 'use style without photo';
 }
