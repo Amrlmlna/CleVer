@@ -10,7 +10,9 @@ import '../../../core/services/ad_service.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../core/services/analytics_service.dart';
 import '../../../core/services/pdf_export_service.dart';
+import '../../../core/services/payment_service.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../../../data/utils/data_error_mapper.dart';
 import '../../../domain/entities/cv_data.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../profile/providers/profile_provider.dart';
@@ -231,6 +233,43 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
         'locale': locale,
       },
     );
+
+    // Detect paywall-triggering errors from the backend (402 responses)
+    if (e is DataError && e.statusCode == 402) {
+      final code = e.code;
+      final isDeviceAbuse = code == 'DEVICE_LIMIT_REACHED';
+      final isUsageExhausted = code == 'PAYMENT_REQUIRED';
+
+      if (isDeviceAbuse || isUsageExhausted) {
+        state = state.copyWith(
+          status: DownloadStatus.error,
+          errorMessage: e.message,
+        );
+
+        if (context.mounted) {
+          // Show a contextual warning snackbar first
+          CustomSnackBar.showWarning(
+            context,
+            isDeviceAbuse
+                ? AppLocalizations.of(context)!.freeExportsLeft(0)
+                : AppLocalizations.of(context)!.freeExportsLeft(0),
+          );
+
+          // Then present the paywall so they can upgrade
+          Future.delayed(const Duration(milliseconds: 500), () async {
+            if (context.mounted) {
+              final purchased = await PaymentService.presentPaywall(context);
+              if (purchased) {
+                ref.invalidate(templatesProvider);
+              }
+            }
+          });
+        }
+        return;
+      }
+    }
+
+    // Generic fallback for all other errors
     state = state.copyWith(
       status: DownloadStatus.error,
       errorMessage: e.toString(),

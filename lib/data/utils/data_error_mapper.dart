@@ -6,8 +6,9 @@ import '../datasources/remote_cv_datasource.dart';
 class DataError {
   final String message;
   final String? code;
+  final int? statusCode;
 
-  DataError(this.message, {this.code});
+  DataError(this.message, {this.code, this.statusCode});
 
   @override
   String toString() => message;
@@ -21,15 +22,21 @@ class DataErrorMapper {
         return DataError(
           'Silakan verifikasi email Anda terlebih dahulu untuk menggunakan fitur ini.',
           code: 'email_not_verified',
+          statusCode: error.statusCode,
         );
       }
       if (error.statusCode == 401) {
         return DataError(
           'Sesi Anda telah berakhir. Silakan masuk kembali.',
           code: 'unauthorized',
+          statusCode: 401,
         );
       }
-      return DataError(error.errorMessage, code: 'api_error');
+      return DataError(
+        error.errorMessage,
+        code: errorCode ?? 'api_error',
+        statusCode: error.statusCode,
+      );
     } else if (error is http.ClientException) {
       return DataError(
         'Network error: Check your internet connection.',

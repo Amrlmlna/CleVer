@@ -1,5 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../services/device_id_service.dart';
 
 class ApiConfig {
   static String get baseUrl {
@@ -14,11 +15,13 @@ class ApiConfig {
     try {
       final user = FirebaseAuth.instance.currentUser;
       final token = await user?.getIdToken();
+      final deviceId = await DeviceIdService.getDeviceId();
 
       return {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         if (token != null) 'Authorization': 'Bearer $token',
+        'X-Device-Id': deviceId,
       };
     } catch (e) {
       return {'Content-Type': 'application/json', 'Accept': 'application/json'};
