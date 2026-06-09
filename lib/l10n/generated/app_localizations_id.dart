@@ -1889,7 +1889,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get tutorialJobOcrDesc =>
-      'tau gak? ada fitur scan screenshot lowongan kerja buat kamu yang manger ngetik';
+      'tau gak? ada fitur scan screenshot lowongan kerja buat kamu yang mager ngetik';
 
   @override
   String get tutorialDraftsTitle => 'draft kamu';
@@ -1991,4 +1991,8 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get useStyleWithoutPhoto => 'gunakan versi template tanpa foto';
+
+  @override
+  String get deviceLimitReached =>
+      'Batas perangkat tercapai. Ekspor gratis dibatasi 2 per perangkat.';
 }

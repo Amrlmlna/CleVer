@@ -737,7 +737,7 @@
   "feedbackEmailSubject": "Masukan untuk CleVer CV",
   "feedbackEmailBody": "Halo Tim Clever,\n\nSaya ingin memberikan masukan untuk aplikasi ini:\n\n",
   "tutorialJobOcrTitle": "scan lowongan kerja",
-  "tutorialJobOcrDesc": "tau gak? ada fitur scan screenshot lowongan kerja buat kamu yang manger ngetik",
+  "tutorialJobOcrDesc": "tau gak? ada fitur scan screenshot lowongan kerja buat kamu yang mager ngetik",
   "tutorialDraftsTitle": "draft kamu",
   "tutorialDraftsDesc": "kamu bisa edit draft kamu di sini dan export dengan desain lain kapan saja.",
   "tutorialProfileTitle": "profil master",
@@ -768,7 +768,8 @@
   "templateRequiresPhoto": "template ini membutuhkan gambar",
   "templateRequiresPhotoDesc": "kamu memilih versi template dengan foto profil, tapi belum ada foto yang diunggah.",
   "uploadPhoto": "unggah foto",
-  "useStyleWithoutPhoto": "gunakan versi template tanpa foto"
+  "useStyleWithoutPhoto": "gunakan versi template tanpa foto",
+  "deviceLimitReached": "Batas perangkat tercapai. Ekspor gratis dibatasi 2 per perangkat."
 }
 
 

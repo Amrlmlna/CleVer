@@ -779,6 +779,7 @@
   "templateRequiresPhoto": "this template needs a photo",
   "templateRequiresPhotoDesc": "you selected a style with a profile photo, but no photo has been uploaded yet.",
   "uploadPhoto": "upload photo",
-  "useStyleWithoutPhoto": "use style without photo"
+  "useStyleWithoutPhoto": "use style without photo",
+  "deviceLimitReached": "Device limit reached. Free exports are limited to 2 per device."
 }
 

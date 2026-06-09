@@ -1992,4 +1992,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get useStyleWithoutPhoto => 'use style without photo';
+
+  @override
+  String get deviceLimitReached =>
+      'Device limit reached. Free exports are limited to 2 per device.';
 }

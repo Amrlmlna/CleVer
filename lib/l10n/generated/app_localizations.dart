@@ -3689,6 +3689,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'use style without photo'**
   String get useStyleWithoutPhoto;
+
+  /// No description provided for @deviceLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Device limit reached. Free exports are limited to 2 per device.'**
+  String get deviceLimitReached;
 }
 
 class _AppLocalizationsDelegate

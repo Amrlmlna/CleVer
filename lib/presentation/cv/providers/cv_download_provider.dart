@@ -251,7 +251,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
           CustomSnackBar.showWarning(
             context,
             isDeviceAbuse
-                ? AppLocalizations.of(context)!.freeExportsLeft(0)
+                ? AppLocalizations.of(context)!.deviceLimitReached
                 : AppLocalizations.of(context)!.freeExportsLeft(0),
           );
 
