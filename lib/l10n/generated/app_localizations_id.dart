@@ -1692,7 +1692,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get subscriptionRequired => 'langganan diperlukan';
 
   @override
-  String get upgradeNow => 'upgrade sekarang';
+  String get upgradeNow => 'upgrade';
 
   @override
   String get accessAllTemplates => 'akses semua template';
@@ -2021,5 +2021,5 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cancelRecurringWarning =>
-      'Catatan: Karena Anda sudah memiliki langganan aktif, pembelian Akses Selamanya tidak akan membatalkannya secara otomatis. Harap batalkan langganan Anda secara manual di Google Play Store untuk menghindari tagihan berulang.';
+      'Kamu masih memiliki langganan aktif. Konfirmasi sekarang untuk langsung beralih ke Akses Selamanya!';
 }

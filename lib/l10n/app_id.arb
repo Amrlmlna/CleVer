@@ -660,7 +660,7 @@
   "passWeekly": "mingguan",
   "passYearly": "tahunan",
   "subscriptionRequired": "langganan diperlukan",
-  "upgradeNow": "upgrade sekarang",
+  "upgradeNow": "upgrade",
   "unlimitedGenerations": "generasi tanpa batas",
   "accessAllTemplates": "akses semua template",
   "noAdsForever": "tanpa iklan selamanya",
@@ -777,7 +777,7 @@
   "lifetimeAccessActiveDesc": "Nikmati pembuatan CV tanpa batas dan template premium selamanya. Tidak perlu tindakan lebih lanjut.",
   "upgradeToLifetime": "Upgrade ke Akses Selamanya",
   "upgradeToLifetimeDesc": "Dapatkan akses tanpa batas selamanya dan hentikan tagihan berulang.",
-  "cancelRecurringWarning": "Catatan: Karena Anda sudah memiliki langganan aktif, pembelian Akses Selamanya tidak akan membatalkannya secara otomatis. Harap batalkan langganan Anda secara manual di Google Play Store untuk menghindari tagihan berulang."
+  "cancelRecurringWarning": "Kamu masih memiliki langganan aktif. Konfirmasi sekarang untuk langsung beralih ke Akses Selamanya!"
 }
 
 

@@ -96,13 +96,13 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
                   width: 64,
                   height: 64,
                   decoration: BoxDecoration(
-                    color: colorScheme.error.withValues(alpha: 0.1),
+                    color: colorScheme.primaryContainer,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    Icons.warning_amber_rounded,
-                    color: colorScheme.error,
-                    size: 32,
+                    Icons.rocket_launch_rounded,
+                    color: colorScheme.onPrimaryContainer,
+                    size: 30,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -160,8 +160,9 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
                         ),
                         child: Text(
                           l10n.upgradeNow.toUpperCase(),
-                          style: textTheme.labelLarge?.copyWith(
+                          style: const TextStyle(
                             fontWeight: FontWeight.w900,
+                            letterSpacing: 1,
                           ),
                         ),
                       ),

@@ -3741,7 +3741,7 @@ abstract class AppLocalizations {
   /// No description provided for @cancelRecurringWarning.
   ///
   /// In en, this message translates to:
-  /// **'Note: Since you already have an active subscription, purchasing Lifetime will not automatically cancel it. Please remember to manually cancel your existing subscription in Google Play Store settings to avoid future recurring charges.'**
+  /// **'You currently have an active subscription. Confirm now to instantly upgrade to Lifetime!'**
   String get cancelRecurringWarning;
 }
 
