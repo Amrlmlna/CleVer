@@ -168,6 +168,10 @@ class _SubscriptionBadgeState extends State<_SubscriptionBadge> {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context)!;
+    final isLifetime =
+        widget.isSubscribed &&
+        widget.expiryDate != null &&
+        widget.expiryDate!.difference(DateTime.now()).inDays > 365 * 10;
 
     return Padding(
       padding: const EdgeInsets.only(right: 24),
@@ -196,20 +200,37 @@ class _SubscriptionBadgeState extends State<_SubscriptionBadge> {
                     : colorScheme.onSurface,
               ),
               const SizedBox(width: 4),
-              Text(
-                widget.isSubscribed
-                    ? (_timeLeft.isEmpty
-                          ? l10n.active.toUpperCase()
-                          : _timeLeft.toUpperCase())
-                    : l10n.free.toUpperCase(),
-                style: textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: widget.isSubscribed
-                      ? colorScheme.primary
-                      : colorScheme.onSurface,
-                  fontSize: 10,
+              if (isLifetime) ...[
+                Text(
+                  l10n.passLifetime.toUpperCase(),
+                  style: textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: colorScheme.primary,
+                    fontSize: 10,
+                  ),
                 ),
-              ),
+                const SizedBox(width: 2),
+                Icon(
+                  Icons.all_inclusive_rounded,
+                  size: 12,
+                  color: colorScheme.primary,
+                ),
+              ] else ...[
+                Text(
+                  widget.isSubscribed
+                      ? (_timeLeft.isEmpty
+                            ? l10n.active.toUpperCase()
+                            : _timeLeft.toUpperCase())
+                      : l10n.free.toUpperCase(),
+                  style: textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: widget.isSubscribed
+                        ? colorScheme.primary
+                        : colorScheme.onSurface,
+                    fontSize: 10,
+                  ),
+                ),
+              ],
             ],
           ),
         ),

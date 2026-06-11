@@ -202,6 +202,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get productLifetimeTitle => 'Lifetime Access';
+
+  @override
+  String get productLifetimeDesc => 'One-time payment · Forever';
+
+  @override
+  String get passLifetime => 'lifetime';
+
+  @override
   String get cv => 'cv';
 
   @override
@@ -1996,4 +2005,22 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deviceLimitReached =>
       'Device limit reached. Free exports are limited to 2 per device.';
+
+  @override
+  String get lifetimeAccessActive => 'You have Lifetime Access!';
+
+  @override
+  String get lifetimeAccessActiveDesc =>
+      'Enjoy unlimited CV generation and premium templates forever. No further actions needed.';
+
+  @override
+  String get upgradeToLifetime => 'Upgrade to Lifetime';
+
+  @override
+  String get upgradeToLifetimeDesc =>
+      'Get unlimited access forever and stop recurring billing.';
+
+  @override
+  String get cancelRecurringWarning =>
+      'Note: Since you already have an active subscription, purchasing Lifetime will not automatically cancel it. Please remember to manually cancel your existing subscription in Google Play Store settings to avoid future recurring charges.';
 }

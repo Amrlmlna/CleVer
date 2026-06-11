@@ -80,6 +80,11 @@ class _SubscriptionStatusCardState extends State<SubscriptionStatusCard>
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
+    final isLifetime =
+        widget.isSubscribed &&
+        widget.expiryDate != null &&
+        widget.expiryDate!.difference(DateTime.now()).inDays > 365 * 10;
+
     // Use theme aware colors - STRICTLY NO HARDCODED COLORS
     // Gold for Premium (from tertiary), OnSurface/Surface for Monochrome
     final premiumGold = colorScheme.tertiary;
@@ -138,7 +143,9 @@ class _SubscriptionStatusCardState extends State<SubscriptionStatusCard>
                           else ...[
                             Text(
                               (widget.isSubscribed
-                                      ? l10n.jobHunterPass
+                                      ? (isLifetime
+                                            ? l10n.productLifetimeTitle
+                                            : l10n.jobHunterPass)
                                       : l10n.cleverUser)
                                   .toUpperCase(),
                               style: textTheme.headlineSmall?.copyWith(
@@ -147,19 +154,43 @@ class _SubscriptionStatusCardState extends State<SubscriptionStatusCard>
                                 color: onBackgroundColor,
                               ),
                             ),
-                            if (widget.isSubscribed && _timeLeft.isNotEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: Text(
-                                  l10n.subscriptionExpiryCount(_timeLeft),
-                                  style: textTheme.labelMedium?.copyWith(
-                                    color: onBackgroundColor.withValues(
-                                      alpha: 0.5,
+                            if (widget.isSubscribed) ...[
+                              if (isLifetime)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "${l10n.active.toUpperCase()}: ",
+                                        style: textTheme.labelMedium?.copyWith(
+                                          color: onBackgroundColor.withValues(
+                                            alpha: 0.5,
+                                          ),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.all_inclusive_rounded,
+                                        size: 16,
+                                        color: premiumGold,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              else if (_timeLeft.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: Text(
+                                    l10n.subscriptionExpiryCount(_timeLeft),
+                                    style: textTheme.labelMedium?.copyWith(
+                                      color: onBackgroundColor.withValues(
+                                        alpha: 0.5,
+                                      ),
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ),
+                            ],
                           ],
                           const Spacer(),
                           Text(

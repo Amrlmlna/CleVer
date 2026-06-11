@@ -362,6 +362,24 @@ abstract class AppLocalizations {
   /// **'≈ {price}/day'**
   String productYearlyDesc(String price);
 
+  /// No description provided for @productLifetimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime Access'**
+  String get productLifetimeTitle;
+
+  /// No description provided for @productLifetimeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time payment · Forever'**
+  String get productLifetimeDesc;
+
+  /// No description provided for @passLifetime.
+  ///
+  /// In en, this message translates to:
+  /// **'lifetime'**
+  String get passLifetime;
+
   /// No description provided for @cv.
   ///
   /// In en, this message translates to:
@@ -3695,6 +3713,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Device limit reached. Free exports are limited to 2 per device.'**
   String get deviceLimitReached;
+
+  /// No description provided for @lifetimeAccessActive.
+  ///
+  /// In en, this message translates to:
+  /// **'You have Lifetime Access!'**
+  String get lifetimeAccessActive;
+
+  /// No description provided for @lifetimeAccessActiveDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy unlimited CV generation and premium templates forever. No further actions needed.'**
+  String get lifetimeAccessActiveDesc;
+
+  /// No description provided for @upgradeToLifetime.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Lifetime'**
+  String get upgradeToLifetime;
+
+  /// No description provided for @upgradeToLifetimeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get unlimited access forever and stop recurring billing.'**
+  String get upgradeToLifetimeDesc;
+
+  /// No description provided for @cancelRecurringWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Note: Since you already have an active subscription, purchasing Lifetime will not automatically cancel it. Please remember to manually cancel your existing subscription in Google Play Store settings to avoid future recurring charges.'**
+  String get cancelRecurringWarning;
 }
 
 class _AppLocalizationsDelegate

@@ -6,6 +6,7 @@ import '../../home/widgets/mascot_header.dart';
 import '../../home/models/mascot_state.dart';
 import '../providers/paywall_state_provider.dart';
 import '../utils/product_name_resolver.dart';
+import '../../templates/providers/template_provider.dart';
 import 'confetti_overlay.dart';
 import 'paywall_transition.dart';
 import 'subscription_status_card.dart';
@@ -44,9 +45,135 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
   Future<void> _handlePurchase(
     PaywallStateNotifier notifier,
     String source,
+    bool isSubscribed,
   ) async {
+    final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    if (isSubscribed) {
+      final confirmed = await _showUpgradeConfirmation(
+        l10n,
+        colorScheme,
+        textTheme,
+      );
+      if (confirmed != true) return;
+    }
+
     final success = await notifier.purchase(source);
     if (success && mounted) Navigator.pop(context, true);
+  }
+
+  Future<bool?> _showUpgradeConfirmation(
+    AppLocalizations l10n,
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
+    return showModalBottomSheet<bool>(
+      context: context,
+      useRootNavigator: true,
+      backgroundColor: colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: colorScheme.outlineVariant,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Container(
+                  width: 64,
+                  height: 64,
+                  decoration: BoxDecoration(
+                    color: colorScheme.error.withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.warning_amber_rounded,
+                    color: colorScheme.error,
+                    size: 32,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  l10n.upgradeToLifetime.toUpperCase(),
+                  style: textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: -0.5,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  l10n.cancelRecurringWarning,
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    height: 1.4,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 28),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          side: BorderSide(color: colorScheme.outline),
+                        ),
+                        child: Text(
+                          l10n.cancel.toUpperCase(),
+                          style: textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: colorScheme.onSurface,
+                          foregroundColor: colorScheme.surface,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          l10n.upgradeNow.toUpperCase(),
+                          style: textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -54,6 +181,16 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     final notifier = ref.read(paywallStateProvider(widget.packages).notifier);
     final state = ref.watch(paywallStateProvider(widget.packages));
     final colorScheme = Theme.of(context).colorScheme;
+
+    final templates = ref.watch(templatesProvider).value ?? [];
+    final isSubscribed = templates.any((t) => t.isSubscribed);
+    final expiryDate = templates.isNotEmpty
+        ? templates.first.subscriptionExpiry
+        : null;
+    final isLifetime =
+        isSubscribed &&
+        expiryDate != null &&
+        expiryDate.difference(DateTime.now()).inDays > 365 * 10;
 
     return PopScope(
       canPop: state.showDownsell,
@@ -71,7 +208,7 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
                 color: colorScheme.surface,
                 child: state.showDownsell
                     ? _buildDownsell(state, notifier)
-                    : _buildMain(state, notifier),
+                    : _buildMain(state, notifier, isSubscribed, isLifetime),
               ),
             ),
             if (state.showConfetti)
@@ -88,7 +225,12 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     );
   }
 
-  Widget _buildMain(PaywallState state, PaywallStateNotifier notifier) {
+  Widget _buildMain(
+    PaywallState state,
+    PaywallStateNotifier notifier,
+    bool isSubscribed,
+    bool isLifetime,
+  ) {
     final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
@@ -103,16 +245,34 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
           SizedBox(
             height: 120,
             child: MascotHeader(
-              expression: MascotExpression.exciting,
+              expression: isLifetime
+                  ? MascotExpression.smiling
+                  : MascotExpression.exciting,
               mascotColor: colorScheme.primary,
             ),
           ),
           const SizedBox(height: 20),
-          _buildMainHeadline(l10n, colorScheme, textTheme),
+          _buildMainHeadline(
+            l10n,
+            colorScheme,
+            textTheme,
+            isSubscribed,
+            isLifetime,
+          ),
           const SizedBox(height: 20),
-          _buildPricingCards(state, notifier, l10n, colorScheme, textTheme),
-          const SizedBox(height: 20),
-          _buildMainCTA(l10n, colorScheme, textTheme, state, notifier),
+          if (!isLifetime) ...[
+            _buildPricingCards(state, notifier, l10n, colorScheme, textTheme),
+            const SizedBox(height: 20),
+          ],
+          _buildMainCTA(
+            l10n,
+            colorScheme,
+            textTheme,
+            state,
+            notifier,
+            isSubscribed,
+            isLifetime,
+          ),
           _buildCloseHint(l10n, colorScheme, textTheme, notifier),
         ],
       ),
@@ -123,14 +283,26 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     AppLocalizations l10n,
     ColorScheme colorScheme,
     TextTheme textTheme,
+    bool isSubscribed,
+    bool isLifetime,
   ) {
+    final title = isLifetime
+        ? l10n.lifetimeAccessActive
+        : (isSubscribed ? l10n.upgradeToLifetime : l10n.paywallHeadline);
+
+    final subtitle = isLifetime
+        ? l10n.lifetimeAccessActiveDesc
+        : (isSubscribed
+              ? l10n.upgradeToLifetimeDesc
+              : l10n.paywallSimpleBenefit);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            l10n.paywallHeadline.toUpperCase(),
+            title.toUpperCase(),
             style: textTheme.headlineMedium?.copyWith(
               fontWeight: FontWeight.w900,
               letterSpacing: -1.0,
@@ -142,14 +314,16 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
           Row(
             children: [
               Icon(
-                Icons.check_circle_rounded,
+                isLifetime ? Icons.stars_rounded : Icons.check_circle_rounded,
                 size: 16,
-                color: colorScheme.onSurfaceVariant,
+                color: isLifetime
+                    ? colorScheme.primary
+                    : colorScheme.onSurfaceVariant,
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  l10n.paywallSimpleBenefit,
+                  subtitle,
                   style: textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     height: 1.4,
@@ -288,6 +462,8 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
     TextTheme textTheme,
     PaywallState state,
     PaywallStateNotifier notifier,
+    bool isSubscribed,
+    bool isLifetime,
   ) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
@@ -295,9 +471,15 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
         width: double.infinity,
         height: 56,
         child: ElevatedButton(
-          onPressed: state.isLoading || state.selectedPackage == null
-              ? null
-              : () => _handlePurchase(notifier, 'main_paywall'),
+          onPressed: isLifetime
+              ? () => Navigator.maybePop(context)
+              : (state.isLoading || state.selectedPackage == null
+                    ? null
+                    : () => _handlePurchase(
+                        notifier,
+                        'main_paywall',
+                        isSubscribed,
+                      )),
           style: ElevatedButton.styleFrom(
             backgroundColor: colorScheme.onSurface,
             foregroundColor: colorScheme.surface,
@@ -316,7 +498,8 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
                   ),
                 )
               : Text(
-                  l10n.getJobHunterPassNow.toUpperCase(),
+                  (isLifetime ? l10n.close : l10n.getJobHunterPassNow)
+                      .toUpperCase(),
                   style: const TextStyle(
                     fontWeight: FontWeight.w900,
                     letterSpacing: 1,
@@ -491,7 +674,7 @@ class _SubscriptionPaywallState extends ConsumerState<SubscriptionPaywall> {
               ? null
               : () async {
                   notifier.selectPackage(package);
-                  await _handlePurchase(notifier, 'downsell');
+                  await _handlePurchase(notifier, 'downsell', false);
                 },
           style: ElevatedButton.styleFrom(
             backgroundColor: colorScheme.onSurface,

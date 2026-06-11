@@ -26,6 +26,9 @@ class ProductNameResolver {
         l10n.productYearlyDesc(_formatPerDay(package, 365)),
       );
     }
+    if (id.contains('lifetime') || id.contains('selamanya')) {
+      return (l10n.productLifetimeTitle, l10n.productLifetimeDesc);
+    }
     return (l10n.jobHunterPass, '');
   }
 
@@ -72,6 +75,9 @@ class ProductNameResolver {
     }
     if (lower.contains('yearly') || lower.contains('tahun')) {
       return l10n.productYearlyTitle;
+    }
+    if (lower.contains('lifetime') || lower.contains('selamanya')) {
+      return l10n.productLifetimeTitle;
     }
     return l10n.jobHunterPass;
   }

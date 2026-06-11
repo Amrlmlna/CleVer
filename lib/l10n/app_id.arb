@@ -107,6 +107,9 @@
       }
     }
   },
+  "productLifetimeTitle": "Akses Selamanya",
+  "productLifetimeDesc": "Sekali bayar · Selamanya",
+  "passLifetime": "selamanya",
   "cv": "cv",
   "accountDeleteError": "gagal menghapus akun: {error}",
   "accountDeletedGoodbye": "akun berhasil dihapus. sampai jumpa!",
@@ -769,7 +772,12 @@
   "templateRequiresPhotoDesc": "kamu memilih versi template dengan foto profil, tapi belum ada foto yang diunggah.",
   "uploadPhoto": "unggah foto",
   "useStyleWithoutPhoto": "gunakan versi template tanpa foto",
-  "deviceLimitReached": "Batas perangkat tercapai. Ekspor gratis dibatasi 2 per perangkat."
+  "deviceLimitReached": "Batas perangkat tercapai. Ekspor gratis dibatasi 2 per perangkat.",
+  "lifetimeAccessActive": "Akses Selamanya Aktif!",
+  "lifetimeAccessActiveDesc": "Nikmati pembuatan CV tanpa batas dan template premium selamanya. Tidak perlu tindakan lebih lanjut.",
+  "upgradeToLifetime": "Upgrade ke Akses Selamanya",
+  "upgradeToLifetimeDesc": "Dapatkan akses tanpa batas selamanya dan hentikan tagihan berulang.",
+  "cancelRecurringWarning": "Catatan: Karena Anda sudah memiliki langganan aktif, pembelian Akses Selamanya tidak akan membatalkannya secara otomatis. Harap batalkan langganan Anda secara manual di Google Play Store untuk menghindari tagihan berulang."
 }
 
 

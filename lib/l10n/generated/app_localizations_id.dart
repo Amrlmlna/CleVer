@@ -195,6 +195,15 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get productLifetimeTitle => 'Akses Selamanya';
+
+  @override
+  String get productLifetimeDesc => 'Sekali bayar · Selamanya';
+
+  @override
+  String get passLifetime => 'selamanya';
+
+  @override
   String get cv => 'cv';
 
   @override
@@ -1995,4 +2004,22 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get deviceLimitReached =>
       'Batas perangkat tercapai. Ekspor gratis dibatasi 2 per perangkat.';
+
+  @override
+  String get lifetimeAccessActive => 'Akses Selamanya Aktif!';
+
+  @override
+  String get lifetimeAccessActiveDesc =>
+      'Nikmati pembuatan CV tanpa batas dan template premium selamanya. Tidak perlu tindakan lebih lanjut.';
+
+  @override
+  String get upgradeToLifetime => 'Upgrade ke Akses Selamanya';
+
+  @override
+  String get upgradeToLifetimeDesc =>
+      'Dapatkan akses tanpa batas selamanya dan hentikan tagihan berulang.';
+
+  @override
+  String get cancelRecurringWarning =>
+      'Catatan: Karena Anda sudah memiliki langganan aktif, pembelian Akses Selamanya tidak akan membatalkannya secara otomatis. Harap batalkan langganan Anda secara manual di Google Play Store untuk menghindari tagihan berulang.';
 }

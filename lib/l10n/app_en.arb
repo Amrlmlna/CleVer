@@ -107,6 +107,9 @@
       }
     }
   },
+  "productLifetimeTitle": "Lifetime Access",
+  "productLifetimeDesc": "One-time payment · Forever",
+  "passLifetime": "lifetime",
   "cv": "cv",
   "accountDeleteError": "failed to delete account: {error}",
   "accountDeletedGoodbye": "account successfully deleted. goodbye!",
@@ -780,6 +783,11 @@
   "templateRequiresPhotoDesc": "you selected a style with a profile photo, but no photo has been uploaded yet.",
   "uploadPhoto": "upload photo",
   "useStyleWithoutPhoto": "use style without photo",
-  "deviceLimitReached": "Device limit reached. Free exports are limited to 2 per device."
+  "deviceLimitReached": "Device limit reached. Free exports are limited to 2 per device.",
+  "lifetimeAccessActive": "You have Lifetime Access!",
+  "lifetimeAccessActiveDesc": "Enjoy unlimited CV generation and premium templates forever. No further actions needed.",
+  "upgradeToLifetime": "Upgrade to Lifetime",
+  "upgradeToLifetimeDesc": "Get unlimited access forever and stop recurring billing.",
+  "cancelRecurringWarning": "Note: Since you already have an active subscription, purchasing Lifetime will not automatically cancel it. Please remember to manually cancel your existing subscription in Google Play Store settings to avoid future recurring charges."
 }
 

@@ -76,25 +76,34 @@ class WalletPage extends ConsumerWidget {
                     final expiryDate = templates.isNotEmpty
                         ? templates.first.subscriptionExpiry
                         : null;
+                    final isLifetime =
+                        isSubscribed &&
+                        expiryDate != null &&
+                        expiryDate.difference(DateTime.now()).inDays > 365 * 10;
 
                     return SubscriptionStatusCard(
                       isSubscribed: isSubscribed,
                       expiryDate: expiryDate,
                       cardHolder: cardHolder,
-                      onAction: AuthGuard.protected(
-                        context,
-                        () async {
-                          final purchased = await PaymentService.presentPaywall(
-                            context,
-                          );
-                          if (purchased) {
-                            await Future.delayed(const Duration(seconds: 2));
-                            ref.invalidate(templatesProvider);
-                          }
-                        },
-                        featureTitle: l10n.authWallBuyCredits,
-                        featureDescription: l10n.authWallBuyCreditsDesc,
-                      ),
+                      onAction: isLifetime
+                          ? () {}
+                          : AuthGuard.protected(
+                              context,
+                              () async {
+                                final purchased =
+                                    await PaymentService.presentPaywall(
+                                      context,
+                                    );
+                                if (purchased) {
+                                  await Future.delayed(
+                                    const Duration(seconds: 2),
+                                  );
+                                  ref.invalidate(templatesProvider);
+                                }
+                              },
+                              featureTitle: l10n.authWallBuyCredits,
+                              featureDescription: l10n.authWallBuyCreditsDesc,
+                            ),
                     );
                   },
                   loading: () => SubscriptionStatusCard(

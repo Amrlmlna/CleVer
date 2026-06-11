@@ -17,6 +17,10 @@ class SubscriptionFormatter {
       return '';
     }
 
+    if (difference.inDays > 365 * 10) {
+      return '';
+    }
+
     if (difference.inDays >= 365) {
       final years = (difference.inDays / 365).floor();
       return l10n.years(years);

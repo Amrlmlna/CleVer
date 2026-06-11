@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../../core/services/analytics_service.dart';
+import '../../templates/providers/template_provider.dart';
 
 // ─── STATE ─────────────────────────────────────────────────────────────
 
@@ -44,27 +45,52 @@ class PaywallState {
 // ─── NOTIFIER ──────────────────────────────────────────────────────────
 
 class PaywallStateNotifier extends StateNotifier<PaywallState> {
+  final Ref _ref;
   final List<Package> _allPackages;
 
-  PaywallStateNotifier(this._allPackages) : super(const PaywallState()) {
+  PaywallStateNotifier(this._ref, this._allPackages)
+    : super(const PaywallState()) {
     _init();
   }
 
   void _init() {
-    final main = _allPackages.where((p) {
+    final templates = _ref.read(templatesProvider).value ?? [];
+    final isSubscribed = templates.any((t) => t.isSubscribed);
+    final expiryDate = templates.isNotEmpty
+        ? templates.first.subscriptionExpiry
+        : null;
+    final isLifetime =
+        isSubscribed &&
+        expiryDate != null &&
+        expiryDate.difference(DateTime.now()).inDays > 365 * 10;
+
+    List<Package> main = _allPackages.where((p) {
       final id = p.identifier.toLowerCase();
       final productId = p.storeProduct.identifier.toLowerCase();
-      return !(id.contains('24h') || productId.contains('24h'));
+      return !(id.contains('24h') ||
+          productId.contains('24h') ||
+          id.contains('yearly') ||
+          productId.contains('yearly'));
     }).toList()..sort((a, b) => _sortOrder(a).compareTo(_sortOrder(b)));
 
+    // If already subscribed recurringly, filter to only show lifetime options as upgrade path
+    if (isSubscribed && !isLifetime) {
+      main = main.where((p) {
+        final id = '${p.identifier} ${p.storeProduct.identifier}'.toLowerCase();
+        return id.contains('lifetime') || id.contains('selamanya');
+      }).toList();
+    }
+
     Package? downsell;
-    try {
-      downsell = _allPackages.firstWhere((p) {
-        final id = p.identifier.toLowerCase();
-        final productId = p.storeProduct.identifier.toLowerCase();
-        return id.contains('24h') || productId.contains('24h');
-      });
-    } catch (_) {}
+    if (!isSubscribed) {
+      try {
+        downsell = _allPackages.firstWhere((p) {
+          final id = p.identifier.toLowerCase();
+          final productId = p.storeProduct.identifier.toLowerCase();
+          return id.contains('24h') || productId.contains('24h');
+        });
+      } catch (_) {}
+    }
 
     state = state.copyWith(
       mainPackages: main,
@@ -82,6 +108,7 @@ class PaywallStateNotifier extends StateNotifier<PaywallState> {
     if (id.contains('weekly') || id.contains('minggu')) return 0;
     if (id.contains('monthly') || id.contains('bulan')) return 1;
     if (id.contains('yearly') || id.contains('tahun')) return 2;
+    if (id.contains('lifetime') || id.contains('selamanya')) return 2;
     if (id.contains('3d') || id.contains('3 hari')) return 3;
     return 99;
   }
@@ -132,5 +159,5 @@ class PaywallStateNotifier extends StateNotifier<PaywallState> {
 
 final paywallStateProvider = StateNotifierProvider.autoDispose
     .family<PaywallStateNotifier, PaywallState, List<Package>>(
-      (ref, packages) => PaywallStateNotifier(packages),
+      (ref, packages) => PaywallStateNotifier(ref, packages),
     );
