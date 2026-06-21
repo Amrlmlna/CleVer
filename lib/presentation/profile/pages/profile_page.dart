@@ -85,7 +85,7 @@ class ProfilePage extends ConsumerWidget {
     ];
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         bottom: false,
         child: LayoutBuilder(

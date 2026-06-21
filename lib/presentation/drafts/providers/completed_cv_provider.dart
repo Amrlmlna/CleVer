@@ -46,53 +46,63 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
     final user = ref.read(authStateProvider).value;
     if (user == null) return;
 
-    final current = state.value ?? [];
-    bool hasChanges = false;
-    final updatedList = List<CompletedCV>.from(current);
+    final prefs = await SharedPreferences.getInstance();
+    final migrationKey = 'migration_checked_${user.uid}';
+    if (prefs.getBool(migrationKey) == true) return;
 
-    final storageService = StorageService();
-    final syncManager = ref.read(completedCVSyncProvider);
+    try {
+      final current = state.value ?? [];
+      bool hasChanges = false;
+      final updatedList = List<CompletedCV>.from(current);
 
-    for (int i = 0; i < updatedList.length; i++) {
-      final cv = updatedList[i];
+      final storageService = StorageService();
+      final syncManager = ref.read(completedCVSyncProvider);
 
-      if (cv.remotePath == null && cv.remotePdfUrl != null) {
-        final recoveredPath = _recoverPathFromUrl(cv.remotePdfUrl!);
-        if (recoveredPath != null) {
-          debugPrint(
-            "[Migration] Recovered path for CV ${cv.id}: $recoveredPath",
-          );
-          updatedList[i] = updatedList[i].copyWith(remotePath: recoveredPath);
-          hasChanges = true;
+      for (int i = 0; i < updatedList.length; i++) {
+        final cv = updatedList[i];
+
+        if (cv.remotePath == null && cv.remotePdfUrl != null) {
+          final recoveredPath = _recoverPathFromUrl(cv.remotePdfUrl!);
+          if (recoveredPath != null) {
+            debugPrint(
+              "[Migration] Recovered path for CV ${cv.id}: $recoveredPath",
+            );
+            updatedList[i] = updatedList[i].copyWith(remotePath: recoveredPath);
+            hasChanges = true;
+            await syncManager.syncCVNow(updatedList[i]);
+          }
+        }
+
+        if (updatedList[i].remotePdfUrl == null ||
+            updatedList[i].remotePath == null) {
+          final file = File(updatedList[i].pdfPath);
+          if (await file.exists()) {
+            debugPrint(
+              "[Migration] Uploading local CV ${updatedList[i].id} to cloud...",
+            );
+            final uploadResult = await storageService.uploadCompletedCV(file);
+            if (uploadResult != null) {
+              updatedList[i] = updatedList[i].copyWith(
+                remotePdfUrl: uploadResult['pdfUrl'],
+                remotePath: uploadResult['remotePath'],
+              );
+              await syncManager.syncCVNow(updatedList[i]);
+              hasChanges = true;
+            }
+          }
+        } else {
           await syncManager.syncCVNow(updatedList[i]);
         }
       }
 
-      if (updatedList[i].remotePdfUrl == null ||
-          updatedList[i].remotePath == null) {
-        final file = File(updatedList[i].pdfPath);
-        if (await file.exists()) {
-          debugPrint(
-            "[Migration] Uploading local CV ${updatedList[i].id} to cloud...",
-          );
-          final uploadResult = await storageService.uploadCompletedCV(file);
-          if (uploadResult != null) {
-            updatedList[i] = updatedList[i].copyWith(
-              remotePdfUrl: uploadResult['pdfUrl'],
-              remotePath: uploadResult['remotePath'],
-            );
-            await syncManager.syncCVNow(updatedList[i]);
-            hasChanges = true;
-          }
-        }
-      } else {
-        await syncManager.syncCVNow(updatedList[i]);
+      if (hasChanges) {
+        await _saveToStorage(updatedList);
+        state = AsyncData(updatedList);
       }
-    }
 
-    if (hasChanges) {
-      await _saveToStorage(updatedList);
-      state = AsyncData(updatedList);
+      await prefs.setBool(migrationKey, true);
+    } catch (e) {
+      debugPrint("[Migration] Migration failed with error: $e");
     }
   }
 

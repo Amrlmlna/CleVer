@@ -44,17 +44,19 @@ class RemoteCVDataSource {
     String? locale,
     Map<String, dynamic>? tailoringOptionsJson,
   }) async {
-    final response = await _httpClient.post(
-      Uri.parse('$_cvBaseUrl/tailor'),
-      headers: await ApiConfig.getAuthHeaders(),
-      body: jsonEncode({
-        'masterProfile': masterProfileJson,
-        'jobInput': jobInputJson,
-        if (locale != null) 'locale': locale,
-        if (tailoringOptionsJson != null)
-          'tailoringOptions': tailoringOptionsJson,
-      }),
-    );
+    final response = await _httpClient
+        .post(
+          Uri.parse('$_cvBaseUrl/tailor'),
+          headers: await ApiConfig.getAuthHeaders(),
+          body: jsonEncode({
+            'masterProfile': masterProfileJson,
+            'jobInput': jobInputJson,
+            if (locale != null) 'locale': locale,
+            if (tailoringOptionsJson != null)
+              'tailoringOptions': tailoringOptionsJson,
+          }),
+        )
+        .timeout(const Duration(seconds: 30));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -68,15 +70,17 @@ class RemoteCVDataSource {
     String? locale,
     String? instruction,
   }) async {
-    final response = await _httpClient.post(
-      Uri.parse('$_cvBaseUrl/rewrite'),
-      headers: await ApiConfig.getAuthHeaders(),
-      body: jsonEncode({
-        'originalText': originalText,
-        if (locale != null) 'locale': locale,
-        if (instruction != null) 'instruction': instruction,
-      }),
-    );
+    final response = await _httpClient
+        .post(
+          Uri.parse('$_cvBaseUrl/rewrite'),
+          headers: await ApiConfig.getAuthHeaders(),
+          body: jsonEncode({
+            'originalText': originalText,
+            if (locale != null) 'locale': locale,
+            if (instruction != null) 'instruction': instruction,
+          }),
+        )
+        .timeout(const Duration(seconds: 30));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -87,11 +91,13 @@ class RemoteCVDataSource {
   }
 
   Future<Map<String, dynamic>> parseCV(String cvText) async {
-    final response = await _httpClient.post(
-      Uri.parse('$_cvBaseUrl/parse'),
-      headers: await ApiConfig.getAuthHeaders(),
-      body: jsonEncode({'cvText': cvText}),
-    );
+    final response = await _httpClient
+        .post(
+          Uri.parse('$_cvBaseUrl/parse'),
+          headers: await ApiConfig.getAuthHeaders(),
+          body: jsonEncode({'cvText': cvText}),
+        )
+        .timeout(const Duration(seconds: 30));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -101,11 +107,13 @@ class RemoteCVDataSource {
   }
 
   Future<Map<String, dynamic>> parseStudyCard(String text) async {
-    final response = await _httpClient.post(
-      Uri.parse('${ApiConfig.baseUrl}/education/parse-study-card'),
-      headers: await ApiConfig.getAuthHeaders(),
-      body: jsonEncode({'text': text}),
-    );
+    final response = await _httpClient
+        .post(
+          Uri.parse('${ApiConfig.baseUrl}/education/parse-study-card'),
+          headers: await ApiConfig.getAuthHeaders(),
+          body: jsonEncode({'text': text}),
+        )
+        .timeout(const Duration(seconds: 30));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -118,11 +126,13 @@ class RemoteCVDataSource {
     required String text,
     required String entityType,
   }) async {
-    final response = await _httpClient.post(
-      Uri.parse('$_cvBaseUrl/parse-entity'),
-      headers: await ApiConfig.getAuthHeaders(),
-      body: jsonEncode({'text': text, 'type': entityType}),
-    );
+    final response = await _httpClient
+        .post(
+          Uri.parse('$_cvBaseUrl/parse-entity'),
+          headers: await ApiConfig.getAuthHeaders(),
+          body: jsonEncode({'text': text, 'type': entityType}),
+        )
+        .timeout(const Duration(seconds: 30));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -138,17 +148,19 @@ class RemoteCVDataSource {
     bool usePhoto = false,
     String? photoUrl,
   }) async {
-    final response = await _httpClient.post(
-      Uri.parse('$_cvBaseUrl/generate'),
-      headers: await ApiConfig.getAuthHeaders(),
-      body: jsonEncode({
-        'cvData': cvDataJson,
-        'templateId': templateId,
-        if (locale != null) 'locale': locale,
-        'usePhoto': usePhoto,
-        if (usePhoto && photoUrl != null) 'photoUrl': photoUrl,
-      }),
-    );
+    final response = await _httpClient
+        .post(
+          Uri.parse('$_cvBaseUrl/generate'),
+          headers: await ApiConfig.getAuthHeaders(),
+          body: jsonEncode({
+            'cvData': cvDataJson,
+            'templateId': templateId,
+            if (locale != null) 'locale': locale,
+            'usePhoto': usePhoto,
+            if (usePhoto && photoUrl != null) 'photoUrl': photoUrl,
+          }),
+        )
+        .timeout(const Duration(seconds: 60));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
@@ -159,7 +171,9 @@ class RemoteCVDataSource {
         throw http.ClientException('Generated PDF URL is empty');
       }
 
-      final pdfResponse = await http.get(Uri.parse(pdfUrl));
+      final pdfResponse = await http
+          .get(Uri.parse(pdfUrl))
+          .timeout(const Duration(seconds: 60));
       if (pdfResponse.statusCode == 200) {
         final bytes = pdfResponse.bodyBytes;
         final startString = String.fromCharCodes(bytes.take(100));

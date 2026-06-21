@@ -44,6 +44,9 @@ class CVImportNotifier extends Notifier<CVImportState> {
   CVImportState build() {
     _ocrService = OCRDataSource();
     _repository = ref.watch(cvImportRepositoryProvider);
+    ref.onDispose(() {
+      _ocrService.dispose();
+    });
     return const CVImportState();
   }
 

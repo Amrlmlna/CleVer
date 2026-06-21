@@ -136,6 +136,21 @@ class AppTheme {
         color: AppColors.borderLight,
         thickness: 1,
       ),
+
+      chipTheme: ChipThemeData(
+        backgroundColor: colorScheme.primary.withValues(alpha: 0.1),
+        labelStyle: AppTextStyles.bodyMedium.copyWith(
+          color: colorScheme.onSurface,
+        ),
+        secondarySelectedColor: colorScheme.primary,
+        secondaryLabelStyle: AppTextStyles.bodyMedium.copyWith(
+          color: colorScheme.onPrimary,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        shape: StadiumBorder(
+          side: BorderSide(color: AppColors.black.withValues(alpha: 0.1)),
+        ),
+      ),
     );
   }
 

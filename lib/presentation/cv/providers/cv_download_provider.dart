@@ -60,7 +60,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
 
     final payload = {
       'cvData': {
-        ...creationState.userProfile!.toJson(),
+        ...?creationState.userProfile?.toJson(),
         'summary': creationState.summary,
         'jobTitle': creationState.jobInput?.jobTitle,
         'jobDescription': creationState.jobInput?.jobDescription,
@@ -101,6 +101,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     }
 
     final templates = ref.read(templatesProvider).value ?? [];
+    if (templates.isEmpty) return;
     final template = templates.firstWhere(
       (t) => t.id == styleId,
       orElse: () => templates.first,
@@ -108,6 +109,8 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
 
     final adService = ref.read(adServiceProvider);
     final creationState = ref.read(cvCreationProvider);
+
+    if (creationState.userProfile == null) return;
 
     final cvId = const Uuid().v4();
     final cvData = CVData(

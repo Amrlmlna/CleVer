@@ -3,11 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../data/datasources/remote_template_datasource.dart';
 import '../../../data/repositories/firestore_profile_repository.dart';
-import '../../../data/repositories/template_repository_impl.dart';
 import '../../../domain/entities/user_profile.dart';
-import '../../../domain/repositories/template_repository.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import 'profile_provider.dart';
 import '../../../core/providers/firebase_providers.dart';
@@ -18,17 +15,6 @@ final firestoreProfileRepositoryProvider = Provider<FirestoreProfileRepository>(
     return FirestoreProfileRepository(dataSource: dataSource);
   },
 );
-
-final remoteTemplateDataSourceProvider = Provider<RemoteTemplateDataSource>((
-  ref,
-) {
-  return RemoteTemplateDataSource();
-});
-
-final templateRepositoryProvider = Provider<TemplateRepository>((ref) {
-  final dataSource = ref.watch(remoteTemplateDataSourceProvider);
-  return TemplateRepositoryImpl(remoteDataSource: dataSource);
-});
 
 final profileSyncProvider = Provider<ProfileSyncManager>((ref) {
   return ProfileSyncManager(ref);

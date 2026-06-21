@@ -16,6 +16,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'presentation/wallet/providers/payment_sync_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'core/providers/locale_provider.dart';
+import 'core/providers/theme_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/services/ad_service.dart';
 import 'core/services/payment_service.dart';
@@ -81,7 +82,7 @@ class _BootstrapAppState extends State<BootstrapApp> {
   }
 
   Future<void> _initApp() async {
-    PaintingBinding.instance.imageCache.maximumSizeBytes = 300 * 1024 * 1024;
+    PaintingBinding.instance.imageCache.maximumSizeBytes = 150 * 1024 * 1024;
 
     if (mounted) {
       setState(() => _isReady = true);
@@ -114,10 +115,12 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       ref.read(profileSyncProvider).init();
       ref.read(draftSyncProvider).init();
       ref.read(completedCVSyncProvider).init();
       ref.read(localeNotifierProvider.notifier).init();
+      ref.read(themeNotifierProvider.notifier).init();
       ref.read(paymentSyncProvider).init();
 
       _initBackgroundServices();
@@ -141,8 +144,10 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
     final locale = ref.watch(localeNotifierProvider);
+    final themeMode = ref.watch(themeNotifierProvider);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       final l10n = AppLocalizations.of(context);
       if (l10n != null) {
         NotificationService.updateChannelLocalization(
@@ -159,7 +164,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
+      themeMode: themeMode,
       routerConfig: router,
       locale: locale,
       localizationsDelegates: const [

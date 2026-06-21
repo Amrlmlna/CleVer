@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -146,7 +148,7 @@ class NotificationService {
         {
           'fcmToken': token,
           'fcmUpdatedAt': FieldValue.serverTimestamp(),
-          'platform': 'android',
+          'platform': Platform.operatingSystem,
         },
         SetOptions(merge: true), // never overwrites other user fields
       );
@@ -183,7 +185,7 @@ class NotificationService {
     if (title != null || body != null) {
       await AwesomeNotifications().createNotification(
         content: NotificationContent(
-          id: DateTime.now().millisecondsSinceEpoch.remainder(100000),
+          id: Random().nextInt(2147483647),
           channelKey: 'general_alerts',
           title: title,
           body: body,
@@ -204,7 +206,7 @@ class NotificationService {
   }) async {
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
-        id: DateTime.now().millisecondsSinceEpoch.remainder(100000),
+        id: Random().nextInt(2147483647),
         channelKey: channelKey,
         title: title,
         body: body,

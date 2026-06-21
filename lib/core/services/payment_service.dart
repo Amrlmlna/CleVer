@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,7 @@ import '../../presentation/wallet/widgets/subscription_paywall.dart';
 
 class PaymentService {
   static String get _androidApiKey => dotenv.get('REVENUECAT_GOOGLE_KEY');
-  static const _iosApiKey = '';
+  static String get _iosApiKey => dotenv.env['REVENUECAT_IOS_KEY'] ?? '';
 
   static final _analytics = AnalyticsService();
 
@@ -18,9 +19,9 @@ class PaymentService {
       await Purchases.setLogLevel(LogLevel.debug);
 
       PurchasesConfiguration configuration;
-      if (Platform.isAndroid) {
+      if (!kIsWeb && Platform.isAndroid) {
         configuration = PurchasesConfiguration(_androidApiKey);
-      } else if (Platform.isIOS) {
+      } else if (!kIsWeb && Platform.isIOS) {
         configuration = PurchasesConfiguration(_iosApiKey);
       } else {
         return;

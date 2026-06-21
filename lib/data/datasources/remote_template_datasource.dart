@@ -11,10 +11,12 @@ class RemoteTemplateDataSource {
   static String get _baseUrl => ApiConfig.baseUrl;
 
   Future<List<dynamic>> getAllTemplates() async {
-    final response = await _httpClient.get(
-      Uri.parse('$_baseUrl/templates'),
-      headers: await ApiConfig.getAuthHeaders(),
-    );
+    final response = await _httpClient
+        .get(
+          Uri.parse('$_baseUrl/templates'),
+          headers: await ApiConfig.getAuthHeaders(),
+        )
+        .timeout(const Duration(seconds: 30));
 
     if (response.statusCode == 200) {
       return json.decode(response.body);

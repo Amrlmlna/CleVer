@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -12,6 +13,7 @@ class AdService {
   bool get _isEnabled => dotenv.env['ENABLE_ADS'] == 'true';
 
   String get _adUnitId {
+    if (kIsWeb) return '';
     if (Platform.isAndroid) {
       return dotenv.env['ADMOB_INTERSTITIAL_ANDROID'] ?? '';
     } else if (Platform.isIOS) {
