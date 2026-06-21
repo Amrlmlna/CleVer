@@ -49,7 +49,7 @@ Repositori ini berfungsi sebagai **Showcase Portofolio Pribadi**. Meskipun kode 
 
 ## Arsitektur
 
-Clever menggunakan strategi dual-AI dan infrastruktur cloud-native untuk memberikan penyesuaian (tailoring) berperforma tinggi.
+Clever menggunakan strategi bertenaga AI dan infrastruktur cloud-native untuk memberikan penyesuaian (tailoring) berperforma tinggi.
 
 ### Komponen Sistem
 
@@ -62,12 +62,10 @@ graph TD
 
     subgraph "Backend (Node.js)"
         API["API Express (Cloud Run)"]
-        Tasks["Cloud Tasks (Gen PDF)"]
     end
 
     subgraph "Model AI"
-        Gemini["Gemini (Tailoring)"]
-        Llama["Llama 3 (Parsing)"]
+        Gemini["Gemini (Vertex AI)"]
     end
 
     subgraph "Infrastruktur"
@@ -77,10 +75,8 @@ graph TD
 
     App --> API
     API --> Gemini
-    API --> Llama
     API --> Firebase
     API --> GCS
-    API --> Tasks
 ```
 
 ### Alur Pipeline Data
@@ -90,18 +86,18 @@ sequenceDiagram
     participant Pengguna
     participant App as Aplikasi Clever
     participant API as API Backend
-    participant AI as Gemini/Llama
+    participant AI as Gemini
 
     Pengguna->>App: Input Profil & Pekerjaan
     App->>API: POST /api/ai/cv/tailor
-    Note over API: Cek Cache MD5
+    Note over API: Cek Cache Firestore
     API->>AI: Grounding (Konteks Perusahaan)
     AI-->>API: Ringkasan
     API->>AI: Tailoring (Formula XYZ)
     AI-->>API: JSON Hasil Tailoring
     API-->>App: Hasil + Analisis
     App->>API: POST /api/cv/generate
-    API->>API: Render PDF
+    API->>API: Render PDF (Puppeteer)
     API-->>App: URL PDF GCS
 ```
 

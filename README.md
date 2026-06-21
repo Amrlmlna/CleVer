@@ -49,7 +49,7 @@ This repository serves as a **Personal Portfolio Showcase**. While the frontend 
 
 ## Architecture
 
-Clever uses a dual-AI strategy and a cloud-native infrastructure to deliver high-performance tailoring.
+Clever uses an AI-driven strategy and a cloud-native infrastructure to deliver high-performance tailoring.
 
 ### System Components
 
@@ -62,12 +62,10 @@ graph TD
 
     subgraph "Backend (Node.js)"
         API["Express API (Cloud Run)"]
-        Tasks["Cloud Tasks (PDF Gen)"]
     end
 
     subgraph "AI Models"
-        Gemini["Gemini (Tailoring)"]
-        Llama["Llama 3 (Parsing)"]
+        Gemini["Gemini (Vertex AI)"]
     end
 
     subgraph "Infrastructure"
@@ -77,10 +75,8 @@ graph TD
 
     App --> API
     API --> Gemini
-    API --> Llama
     API --> Firebase
     API --> GCS
-    API --> Tasks
 ```
 
 ### Data Pipeline Flow
@@ -90,18 +86,18 @@ sequenceDiagram
     participant User
     participant App as Clever App
     participant API as Backend API
-    participant AI as Gemini/Llama
+    participant AI as Gemini
 
     User->>App: Input Profile & Job
     App->>API: POST /api/ai/cv/tailor
-    Note over API: MD5 Cache Check
+    Note over API: Firestore Cache Check
     API->>AI: Grounding (Company Context)
     AI-->>API: Summary
     API->>AI: Tailoring (XYZ Formula)
     AI-->>API: Tailored JSON
     API-->>App: Results + Analysis
     App->>API: POST /api/cv/generate
-    API->>API: Render PDF
+    API->>API: Render PDF (Puppeteer)
     API-->>App: GCS PDF URL
 ```
 
