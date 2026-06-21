@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,6 +33,13 @@ class DataErrorMapper {
           statusCode: 401,
         );
       }
+      if (error.statusCode == 429) {
+        return DataError(
+          'Terlalu banyak permintaan. Silakan tunggu beberapa saat dan coba lagi.',
+          code: 'rate_limited',
+          statusCode: 429,
+        );
+      }
       return DataError(
         error.errorMessage,
         code: errorCode ?? 'api_error',
@@ -42,6 +50,8 @@ class DataErrorMapper {
         'Network error: Check your internet connection.',
         code: 'network_error',
       );
+    } else if (error is TimeoutException) {
+      return DataError('Koneksi timeout. Silakan coba lagi.', code: 'timeout');
     } else if (error is SocketException) {
       return DataError(
         'Server unreachable. Please try again later.',

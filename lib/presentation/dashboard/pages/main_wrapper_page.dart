@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -28,6 +29,7 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
   final GlobalKey _draftsKey = GlobalKey();
   final GlobalKey _profileKey = GlobalKey();
   TutorialCoachMark? _navTutorialCoachMark;
+  late StreamSubscription _notificationSub;
 
   @override
   void initState() {
@@ -37,16 +39,23 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
       if (ref.read(onboardingAuthCaptureProvider)) _handleOnboardingSuccess();
     });
 
-    NotificationController.displayStreamController.stream.listen((n) {
-      if (!mounted) return;
-      InAppNotificationOverlay.show(
-        context,
-        title: n.title?.isNotEmpty == true
-            ? n.title!
-            : AppLocalizations.of(context)!.notificationNew,
-        body: n.body ?? '',
-      );
-    });
+    _notificationSub = NotificationController.displayStreamController.stream
+        .listen((n) {
+          if (!mounted) return;
+          InAppNotificationOverlay.show(
+            context,
+            title: n.title?.isNotEmpty == true
+                ? n.title!
+                : AppLocalizations.of(context)!.notificationNew,
+            body: n.body ?? '',
+          );
+        });
+  }
+
+  @override
+  void dispose() {
+    _notificationSub.cancel();
+    super.dispose();
   }
 
   void _checkEmailVerification() =>

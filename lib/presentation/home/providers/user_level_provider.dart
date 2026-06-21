@@ -27,10 +27,10 @@ int calculateProfileCompletion(UserProfile? profile) {
   if (profile == null) return 0;
 
   int completed = 0;
-  int total = 6;
+  // Only count meaningful optional fields — fullName and email are always
+  // populated during registration so they don't measure completion.
+  int total = 5;
 
-  if (profile.fullName.isNotEmpty) completed++;
-  if (profile.email.isNotEmpty) completed++;
   if (profile.phoneNumber != null && profile.phoneNumber!.isNotEmpty)
     completed++;
 

@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -146,7 +147,7 @@ class NotificationService {
         {
           'fcmToken': token,
           'fcmUpdatedAt': FieldValue.serverTimestamp(),
-          'platform': 'android',
+          'platform': Platform.operatingSystem,
         },
         SetOptions(merge: true), // never overwrites other user fields
       );

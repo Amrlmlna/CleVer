@@ -13,11 +13,13 @@ class RemoteJobDataSource {
   static String get _jobBaseUrl => '${ApiConfig.baseUrl}/job';
 
   Future<Map<String, dynamic>> extractFromText(String text) async {
-    final response = await _httpClient.post(
-      Uri.parse('$_jobBaseUrl/extract'),
-      headers: await ApiConfig.getAuthHeaders(),
-      body: jsonEncode({'text': text}),
-    );
+    final response = await _httpClient
+        .post(
+          Uri.parse('$_jobBaseUrl/extract'),
+          headers: await ApiConfig.getAuthHeaders(),
+          body: jsonEncode({'text': text}),
+        )
+        .timeout(const Duration(seconds: 30));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -30,44 +32,37 @@ class RemoteJobDataSource {
   }
 
   Future<List<JobPostingModel>> getJobPostings() async {
-    try {
-      final response = await _httpClient.get(
-        Uri.parse(_jobBaseUrl),
-        headers: await ApiConfig.getAuthHeaders(),
-      );
+    final response = await _httpClient
+        .get(Uri.parse(_jobBaseUrl), headers: await ApiConfig.getAuthHeaders())
+        .timeout(const Duration(seconds: 30));
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        return data.map((json) => JobPostingModel.fromJson(json)).toList();
-      } else {
-        throw http.ClientException(
-          'Failed to load jobs: ${response.statusCode}',
-          response.request?.url,
-        );
-      }
-    } catch (e) {
-      return [];
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => JobPostingModel.fromJson(json)).toList();
+    } else {
+      throw http.ClientException(
+        'Failed to load jobs: ${response.statusCode}',
+        response.request?.url,
+      );
     }
   }
 
   Future<List<CuratedAccountModel>> getCuratedAccounts() async {
-    try {
-      final response = await _httpClient.get(
-        Uri.parse('$_jobBaseUrl/accounts'),
-        headers: await ApiConfig.getAuthHeaders(),
-      );
+    final response = await _httpClient
+        .get(
+          Uri.parse('$_jobBaseUrl/accounts'),
+          headers: await ApiConfig.getAuthHeaders(),
+        )
+        .timeout(const Duration(seconds: 30));
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        return data.map((json) => CuratedAccountModel.fromJson(json)).toList();
-      } else {
-        throw http.ClientException(
-          'Failed to load accounts: ${response.statusCode}',
-          response.request?.url,
-        );
-      }
-    } catch (e) {
-      return [];
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => CuratedAccountModel.fromJson(json)).toList();
+    } else {
+      throw http.ClientException(
+        'Failed to load accounts: ${response.statusCode}',
+        response.request?.url,
+      );
     }
   }
 }
