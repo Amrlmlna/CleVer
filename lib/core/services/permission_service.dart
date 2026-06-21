@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,7 @@ class PermissionService {
     [
       Permission.notification,
       Permission.camera,
-      if (Platform.isAndroid) ...[
+      if (!kIsWeb && Platform.isAndroid) ...[
         Permission.storage,
         Permission.photos,
       ] else ...[

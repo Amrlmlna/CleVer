@@ -213,6 +213,8 @@ class StudyCardScanner extends ConsumerWidget {
           SnackBar(content: Text('${localization.unknownError}: $e')),
         );
       }
+    } finally {
+      ocrService.dispose();
     }
   }
 }

@@ -12,6 +12,8 @@ import '../../../core/providers/notification_provider.dart';
 import '../../../core/router/app_routes.dart';
 import '../../auth/widgets/email_verification_bottom_sheet.dart';
 import '../../auth/widgets/delete_account_verification_content.dart';
+import '../../../core/providers/theme_provider.dart';
+import '../../../core/providers/locale_provider.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String? title;
@@ -54,58 +56,79 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   await ref.read(authRepositoryProvider).signOut();
                 } else if (value == 'delete') {
                   _handleAccountDeletion(context, ref);
+                } else if (value == 'theme') {
+                  _showThemeSelector(context, ref);
                 }
               },
               offset: const Offset(0, 48),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 'sync',
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.sync,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(AppLocalizations.of(context)!.syncData),
-                    ],
+              itemBuilder: (context) {
+                final localeCode = ref
+                    .watch(localeNotifierProvider)
+                    .languageCode;
+                final isIndo = localeCode == 'id';
+                return [
+                  PopupMenuItem(
+                    value: 'theme',
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.palette_outlined,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(isIndo ? 'Ubah Tema' : 'Change Theme'),
+                      ],
+                    ),
                   ),
-                ),
-                PopupMenuItem(
-                  value: 'logout',
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.logout,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(AppLocalizations.of(context)!.logOut),
-                    ],
+                  PopupMenuItem(
+                    value: 'sync',
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.sync,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(AppLocalizations.of(context)!.syncData),
+                      ],
+                    ),
                   ),
-                ),
-                PopupMenuItem(
-                  value: 'delete',
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.delete_forever_rounded,
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        AppLocalizations.of(context)!.deleteAccount,
-                        style: TextStyle(
+                  PopupMenuItem(
+                    value: 'logout',
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.logout,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(AppLocalizations.of(context)!.logOut),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.delete_forever_rounded,
                           color: Theme.of(context).colorScheme.error,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 8),
+                        Text(
+                          AppLocalizations.of(context)!.deleteAccount,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ];
+              },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CircleAvatar(
@@ -262,6 +285,61 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     );
   }
 
-  @override
+  void _showThemeSelector(BuildContext context, WidgetRef ref) {
+    final locale = ref.read(localeNotifierProvider).languageCode;
+    final isIndo = locale == 'id';
+    final currentThemeMode = ref.read(themeNotifierProvider);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(isIndo ? 'Pilih Tema' : 'Choose Theme'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RadioListTile<ThemeMode>(
+                title: Text(isIndo ? 'Sistem' : 'System'),
+                value: ThemeMode.system,
+                groupValue: currentThemeMode,
+                onChanged: (mode) {
+                  if (mode != null) {
+                    ref.read(themeNotifierProvider.notifier).setThemeMode(mode);
+                  }
+                  Navigator.pop(context);
+                },
+              ),
+              RadioListTile<ThemeMode>(
+                title: Text(isIndo ? 'Terang' : 'Light'),
+                value: ThemeMode.light,
+                groupValue: currentThemeMode,
+                onChanged: (mode) {
+                  if (mode != null) {
+                    ref.read(themeNotifierProvider.notifier).setThemeMode(mode);
+                  }
+                  Navigator.pop(context);
+                },
+              ),
+              RadioListTile<ThemeMode>(
+                title: Text(isIndo ? 'Gelap' : 'Dark'),
+                value: ThemeMode.dark,
+                groupValue: currentThemeMode,
+                onChanged: (mode) {
+                  if (mode != null) {
+                    ref.read(themeNotifierProvider.notifier).setThemeMode(mode);
+                  }
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

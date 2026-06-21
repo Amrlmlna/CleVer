@@ -152,8 +152,6 @@ class OnboardingFormNotifier extends StateNotifier<OnboardingState> {
   Future<void> submit() async {
     state = state.copyWith(isSaving: true);
 
-    await Future.delayed(const Duration(seconds: 2));
-
     try {
       await ref
           .read(masterProfileProvider.notifier)

@@ -39,8 +39,6 @@ class DraftSyncManager {
     if (_isInitialized) return;
     _isInitialized = true;
 
-    _isInitialized = true;
-
     final initialUser = _ref.read(authStateProvider).value;
     if (initialUser != null) {
       initialCloudFetch(initialUser.uid);

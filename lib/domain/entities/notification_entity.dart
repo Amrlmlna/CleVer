@@ -37,11 +37,13 @@ class NotificationEntity {
 
   factory NotificationEntity.fromJson(Map<String, dynamic> json) =>
       NotificationEntity(
-        id: json['id'],
-        title: json['title'],
-        body: json['body'],
-        timestamp: DateTime.parse(json['timestamp']),
-        isRead: json['isRead'],
-        payload: json['payload'],
+        id: json['id']?.toString() ?? '',
+        title: json['title']?.toString(),
+        body: json['body']?.toString() ?? '',
+        timestamp: json['timestamp'] != null
+            ? DateTime.tryParse(json['timestamp'].toString()) ?? DateTime.now()
+            : DateTime.now(),
+        isRead: json['isRead'] == true,
+        payload: json['payload']?.toString(),
       );
 }

@@ -36,8 +36,10 @@ class TemplateRepositoryImpl implements TemplateRepository {
     try {
       final templates = await getAllTemplates();
       return templates.firstWhere((t) => t.id == id);
-    } catch (e) {
+    } on StateError {
       return null;
+    } catch (e) {
+      rethrow;
     }
   }
 }

@@ -92,11 +92,23 @@ class StorageService {
   }
 
   Future<void> deleteProfilePhoto(String userId) async {
-    // Note: Backend implementation for photo deletion can be added if needed.
-    // For now, we mainly care about successful uploads.
-    debugPrint(
-      'Profile photo deletion requested for $userId (Not yet implemented in backend)',
-    );
+    try {
+      final headers = await ApiConfig.getAuthHeaders();
+      final response = await http.delete(
+        Uri.parse('${ApiConfig.baseUrl}/user/photo'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('[StorageService] Profile photo deleted successfully');
+      } else {
+        debugPrint(
+          '[StorageService] Failed to delete photo: ${response.statusCode} - ${response.body}',
+        );
+      }
+    } catch (e) {
+      debugPrint('[StorageService] Error deleting profile photo: $e');
+    }
   }
 
   /// Deletes a completed CV's PDF file from the GCS bucket via the backend.

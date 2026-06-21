@@ -2,13 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../data/datasources/ocr_datasource.dart';
-import '../../../data/datasources/remote_job_datasource.dart';
 import '../../../data/repositories/job_extraction_repository.dart';
 import '../../../domain/entities/job_input.dart';
-
-final remoteJobDataSourceProvider = Provider<RemoteJobDataSource>((ref) {
-  return RemoteJobDataSource();
-});
+import '../../jobs/providers/job_provider.dart';
 
 final jobExtractionRepositoryProvider = Provider<JobExtractionRepository>((
   ref,
@@ -61,6 +57,9 @@ class OCRNotifier extends Notifier<OCRState> {
   OCRState build() {
     _ocrService = OCRDataSource();
     _repository = ref.watch(jobExtractionRepositoryProvider);
+    ref.onDispose(() {
+      _ocrService.dispose();
+    });
     return const OCRState();
   }
 
@@ -129,7 +128,6 @@ class OCRNotifier extends Notifier<OCRState> {
 
   void reset() {
     state = const OCRState();
-    _ocrService.dispose();
   }
 }
 

@@ -33,14 +33,16 @@ class CompletedCV {
   };
 
   factory CompletedCV.fromJson(Map<String, dynamic> json) => CompletedCV(
-    id: json['id'] as String,
-    jobTitle: json['jobTitle'] as String,
-    templateId: json['templateId'] as String,
-    pdfPath: json['pdfPath'] as String,
-    remotePdfUrl: json['remotePdfUrl'] as String?,
-    remotePath: json['remotePath'] as String?,
-    thumbnailPath: json['thumbnailPath'] as String?,
-    generatedAt: DateTime.parse(json['generatedAt'] as String),
+    id: json['id']?.toString() ?? '',
+    jobTitle: json['jobTitle']?.toString() ?? '',
+    templateId: json['templateId']?.toString() ?? '',
+    pdfPath: json['pdfPath']?.toString() ?? '',
+    remotePdfUrl: json['remotePdfUrl']?.toString(),
+    remotePath: json['remotePath']?.toString(),
+    thumbnailPath: json['thumbnailPath']?.toString(),
+    generatedAt: json['generatedAt'] != null
+        ? DateTime.tryParse(json['generatedAt'].toString()) ?? DateTime.now()
+        : DateTime.now(),
   );
 
   CompletedCV copyWith({
