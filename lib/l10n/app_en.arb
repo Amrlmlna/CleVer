@@ -174,6 +174,7 @@
   "careerAnalytics": "career analytics",
   "category": "category",
   "certificationName": "certification name",
+  "certificationNameHint": "e.g. AWS Certified Cloud Practitioner",
   "certificationSubtitle": "enter relevant certifications, licenses, or awards. this can be a huge plus.",
   "certificationTitle": "certifications & licenses",
   "certifications": "certifications",
@@ -372,6 +373,7 @@
   "improving": "improving...",
   "includeProfilePhoto": "include profile photo",
   "issuer": "issuer",
+  "issuerHint": "e.g. Amazon Web Services",
   "italic": "italic",
   "jobDetailHint": "paste job description, requirements, or qualifications here...",
   "jobDetailLabel": "detail / qualification (optional)",
@@ -401,6 +403,7 @@
   "jobRequirements": "requirements",
   "jobCouldNotOpen": "could not open link",
   "jobTitle": "job title",
+  "jobTitleHint": "e.g. UI Designer",
   "jobs": "jobs",
   "keepBuilding": "keep building your profile to reach the next level!",
   "keepLocalData": "keep my local data (master profile)",
@@ -416,8 +419,7 @@
   "loginToSave": "login to access all features",
   "masterProfileUpdated": "master profile updated successfully",
   "messageDetail": "message / detail",
-  "modernProfessional": "modern professional",
-  "mon": "mon",
+"mon": "mon",
   "myCVs": "my cvs",
   "myDrafts": "my drafts",
   "next": "next",
@@ -526,6 +528,14 @@
   "reviewedByAI": "data & summary tailored by ai",
   "rewrite": "rewrite",
   "rewriteAI": "rewrite ai",
+  "rewriteFailed": "rewrite failed: {error}",
+  "@rewriteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "sat": "sat",
   "save": "save",
   "saveAllCaps": "save",
@@ -768,9 +778,12 @@
   "mascotExciting": "wih, amazing!",
   "mascotExcitingSub": "you just created your first cv! let's keep the momentum going.",
   "voiceInput": "voice input",
+  "voiceMode": "Voice",
+  "voiceForm": "Form",
   "voiceListening": "listening...",
   "voiceProcessing": "processing...",
   "voiceError": "sorry, i couldn't catch that.",
+  "voiceParseError": "couldn't process your voice input. please try again.",
   "voicePermissionRequired": "microphone permission is required for voice input.",
   "voiceHint": "tap to speak your details",
   "voiceExplainExperience": "Try speaking naturally to tell your work story. For example:\n\"I worked as a Senior Software Engineer at Google from January 2021 until now. I led a checkout redesign that increased conversion rate by 12%.\"",

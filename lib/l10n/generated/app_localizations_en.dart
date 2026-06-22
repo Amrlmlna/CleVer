@@ -394,6 +394,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get certificationName => 'certification name';
 
   @override
+  String get certificationNameHint => 'e.g. AWS Certified Cloud Practitioner';
+
+  @override
   String get certificationSubtitle =>
       'enter relevant certifications, licenses, or awards. this can be a huge plus.';
 
@@ -899,6 +902,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get issuer => 'issuer';
 
   @override
+  String get issuerHint => 'e.g. Amazon Web Services';
+
+  @override
   String get italic => 'italic';
 
   @override
@@ -970,6 +976,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get jobTitle => 'job title';
 
   @override
+  String get jobTitleHint => 'e.g. UI Designer';
+
+  @override
   String get jobs => 'jobs';
 
   @override
@@ -1014,9 +1023,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get messageDetail => 'message / detail';
-
-  @override
-  String get modernProfessional => 'modern professional';
 
   @override
   String get mon => 'mon';
@@ -1321,6 +1327,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rewriteAI => 'rewrite ai';
+
+  @override
+  String rewriteFailed(String error) {
+    return 'rewrite failed: $error';
+  }
 
   @override
   String get sat => 'sat';
@@ -1954,6 +1965,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get voiceInput => 'voice input';
 
   @override
+  String get voiceMode => 'Voice';
+
+  @override
+  String get voiceForm => 'Form';
+
+  @override
   String get voiceListening => 'listening...';
 
   @override
@@ -1961,6 +1978,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get voiceError => 'sorry, i couldn\'t catch that.';
+
+  @override
+  String get voiceParseError =>
+      'couldn\'t process your voice input. please try again.';
 
   @override
   String get voicePermissionRequired =>

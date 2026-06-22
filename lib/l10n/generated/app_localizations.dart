@@ -722,6 +722,12 @@ abstract class AppLocalizations {
   /// **'certification name'**
   String get certificationName;
 
+  /// No description provided for @certificationNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. AWS Certified Cloud Practitioner'**
+  String get certificationNameHint;
+
   /// No description provided for @certificationSubtitle.
   ///
   /// In en, this message translates to:
@@ -1650,6 +1656,12 @@ abstract class AppLocalizations {
   /// **'issuer'**
   String get issuer;
 
+  /// No description provided for @issuerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Amazon Web Services'**
+  String get issuerHint;
+
   /// No description provided for @italic.
   ///
   /// In en, this message translates to:
@@ -1782,6 +1794,12 @@ abstract class AppLocalizations {
   /// **'job title'**
   String get jobTitle;
 
+  /// No description provided for @jobTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. UI Designer'**
+  String get jobTitleHint;
+
   /// No description provided for @jobs.
   ///
   /// In en, this message translates to:
@@ -1871,12 +1889,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'message / detail'**
   String get messageDetail;
-
-  /// No description provided for @modernProfessional.
-  ///
-  /// In en, this message translates to:
-  /// **'modern professional'**
-  String get modernProfessional;
 
   /// No description provided for @mon.
   ///
@@ -2435,6 +2447,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'rewrite ai'**
   String get rewriteAI;
+
+  /// No description provided for @rewriteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'rewrite failed: {error}'**
+  String rewriteFailed(String error);
 
   /// No description provided for @sat.
   ///
@@ -3618,6 +3636,18 @@ abstract class AppLocalizations {
   /// **'voice input'**
   String get voiceInput;
 
+  /// No description provided for @voiceMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice'**
+  String get voiceMode;
+
+  /// No description provided for @voiceForm.
+  ///
+  /// In en, this message translates to:
+  /// **'Form'**
+  String get voiceForm;
+
   /// No description provided for @voiceListening.
   ///
   /// In en, this message translates to:
@@ -3635,6 +3665,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'sorry, i couldn\'t catch that.'**
   String get voiceError;
+
+  /// No description provided for @voiceParseError.
+  ///
+  /// In en, this message translates to:
+  /// **'couldn\'t process your voice input. please try again.'**
+  String get voiceParseError;
 
   /// No description provided for @voicePermissionRequired.
   ///

@@ -7,7 +7,6 @@ class SheetActionButtons extends StatelessWidget {
   final VoidCallback onSave;
   final VoidCallback onCancel;
   final String? saveLabel;
-  final String? cancelLabel;
 
   final String? voiceEntityType;
   final OnEntityParsed? onVoiceParsed;
@@ -17,7 +16,6 @@ class SheetActionButtons extends StatelessWidget {
     required this.onSave,
     required this.onCancel,
     this.saveLabel,
-    this.cancelLabel,
     this.voiceEntityType,
     this.onVoiceParsed,
   });
@@ -46,7 +44,7 @@ class SheetActionButtons extends StatelessWidget {
                     foregroundColor: AppColors.sheetOnSurfaceVar,
                   ),
                   child: Text(
-                    (cancelLabel ?? localization.cancel).toUpperCase(),
+                    (localization.cancel).toUpperCase(),
                     style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 12,

@@ -158,7 +158,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
+      firstDate: DateTime(1960),
       lastDate: DateTime.now(),
     );
     if (picked != null) {
@@ -204,7 +204,10 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
     } catch (e) {
       if (mounted) {
         setState(() => _isRewriting = false);
-        CustomSnackBar.showError(context, 'Gagal rewrite: $e');
+        CustomSnackBar.showError(
+          context,
+          AppLocalizations.of(context)!.rewriteFailed('$e'),
+        );
       }
     }
   }
@@ -260,7 +263,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                                 borderRadius: BorderRadius.circular(18),
                               ),
                               child: Text(
-                                'Voice',
+                                localization.voiceMode,
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
@@ -285,7 +288,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                                 borderRadius: BorderRadius.circular(18),
                               ),
                               child: Text(
-                                'Form',
+                                localization.voiceForm,
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
@@ -380,7 +383,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                       controller: _titleCtrl,
                       focusNode: _titleFocus,
                       labelText: localization.jobTitle,
-                      hintText: 'Software Engineer',
+                      hintText: localization.jobTitleHint,
                       validator: (v) =>
                           v!.isEmpty ? localization.requiredField : null,
                     ),

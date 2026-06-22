@@ -43,6 +43,7 @@ class _VoiceDictationPanelState extends ConsumerState<VoiceDictationPanel>
   final SpeechToText _speechToText = SpeechToText();
   bool _isListening = false;
   bool _isProcessing = false;
+  bool _speechAvailable = false;
   String _lastWords = '';
   String? _errorMessage;
 
@@ -54,7 +55,7 @@ class _VoiceDictationPanelState extends ConsumerState<VoiceDictationPanel>
 
   void _initSpeech() async {
     try {
-      await _speechToText.initialize(
+      final available = await _speechToText.initialize(
         onError: (error) {
           if (mounted) {
             setState(() {
@@ -71,7 +72,14 @@ class _VoiceDictationPanelState extends ConsumerState<VoiceDictationPanel>
           }
         },
       );
-    } catch (_) {}
+      if (mounted) {
+        setState(() => _speechAvailable = available);
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _speechAvailable = false);
+      }
+    }
   }
 
   void _startListening() async {
@@ -80,27 +88,27 @@ class _VoiceDictationPanelState extends ConsumerState<VoiceDictationPanel>
       _errorMessage = null;
     });
 
-    bool available = await _speechToText.initialize();
-    if (available) {
-      setState(() => _isListening = true);
-
-      await _speechToText.listen(
-        onResult: (result) {
-          setState(() {
-            _lastWords = result.recognizedWords;
-          });
-        },
-        localeId: null,
-        listenFor: const Duration(seconds: 30),
-        pauseFor: const Duration(seconds: 5),
-      );
-    } else {
+    if (!_speechAvailable) {
       if (mounted) {
         setState(() {
           _errorMessage = AppLocalizations.of(context)!.voiceSpeechUnavailable;
         });
       }
+      return;
     }
+
+    setState(() => _isListening = true);
+
+    await _speechToText.listen(
+      onResult: (result) {
+        setState(() {
+          _lastWords = result.recognizedWords;
+        });
+      },
+      localeId: null,
+      listenFor: const Duration(seconds: 30),
+      pauseFor: const Duration(seconds: 5),
+    );
   }
 
   void _stopListeningAndProcess() async {
@@ -129,7 +137,7 @@ class _VoiceDictationPanelState extends ConsumerState<VoiceDictationPanel>
     } catch (e) {
       if (mounted) {
         setState(() {
-          _errorMessage = e.toString();
+          _errorMessage = AppLocalizations.of(context)!.voiceParseError;
         });
       }
     } finally {

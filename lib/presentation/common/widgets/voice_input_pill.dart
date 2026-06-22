@@ -31,6 +31,7 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill>
   final SpeechToText _speechToText = SpeechToText();
   bool _isListening = false;
   bool _isProcessing = false;
+  bool _speechAvailable = false;
   String _lastWords = '';
 
   late AnimationController _animationController;
@@ -58,7 +59,7 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill>
 
   void _initSpeech() async {
     try {
-      await _speechToText.initialize(
+      final available = await _speechToText.initialize(
         onError: (error) {
           if (mounted) {
             setState(() {
@@ -75,8 +76,13 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill>
           }
         },
       );
+      if (mounted) {
+        setState(() => _speechAvailable = available);
+      }
     } catch (e) {
-      // Error handled via snackbar in stopListeningAndProcess if needed
+      if (mounted) {
+        setState(() => _speechAvailable = false);
+      }
     }
   }
 
@@ -85,26 +91,30 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill>
       _lastWords = '';
     });
 
-    bool available = await _speechToText.initialize();
-    if (available) {
-      setState(() => _isListening = true);
-      _animationController.forward();
-
-      await _speechToText.listen(
-        onResult: (result) {
-          setState(() {
-            _lastWords = result.recognizedWords;
-          });
-        },
-        localeId: null,
-        listenFor: const Duration(seconds: 30),
-        pauseFor: const Duration(seconds: 5),
-      );
-    } else {
+    if (!_speechAvailable) {
       if (mounted) {
-        // Handle error silently or show snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.voiceSpeechUnavailable),
+          ),
+        );
       }
+      return;
     }
+
+    setState(() => _isListening = true);
+    _animationController.forward();
+
+    await _speechToText.listen(
+      onResult: (result) {
+        setState(() {
+          _lastWords = result.recognizedWords;
+        });
+      },
+      localeId: null,
+      listenFor: const Duration(seconds: 30),
+      pauseFor: const Duration(seconds: 5),
+    );
   }
 
   void _stopListeningAndProcess() async {
@@ -135,7 +145,7 @@ class _VoiceInputPillState extends ConsumerState<VoiceInputPill>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(e.toString()),
+            content: Text(AppLocalizations.of(context)!.voiceParseError),
             backgroundColor: AppColors.error,
           ),
         );

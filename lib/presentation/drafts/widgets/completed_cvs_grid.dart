@@ -20,8 +20,6 @@ class _CompletedCVsGridState extends ConsumerState<CompletedCVsGrid> {
     switch (id) {
       case 'ATS':
         return l10n.atsStandard;
-      case 'Modern':
-        return l10n.modernProfessional;
       case 'Creative':
         return l10n.creativeDesign;
       default:

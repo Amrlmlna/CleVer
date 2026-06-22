@@ -1,6 +1,19 @@
 import 'package:equatable/equatable.dart';
 import '../../core/utils/format_utils.dart';
 
+/// Parses a date string that may be in YYYY-MM (month-precision) or
+/// full ISO 8601 format. Month-precision strings default to the 1st.
+DateTime _parseCertDate(String? raw) {
+  final dateStr = raw?.trim();
+  if (dateStr == null || dateStr.isEmpty) return DateTime.now();
+  // Match YYYY-MM (month precision) — prepend "-01" before parsing
+  if (RegExp(r'^\d{4}-\d{2}$').hasMatch(dateStr)) {
+    final parsed = DateTime.tryParse('$dateStr-01');
+    if (parsed != null) return parsed;
+  }
+  return DateTime.tryParse(dateStr) ?? DateTime.now();
+}
+
 class Certification extends Equatable {
   final String id;
   final String name;
@@ -28,7 +41,7 @@ class Certification extends Equatable {
         json['issuer'],
         fallback: 'Organization',
       ),
-      date: DateTime.tryParse(json['date'] as String? ?? '') ?? DateTime.now(),
+      date: _parseCertDate(json['date'] as String?),
       description: FormatUtils.ensureString(json['description']),
       fingerprint: json['fingerprint'] as String?,
     );

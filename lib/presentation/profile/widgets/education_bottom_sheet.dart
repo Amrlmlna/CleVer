@@ -204,7 +204,10 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
     } catch (e) {
       if (mounted) {
         setState(() => _isRewriting = false);
-        CustomSnackBar.showError(context, 'Gagal rewrite: $e');
+        CustomSnackBar.showError(
+          context,
+          AppLocalizations.of(context)!.rewriteFailed('$e'),
+        );
       }
     }
   }
@@ -213,7 +216,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1980),
+      firstDate: DateTime(1960),
       lastDate: DateTime.now(),
     );
     if (picked != null) {
@@ -272,7 +275,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                                 borderRadius: BorderRadius.circular(18),
                               ),
                               child: Text(
-                                'Voice',
+                                localization.voiceMode,
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
@@ -297,7 +300,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                                 borderRadius: BorderRadius.circular(18),
                               ),
                               child: Text(
-                                'Form',
+                                localization.voiceForm,
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,

@@ -343,8 +343,6 @@ class DraftsContent extends StatelessWidget {
     switch (id) {
       case 'ATS':
         return AppLocalizations.of(context)!.atsStandard;
-      case 'Modern':
-        return AppLocalizations.of(context)!.modernProfessional;
       case 'Creative':
         return AppLocalizations.of(context)!.creativeDesign;
       default:

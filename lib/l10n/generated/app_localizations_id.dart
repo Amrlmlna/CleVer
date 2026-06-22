@@ -388,6 +388,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get certificationName => 'nama sertifikasi';
 
   @override
+  String get certificationNameHint => 'cth: AWS Certified Cloud Practitioner';
+
+  @override
   String get certificationSubtitle =>
       'masukkan sertifikasi, lisensi, atau penghargaan yang relevan. ini bisa jadi nilai tambah besar.';
 
@@ -895,6 +898,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get issuer => 'penerbit (issuer)';
 
   @override
+  String get issuerHint => 'cth: Amazon Web Services';
+
+  @override
   String get italic => 'miring';
 
   @override
@@ -966,6 +972,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get jobTitle => 'posisi / jabatan';
 
   @override
+  String get jobTitleHint => 'cth: UI Designer';
+
+  @override
   String get jobs => 'lowongan';
 
   @override
@@ -1010,9 +1019,6 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get messageDetail => 'pesan / detail';
-
-  @override
-  String get modernProfessional => 'modern professional';
 
   @override
   String get mon => 'sen';
@@ -1319,6 +1325,11 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get rewriteAI => 'rewrite ai';
+
+  @override
+  String rewriteFailed(String error) {
+    return 'gagal menulis ulang: $error';
+  }
 
   @override
   String get sat => 'sab';
@@ -1954,6 +1965,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get voiceInput => 'input suara';
 
   @override
+  String get voiceMode => 'Suara';
+
+  @override
+  String get voiceForm => 'Form';
+
+  @override
   String get voiceListening => 'mendengarkan...';
 
   @override
@@ -1961,6 +1978,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get voiceError => 'maaf, kurang kedengeran nih.';
+
+  @override
+  String get voiceParseError => 'gagal memproses suara kamu. coba lagi ya.';
 
   @override
   String get voicePermissionRequired => 'butuh izin mikrofon buat input suara.';

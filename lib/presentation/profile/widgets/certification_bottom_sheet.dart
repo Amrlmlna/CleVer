@@ -15,6 +15,17 @@ import '../../common/widgets/spinning_text_loader.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../../../core/providers/locale_provider.dart';
 
+/// Parses a date string that may be in YYYY-MM (month-precision) or
+/// full ISO 8601 format. Month-precision strings default to the 1st.
+DateTime _parseCertDate(String raw) {
+  final dateStr = raw.trim();
+  if (RegExp(r'^\d{4}-\d{2}$').hasMatch(dateStr)) {
+    final parsed = DateTime.tryParse('$dateStr-01');
+    if (parsed != null) return parsed;
+  }
+  return DateTime.tryParse(dateStr) ?? DateTime.now();
+}
+
 class CertificationBottomSheet extends ConsumerStatefulWidget {
   final Certification? existing;
 
@@ -58,6 +69,7 @@ class _CertificationBottomSheetState
   late TextEditingController _issuerController;
   late TextEditingController _descController;
   late DateTime _selectedDate;
+  late DateTime _originalDate;
   bool _isRewriting = false;
   bool _canPopNow = false;
   bool _isVoiceMode = true;
@@ -77,6 +89,7 @@ class _CertificationBottomSheetState
       text: widget.existing?.description ?? '',
     );
     _selectedDate = widget.existing?.date ?? DateTime.now();
+    _originalDate = _selectedDate;
     if (widget.existing != null) {
       _isVoiceMode = false; // default to manual form when editing
     }
@@ -97,7 +110,7 @@ class _CertificationBottomSheetState
     return _nameController.text != (widget.existing?.name ?? '') ||
         _issuerController.text != (widget.existing?.issuer ?? '') ||
         _descController.text != (widget.existing?.description ?? '') ||
-        _selectedDate != (widget.existing?.date ?? _selectedDate);
+        _selectedDate != _originalDate;
   }
 
   void _handlePop() async {
@@ -173,7 +186,10 @@ class _CertificationBottomSheetState
     } catch (e) {
       if (mounted) {
         setState(() => _isRewriting = false);
-        CustomSnackBar.showError(context, 'Gagal rewrite: $e');
+        CustomSnackBar.showError(
+          context,
+          AppLocalizations.of(context)!.rewriteFailed('$e'),
+        );
       }
     }
   }
@@ -197,7 +213,7 @@ class _CertificationBottomSheetState
     final picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
-      firstDate: DateTime(1900),
+      firstDate: DateTime(1960),
       lastDate: DateTime.now(),
     );
     if (picked != null && picked != _selectedDate) {
@@ -258,7 +274,7 @@ class _CertificationBottomSheetState
                                 borderRadius: BorderRadius.circular(18),
                               ),
                               child: Text(
-                                'Voice',
+                                localization.voiceMode,
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
@@ -283,7 +299,7 @@ class _CertificationBottomSheetState
                                 borderRadius: BorderRadius.circular(18),
                               ),
                               child: Text(
-                                'Form',
+                                localization.voiceForm,
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
@@ -359,9 +375,9 @@ class _CertificationBottomSheetState
                           }
                           if (data['date'] != null &&
                               data['date'].toString().isNotEmpty) {
-                            try {
-                              _selectedDate = DateTime.parse(data['date']);
-                            } catch (_) {}
+                            _selectedDate = _parseCertDate(
+                              data['date'].toString(),
+                            );
                           }
                           if (data['description'] != null &&
                               data['description'].toString().isNotEmpty) {
@@ -375,7 +391,7 @@ class _CertificationBottomSheetState
                       controller: _nameController,
                       focusNode: _nameFocus,
                       labelText: localization.certificationName,
-                      hintText: 'AWS Certified Cloud Practitioner',
+                      hintText: localization.certificationNameHint,
                       validator: (v) =>
                           v!.isEmpty ? localization.requiredField : null,
                     ),
@@ -384,7 +400,7 @@ class _CertificationBottomSheetState
                       controller: _issuerController,
                       focusNode: _issuerFocus,
                       labelText: localization.issuer,
-                      hintText: 'Amazon Web Services',
+                      hintText: localization.issuerHint,
                       validator: (v) =>
                           v!.isEmpty ? localization.requiredField : null,
                     ),
@@ -529,9 +545,9 @@ class _CertificationBottomSheetState
                               }
                               if (data['date'] != null &&
                                   data['date'].toString().isNotEmpty) {
-                                try {
-                                  _selectedDate = DateTime.parse(data['date']);
-                                } catch (_) {}
+                                _selectedDate = _parseCertDate(
+                                  data['date'].toString(),
+                                );
                               }
                               if (data['description'] != null &&
                                   data['description'].toString().isNotEmpty) {

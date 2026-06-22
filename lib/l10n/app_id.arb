@@ -174,6 +174,7 @@
   "careerAnalytics": "analisis karir",
   "category": "kategori",
   "certificationName": "nama sertifikasi",
+  "certificationNameHint": "cth: AWS Certified Cloud Practitioner",
   "certificationSubtitle": "masukkan sertifikasi, lisensi, atau penghargaan yang relevan. ini bisa jadi nilai tambah besar.",
   "certificationTitle": "sertifikasi & lisensi",
   "certifications": "sertifikasi",
@@ -361,6 +362,7 @@
   "improving": "memperbaiki...",
   "includeProfilePhoto": "sertakan foto profil",
   "issuer": "penerbit (issuer)",
+  "issuerHint": "cth: Amazon Web Services",
   "italic": "miring",
   "jobDetailHint": "paste deskripsi posisi, persyaratan, atau kualifikasi di sini...",
   "jobDetailLabel": "detail / kualifikasi (opsional)",
@@ -390,6 +392,7 @@
   "jobRequirements": "persyaratan",
   "jobCouldNotOpen": "gagal membuka tautan",
   "jobTitle": "posisi / jabatan",
+  "jobTitleHint": "cth: UI Designer",
   "jobs": "lowongan",
   "keepBuilding": "terus lengkapi profilmu untuk mencapai level berikutnya!",
   "keepLocalData": "simpan data lokal saya (master profile)",
@@ -405,8 +408,7 @@
   "loginToSave": "login untuk akses semua fitur",
   "masterProfileUpdated": "master profile berhasil diperbarui",
   "messageDetail": "pesan / detail",
-  "modernProfessional": "modern professional",
-  "mon": "sen",
+"mon": "sen",
   "myCVs": "cv saya",
   "myDrafts": "draft saya",
   "next": "lanjut",
@@ -515,6 +517,14 @@
   "reviewedByAI": "data & summary telah disesuaikan oleh ai",
   "rewrite": "tulis ulang",
   "rewriteAI": "rewrite ai",
+  "rewriteFailed": "gagal menulis ulang: {error}",
+  "@rewriteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "sat": "sab",
   "save": "simpan",
   "saveAllCaps": "simpan",
@@ -757,9 +767,12 @@
   "mascotExciting": "wih, keren!",
   "mascotExcitingSub": "kamu baru saja membuat cv pertama! yuk, lanjut terus semangatnya.",
   "voiceInput": "input suara",
+  "voiceMode": "Suara",
+  "voiceForm": "Form",
   "voiceListening": "mendengarkan...",
   "voiceProcessing": "memproses...",
   "voiceError": "maaf, kurang kedengeran nih.",
+  "voiceParseError": "gagal memproses suara kamu. coba lagi ya.",
   "voicePermissionRequired": "butuh izin mikrofon buat input suara.",
   "voiceHint": "ketuk buat ngomong detailnya",
   "voiceExplainExperience": "Berceritalah secara alami tentang pengalaman kerjamu. Contoh:\n\"Saya bekerja sebagai Senior Software Engineer di Google dari Januari 2021 sampai sekarang. Saya memimpin desain ulang checkout yang meningkatkan tingkat konversi sebesar 12%.\"",
