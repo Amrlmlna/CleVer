@@ -3651,13 +3651,13 @@ abstract class AppLocalizations {
   /// No description provided for @voiceExplainExperience.
   ///
   /// In en, this message translates to:
-  /// **'ex: \"I worked as a Senior Dev at Google for 2 years...\"'**
+  /// **'Try speaking naturally to tell your work story. For example:\n\"I worked as a Senior Software Engineer at Google from January 2021 until now. I led a checkout redesign that increased conversion rate by 12%.\"'**
   String get voiceExplainExperience;
 
   /// No description provided for @voiceExplainEducation.
   ///
   /// In en, this message translates to:
-  /// **'ex: \"I studied Computer Science at UI from 2018 to 2022...\"'**
+  /// **'Tell us about your educational background in your own words. For example:\n\"I studied Computer Science at the University of Indonesia from 2018 to 2022, majoring in AI and graduated with honors.\"'**
   String get voiceExplainEducation;
 
   /// No description provided for @voiceUseSuara.
@@ -3677,6 +3677,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'almost done...'**
   String get voiceAlmostDone;
+
+  /// No description provided for @voiceChecklistFilled.
+  ///
+  /// In en, this message translates to:
+  /// **'Filled'**
+  String get voiceChecklistFilled;
+
+  /// No description provided for @voiceSpeechUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech recognition unavailable'**
+  String get voiceSpeechUnavailable;
+
+  /// No description provided for @voiceTapToStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to stop recording'**
+  String get voiceTapToStop;
+
+  /// No description provided for @voiceParsingData.
+  ///
+  /// In en, this message translates to:
+  /// **'Parsing data...'**
+  String get voiceParsingData;
+
+  /// No description provided for @voiceTapMicHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap mic & speak naturally'**
+  String get voiceTapMicHint;
+
+  /// No description provided for @voiceExplainCertification.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your certifications or achievements. For example:\n\"I earned the AWS Certified Cloud Practitioner certification from Amazon Web Services in June 2023.\"'**
+  String get voiceExplainCertification;
 
   /// No description provided for @onboardingNewBadge.
   ///

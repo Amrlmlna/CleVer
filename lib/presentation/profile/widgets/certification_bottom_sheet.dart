@@ -8,6 +8,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../common/widgets/sheet/sheet_header.dart';
 import '../../common/widgets/sheet/sheet_action_buttons.dart';
+import '../../common/widgets/voice_dictation_panel.dart';
 
 import '../../../../core/utils/custom_snackbar.dart';
 import '../../common/widgets/spinning_text_loader.dart';
@@ -59,6 +60,11 @@ class _CertificationBottomSheetState
   late DateTime _selectedDate;
   bool _isRewriting = false;
   bool _canPopNow = false;
+  bool _isVoiceMode = true;
+
+  final FocusNode _nameFocus = FocusNode();
+  final FocusNode _issuerFocus = FocusNode();
+  final FocusNode _descFocus = FocusNode();
 
   @override
   void initState() {
@@ -71,6 +77,9 @@ class _CertificationBottomSheetState
       text: widget.existing?.description ?? '',
     );
     _selectedDate = widget.existing?.date ?? DateTime.now();
+    if (widget.existing != null) {
+      _isVoiceMode = false; // default to manual form when editing
+    }
   }
 
   @override
@@ -78,6 +87,9 @@ class _CertificationBottomSheetState
     _nameController.dispose();
     _issuerController.dispose();
     _descController.dispose();
+    _nameFocus.dispose();
+    _issuerFocus.dispose();
+    _descFocus.dispose();
     super.dispose();
   }
 
@@ -198,6 +210,7 @@ class _CertificationBottomSheetState
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return PopScope(
       canPop: _canPopNow,
@@ -220,165 +233,312 @@ class _CertificationBottomSheetState
                         ? localization.addCertification
                         : localization.editCertification,
                     onClosing: _handlePop,
-                  ),
-
-                  const SizedBox(height: 24),
-                  CustomTextFormField(
-                    controller: _nameController,
-                    labelText: localization.certificationName,
-                    hintText: 'AWS Certified Cloud Practitioner',
-                    validator: (v) =>
-                        v!.isEmpty ? localization.requiredField : null,
-                  ),
-                  const SizedBox(height: 16),
-                  CustomTextFormField(
-                    controller: _issuerController,
-                    labelText: localization.issuer,
-                    hintText: 'Amazon Web Services',
-                    validator: (v) =>
-                        v!.isEmpty ? localization.requiredField : null,
-                  ),
-                  const SizedBox(height: 16),
-                  InkWell(
-                    onTap: () => _selectDate(context),
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
+                    trailing: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Theme.of(context).colorScheme.outlineVariant,
+                        color: colorScheme.surfaceContainerHighest.withValues(
+                          alpha: 0.5,
                         ),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: colorScheme.outlineVariant),
                       ),
                       child: Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
-                            Icons.calendar_today_outlined,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurfaceVariant,
-                            size: 20,
+                          GestureDetector(
+                            onTap: () => setState(() => _isVoiceMode = true),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: _isVoiceMode
+                                    ? colorScheme.onSurface
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                              child: Text(
+                                'Voice',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: _isVoiceMode
+                                      ? colorScheme.surface
+                                      : colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
                           ),
-                          const SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                localization.dateLabel,
+                          GestureDetector(
+                            onTap: () => setState(() => _isVoiceMode = false),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: !_isVoiceMode
+                                    ? colorScheme.onSurface
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                              child: Text(
+                                'Form',
                                 style: TextStyle(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurfaceVariant,
-                                  fontSize: 12,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: !_isVoiceMode
+                                      ? colorScheme.surface
+                                      : colorScheme.onSurfaceVariant,
                                 ),
                               ),
-                              Text(
-                                '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
-                                style: TextStyle(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        localization.shortDescription,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w500,
+
+                  const SizedBox(height: 24),
+
+                  if (_isVoiceMode)
+                    VoiceDictationPanel(
+                      entityType: 'certification',
+                      instruction: localization.voiceExplainCertification,
+                      checklistItems: [
+                        VoiceChecklistItem(
+                          label: localization.certificationName,
+                          isFilled: _nameController.text.isNotEmpty,
+                          onTap: () {
+                            setState(() => _isVoiceMode = false);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _nameFocus.requestFocus();
+                            });
+                          },
+                        ),
+                        VoiceChecklistItem(
+                          label: localization.issuer,
+                          isFilled: _issuerController.text.isNotEmpty,
+                          onTap: () {
+                            setState(() => _isVoiceMode = false);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _issuerFocus.requestFocus();
+                            });
+                          },
+                        ),
+                        VoiceChecklistItem(
+                          label: localization.dateLabel,
+                          isFilled: true,
+                          onTap: () {
+                            setState(() => _isVoiceMode = false);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _selectDate(context);
+                            });
+                          },
+                        ),
+                        VoiceChecklistItem(
+                          label: localization.shortDescription,
+                          isFilled: _descController.text.isNotEmpty,
+                          onTap: () {
+                            setState(() => _isVoiceMode = false);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _descFocus.requestFocus();
+                            });
+                          },
+                        ),
+                      ],
+                      onParsed: (data) {
+                        setState(() {
+                          if (data['name'] != null &&
+                              data['name'].toString().isNotEmpty) {
+                            _nameController.text = data['name'];
+                          }
+                          if (data['issuer'] != null &&
+                              data['issuer'].toString().isNotEmpty) {
+                            _issuerController.text = data['issuer'];
+                          }
+                          if (data['date'] != null &&
+                              data['date'].toString().isNotEmpty) {
+                            try {
+                              _selectedDate = DateTime.parse(data['date']);
+                            } catch (_) {}
+                          }
+                          if (data['description'] != null &&
+                              data['description'].toString().isNotEmpty) {
+                            _descController.text = data['description'];
+                          }
+                        });
+                      },
+                    )
+                  else ...[
+                    CustomTextFormField(
+                      controller: _nameController,
+                      focusNode: _nameFocus,
+                      labelText: localization.certificationName,
+                      hintText: 'AWS Certified Cloud Practitioner',
+                      validator: (v) =>
+                          v!.isEmpty ? localization.requiredField : null,
+                    ),
+                    const SizedBox(height: 16),
+                    CustomTextFormField(
+                      controller: _issuerController,
+                      focusNode: _issuerFocus,
+                      labelText: localization.issuer,
+                      hintText: 'Amazon Web Services',
+                      validator: (v) =>
+                          v!.isEmpty ? localization.requiredField : null,
+                    ),
+                    const SizedBox(height: 16),
+                    InkWell(
+                      onTap: () => _selectDate(context),
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_today_outlined,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  localization.dateLabel,
+                                  style: TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                                  style: TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      _isRewriting
-                          ? SizedBox(
-                              height: 16,
-                              width: 100,
-                              child: SpinningTextLoader(
-                                texts: [
-                                  localization.improving,
-                                  localization.rephrasing,
-                                  localization.polishing,
-                                ],
-                                style: Theme.of(context).textTheme.bodySmall
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                interval: const Duration(milliseconds: 800),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          localization.shortDescription,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                                fontWeight: FontWeight.w500,
                               ),
-                            )
-                          : TextButton.icon(
-                              onPressed: _rewriteDescription,
-                              icon: Icon(
-                                Icons.auto_awesome,
-                                size: 14,
-                                color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        _isRewriting
+                            ? SizedBox(
+                                height: 16,
+                                width: 100,
+                                child: SpinningTextLoader(
+                                  texts: [
+                                    localization.improving,
+                                    localization.rephrasing,
+                                    localization.polishing,
+                                  ],
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                  interval: const Duration(milliseconds: 800),
+                                ),
+                              )
+                            : TextButton.icon(
+                                onPressed: _rewriteDescription,
+                                icon: Icon(
+                                  Icons.auto_awesome,
+                                  size: 14,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                ),
+                                label: Text(
+                                  localization.rewriteAI,
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: const Size(0, 0),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
                               ),
-                              label: Text(
-                                localization.rewriteAI,
-                                style: Theme.of(context).textTheme.bodySmall
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                              ),
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                minimumSize: const Size(0, 0),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                            ),
-                    ],
-                  ),
-                  CustomTextFormField(
-                    controller: _descController,
-                    labelText: '',
-                    hintText: localization.descriptionHint,
-                    maxLines: 3,
-                  ),
+                      ],
+                    ),
+                    CustomTextFormField(
+                      controller: _descController,
+                      focusNode: _descFocus,
+                      labelText: '',
+                      hintText: localization.descriptionHint,
+                      maxLines: 3,
+                    ),
+                  ],
                   const SizedBox(height: 32),
                   SheetActionButtons(
                     onSave: _save,
                     onCancel: _handlePop,
-                    voiceEntityType: 'certification',
-                    onVoiceParsed: (data) {
-                      setState(() {
-                        if (data['name'] != null &&
-                            data['name'].toString().isNotEmpty) {
-                          _nameController.text = data['name'];
-                        }
-                        if (data['issuer'] != null &&
-                            data['issuer'].toString().isNotEmpty) {
-                          _issuerController.text = data['issuer'];
-                        }
-                        if (data['date'] != null &&
-                            data['date'].toString().isNotEmpty) {
-                          try {
-                            _selectedDate = DateTime.parse(data['date']);
-                          } catch (_) {}
-                        }
-                        if (data['description'] != null &&
-                            data['description'].toString().isNotEmpty) {
-                          _descController.text = data['description'];
-                        }
-                      });
-                    },
+                    voiceEntityType: _isVoiceMode ? null : 'certification',
+                    onVoiceParsed: _isVoiceMode
+                        ? null
+                        : (data) {
+                            setState(() {
+                              if (data['name'] != null &&
+                                  data['name'].toString().isNotEmpty) {
+                                _nameController.text = data['name'];
+                              }
+                              if (data['issuer'] != null &&
+                                  data['issuer'].toString().isNotEmpty) {
+                                _issuerController.text = data['issuer'];
+                              }
+                              if (data['date'] != null &&
+                                  data['date'].toString().isNotEmpty) {
+                                try {
+                                  _selectedDate = DateTime.parse(data['date']);
+                                } catch (_) {}
+                              }
+                              if (data['description'] != null &&
+                                  data['description'].toString().isNotEmpty) {
+                                _descController.text = data['description'];
+                              }
+                            });
+                          },
                   ),
                 ],
               ),

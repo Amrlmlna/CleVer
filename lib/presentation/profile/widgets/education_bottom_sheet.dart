@@ -10,6 +10,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../common/widgets/sheet/sheet_header.dart';
 import '../../common/widgets/sheet/sheet_action_buttons.dart';
+import '../../common/widgets/voice_dictation_panel.dart';
 
 import './education/subject_list_section.dart';
 import 'package:intl/intl.dart';
@@ -62,6 +63,12 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
   late List<Subject> _subjects;
   bool _canPopNow = false;
   bool _isRewriting = false;
+  bool _isVoiceMode = true;
+
+  final FocusNode _schoolFocus = FocusNode();
+  final FocusNode _degreeFocus = FocusNode();
+  final FocusNode _gpaFocus = FocusNode();
+  final FocusNode _descFocus = FocusNode();
 
   @override
   void initState() {
@@ -73,6 +80,9 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
     _descCtrl = TextEditingController(text: widget.existing?.description);
     _gpaCtrl = TextEditingController(text: widget.existing?.gpa);
     _subjects = List.from(widget.existing?.subjects ?? []);
+    if (widget.existing != null) {
+      _isVoiceMode = false; // default to manual form when editing
+    }
   }
 
   @override
@@ -83,6 +93,10 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
     _endCtrl.dispose();
     _descCtrl.dispose();
     _gpaCtrl.dispose();
+    _schoolFocus.dispose();
+    _degreeFocus.dispose();
+    _gpaFocus.dispose();
+    _descFocus.dispose();
     super.dispose();
   }
 
@@ -210,6 +224,7 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return PopScope(
       canPop: _canPopNow,
@@ -232,180 +247,338 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                         ? localization.addEducation
                         : localization.editEducation,
                     onClosing: _handlePop,
+                    trailing: Container(
+                      decoration: BoxDecoration(
+                        color: colorScheme.surfaceContainerHighest.withValues(
+                          alpha: 0.5,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: colorScheme.outlineVariant),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          GestureDetector(
+                            onTap: () => setState(() => _isVoiceMode = true),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: _isVoiceMode
+                                    ? colorScheme.onSurface
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                              child: Text(
+                                'Voice',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: _isVoiceMode
+                                      ? colorScheme.surface
+                                      : colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => setState(() => _isVoiceMode = false),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: !_isVoiceMode
+                                    ? colorScheme.onSurface
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                              child: Text(
+                                'Form',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: !_isVoiceMode
+                                      ? colorScheme.surface
+                                      : colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
 
                   const SizedBox(height: 24),
-                  UniversityPicker(controller: _schoolCtrl),
-                  const SizedBox(height: 16),
-                  CustomTextFormField(
-                    controller: _degreeCtrl,
-                    labelText: localization.degree,
-                    hintText: localization.degreeHint,
-                    validator: (v) =>
-                        v!.isEmpty ? localization.requiredField : null,
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          controller: _startCtrl,
-                          labelText: localization.startDate,
-                          hintText: localization.year,
-                          readOnly: true,
-                          prefixIcon: Icons.calendar_today,
-                          onTap: () => _pickDate(_startCtrl),
-                          validator: (v) =>
-                              v!.isEmpty ? localization.requiredField : null,
+
+                  if (_isVoiceMode)
+                    VoiceDictationPanel(
+                      entityType: 'education',
+                      instruction: localization.voiceExplainEducation,
+                      checklistItems: [
+                        VoiceChecklistItem(
+                          label: localization.schoolLabel,
+                          isFilled: _schoolCtrl.text.isNotEmpty,
+                          onTap: () {
+                            setState(() => _isVoiceMode = false);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _schoolFocus.requestFocus();
+                            });
+                          },
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: CustomTextFormField(
-                          controller: _endCtrl,
-                          labelText: localization.endDate,
-                          hintText: localization.year,
-                          readOnly: true,
-                          prefixIcon: Icons.event,
-                          onTap: () => _pickDate(_endCtrl),
+                        VoiceChecklistItem(
+                          label: localization.degree,
+                          isFilled: _degreeCtrl.text.isNotEmpty,
+                          onTap: () {
+                            setState(() => _isVoiceMode = false);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _degreeFocus.requestFocus();
+                            });
+                          },
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: CustomTextFormField(
-                          controller: _gpaCtrl,
-                          labelText: localization.gpaLabel,
-                          hintText: localization.gpaHint,
-                          keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true,
-                          ),
-                          prefixIcon: Icons.star_outline,
+                        VoiceChecklistItem(
+                          label:
+                              '${localization.startDate} & ${localization.endDate}',
+                          isFilled: _startCtrl.text.isNotEmpty,
+                          onTap: () {
+                            setState(() => _isVoiceMode = false);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _pickDate(_startCtrl);
+                            });
+                          },
                         ),
-                      ),
-                      const Expanded(flex: 3, child: SizedBox()),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        localization.educationDescriptionLabel,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w500,
+                        VoiceChecklistItem(
+                          label: localization.educationDescriptionLabel,
+                          isFilled: _descCtrl.text.isNotEmpty,
+                          onTap: () {
+                            setState(() => _isVoiceMode = false);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _descFocus.requestFocus();
+                            });
+                          },
                         ),
-                      ),
-                      _isRewriting
-                          ? SizedBox(
-                              height: 16,
-                              width: 100,
-                              child: SpinningTextLoader(
-                                texts: [
-                                  localization.improving,
-                                  localization.rephrasing,
-                                  localization.polishing,
-                                ],
-                                style: Theme.of(context).textTheme.bodySmall
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                interval: const Duration(milliseconds: 800),
-                              ),
-                            )
-                          : TextButton.icon(
-                              onPressed: _rewriteDescription,
-                              icon: Icon(
-                                Icons.auto_awesome,
-                                size: 14,
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
-                              label: Text(
-                                localization.rewriteAI,
-                                style: Theme.of(context).textTheme.bodySmall
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                              ),
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                minimumSize: const Size(0, 0),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                            ),
-                    ],
-                  ),
-                  CustomTextFormField(
-                    controller: _descCtrl,
-                    labelText: '', // Label is now in the Row above
-                    hintText: localization.educationDescriptionHint,
-                    maxLines: 3,
-                  ),
-                  const SizedBox(height: 24),
-                  SubjectListSection(
-                    subjects: _subjects,
-                    onChanged: (newList) => setState(() => _subjects = newList),
-                    onScanResult: ({gpa, required subjects}) {
-                      setState(() {
-                        if (_gpaCtrl.text.isEmpty && gpa != null) {
-                          _gpaCtrl.text = gpa;
-                        }
-                        for (final newSub in subjects) {
-                          if (!_subjects.any(
-                            (s) =>
-                                s.name.toLowerCase() ==
-                                newSub.name.toLowerCase(),
-                          )) {
-                            _subjects.add(newSub);
+                      ],
+                      onParsed: (data) {
+                        setState(() {
+                          if (data['schoolName'] != null &&
+                              data['schoolName'].toString().isNotEmpty) {
+                            _schoolCtrl.text = data['schoolName'];
                           }
-                        }
-                      });
-                    },
-                  ),
+                          if (data['degree'] != null &&
+                              data['degree'].toString().isNotEmpty) {
+                            _degreeCtrl.text = data['degree'];
+                          }
+                          if (data['startDate'] != null &&
+                              data['startDate'].toString().isNotEmpty) {
+                            _startCtrl.text = data['startDate'];
+                          }
+                          if (data['endDate'] != null &&
+                              data['endDate'].toString().isNotEmpty) {
+                            _endCtrl.text = data['endDate'];
+                          }
+                          if (data['gpa'] != null &&
+                              data['gpa'].toString().isNotEmpty) {
+                            _gpaCtrl.text = data['gpa'];
+                          }
+                          if (data['description'] != null &&
+                              data['description'].toString().isNotEmpty) {
+                            _descCtrl.text = data['description'];
+                          }
+                        });
+                      },
+                    )
+                  else ...[
+                    UniversityPicker(
+                      controller: _schoolCtrl,
+                      focusNode: _schoolFocus,
+                    ),
+                    const SizedBox(height: 16),
+                    CustomTextFormField(
+                      controller: _degreeCtrl,
+                      focusNode: _degreeFocus,
+                      labelText: localization.degree,
+                      hintText: localization.degreeHint,
+                      validator: (v) =>
+                          v!.isEmpty ? localization.requiredField : null,
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: _startCtrl,
+                            labelText: localization.startDate,
+                            hintText: localization.year,
+                            readOnly: true,
+                            prefixIcon: Icons.calendar_today,
+                            onTap: () => _pickDate(_startCtrl),
+                            validator: (v) =>
+                                v!.isEmpty ? localization.requiredField : null,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: _endCtrl,
+                            labelText: localization.endDate,
+                            hintText: localization.year,
+                            readOnly: true,
+                            prefixIcon: Icons.event,
+                            onTap: () => _pickDate(_endCtrl),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: CustomTextFormField(
+                            controller: _gpaCtrl,
+                            focusNode: _gpaFocus,
+                            labelText: localization.gpaLabel,
+                            hintText: localization.gpaHint,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                            prefixIcon: Icons.star_outline,
+                          ),
+                        ),
+                        const Expanded(flex: 3, child: SizedBox()),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          localization.educationDescriptionLabel,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
+                        _isRewriting
+                            ? SizedBox(
+                                height: 16,
+                                width: 100,
+                                child: SpinningTextLoader(
+                                  texts: [
+                                    localization.improving,
+                                    localization.rephrasing,
+                                    localization.polishing,
+                                  ],
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                  interval: const Duration(milliseconds: 800),
+                                ),
+                              )
+                            : TextButton.icon(
+                                onPressed: _rewriteDescription,
+                                icon: Icon(
+                                  Icons.auto_awesome,
+                                  size: 14,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                ),
+                                label: Text(
+                                  localization.rewriteAI,
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: const Size(0, 0),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                              ),
+                      ],
+                    ),
+                    CustomTextFormField(
+                      controller: _descCtrl,
+                      focusNode: _descFocus,
+                      labelText: '', // Label is now in the Row above
+                      hintText: localization.educationDescriptionHint,
+                      maxLines: 3,
+                    ),
+                    const SizedBox(height: 24),
+                    SubjectListSection(
+                      subjects: _subjects,
+                      onChanged: (newList) =>
+                          setState(() => _subjects = newList),
+                      onScanResult: ({gpa, required subjects}) {
+                        setState(() {
+                          if (_gpaCtrl.text.isEmpty && gpa != null) {
+                            _gpaCtrl.text = gpa;
+                          }
+                          for (final newSub in subjects) {
+                            if (!_subjects.any(
+                              (s) =>
+                                  s.name.toLowerCase() ==
+                                  newSub.name.toLowerCase(),
+                            )) {
+                              _subjects.add(newSub);
+                            }
+                          }
+                        });
+                      },
+                    ),
+                  ],
                   const SizedBox(height: 32),
                   SheetActionButtons(
                     onSave: _save,
                     onCancel: _handlePop,
-                    voiceEntityType: 'education',
-                    onVoiceParsed: (data) {
-                      setState(() {
-                        if (data['schoolName'] != null &&
-                            data['schoolName'].toString().isNotEmpty) {
-                          _schoolCtrl.text = data['schoolName'];
-                        }
-                        if (data['degree'] != null &&
-                            data['degree'].toString().isNotEmpty) {
-                          _degreeCtrl.text = data['degree'];
-                        }
-                        if (data['startDate'] != null &&
-                            data['startDate'].toString().isNotEmpty) {
-                          _startCtrl.text = data['startDate'];
-                        }
-                        if (data['endDate'] != null &&
-                            data['endDate'].toString().isNotEmpty) {
-                          _endCtrl.text = data['endDate'];
-                        }
-                        if (data['gpa'] != null &&
-                            data['gpa'].toString().isNotEmpty) {
-                          _gpaCtrl.text = data['gpa'];
-                        }
-                        if (data['description'] != null &&
-                            data['description'].toString().isNotEmpty) {
-                          _descCtrl.text = data['description'];
-                        }
-                      });
-                    },
+                    voiceEntityType: _isVoiceMode ? null : 'education',
+                    onVoiceParsed: _isVoiceMode
+                        ? null
+                        : (data) {
+                            setState(() {
+                              if (data['schoolName'] != null &&
+                                  data['schoolName'].toString().isNotEmpty) {
+                                _schoolCtrl.text = data['schoolName'];
+                              }
+                              if (data['degree'] != null &&
+                                  data['degree'].toString().isNotEmpty) {
+                                _degreeCtrl.text = data['degree'];
+                              }
+                              if (data['startDate'] != null &&
+                                  data['startDate'].toString().isNotEmpty) {
+                                _startCtrl.text = data['startDate'];
+                              }
+                              if (data['endDate'] != null &&
+                                  data['endDate'].toString().isNotEmpty) {
+                                _endCtrl.text = data['endDate'];
+                              }
+                              if (data['gpa'] != null &&
+                                  data['gpa'].toString().isNotEmpty) {
+                                _gpaCtrl.text = data['gpa'];
+                              }
+                              if (data['description'] != null &&
+                                  data['description'].toString().isNotEmpty) {
+                                _descCtrl.text = data['description'];
+                              }
+                            });
+                          },
                   ),
                 ],
               ),

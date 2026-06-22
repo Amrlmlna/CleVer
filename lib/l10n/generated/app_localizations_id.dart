@@ -1970,11 +1970,11 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get voiceExplainExperience =>
-      'cth: \"saya kerja jadi Senior Dev di Google selama 2 tahun...\"';
+      'Berceritalah secara alami tentang pengalaman kerjamu. Contoh:\n\"Saya bekerja sebagai Senior Software Engineer di Google dari Januari 2021 sampai sekarang. Saya memimpin desain ulang checkout yang meningkatkan tingkat konversi sebesar 12%.\"';
 
   @override
   String get voiceExplainEducation =>
-      'cth: \"saya kuliah Ilmu Komputer di UI dari 2018 sampe 2022...\"';
+      'Ceritakan tentang latar belakang pendidikanmu sendiri. Contoh:\n\"Saya kuliah Ilmu Komputer di Universitas Indonesia dari tahun 2018 sampai 2022, mengambil fokus di bidang AI dan lulus dengan predikat memuaskan.\"';
 
   @override
   String get voiceUseSuara => 'dikte AI';
@@ -1984,6 +1984,26 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get voiceAlmostDone => 'hampir selesai...';
+
+  @override
+  String get voiceChecklistFilled => 'Terisi';
+
+  @override
+  String get voiceSpeechUnavailable =>
+      'Layanan pengenalan suara tidak tersedia';
+
+  @override
+  String get voiceTapToStop => 'Ketuk untuk berhenti merekam';
+
+  @override
+  String get voiceParsingData => 'Menganalisis data...';
+
+  @override
+  String get voiceTapMicHint => 'Ketuk mikrofon & berbicaralah secara alami';
+
+  @override
+  String get voiceExplainCertification =>
+      'Jelaskan sertifikasi atau pencapaian yang kamu miliki. Contoh:\n\"Saya mendapatkan sertifikasi AWS Certified Cloud Practitioner dari Amazon Web Services pada bulan Juni 2023.\"';
 
   @override
   String get onboardingNewBadge => 'BARU';

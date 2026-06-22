@@ -4,14 +4,26 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 
 class UniversityPicker extends StatefulWidget {
   final TextEditingController controller;
+  final FocusNode? focusNode;
 
-  const UniversityPicker({super.key, required this.controller});
+  const UniversityPicker({super.key, required this.controller, this.focusNode});
 
   @override
   State<UniversityPicker> createState() => _UniversityPickerState();
 }
 
 class _UniversityPickerState extends State<UniversityPicker> {
+  FocusNode? _localFocusNode;
+
+  FocusNode get _effectiveFocusNode =>
+      widget.focusNode ?? (_localFocusNode ??= FocusNode());
+
+  @override
+  void dispose() {
+    _localFocusNode?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,6 +32,8 @@ class _UniversityPickerState extends State<UniversityPicker> {
         LayoutBuilder(
           builder: (context, constraints) {
             return Autocomplete<String>(
+              focusNode: _effectiveFocusNode,
+              textEditingController: widget.controller,
               optionsBuilder: (TextEditingValue textEditingValue) {
                 if (textEditingValue.text == '')
                   return const Iterable<String>.empty();

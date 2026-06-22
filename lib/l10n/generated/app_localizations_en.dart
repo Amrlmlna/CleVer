@@ -1971,11 +1971,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get voiceExplainExperience =>
-      'ex: \"I worked as a Senior Dev at Google for 2 years...\"';
+      'Try speaking naturally to tell your work story. For example:\n\"I worked as a Senior Software Engineer at Google from January 2021 until now. I led a checkout redesign that increased conversion rate by 12%.\"';
 
   @override
   String get voiceExplainEducation =>
-      'ex: \"I studied Computer Science at UI from 2018 to 2022...\"';
+      'Tell us about your educational background in your own words. For example:\n\"I studied Computer Science at the University of Indonesia from 2018 to 2022, majoring in AI and graduated with honors.\"';
 
   @override
   String get voiceUseSuara => 'Use voice';
@@ -1985,6 +1985,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get voiceAlmostDone => 'almost done...';
+
+  @override
+  String get voiceChecklistFilled => 'Filled';
+
+  @override
+  String get voiceSpeechUnavailable => 'Speech recognition unavailable';
+
+  @override
+  String get voiceTapToStop => 'Tap to stop recording';
+
+  @override
+  String get voiceParsingData => 'Parsing data...';
+
+  @override
+  String get voiceTapMicHint => 'Tap mic & speak naturally';
+
+  @override
+  String get voiceExplainCertification =>
+      'Describe your certifications or achievements. For example:\n\"I earned the AWS Certified Cloud Practitioner certification from Amazon Web Services in June 2023.\"';
 
   @override
   String get onboardingNewBadge => 'NEW';

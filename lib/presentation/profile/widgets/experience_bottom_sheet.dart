@@ -13,6 +13,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../common/widgets/sheet/sheet_header.dart';
 import '../../common/widgets/sheet/sheet_action_buttons.dart';
+import '../../common/widgets/voice_dictation_panel.dart';
 
 class ExperienceBottomSheet extends ConsumerStatefulWidget {
   final Experience? existing;
@@ -60,6 +61,11 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
 
   bool _isRewriting = false;
   bool _canPopNow = false;
+  bool _isVoiceMode = true;
+
+  final FocusNode _titleFocus = FocusNode();
+  final FocusNode _companyFocus = FocusNode();
+  final FocusNode _descFocus = FocusNode();
 
   @override
   void initState() {
@@ -69,6 +75,9 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
     _startCtrl = TextEditingController(text: widget.existing?.startDate);
     _endCtrl = TextEditingController(text: widget.existing?.endDate);
     _descCtrl = TextEditingController(text: widget.existing?.description);
+    if (widget.existing != null) {
+      _isVoiceMode = false; // default to manual form when editing
+    }
   }
 
   @override
@@ -78,6 +87,9 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
     _startCtrl.dispose();
     _endCtrl.dispose();
     _descCtrl.dispose();
+    _titleFocus.dispose();
+    _companyFocus.dispose();
+    _descFocus.dispose();
     super.dispose();
   }
 
@@ -200,6 +212,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return PopScope(
       canPop: _canPopNow,
@@ -222,146 +235,296 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                         ? localization.addExperience
                         : localization.editExperienceTitle,
                     onClosing: _handlePop,
+                    trailing: Container(
+                      decoration: BoxDecoration(
+                        color: colorScheme.surfaceContainerHighest.withValues(
+                          alpha: 0.5,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: colorScheme.outlineVariant),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          GestureDetector(
+                            onTap: () => setState(() => _isVoiceMode = true),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: _isVoiceMode
+                                    ? colorScheme.onSurface
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                              child: Text(
+                                'Voice',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: _isVoiceMode
+                                      ? colorScheme.surface
+                                      : colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => setState(() => _isVoiceMode = false),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: !_isVoiceMode
+                                    ? colorScheme.onSurface
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                              child: Text(
+                                'Form',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: !_isVoiceMode
+                                      ? colorScheme.surface
+                                      : colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
 
                   const SizedBox(height: 24),
-                  CustomTextFormField(
-                    controller: _titleCtrl,
-                    labelText: localization.jobTitle,
-                    hintText: 'Software Engineer',
-                    validator: (v) =>
-                        v!.isEmpty ? localization.requiredField : null,
-                  ),
-                  const SizedBox(height: 16),
-                  CustomTextFormField(
-                    controller: _companyCtrl,
-                    labelText: localization.company,
-                    hintText: localization.companyPlaceholder,
-                    validator: (v) =>
-                        v!.isEmpty ? localization.requiredField : null,
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          controller: _startCtrl,
-                          labelText: localization.startDate,
-                          hintText: localization.selectDate,
-                          readOnly: true,
-                          prefixIcon: Icons.calendar_today,
-                          onTap: () => _pickDate(_startCtrl),
-                          validator: (v) =>
-                              v!.isEmpty ? localization.requiredField : null,
+
+                  if (_isVoiceMode)
+                    VoiceDictationPanel(
+                      entityType: 'experience',
+                      instruction: localization.voiceExplainExperience,
+                      checklistItems: [
+                        VoiceChecklistItem(
+                          label: localization.jobTitle,
+                          isFilled: _titleCtrl.text.isNotEmpty,
+                          onTap: () {
+                            setState(() => _isVoiceMode = false);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _titleFocus.requestFocus();
+                            });
+                          },
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: CustomTextFormField(
-                          controller: _endCtrl,
-                          labelText: localization.endDate,
-                          hintText: localization.untilNow,
-                          readOnly: true,
-                          prefixIcon: Icons.event,
-                          onTap: () => _pickDate(_endCtrl),
+                        VoiceChecklistItem(
+                          label: localization.company,
+                          isFilled: _companyCtrl.text.isNotEmpty,
+                          onTap: () {
+                            setState(() => _isVoiceMode = false);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _companyFocus.requestFocus();
+                            });
+                          },
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        localization.shortDescription,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w500,
+                        VoiceChecklistItem(
+                          label:
+                              '${localization.startDate} & ${localization.endDate}',
+                          isFilled: _startCtrl.text.isNotEmpty,
+                          onTap: () {
+                            setState(() => _isVoiceMode = false);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _pickDate(_startCtrl);
+                            });
+                          },
                         ),
-                      ),
-                      _isRewriting
-                          ? SizedBox(
-                              height: 16,
-                              width: 100,
-                              child: SpinningTextLoader(
-                                texts: [
-                                  localization.improving,
-                                  localization.rephrasing,
-                                  localization.polishing,
-                                ],
-                                style: Theme.of(context).textTheme.bodySmall
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                interval: const Duration(milliseconds: 800),
+                        VoiceChecklistItem(
+                          label: localization.shortDescription,
+                          isFilled: _descCtrl.text.isNotEmpty,
+                          onTap: () {
+                            setState(() => _isVoiceMode = false);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _descFocus.requestFocus();
+                            });
+                          },
+                        ),
+                      ],
+                      onParsed: (data) {
+                        setState(() {
+                          if (data['jobTitle'] != null &&
+                              data['jobTitle'].toString().isNotEmpty) {
+                            _titleCtrl.text = data['jobTitle'];
+                          }
+                          if (data['companyName'] != null &&
+                              data['companyName'].toString().isNotEmpty) {
+                            _companyCtrl.text = data['companyName'];
+                          }
+                          if (data['startDate'] != null &&
+                              data['startDate'].toString().isNotEmpty) {
+                            _startCtrl.text = data['startDate'];
+                          }
+                          if (data['endDate'] != null &&
+                              data['endDate'].toString().isNotEmpty) {
+                            _endCtrl.text = data['endDate'];
+                          }
+                          if (data['description'] != null &&
+                              data['description'].toString().isNotEmpty) {
+                            _descCtrl.text = data['description'];
+                          }
+                        });
+                      },
+                    )
+                  else ...[
+                    CustomTextFormField(
+                      controller: _titleCtrl,
+                      focusNode: _titleFocus,
+                      labelText: localization.jobTitle,
+                      hintText: 'Software Engineer',
+                      validator: (v) =>
+                          v!.isEmpty ? localization.requiredField : null,
+                    ),
+                    const SizedBox(height: 16),
+                    CustomTextFormField(
+                      controller: _companyCtrl,
+                      focusNode: _companyFocus,
+                      labelText: localization.company,
+                      hintText: localization.companyPlaceholder,
+                      validator: (v) =>
+                          v!.isEmpty ? localization.requiredField : null,
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: _startCtrl,
+                            labelText: localization.startDate,
+                            hintText: localization.selectDate,
+                            readOnly: true,
+                            prefixIcon: Icons.calendar_today,
+                            onTap: () => _pickDate(_startCtrl),
+                            validator: (v) =>
+                                v!.isEmpty ? localization.requiredField : null,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: _endCtrl,
+                            labelText: localization.endDate,
+                            hintText: localization.untilNow,
+                            readOnly: true,
+                            prefixIcon: Icons.event,
+                            onTap: () => _pickDate(_endCtrl),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          localization.shortDescription,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                                fontWeight: FontWeight.w500,
                               ),
-                            )
-                          : TextButton.icon(
-                              onPressed: _rewriteDescription,
-                              icon: Icon(
-                                Icons.auto_awesome,
-                                size: 14,
-                                color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        _isRewriting
+                            ? SizedBox(
+                                height: 16,
+                                width: 100,
+                                child: SpinningTextLoader(
+                                  texts: [
+                                    localization.improving,
+                                    localization.rephrasing,
+                                    localization.polishing,
+                                  ],
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                  interval: const Duration(milliseconds: 800),
+                                ),
+                              )
+                            : TextButton.icon(
+                                onPressed: _rewriteDescription,
+                                icon: Icon(
+                                  Icons.auto_awesome,
+                                  size: 14,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                ),
+                                label: Text(
+                                  localization.rewriteAI,
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: const Size(0, 0),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
                               ),
-                              label: Text(
-                                localization.rewriteAI,
-                                style: Theme.of(context).textTheme.bodySmall
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                              ),
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                minimumSize: const Size(0, 0),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                            ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  CustomTextFormField(
-                    controller: _descCtrl,
-                    labelText: '',
-                    hintText: localization.descriptionHint,
-                    maxLines: 4,
-                    validator: (v) =>
-                        v!.isEmpty ? localization.requiredField : null,
-                  ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    CustomTextFormField(
+                      controller: _descCtrl,
+                      focusNode: _descFocus,
+                      labelText: '',
+                      hintText: localization.descriptionHint,
+                      maxLines: 4,
+                      validator: (v) =>
+                          v!.isEmpty ? localization.requiredField : null,
+                    ),
+                  ],
                   const SizedBox(height: 32),
                   SheetActionButtons(
                     onSave: _save,
                     onCancel: _handlePop,
-                    voiceEntityType: 'experience',
-                    onVoiceParsed: (data) {
-                      setState(() {
-                        if (data['jobTitle'] != null &&
-                            data['jobTitle'].toString().isNotEmpty) {
-                          _titleCtrl.text = data['jobTitle'];
-                        }
-                        if (data['companyName'] != null &&
-                            data['companyName'].toString().isNotEmpty) {
-                          _companyCtrl.text = data['companyName'];
-                        }
-                        if (data['startDate'] != null &&
-                            data['startDate'].toString().isNotEmpty) {
-                          _startCtrl.text = data['startDate'];
-                        }
-                        if (data['endDate'] != null &&
-                            data['endDate'].toString().isNotEmpty) {
-                          _endCtrl.text = data['endDate'];
-                        }
-                        if (data['description'] != null &&
-                            data['description'].toString().isNotEmpty) {
-                          _descCtrl.text = data['description'];
-                        }
-                      });
-                    },
+                    voiceEntityType: _isVoiceMode ? null : 'experience',
+                    onVoiceParsed: _isVoiceMode
+                        ? null
+                        : (data) {
+                            setState(() {
+                              if (data['jobTitle'] != null &&
+                                  data['jobTitle'].toString().isNotEmpty) {
+                                _titleCtrl.text = data['jobTitle'];
+                              }
+                              if (data['companyName'] != null &&
+                                  data['companyName'].toString().isNotEmpty) {
+                                _companyCtrl.text = data['companyName'];
+                              }
+                              if (data['startDate'] != null &&
+                                  data['startDate'].toString().isNotEmpty) {
+                                _startCtrl.text = data['startDate'];
+                              }
+                              if (data['endDate'] != null &&
+                                  data['endDate'].toString().isNotEmpty) {
+                                _endCtrl.text = data['endDate'];
+                              }
+                              if (data['description'] != null &&
+                                  data['description'].toString().isNotEmpty) {
+                                _descCtrl.text = data['description'];
+                              }
+                            });
+                          },
                   ),
                 ],
               ),
