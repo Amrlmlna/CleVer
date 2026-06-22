@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../widgets/welcome_steps/step_wall_of_pain.dart';
 import '../widgets/welcome_steps/step_selection_list.dart';
+import '../widgets/welcome_steps/step_time_scroll.dart';
 import '../widgets/welcome_steps/step_comparison.dart';
 import '../widgets/welcome_steps/step_final_reveal.dart';
 import 'onboarding_page.dart';
@@ -21,7 +22,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
   bool _showForm = false;
 
   String? _selectedBurnout;
-  String? _selectedTime;
+  int? _selectedTimeHours;
   String? _selectedProcrastination;
 
   @override
@@ -161,7 +162,12 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
         ),
         child: Theme(
           data: AppTheme.sheetTheme,
-          child: const OnboardingPage(shouldTrackOnInit: false),
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: const OnboardingPage(shouldTrackOnInit: false),
+          ),
         ),
       ),
     );
@@ -212,28 +218,16 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
         );
 
       case 2:
-        return StepSelectionList(
+        return StepTimeScroll(
           title: l10n.onboardingTimeSpentTitle,
           options: [
-            SelectionOption(
-              text: l10n.onboardingTime1,
-              icon: Icons.timer_outlined,
-            ),
-            SelectionOption(
-              text: l10n.onboardingTime2,
-              icon: Icons.history_rounded,
-            ),
-            SelectionOption(
-              text: l10n.onboardingTime3,
-              icon: Icons.hourglass_empty_rounded,
-            ),
-            SelectionOption(
-              text: l10n.onboardingTime4,
-              icon: Icons.alarm_on_rounded,
-            ),
+            TimeOption(hours: 1, labelBuilder: (l) => l.onboardingTime1),
+            TimeOption(hours: 2, labelBuilder: (l) => l.onboardingTime2),
+            TimeOption(hours: 24, labelBuilder: (l) => l.onboardingTime3),
+            TimeOption(hours: 168, labelBuilder: (l) => l.onboardingTime4),
           ],
-          selectedOption: _selectedTime,
-          onSelect: (val) => setState(() => _selectedTime = val),
+          selectedHours: _selectedTimeHours,
+          onSelect: (hours) => setState(() => _selectedTimeHours = hours),
           onNext: _nextStep,
         );
 

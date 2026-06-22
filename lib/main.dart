@@ -16,7 +16,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'presentation/wallet/providers/payment_sync_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'core/providers/locale_provider.dart';
-import 'core/providers/theme_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/services/ad_service.dart';
 import 'core/services/payment_service.dart';
@@ -120,7 +119,6 @@ class _MyAppState extends ConsumerState<MyApp> {
       ref.read(draftSyncProvider).init();
       ref.read(completedCVSyncProvider).init();
       ref.read(localeNotifierProvider.notifier).init();
-      ref.read(themeNotifierProvider.notifier).init();
       ref.read(paymentSyncProvider).init();
 
       _initBackgroundServices();
@@ -144,7 +142,6 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
     final locale = ref.watch(localeNotifierProvider);
-    final themeMode = ref.watch(themeNotifierProvider);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
@@ -164,7 +161,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: themeMode,
+      themeMode: ThemeMode.light,
       routerConfig: router,
       locale: locale,
       localizationsDelegates: const [
