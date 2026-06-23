@@ -181,6 +181,7 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
     final effectiveLocale =
         ref.read(cvCreationProvider).contentLocale ?? globalLocale;
 
+    if (!mounted) return;
     await ref
         .read(cvDownloadProvider.notifier)
         .attemptDownload(

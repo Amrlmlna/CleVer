@@ -98,14 +98,11 @@ class FirebaseAuthRepository implements AuthRepository {
   Future<AppUser?> signInWithGoogle() async {
     try {
       await _googleSignIn.initialize();
-      final GoogleSignInAccount? googleUser =
+      final googleUser =
           await _googleSignIn.attemptLightweightAuthentication() ??
           await _googleSignIn.authenticate();
 
-      if (googleUser == null) return null;
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
       final authorization = await googleUser.authorizationClient
           .authorizeScopes(['email']);
 

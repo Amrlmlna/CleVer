@@ -109,7 +109,9 @@ class JobInputController extends AutoDisposeAsyncNotifier<void> {
       if (context.mounted) {
         Navigator.of(context).pop();
         await clearDrafts();
-        context.push('/create/user-data', extra: tailoredResult);
+        if (context.mounted) {
+          context.push('/create/user-data', extra: tailoredResult);
+        }
       }
     } catch (e) {
       if (context.mounted) {
@@ -146,6 +148,7 @@ class JobInputController extends AutoDisposeAsyncNotifier<void> {
       Navigator.of(context).pop();
     }
 
+    if (!context.mounted) return;
     _handleOCRResult(context, result, onFound);
   }
 
@@ -167,6 +170,7 @@ class JobInputController extends AutoDisposeAsyncNotifier<void> {
       Navigator.of(context).pop();
     }
 
+    if (!context.mounted) return;
     _handleOCRResult(context, result, onFound);
   }
 

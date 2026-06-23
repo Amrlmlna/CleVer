@@ -193,6 +193,7 @@ class CVImportHandler {
       Navigator.pop(context);
     }
 
+    if (!context.mounted) return;
     _handleResult(context, ref, result, onImportSuccess);
   }
 
@@ -231,6 +232,7 @@ class CVImportHandler {
       Navigator.pop(context);
     }
 
+    if (!context.mounted) return;
     _handleResult(context, ref, result, onImportSuccess);
   }
 

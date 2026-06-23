@@ -205,10 +205,13 @@ class CompletedCVCard extends ConsumerWidget {
     if (await file.exists()) {
       await OpenFilex.open(cv.pdfPath);
     } else if (cv.remotePdfUrl != null) {
+      if (!context.mounted) return;
       final shouldDownload = await showDialog<bool>(
         context: context,
         builder: (context) => const DownloadConfirmationDialog(),
       );
+
+      if (!context.mounted) return;
 
       if (shouldDownload == true) {
         try {

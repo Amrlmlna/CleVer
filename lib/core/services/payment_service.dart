@@ -106,6 +106,7 @@ class PaymentService {
         return false;
       }
 
+      if (!context.mounted) return false;
       final success = await SubscriptionPaywall.show(context, packages);
       return success ?? false;
     } catch (e) {

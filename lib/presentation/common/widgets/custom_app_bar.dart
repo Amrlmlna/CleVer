@@ -217,13 +217,16 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     final templates = await ref.refresh(templatesProvider.future);
     final isSubscribed = templates.any((t) => t.isSubscribed);
 
+    if (!context.mounted) return;
+    final l10n = AppLocalizations.of(context)!;
+
     final description = isSubscribed
-        ? "${AppLocalizations.of(context)!.subscriptionWarning}\n\n${AppLocalizations.of(context)!.deleteAccountWarning}"
-        : AppLocalizations.of(context)!.deleteAccountWarning;
+        ? "${l10n.subscriptionWarning}\n\n${l10n.deleteAccountWarning}"
+        : l10n.deleteAccountWarning;
 
     await EmailVerificationBottomSheet.show(
       context,
-      title: AppLocalizations.of(context)!.deleteAccountQuestion,
+      title: l10n.deleteAccountQuestion,
       description: description,
       icon: isSubscribed
           ? Icons.warning_amber_rounded
@@ -245,20 +248,15 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 keepLocalData: keepData,
                 confirmSubscriptionLoss: isSubscribed,
               );
-          if (context.mounted) {
-            CustomSnackBar.showSuccess(
-              context,
-              AppLocalizations.of(context)!.accountDeletedGoodbye,
-            );
-            context.go('/signup');
-          }
+          if (!context.mounted) return;
+          CustomSnackBar.showSuccess(context, l10n.accountDeletedGoodbye);
+          context.go('/signup');
         } catch (e) {
-          if (context.mounted) {
-            CustomSnackBar.showError(
-              context,
-              AppLocalizations.of(context)!.accountDeleteError(e.toString()),
-            );
-          }
+          if (!context.mounted) return;
+          CustomSnackBar.showError(
+            context,
+            l10n.accountDeleteError(e.toString()),
+          );
         }
       },
     );

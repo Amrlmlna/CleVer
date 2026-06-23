@@ -2,12 +2,12 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   errors:
-    prefer_single_quotes: ignore
-    use_build_context_synchronously: ignore
-    prefer_const_constructors: ignore
-    prefer_const_declarations: ignore
-    unnecessary_nullable_for_final_variable_declarations: ignore
-    await_only_futures: ignore
+    # prefer_single_quotes: ignore
+    # use_build_context_synchronously: ignore
+    # prefer_const_constructors: ignore
+    # prefer_const_declarations: ignore
+    # unnecessary_nullable_for_final_variable_declarations: ignore
+    # await_only_futures: ignore
     unintended_html_in_doc_comment: ignore
     depend_on_referenced_packages: ignore
     deprecated_member_use: ignore

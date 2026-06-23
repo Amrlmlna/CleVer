@@ -145,6 +145,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
         state = state.copyWith(status: DownloadStatus.generating);
         try {
           final result = await pdfFuture;
+          if (!context.mounted) return;
           final path = await _processResult(
             context,
             result,
@@ -154,10 +155,12 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
           );
           _localCache[cacheKey] = path;
         } catch (e) {
+          if (!context.mounted) return;
           _handleError(context, e, effectiveLocale, styleId);
         }
       } else {
         // Free Users: Show Mandatory Ad before generation
+        if (!context.mounted) return;
         await adService.showInterstitialAd(
           context,
           onAdClosed: () async {
@@ -166,6 +169,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
               state = state.copyWith(status: DownloadStatus.generating);
               try {
                 final result = await pdfFuture;
+                if (!context.mounted) return;
                 final path = await _processResult(
                   context,
                   result,
@@ -175,6 +179,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
                 );
                 _localCache[cacheKey] = path;
               } catch (e) {
+                if (!context.mounted) return;
                 _handleError(context, e, effectiveLocale, styleId);
               }
             }
