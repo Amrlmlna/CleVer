@@ -6,6 +6,7 @@ import '../../../core/services/tutorial_service.dart';
 import '../../../core/theme/app_colors.dart';
 
 import '../../../core/utils/custom_snackbar.dart';
+import '../../auth/utils/auth_guard.dart';
 import '../providers/job_input_controller.dart';
 import '../widgets/job/job_input_content.dart';
 import '../widgets/job/job_scan_bottom_sheet.dart';
@@ -183,6 +184,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
 
   Future<void> _handleSubmit() async {
     if (_formKey.currentState!.validate()) {
+      if (!AuthGuard.check(context)) return;
       await ref
           .read(jobInputControllerProvider.notifier)
           .submit(

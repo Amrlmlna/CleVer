@@ -63,6 +63,12 @@ class _EmailVerificationBottomSheetState
       final user = fb.FirebaseAuth.instance.currentUser;
 
       if (user?.emailVerified ?? false) {
+        // Force-refresh the Firebase ID token so its email_verified claim
+        // matches the updated FirebaseAuth state. The backend checks this
+        // claim on every request — without a refresh the old token (stale
+        // for ~1h) would keep returning 403 EMAIL_NOT_VERIFIED.
+        await user!.getIdToken(true);
+
         if (mounted) {
           Navigator.pop(context);
           widget.onVerified?.call();

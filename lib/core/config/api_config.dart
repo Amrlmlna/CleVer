@@ -14,7 +14,10 @@ class ApiConfig {
   static Future<Map<String, String>> getAuthHeaders() async {
     try {
       final user = FirebaseAuth.instance.currentUser;
-      final token = await user?.getIdToken();
+      // Force-refresh to pick up updated claims (e.g. email_verified).
+      // The backend auth middleware checks decoded-token claims directly,
+      // and without a force-refresh a stale token can persist for ~1 hour.
+      final token = await user?.getIdToken(true);
       final deviceId = await DeviceIdService.getDeviceId();
 
       return {
