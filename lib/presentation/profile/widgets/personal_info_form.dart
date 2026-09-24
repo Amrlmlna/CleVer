@@ -140,65 +140,86 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
         ),
         const SizedBox(width: 16),
         Expanded(
-          child: DropdownButtonFormField<String>(
-            initialValue: _genderController.text.isEmpty
-                ? null
-                : _genderController.text,
-            isExpanded: true,
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.gender,
-              labelStyle: TextStyle(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-              prefixIcon: Icon(
-                Icons.person_search_outlined,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
-                  width: 1.5,
-                ),
-              ),
-              filled: true,
-              fillColor: Theme.of(
-                context,
-              ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 16,
-              ),
+          child: Container(
+            height: 56,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(12),
             ),
-            dropdownColor: Theme.of(context).cardTheme.color,
-            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-            iconEnabledColor: Theme.of(context).colorScheme.onSurfaceVariant,
-            items: [
-              DropdownMenuItem(
-                value: 'Male',
-                child: Text(AppLocalizations.of(context)!.male),
-              ),
-              DropdownMenuItem(
-                value: 'Female',
-                child: Text(AppLocalizations.of(context)!.female),
-              ),
-            ],
-            onChanged: (val) {
-              if (val != null) {
-                _genderController.text = val;
-              }
-            },
+            padding: const EdgeInsets.all(4),
+            child: Row(
+              children: [
+                _buildGenderToggle(
+                  context,
+                  'Male',
+                  Icons.male_rounded,
+                  AppLocalizations.of(context)!.male,
+                ),
+                const SizedBox(width: 4),
+                _buildGenderToggle(
+                  context,
+                  'Female',
+                  Icons.female_rounded,
+                  AppLocalizations.of(context)!.female,
+                ),
+              ],
+            ),
           ),
         ),
       ],
     );
+  }
+
+  Widget _buildGenderToggle(
+    BuildContext context,
+    String value,
+    IconData icon,
+    String label,
+  ) {
+    final isSelected = _getNormalizedGender(_genderController.text) == value;
+    final theme = Theme.of(context);
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => setState(() => _genderController.text = value),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          decoration: BoxDecoration(
+            color: isSelected ? theme.colorScheme.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 16,
+                color: isSelected
+                    ? theme.colorScheme.onPrimary
+                    : theme.colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                  color: isSelected
+                      ? theme.colorScheme.onPrimary
+                      : theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  String? _getNormalizedGender(String text) {
+    final lower = text.trim().toLowerCase();
+    if (lower == 'male' || lower == 'pria' || lower == 'laki-laki') return 'Male';
+    if (lower == 'female' || lower == 'wanita' || lower == 'perempuan') return 'Female';
+    return null;
   }
 }

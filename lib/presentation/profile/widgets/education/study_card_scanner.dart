@@ -178,16 +178,11 @@ class StudyCardScanner extends ConsumerWidget {
         }
       }
 
+      showLoading();
       if (source != null) {
-        final XFile? file = await ImagePicker().pickImage(source: source);
-        if (file == null) return;
-        showLoading();
-        text = await ocrService.extractTextFromFilePath(file.path);
+        text = await ocrService.extractTextFromImage(source);
       } else {
-        final file = await ocrService.pickPDFFile();
-        if (file == null) return;
-        showLoading();
-        text = await ocrService.extractTextFromPDFFile(file);
+        text = await ocrService.extractTextFromPDF();
       }
 
       if (text == null || text.isEmpty) {

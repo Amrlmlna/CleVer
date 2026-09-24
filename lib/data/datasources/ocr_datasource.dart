@@ -11,15 +11,23 @@ class OCRDataSource {
 
   Future<String?> extractTextFromImage(ImageSource source) async {
     try {
-      debugPrint('[OCRDataSource] Starting image picker with source: $source');
+      if (source == ImageSource.gallery) {
+        final List<XFile> images = await _imagePicker.pickMultiImage(
+          imageQuality: 85,
+        );
+        if (images.isEmpty) return null;
+        final texts = await Future.wait(
+          images.map((img) => extractTextFromFilePath(img.path)),
+        );
+        final combined = texts.where((t) => t != null && t.isNotEmpty).join('\n\n');
+        return combined.isNotEmpty ? combined : '';
+      }
 
       final XFile? image = await _imagePicker.pickImage(
         source: source,
         imageQuality: 85,
       );
-
       if (image == null) return null;
-
       return extractTextFromFilePath(image.path);
     } catch (e) {
       debugPrint('[OCRDataSource] Error extracting text: $e');
@@ -38,19 +46,25 @@ class OCRDataSource {
     }
   }
 
-  Future<File?> pickPDFFile() async {
+  Future<List<File>?> pickPDFFiles() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
+        allowMultiple: true,
       );
 
-      if (result == null || result.files.single.path == null) return null;
-      return File(result.files.single.path!);
+      if (result == null || result.paths.isEmpty) return null;
+      return result.paths.whereType<String>().map((p) => File(p)).toList();
     } catch (e) {
       debugPrint('[OCRDataSource] PDF picking error: $e');
       return null;
     }
+  }
+
+  Future<File?> pickPDFFile() async {
+    final files = await pickPDFFiles();
+    return (files != null && files.isNotEmpty) ? files.first : null;
   }
 
   Future<String?> extractTextFromPDFFile(File file) async {
@@ -70,9 +84,11 @@ class OCRDataSource {
   }
 
   Future<String?> extractTextFromPDF() async {
-    final file = await pickPDFFile();
-    if (file == null) return null;
-    return extractTextFromPDFFile(file);
+    final files = await pickPDFFiles();
+    if (files == null || files.isEmpty) return null;
+    final results = await Future.wait(files.map((f) => extractTextFromPDFFile(f)));
+    final combined = results.where((t) => t != null && t.isNotEmpty).join('\n\n');
+    return combined.isNotEmpty ? combined : '';
   }
 
   void dispose() {
