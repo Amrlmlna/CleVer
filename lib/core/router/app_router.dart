@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../presentation/onboarding/pages/clever_get_started_page.dart';
 import '../../presentation/onboarding/pages/onboarding_page.dart';
 import '../../presentation/onboarding/providers/onboarding_provider.dart';
+import '../../presentation/auth/providers/auth_state_provider.dart';
 import '../../presentation/home/pages/home_page.dart';
 import '../../presentation/dashboard/pages/main_wrapper_page.dart';
 
@@ -57,6 +58,48 @@ CustomTransitionPage<void> _buildPage(Widget child, GoRouterState state) {
   );
 }
 
+/// Navigation guard rules. Auth is a one-way checkpoint: authenticated
+/// users are never sent to an auth route, and the questionnaire/loading
+/// steps are unreachable without authentication.
+String? resolveRedirect({
+  required String location,
+  required bool onboardingCompleted,
+  required bool isAuthenticated,
+}) {
+  final isOnboarding = location.startsWith(AppRoutes.onboarding);
+  final isAuthRoute =
+      location == AppRoutes.signup || location == AppRoutes.login;
+  final requiresAuth =
+      location == AppRoutes.onboardingSteps ||
+      location == AppRoutes.onboardingLoading;
+
+  if (isAuthenticated && isAuthRoute) {
+    return onboardingCompleted ? AppRoutes.home : AppRoutes.onboardingSteps;
+  }
+
+  // Returning user (signed in, still onboarding) skips GetStarted and
+  // resumes the questionnaire.
+  if (isAuthenticated &&
+      !onboardingCompleted &&
+      location == AppRoutes.onboarding) {
+    return AppRoutes.onboardingSteps;
+  }
+
+  if (!isAuthenticated && requiresAuth) {
+    return AppRoutes.onboarding;
+  }
+
+  if (!onboardingCompleted && !isOnboarding && !isAuthRoute) {
+    return AppRoutes.onboarding;
+  }
+
+  if (onboardingCompleted && isOnboarding) {
+    return AppRoutes.home;
+  }
+
+  return null;
+}
+
 final routerProvider = Provider<GoRouter>((ref) {
   final onboardingCompleted = ref.watch(onboardingProvider);
 
@@ -64,18 +107,11 @@ final routerProvider = Provider<GoRouter>((ref) {
     navigatorKey: _rootNavigatorKey,
     initialLocation: AppRoutes.home,
     redirect: (context, state) {
-      final isGoingToOnboarding = state.uri.toString().startsWith(
-        AppRoutes.onboarding,
+      return resolveRedirect(
+        location: state.uri.toString(),
+        onboardingCompleted: onboardingCompleted,
+        isAuthenticated: ref.read(authStateProvider).value != null,
       );
-      if (!onboardingCompleted && !isGoingToOnboarding) {
-        return AppRoutes.onboarding;
-      }
-
-      if (onboardingCompleted && isGoingToOnboarding) {
-        return AppRoutes.home;
-      }
-
-      return null;
     },
     observers: [PosthogObserver()],
     routes: [
