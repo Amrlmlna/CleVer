@@ -805,5 +805,12 @@
   "cleverConsentPrivacy": "Saya setuju dengan Kebijakan Privasi",
   "cleverConsentTerms": "Saya setuju dengan Syarat dan Ketentuan",
   "cleverLegalPendingBody": "Dokumen ini sedang disiapkan dan akan tersedia di sini segera.",
-  "cleverWelcomeSocialProofTitle": "Apply ke 100 lowongan menjadi efektif dengan CV tailored!"
+  "cleverWelcomeSocialProofTitle": "Apply ke 100 lowongan menjadi efektif dengan CV tailored!",
+  "cleverGetStartedTitle": "Kenalan dulu, Yuk!",
+  "cleverGetStartedSubtitle1": "lebih percaya diri dengan tailored cv.",
+  "cleverGetStartedSubtitle2": "tanpa perlu ngedit manual lagi.",
+  "cleverSignInGreeting": "selamat datang kembali!",
+  "cleverGoogleSignUp": "Daftar dengan Google",
+  "cleverGoogleSignIn": "Masuk dengan Google",
+  "cleverEmailInvalid": "masukkan email yang valid"
 }

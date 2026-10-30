@@ -2132,4 +2132,26 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get cleverWelcomeSocialProofTitle =>
       'Apply ke 100 lowongan menjadi efektif dengan CV tailored!';
+
+  @override
+  String get cleverGetStartedTitle => 'Kenalan dulu, Yuk!';
+
+  @override
+  String get cleverGetStartedSubtitle1 =>
+      'lebih percaya diri dengan tailored cv.';
+
+  @override
+  String get cleverGetStartedSubtitle2 => 'tanpa perlu ngedit manual lagi.';
+
+  @override
+  String get cleverSignInGreeting => 'selamat datang kembali!';
+
+  @override
+  String get cleverGoogleSignUp => 'Daftar dengan Google';
+
+  @override
+  String get cleverGoogleSignIn => 'Masuk dengan Google';
+
+  @override
+  String get cleverEmailInvalid => 'masukkan email yang valid';
 }

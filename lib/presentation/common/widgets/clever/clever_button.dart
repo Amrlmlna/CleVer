@@ -12,11 +12,15 @@ class CleverButton extends StatelessWidget {
     required this.label,
     this.onTap,
     this.style = CleverButtonStyle.inverse,
+    this.height = CleverSizes.actionBar,
+    this.labelStyle,
   });
 
   final String label;
   final VoidCallback? onTap;
   final CleverButtonStyle style;
+  final double height;
+  final TextStyle? labelStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +49,11 @@ class CleverButton extends StatelessWidget {
         style: ButtonStyle(
           elevation: const WidgetStatePropertyAll(0),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          minimumSize: const WidgetStatePropertyAll(
-            Size.fromHeight(CleverSizes.actionBar),
-          ),
+          minimumSize: WidgetStatePropertyAll(Size.fromHeight(height)),
           padding: const WidgetStatePropertyAll(
             EdgeInsets.symmetric(horizontal: CleverSpacing.space24),
           ),
-          textStyle: WidgetStatePropertyAll(CleverTypography.h4),
+          textStyle: WidgetStatePropertyAll(labelStyle ?? CleverTypography.h4),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(CleverRadius.button),

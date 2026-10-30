@@ -24,8 +24,11 @@ import '../../presentation/notification/pages/notification_page.dart';
 import '../../presentation/legal/pages/legal_page.dart';
 import '../../presentation/legal/pages/clever_legal_placeholder_page.dart';
 import '../../presentation/common/pages/error_page.dart';
-import '../../presentation/auth/pages/login_page.dart';
-import '../../presentation/auth/pages/signup_page.dart';
+import '../../presentation/auth/pages/clever_login_page.dart';
+import '../../presentation/auth/pages/clever_signup_page.dart';
+import '../../presentation/auth/pages/clever_auth_loading_page.dart';
+import '../../presentation/onboarding/pages/clever_get_started_page.dart';
+import '../../presentation/onboarding/pages/clever_welcome_questionnaire_page.dart';
 import '../../domain/entities/tailored_cv_result.dart';
 import '../../domain/entities/job_input.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
@@ -80,11 +83,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       // Auth Routes
       GoRoute(
         path: AppRoutes.login,
-        pageBuilder: (context, state) => _buildPage(const LoginPage(), state),
+        pageBuilder: (context, state) =>
+            _buildPage(const CleverLoginPage(), state),
       ),
       GoRoute(
         path: AppRoutes.signup,
-        pageBuilder: (context, state) => _buildPage(const SignupPage(), state),
+        pageBuilder: (context, state) =>
+            _buildPage(const CleverSignupPage(), state),
       ),
 
       GoRoute(
@@ -126,6 +131,25 @@ final routerProvider = Provider<GoRouter>((ref) {
               ),
               state,
             ),
+          ),
+          GoRoute(
+            path: 'start',
+            pageBuilder: (context, state) =>
+                _buildPage(const CleverGetStartedPage(), state),
+          ),
+          GoRoute(
+            path: 'steps',
+            pageBuilder: (context, state) => _buildPage(
+              CleverWelcomeQuestionnairePage(
+                onCompleted: () => context.go(AppRoutes.home),
+              ),
+              state,
+            ),
+          ),
+          GoRoute(
+            path: 'loading',
+            pageBuilder: (context, state) =>
+                _buildPage(const CleverAuthLoadingPage(), state),
           ),
         ],
       ),

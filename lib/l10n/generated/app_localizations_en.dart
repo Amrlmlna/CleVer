@@ -2133,4 +2133,26 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cleverWelcomeSocialProofTitle =>
       'applying to 100 openings becomes effective with tailored CVs!';
+
+  @override
+  String get cleverGetStartedTitle => 'Nice to meet you!';
+
+  @override
+  String get cleverGetStartedSubtitle1 =>
+      'feel more confident with tailored cvs.';
+
+  @override
+  String get cleverGetStartedSubtitle2 => 'without the manual editing anymore.';
+
+  @override
+  String get cleverSignInGreeting => 'welcome back!';
+
+  @override
+  String get cleverGoogleSignUp => 'Sign up with Google';
+
+  @override
+  String get cleverGoogleSignIn => 'Sign in with Google';
+
+  @override
+  String get cleverEmailInvalid => 'enter a valid email';
 }

@@ -3941,6 +3941,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'applying to 100 openings becomes effective with tailored CVs!'**
   String get cleverWelcomeSocialProofTitle;
+
+  /// No description provided for @cleverGetStartedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nice to meet you!'**
+  String get cleverGetStartedTitle;
+
+  /// No description provided for @cleverGetStartedSubtitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'feel more confident with tailored cvs.'**
+  String get cleverGetStartedSubtitle1;
+
+  /// No description provided for @cleverGetStartedSubtitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'without the manual editing anymore.'**
+  String get cleverGetStartedSubtitle2;
+
+  /// No description provided for @cleverSignInGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'welcome back!'**
+  String get cleverSignInGreeting;
+
+  /// No description provided for @cleverGoogleSignUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up with Google'**
+  String get cleverGoogleSignUp;
+
+  /// No description provided for @cleverGoogleSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
+  String get cleverGoogleSignIn;
+
+  /// No description provided for @cleverEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'enter a valid email'**
+  String get cleverEmailInvalid;
 }
 
 class _AppLocalizationsDelegate

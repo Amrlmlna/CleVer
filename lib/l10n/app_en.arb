@@ -812,5 +812,12 @@
   "cleverConsentPrivacy": "I agree to the Privacy Policy",
   "cleverConsentTerms": "I agree to the Terms & Conditions",
   "cleverLegalPendingBody": "This document is being prepared and will be available here soon.",
-  "cleverWelcomeSocialProofTitle": "applying to 100 openings becomes effective with tailored CVs!"
+  "cleverWelcomeSocialProofTitle": "applying to 100 openings becomes effective with tailored CVs!",
+  "cleverGetStartedTitle": "Nice to meet you!",
+  "cleverGetStartedSubtitle1": "feel more confident with tailored cvs.",
+  "cleverGetStartedSubtitle2": "without the manual editing anymore.",
+  "cleverSignInGreeting": "welcome back!",
+  "cleverGoogleSignUp": "Sign up with Google",
+  "cleverGoogleSignIn": "Sign in with Google",
+  "cleverEmailInvalid": "enter a valid email"
 }
