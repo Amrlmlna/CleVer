@@ -1,3 +1,6 @@
+// FROZEN (legacy design system): do not add usages or tokens here.
+// New UI uses core/theme/clever/. Removal tracked in
+// docs/redesign/design-system-migration.md (post app-wide reface).
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
