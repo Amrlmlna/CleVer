@@ -2063,4 +2063,74 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cancelRecurringWarning =>
       'You currently have an active subscription. Confirm now to instantly upgrade to Lifetime!';
+
+  @override
+  String get cleverWelcomePersonaTitle => 'which team are you on?';
+
+  @override
+  String get cleverPersonaStudent => 'student';
+
+  @override
+  String get cleverPersonaJobSeeker => 'active job seeker';
+
+  @override
+  String get cleverPersonaCareerSwitcher => 'switching careers';
+
+  @override
+  String get cleverWelcomeBudgetTitle =>
+      'how much have you spent on a single CV service?';
+
+  @override
+  String get cleverWelcomeSingleCvTitle =>
+      'do you use just 1 CV for every application?';
+
+  @override
+  String get cleverYes => 'yes';
+
+  @override
+  String get cleverNo => 'no';
+
+  @override
+  String get cleverWelcomeAppsTitle =>
+      'how many jobs do you apply to in a day?';
+
+  @override
+  String get cleverWelcomeReasonTitle =>
+      'what makes you put off making tailored CVs?';
+
+  @override
+  String get cleverReasonCompanyResearch => 'company research';
+
+  @override
+  String get cleverReasonRepromptAi => 're-prompting chatGPT';
+
+  @override
+  String get cleverReasonManualTemplate => 'editing templates manually';
+
+  @override
+  String get cleverReasonRepeatedForms => 'filling in the same forms again';
+
+  @override
+  String get cleverWelcomeThanksTitle => 'thank you for trusting us.';
+
+  @override
+  String get cleverWelcomePrivacyNote =>
+      'your privacy and personal security are our top priority.';
+
+  @override
+  String get cleverReadMore => 'read more';
+
+  @override
+  String get cleverConsentPrivacy => 'I agree to the Privacy Policy';
+
+  @override
+  String get cleverConsentTerms => 'I agree to the Terms & Conditions';
+
+  @override
+  String get cleverLegalPendingBody =>
+      'This document is being prepared and will be available here soon.';
+
+  @override
+  String get cleverWelcomeSocialProofTitle =>
+      'applying to 100 openings becomes effective with tailored CVs!';
 }

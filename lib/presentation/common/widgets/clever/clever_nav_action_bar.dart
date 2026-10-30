@@ -80,7 +80,7 @@ class CleverNavActionBar extends StatelessWidget {
                   : CleverColors.surfaceInverse.withValues(alpha: 0.12),
             ),
             minimumSize: WidgetStatePropertyAll(
-              iconNext ? const Size(58, 58) : const Size.fromHeight(42),
+              iconNext ? const Size(58, 58) : const Size(92, 42),
             ),
             padding: WidgetStatePropertyAll(
               iconNext

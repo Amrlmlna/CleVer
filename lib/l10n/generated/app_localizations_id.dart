@@ -2062,4 +2062,74 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get cancelRecurringWarning =>
       'Kamu masih memiliki langganan aktif. Konfirmasi sekarang untuk langsung beralih ke Akses Selamanya!';
+
+  @override
+  String get cleverWelcomePersonaTitle => 'Kamu tim yang mana?';
+
+  @override
+  String get cleverPersonaStudent => 'pelajar';
+
+  @override
+  String get cleverPersonaJobSeeker => 'pencari kerja aktif';
+
+  @override
+  String get cleverPersonaCareerSwitcher => 'berpindah karir';
+
+  @override
+  String get cleverWelcomeBudgetTitle =>
+      'Berapa budget yang pernah kamu keluarin untuk jasa satu CV?';
+
+  @override
+  String get cleverWelcomeSingleCvTitle =>
+      'apakah kamu hanya punya 1 CV untuk semua lowongan?';
+
+  @override
+  String get cleverYes => 'iya';
+
+  @override
+  String get cleverNo => 'tidak';
+
+  @override
+  String get cleverWelcomeAppsTitle =>
+      'berapa lowongan yang kamu apply dalam sehari?';
+
+  @override
+  String get cleverWelcomeReasonTitle =>
+      'apa alasan kamu mager bikin CV tailored?';
+
+  @override
+  String get cleverReasonCompanyResearch => 'riset perusahaan';
+
+  @override
+  String get cleverReasonRepromptAi => 're-prompt chatGPT';
+
+  @override
+  String get cleverReasonManualTemplate => 'edit template manual';
+
+  @override
+  String get cleverReasonRepeatedForms => 'isi form berulang';
+
+  @override
+  String get cleverWelcomeThanksTitle => 'Terimakasih telah mempercayai kami.';
+
+  @override
+  String get cleverWelcomePrivacyNote =>
+      'Privasi dan Keamanan pribadi anda merupakan prioritas utama kami.';
+
+  @override
+  String get cleverReadMore => 'baca selengkapnya';
+
+  @override
+  String get cleverConsentPrivacy => 'Saya setuju dengan Kebijakan Privasi';
+
+  @override
+  String get cleverConsentTerms => 'Saya setuju dengan Syarat dan Ketentuan';
+
+  @override
+  String get cleverLegalPendingBody =>
+      'Dokumen ini sedang disiapkan dan akan tersedia di sini segera.';
+
+  @override
+  String get cleverWelcomeSocialProofTitle =>
+      'Apply ke 100 lowongan menjadi efektif dengan CV tailored!';
 }

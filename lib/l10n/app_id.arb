@@ -50,7 +50,7 @@
   },
   "active": "aktif",
   "activePass": "pass aktif",
-  "free": "pengguna gratis",
+  "free": "gratis",
   "membershipStatus": "status keanggotaan",
   "subscriptionWarning": "anda memiliki job hunter pass yang aktif. menghapus akun akan menghentikan akses anda segera dan tidak dapat dikembalikan.",
   "jobHunterPass": "job hunter pass",
@@ -119,10 +119,10 @@
   "add": "tambah",
   "added": "ditambahkan",
   "activate": "aktifkan",
-  "subscriptionExpiryCount": "berakhir dalam {timeLeft}",
+  "subscriptionExpiryCount": "berakhir dalam {time}",
   "@subscriptionExpiryCount": {
     "placeholders": {
-      "timeLeft": {
+      "time": {
         "type": "String"
       }
     }
@@ -292,7 +292,6 @@
   "finalizingPdf": "finalisasi pdf...",
   "folderEmpty": "folder kosong",
   "forgotPassword": "lupa kata sandi",
-  "free": "gratis",
   "forgotPasswordResetMessage": "masukkan alamat email anda dan kami akan mengirimkan tautan untuk mengatur ulang kata sandi anda.",
   "frequentQuestions": "pertanyaan umum",
   "fri": "jum",
@@ -408,7 +407,7 @@
   "loginToSave": "login untuk akses semua fitur",
   "masterProfileUpdated": "master profile berhasil diperbarui",
   "messageDetail": "pesan / detail",
-"mon": "sen",
+  "mon": "sen",
   "myCVs": "cv saya",
   "myDrafts": "draft saya",
   "next": "lanjut",
@@ -656,22 +655,11 @@
   "benefitPremiumDesc": "standout dengan desain eksklusif yang dipake para pro",
   "benefitSkipAdsTitle": "pengalaman tanpa iklan",
   "benefitSkipAdsDesc": "tanpa gangguan, fokus ke karir kamu",
-  "jobHunterPass": "job hunter pass",
-  "activePass": "pass aktif",
-  "subscriptionExpiryCount": "berakhir dalam {time}",
-  "@subscriptionExpiryCount": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
   "pass24h": "24 jam",
   "passWeekly": "mingguan",
   "passYearly": "tahunan",
   "subscriptionRequired": "langganan diperlukan",
   "upgradeNow": "upgrade",
-  "unlimitedGenerations": "generasi tanpa batas",
   "accessAllTemplates": "akses semua template",
   "noAdsForever": "tanpa iklan selamanya",
   "daily": "harian",
@@ -796,7 +784,26 @@
   "lifetimeAccessActiveDesc": "Nikmati pembuatan CV tanpa batas dan template premium selamanya. Tidak perlu tindakan lebih lanjut.",
   "upgradeToLifetime": "Upgrade ke Akses Selamanya",
   "upgradeToLifetimeDesc": "Dapatkan akses tanpa batas selamanya dan hentikan tagihan berulang.",
-  "cancelRecurringWarning": "Kamu masih memiliki langganan aktif. Konfirmasi sekarang untuk langsung beralih ke Akses Selamanya!"
+  "cancelRecurringWarning": "Kamu masih memiliki langganan aktif. Konfirmasi sekarang untuk langsung beralih ke Akses Selamanya!",
+  "cleverWelcomePersonaTitle": "Kamu tim yang mana?",
+  "cleverPersonaStudent": "pelajar",
+  "cleverPersonaJobSeeker": "pencari kerja aktif",
+  "cleverPersonaCareerSwitcher": "berpindah karir",
+  "cleverWelcomeBudgetTitle": "Berapa budget yang pernah kamu keluarin untuk jasa satu CV?",
+  "cleverWelcomeSingleCvTitle": "apakah kamu hanya punya 1 CV untuk semua lowongan?",
+  "cleverYes": "iya",
+  "cleverNo": "tidak",
+  "cleverWelcomeAppsTitle": "berapa lowongan yang kamu apply dalam sehari?",
+  "cleverWelcomeReasonTitle": "apa alasan kamu mager bikin CV tailored?",
+  "cleverReasonCompanyResearch": "riset perusahaan",
+  "cleverReasonRepromptAi": "re-prompt chatGPT",
+  "cleverReasonManualTemplate": "edit template manual",
+  "cleverReasonRepeatedForms": "isi form berulang",
+  "cleverWelcomeThanksTitle": "Terimakasih telah mempercayai kami.",
+  "cleverWelcomePrivacyNote": "Privasi dan Keamanan pribadi anda merupakan prioritas utama kami.",
+  "cleverReadMore": "baca selengkapnya",
+  "cleverConsentPrivacy": "Saya setuju dengan Kebijakan Privasi",
+  "cleverConsentTerms": "Saya setuju dengan Syarat dan Ketentuan",
+  "cleverLegalPendingBody": "Dokumen ini sedang disiapkan dan akan tersedia di sini segera.",
+  "cleverWelcomeSocialProofTitle": "Apply ke 100 lowongan menjadi efektif dengan CV tailored!"
 }
-
-

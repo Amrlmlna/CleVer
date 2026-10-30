@@ -22,6 +22,7 @@ import '../../presentation/support/pages/help_page.dart';
 import '../../presentation/support/pages/feedback_page.dart';
 import '../../presentation/notification/pages/notification_page.dart';
 import '../../presentation/legal/pages/legal_page.dart';
+import '../../presentation/legal/pages/clever_legal_placeholder_page.dart';
 import '../../presentation/common/pages/error_page.dart';
 import '../../presentation/auth/pages/login_page.dart';
 import '../../presentation/auth/pages/signup_page.dart';
@@ -114,6 +115,17 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: 'form', // Relative to /onboarding
             pageBuilder: (context, state) =>
                 _buildPage(const OnboardingPage(), state),
+          ),
+          GoRoute(
+            path: 'legal',
+            pageBuilder: (context, state) => _buildPage(
+              CleverLegalPlaceholderPage(
+                doc: state.extra is CleverLegalDoc
+                    ? state.extra! as CleverLegalDoc
+                    : CleverLegalDoc.privacy,
+              ),
+              state,
+            ),
           ),
         ],
       ),

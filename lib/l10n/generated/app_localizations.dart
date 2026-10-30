@@ -3815,6 +3815,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You currently have an active subscription. Confirm now to instantly upgrade to Lifetime!'**
   String get cancelRecurringWarning;
+
+  /// No description provided for @cleverWelcomePersonaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'which team are you on?'**
+  String get cleverWelcomePersonaTitle;
+
+  /// No description provided for @cleverPersonaStudent.
+  ///
+  /// In en, this message translates to:
+  /// **'student'**
+  String get cleverPersonaStudent;
+
+  /// No description provided for @cleverPersonaJobSeeker.
+  ///
+  /// In en, this message translates to:
+  /// **'active job seeker'**
+  String get cleverPersonaJobSeeker;
+
+  /// No description provided for @cleverPersonaCareerSwitcher.
+  ///
+  /// In en, this message translates to:
+  /// **'switching careers'**
+  String get cleverPersonaCareerSwitcher;
+
+  /// No description provided for @cleverWelcomeBudgetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'how much have you spent on a single CV service?'**
+  String get cleverWelcomeBudgetTitle;
+
+  /// No description provided for @cleverWelcomeSingleCvTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'do you use just 1 CV for every application?'**
+  String get cleverWelcomeSingleCvTitle;
+
+  /// No description provided for @cleverYes.
+  ///
+  /// In en, this message translates to:
+  /// **'yes'**
+  String get cleverYes;
+
+  /// No description provided for @cleverNo.
+  ///
+  /// In en, this message translates to:
+  /// **'no'**
+  String get cleverNo;
+
+  /// No description provided for @cleverWelcomeAppsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'how many jobs do you apply to in a day?'**
+  String get cleverWelcomeAppsTitle;
+
+  /// No description provided for @cleverWelcomeReasonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'what makes you put off making tailored CVs?'**
+  String get cleverWelcomeReasonTitle;
+
+  /// No description provided for @cleverReasonCompanyResearch.
+  ///
+  /// In en, this message translates to:
+  /// **'company research'**
+  String get cleverReasonCompanyResearch;
+
+  /// No description provided for @cleverReasonRepromptAi.
+  ///
+  /// In en, this message translates to:
+  /// **'re-prompting chatGPT'**
+  String get cleverReasonRepromptAi;
+
+  /// No description provided for @cleverReasonManualTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'editing templates manually'**
+  String get cleverReasonManualTemplate;
+
+  /// No description provided for @cleverReasonRepeatedForms.
+  ///
+  /// In en, this message translates to:
+  /// **'filling in the same forms again'**
+  String get cleverReasonRepeatedForms;
+
+  /// No description provided for @cleverWelcomeThanksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'thank you for trusting us.'**
+  String get cleverWelcomeThanksTitle;
+
+  /// No description provided for @cleverWelcomePrivacyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'your privacy and personal security are our top priority.'**
+  String get cleverWelcomePrivacyNote;
+
+  /// No description provided for @cleverReadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'read more'**
+  String get cleverReadMore;
+
+  /// No description provided for @cleverConsentPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the Privacy Policy'**
+  String get cleverConsentPrivacy;
+
+  /// No description provided for @cleverConsentTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the Terms & Conditions'**
+  String get cleverConsentTerms;
+
+  /// No description provided for @cleverLegalPendingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This document is being prepared and will be available here soon.'**
+  String get cleverLegalPendingBody;
+
+  /// No description provided for @cleverWelcomeSocialProofTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'applying to 100 openings becomes effective with tailored CVs!'**
+  String get cleverWelcomeSocialProofTitle;
 }
 
 class _AppLocalizationsDelegate

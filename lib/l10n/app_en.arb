@@ -50,7 +50,7 @@
   },
   "active": "active",
   "activePass": "active pass",
-  "free": "free user",
+  "free": "free",
   "membershipStatus": "membership status",
   "subscriptionWarning": "you have an active job hunter pass. deleting your account will terminate your access immediately and cannot be refunded.",
   "jobHunterPass": "job hunter pass",
@@ -119,10 +119,10 @@
   "add": "add",
   "added": "added",
   "activate": "activate",
-  "subscriptionExpiryCount": "expires in {timeLeft}",
+  "subscriptionExpiryCount": "expires in {time}",
   "@subscriptionExpiryCount": {
     "placeholders": {
-      "timeLeft": {
+      "time": {
         "type": "String"
       }
     }
@@ -236,8 +236,8 @@
   "finalStatus": "final",
   "untitled": "untitled",
   "openPDF": "open pdf",
-  "noCompletedCVs": "no completed cvs",
-  "generateCVFirst": "generate your first cv now",
+  "noCompletedCVs": "no generated cvs yet",
+  "generateCVFirst": "generate your first cv to see it here",
   "cvs": "cvs",
   "dateLabel": "date:",
   "degree": "degree / major",
@@ -303,13 +303,11 @@
   "finalizingPdf": "finalizing pdf...",
   "folderEmpty": "folder is empty",
   "forgotPassword": "forgot password",
-  "free": "free",
   "forgotPasswordResetMessage": "enter your email address and we'll send you a link to reset your password.",
   "frequentQuestions": "common questions",
   "fri": "fri",
   "fullName": "full name",
   "gallery": "gallery",
-  "generateCVFirst": "generate your first cv to see it here",
   "generated": "generated",
   "generatingPdfBadge": "generating pdf",
   "getStarted": "get started",
@@ -419,13 +417,12 @@
   "loginToSave": "login to access all features",
   "masterProfileUpdated": "master profile updated successfully",
   "messageDetail": "message / detail",
-"mon": "mon",
+  "mon": "mon",
   "myCVs": "my cvs",
   "myDrafts": "my drafts",
   "next": "next",
   "nextStep": "next step",
   "noCertifications": "no certifications yet.",
-  "noCompletedCVs": "no generated cvs yet",
   "noDrafts": "no drafts yet.",
   "noEducation": "no education history yet.",
   "noExperience": "no work experience yet.",
@@ -473,7 +470,6 @@
   "onboardingSubtext4": "every role matters. from side jobs to tech lead—we’ll pick what’s relevant.",
   "onboardingSubtext6": "swap between pro-templates instantly. no expensive designers needed.",
   "onboardingSubtitle": "fill in data once, generate thousands of cvs without retyping. save time, focus on \"grinding\".",
-  "openPDF": "open pdf",
   "or": "or",
   "organizingData": "organizing data...",
   "other": "other",
@@ -616,7 +612,6 @@
   "update": "update",
   "unlockFeatures": "activate job hunter pass",
   "untilNow": "until now",
-  "untitled": "untitled",
   "uploadInstruction": "tap to upload your professional photo",
   "uploadingPhoto": "uploading photo...",
   "usageHistoryComingSoon": "usage history coming soon",
@@ -667,22 +662,11 @@
   "benefitPremiumDesc": "stand out with exclusive designs used by top professionals",
   "benefitSkipAdsTitle": "ad-free experience",
   "benefitSkipAdsDesc": "no interruptions, just pure focus on your career",
-  "jobHunterPass": "job hunter pass",
-  "activePass": "active pass",
-  "subscriptionExpiryCount": "expires in {time}",
-  "@subscriptionExpiryCount": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
   "pass24h": "24 hours",
   "passWeekly": "weekly",
   "passYearly": "yearly",
   "subscriptionRequired": "subscription required",
   "upgradeNow": "upgrade now",
-  "unlimitedGenerations": "unlimited generations",
   "accessAllTemplates": "access all templates",
   "noAdsForever": "no ads forever",
   "daily": "daily",
@@ -807,6 +791,26 @@
   "lifetimeAccessActiveDesc": "Enjoy unlimited CV generation and premium templates forever. No further actions needed.",
   "upgradeToLifetime": "Upgrade to Lifetime",
   "upgradeToLifetimeDesc": "Get unlimited access forever and stop recurring billing.",
-  "cancelRecurringWarning": "You currently have an active subscription. Confirm now to instantly upgrade to Lifetime!"
+  "cancelRecurringWarning": "You currently have an active subscription. Confirm now to instantly upgrade to Lifetime!",
+  "cleverWelcomePersonaTitle": "which team are you on?",
+  "cleverPersonaStudent": "student",
+  "cleverPersonaJobSeeker": "active job seeker",
+  "cleverPersonaCareerSwitcher": "switching careers",
+  "cleverWelcomeBudgetTitle": "how much have you spent on a single CV service?",
+  "cleverWelcomeSingleCvTitle": "do you use just 1 CV for every application?",
+  "cleverYes": "yes",
+  "cleverNo": "no",
+  "cleverWelcomeAppsTitle": "how many jobs do you apply to in a day?",
+  "cleverWelcomeReasonTitle": "what makes you put off making tailored CVs?",
+  "cleverReasonCompanyResearch": "company research",
+  "cleverReasonRepromptAi": "re-prompting chatGPT",
+  "cleverReasonManualTemplate": "editing templates manually",
+  "cleverReasonRepeatedForms": "filling in the same forms again",
+  "cleverWelcomeThanksTitle": "thank you for trusting us.",
+  "cleverWelcomePrivacyNote": "your privacy and personal security are our top priority.",
+  "cleverReadMore": "read more",
+  "cleverConsentPrivacy": "I agree to the Privacy Policy",
+  "cleverConsentTerms": "I agree to the Terms & Conditions",
+  "cleverLegalPendingBody": "This document is being prepared and will be available here soon.",
+  "cleverWelcomeSocialProofTitle": "applying to 100 openings becomes effective with tailored CVs!"
 }
-
