@@ -41,7 +41,7 @@ onboarding until the app-wide reface, then gets removed entirely.
 | Phase | Scope | Status |
 |---|---|---|
 | A1 | Token layer (`CleverPalette`, `CleverColors`, `CleverTypography`, `CleverDimensions`, `CleverMotion`) | Done |
-| A2 | Shared Clever components (buttons, fields, option pills, sheet shell, nav bars, loader) | Pending |
+| A2 | Shared Clever components (`clever_button`, `clever_google_button`, `clever_text_field`, `clever_nav_action_bar`, `clever_progress_bar`, `clever_option_tile`, `clever_sheet`, `clever_divider` + widget tests) | Done |
 | B | GetStarted / SignUp / SignIn / Welcome steps 1–7 / legal scaffold | Pending |
 | C | Input panel restyle (header, method choice, lists, forms, dictate, skills, complete) | Pending |
 | D | Loading screens + mascot | Pending |
