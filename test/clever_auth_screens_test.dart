@@ -33,12 +33,12 @@ void main() {
     );
   }
 
-  GoRouter testRouter({String initialLocation = AppRoutes.onboardingStart}) {
+  GoRouter testRouter({String initialLocation = AppRoutes.onboarding}) {
     return GoRouter(
       initialLocation: initialLocation,
       routes: [
         GoRoute(
-          path: AppRoutes.onboardingStart,
+          path: AppRoutes.onboarding,
           builder: (context, state) => const CleverGetStartedPage(),
         ),
         GoRoute(

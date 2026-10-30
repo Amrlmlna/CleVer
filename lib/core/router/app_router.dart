@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../presentation/onboarding/pages/onboarding_welcome_page.dart';
+import '../../presentation/onboarding/pages/clever_get_started_page.dart';
 import '../../presentation/onboarding/pages/onboarding_page.dart';
 import '../../presentation/onboarding/providers/onboarding_provider.dart';
 import '../../presentation/home/pages/home_page.dart';
@@ -27,7 +27,6 @@ import '../../presentation/common/pages/error_page.dart';
 import '../../presentation/auth/pages/clever_login_page.dart';
 import '../../presentation/auth/pages/clever_signup_page.dart';
 import '../../presentation/auth/pages/clever_auth_loading_page.dart';
-import '../../presentation/onboarding/pages/clever_get_started_page.dart';
 import '../../presentation/onboarding/pages/clever_welcome_questionnaire_page.dart';
 import '../../domain/entities/tailored_cv_result.dart';
 import '../../domain/entities/job_input.dart';
@@ -114,7 +113,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.onboarding,
         pageBuilder: (context, state) =>
-            _buildPage(const OnboardingWelcomePage(), state),
+            _buildPage(const CleverGetStartedPage(), state),
         routes: [
           GoRoute(
             path: 'form', // Relative to /onboarding
@@ -133,15 +132,10 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
           ),
           GoRoute(
-            path: 'start',
-            pageBuilder: (context, state) =>
-                _buildPage(const CleverGetStartedPage(), state),
-          ),
-          GoRoute(
             path: 'steps',
             pageBuilder: (context, state) => _buildPage(
               CleverWelcomeQuestionnairePage(
-                onCompleted: () => context.go(AppRoutes.home),
+                onCompleted: () => context.go(AppRoutes.onboardingForm),
               ),
               state,
             ),

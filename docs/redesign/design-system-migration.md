@@ -23,7 +23,7 @@ onboarding until the app-wide reface, then gets removed entirely.
 ## Deferred removal checklist (Flutter)
 
 - [ ] `AppTheme.darkTheme` + its wiring in `main.dart` (unused today; safe batch with reface cleanup)
-- [ ] Old welcome questionnaire widgets (`onboarding_welcome_page.dart` steps: wall-of-pain, selection list, time scroll, comparison, final reveal, carousel screen, tweet cards, `OnboardingSelectionCard`, `onboarding_morph_painter.dart`) — after the new 7-step flow fully replaces them and the transition window closes
+- [x] Old welcome questionnaire widgets (`onboarding_welcome_page.dart` steps: wall-of-pain, selection list, time scroll, comparison, final reveal, carousel screen, tweet cards, `OnboardingSelectionCard`, `onboarding_morph_painter.dart`) — deleted 2026-10-31 (B3); `/onboarding` now serves `CleverGetStartedPage`
 - [ ] `/onboarding/form` standalone route (folded into the new flow)
 - [ ] `onboardingAuthCaptureProvider` + `DashboardNavigationHandler.handleOnboardingSuccess` forced auth-wall path (dead once auth happens at Welcome)
 - [ ] `onboarding_discovery_selected` analytics event (defined, never fired — wire it or remove it during Phase E)
