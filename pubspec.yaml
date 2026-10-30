@@ -80,6 +80,7 @@ dependencies:
   speech_to_text: ^7.0.0
   confetti: ^0.8.0
   device_info_plus: ^11.0.0
+  lottie: ^3.3.3
 
 
 dev_dependencies:
@@ -112,6 +113,7 @@ flutter:
     - .env
     - assets/icon/
     - assets/images/
+    - assets/Lottie/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
