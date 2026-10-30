@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:clever/presentation/onboarding/pages/clever_welcome_questionnaire_page.dart';
 import 'package:clever/presentation/onboarding/providers/clever_welcome_provider.dart';
+import 'package:clever/presentation/onboarding/widgets/clever_welcome/clever_application_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -121,6 +122,30 @@ void main() {
       notifier.next();
       expect(notifier.state.isComplete, isTrue);
     });
+  });
+
+  testWidgets('application slider snaps to the three stops', (tester) async {
+    int? selected;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: CleverApplicationSlider(
+            value: 50,
+            onChanged: (v) => selected = v,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final track = tester.getRect(find.byType(SliderTrack));
+    await tester.tapAt(Offset(track.left + track.width - 2, track.center.dy));
+    await tester.pumpAndSettle();
+    expect(selected, 100);
+
+    await tester.tapAt(Offset(track.left + 2, track.center.dy));
+    await tester.pumpAndSettle();
+    expect(selected, 10);
   });
 
   testWidgets('questionnaire page advances and fires onCompleted', (

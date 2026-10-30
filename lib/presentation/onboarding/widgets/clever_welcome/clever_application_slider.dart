@@ -3,35 +3,49 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/clever/clever_colors.dart';
 import '../../../../core/theme/clever/clever_typography.dart';
 
+/// Three-stop slider with playful animal anchors per the staging design.
+/// The thumb only rests on the first, middle, and last stop.
 class CleverApplicationSlider extends StatelessWidget {
   const CleverApplicationSlider({
     super.key,
     required this.value,
-    required this.min,
-    required this.max,
     required this.onChanged,
+    this.min = 10,
+    this.mid = 50,
+    this.max = 100,
   });
 
   final int value;
-  final int min;
-  final int max;
   final ValueChanged<int> onChanged;
+  final int min;
+  final int mid;
+  final int max;
+
+  static const _stopIcons = [
+    'assets/images/catterpillar-40513.png',
+    'assets/images/antelope-40490.png',
+    'assets/images/jaguar.png',
+  ];
+
+  List<int> get _stops => [min, mid, max];
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SliderTrack(value: value, min: min, max: max, onChanged: onChanged),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _HintLabel(min.toString()),
-              _HintLabel('${min + (max - min) ~/ 2}'),
-              _HintLabel('$max+'),
-            ],
-          ),
+        SliderTrack(
+          stops: _stops,
+          selectedIndex: _stops.indexOf(value).clamp(0, 2),
+          icons: _stopIcons,
+          onChanged: onChanged,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _HintLabel('$min'),
+            _HintLabel('$mid'),
+            _HintLabel('$max+'),
+          ],
         ),
       ],
     );
@@ -54,39 +68,19 @@ class _HintLabel extends StatelessWidget {
   }
 }
 
-class SliderTrack extends StatefulWidget {
+class SliderTrack extends StatelessWidget {
   const SliderTrack({
     super.key,
-    required this.value,
-    required this.min,
-    required this.max,
+    required this.stops,
+    required this.selectedIndex,
+    required this.icons,
     required this.onChanged,
   });
 
-  final int value;
-  final int min;
-  final int max;
+  final List<int> stops;
+  final int selectedIndex;
+  final List<String> icons;
   final ValueChanged<int> onChanged;
-
-  @override
-  State<SliderTrack> createState() => _SliderTrackState();
-}
-
-class _SliderTrackState extends State<SliderTrack> {
-  double? _dragFraction;
-
-  double get _fraction =>
-      _dragFraction ?? (widget.value - widget.min) / (widget.max - widget.min);
-
-  void _update(Offset localPosition, double width) {
-    final fraction = (localPosition.dx / width).clamp(0.0, 1.0);
-    setState(() => _dragFraction = fraction);
-    widget.onChanged(
-      widget.min + (fraction * (widget.max - widget.min)).round(),
-    );
-  }
-
-  void _endDrag() => setState(() => _dragFraction = null);
 
   @override
   Widget build(BuildContext context) {
@@ -95,39 +89,41 @@ class _SliderTrackState extends State<SliderTrack> {
         final width = constraints.maxWidth;
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onHorizontalDragStart: (d) => _update(d.localPosition, width),
-          onHorizontalDragUpdate: (d) => _update(d.localPosition, width),
-          onHorizontalDragEnd: (_) => _endDrag(),
-          onHorizontalDragCancel: _endDrag,
-          onTapUp: (d) => _update(d.localPosition, width),
+          onTapUp: (d) => _select(d.localPosition.dx, width),
+          onHorizontalDragUpdate: (d) => _select(d.localPosition.dx, width),
           child: SizedBox(
-            height: 76,
+            height: 84,
             child: CustomPaint(
-              painter: _SliderTrackPainter(fraction: _fraction),
-              child: Align(
-                alignment: Alignment(_fraction * 2 - 1, -0.55),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 2,
-                  ),
-                  decoration: BoxDecoration(
-                    color: CleverColors.surfaceInverse,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    '${widget.value}',
-                    style: CleverTypography.label.copyWith(
-                      color: CleverColors.textOnDark,
+              painter: _SliderTrackPainter(
+                fraction: selectedIndex / (stops.length - 1),
+              ),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  for (var i = 0; i < icons.length; i++)
+                    Align(
+                      alignment: Alignment(i * 2.0 - 1.0, -0.72),
+                      child: Image.asset(
+                        icons[i],
+                        height: 40,
+                        fit: BoxFit.contain,
+                      ),
                     ),
-                  ),
-                ),
+                ],
               ),
             ),
           ),
         );
       },
     );
+  }
+
+  void _select(double dx, double width) {
+    final fraction = (dx / width).clamp(0.0, 1.0);
+    final index = (fraction * (stops.length - 1)).round();
+    if (stops[index] != stops[selectedIndex]) {
+      onChanged(stops[index]);
+    }
   }
 }
 
@@ -138,11 +134,10 @@ class _SliderTrackPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final trackTop = size.height * 0.62;
     const trackHeight = 5.0;
     const thumbRadius = 8.5;
+    final trackTop = size.height * 0.66;
 
-    final fillPaint = Paint()..color = CleverColors.bgOnboarding;
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(0, trackTop - trackHeight / 2, size.width, trackHeight),
@@ -160,7 +155,7 @@ class _SliderTrackPainter extends CustomPainter {
         ),
         const Radius.circular(2.5),
       ),
-      fillPaint,
+      Paint()..color = CleverColors.bgOnboarding,
     );
 
     final thumbX = size.width * fraction;
@@ -174,10 +169,14 @@ class _SliderTrackPainter extends CustomPainter {
       ..color = CleverColors.textPrimary.withValues(alpha: 0.25)
       ..strokeWidth = 1;
     const minorSpacing = 17.0;
-    for (double x = minorSpacing; x < size.width; x += minorSpacing) {
+    for (
+      double x = minorSpacing;
+      x < size.width - minorSpacing;
+      x += minorSpacing
+    ) {
       canvas.drawLine(
-        Offset(x, trackTop + thumbRadius + 6),
-        Offset(x, trackTop + thumbRadius + 10),
+        Offset(x, trackTop + thumbRadius + 8),
+        Offset(x, trackTop + thumbRadius + 12),
         rulerPaint,
       );
     }

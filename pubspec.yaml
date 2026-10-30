@@ -81,6 +81,7 @@ dependencies:
   confetti: ^0.8.0
   device_info_plus: ^11.0.0
   lottie: ^3.3.3
+  flutter_svg: ^2.3.0
 
 
 dev_dependencies:
@@ -114,6 +115,7 @@ flutter:
     - assets/icon/
     - assets/images/
     - assets/Lottie/
+    - assets/ComplexShape/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
