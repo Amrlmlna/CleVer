@@ -3918,18 +3918,6 @@ abstract class AppLocalizations {
   /// **'read more'**
   String get cleverReadMore;
 
-  /// No description provided for @cleverConsentPrivacy.
-  ///
-  /// In en, this message translates to:
-  /// **'I agree to the Privacy Policy'**
-  String get cleverConsentPrivacy;
-
-  /// No description provided for @cleverConsentTerms.
-  ///
-  /// In en, this message translates to:
-  /// **'I agree to the Terms & Conditions'**
-  String get cleverConsentTerms;
-
   /// No description provided for @cleverLegalPendingBody.
   ///
   /// In en, this message translates to:
@@ -3983,6 +3971,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'enter a valid email'**
   String get cleverEmailInvalid;
+
+  /// No description provided for @cleverConsentLine.
+  ///
+  /// In en, this message translates to:
+  /// **'I have read the Privacy Policy & Terms'**
+  String get cleverConsentLine;
 }
 
 class _AppLocalizationsDelegate

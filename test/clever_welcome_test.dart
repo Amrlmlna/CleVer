@@ -43,8 +43,7 @@ void main() {
         hasSingleCv: false,
         applicationsPerDay: 42,
         reasons: {CleverReason.manualTemplate, CleverReason.repeatedForms},
-        consentedPrivacy: true,
-        consentedTerms: true,
+        consented: true,
       );
 
       final restored = CleverWelcomeState.fromJson(
@@ -57,8 +56,7 @@ void main() {
       expect(restored.hasSingleCv, state.hasSingleCv);
       expect(restored.applicationsPerDay, state.applicationsPerDay);
       expect(restored.reasons, state.reasons);
-      expect(restored.consentedPrivacy, state.consentedPrivacy);
-      expect(restored.consentedTerms, state.consentedTerms);
+      expect(restored.consented, state.consented);
     });
 
     test('falls back to defaults on unknown values', () {
@@ -115,9 +113,7 @@ void main() {
       notifier.next();
       expect(notifier.state.step, 6);
 
-      notifier
-        ..setConsentedPrivacy(true)
-        ..setConsentedTerms(true);
+      notifier.setConsented(true);
       expect(notifier.state.canContinue, isTrue);
       notifier.next();
       expect(notifier.state.isComplete, isTrue);
@@ -168,8 +164,8 @@ void main() {
     await tester.pump(const Duration(milliseconds: 400));
 
     expect(find.text('7/8'), findsOneWidget);
-    expect(find.byType(Checkbox), findsNWidgets(2));
-    expect(find.text('read more'), findsNWidgets(2));
+    expect(find.byType(Checkbox), findsOneWidget);
+    expect(find.text('read more'), findsOneWidget);
 
     // Final step's next control is the staging icon-only pill.
     final nextButton = find.ancestor(
@@ -180,9 +176,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 400));
     expect(completed, 0);
 
-    await tester.tap(find.byType(Checkbox).first);
-    await tester.pump(const Duration(milliseconds: 400));
-    await tester.tap(find.byType(Checkbox).last);
+    await tester.tap(find.byType(Checkbox));
     await tester.pump(const Duration(milliseconds: 400));
     await tester.tap(nextButton);
     await tester.pump(const Duration(milliseconds: 400));

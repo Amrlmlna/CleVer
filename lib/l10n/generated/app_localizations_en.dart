@@ -2121,12 +2121,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cleverReadMore => 'read more';
 
   @override
-  String get cleverConsentPrivacy => 'I agree to the Privacy Policy';
-
-  @override
-  String get cleverConsentTerms => 'I agree to the Terms & Conditions';
-
-  @override
   String get cleverLegalPendingBody =>
       'This document is being prepared and will be available here soon.';
 
@@ -2155,4 +2149,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cleverEmailInvalid => 'enter a valid email';
+
+  @override
+  String get cleverConsentLine => 'I have read the Privacy Policy & Terms';
 }

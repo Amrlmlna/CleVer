@@ -17,8 +17,7 @@ class CleverWelcomeState {
     this.hasSingleCv,
     this.applicationsPerDay = 10,
     this.reasons = const {},
-    this.consentedPrivacy = false,
-    this.consentedTerms = false,
+    this.consented = false,
   });
 
   static const int stepCount = 7;
@@ -29,8 +28,7 @@ class CleverWelcomeState {
   final bool? hasSingleCv;
   final int applicationsPerDay;
   final Set<CleverReason> reasons;
-  final bool consentedPrivacy;
-  final bool consentedTerms;
+  final bool consented;
 
   bool get canContinue {
     return switch (step) {
@@ -40,7 +38,7 @@ class CleverWelcomeState {
       3 => true,
       4 => reasons.isNotEmpty,
       5 => true,
-      6 => consentedPrivacy && consentedTerms,
+      6 => consented,
       _ => false,
     };
   }
@@ -54,8 +52,7 @@ class CleverWelcomeState {
     bool? hasSingleCv,
     int? applicationsPerDay,
     Set<CleverReason>? reasons,
-    bool? consentedPrivacy,
-    bool? consentedTerms,
+    bool? consented,
   }) {
     return CleverWelcomeState(
       step: step ?? this.step,
@@ -64,8 +61,7 @@ class CleverWelcomeState {
       hasSingleCv: hasSingleCv ?? this.hasSingleCv,
       applicationsPerDay: applicationsPerDay ?? this.applicationsPerDay,
       reasons: reasons ?? this.reasons,
-      consentedPrivacy: consentedPrivacy ?? this.consentedPrivacy,
-      consentedTerms: consentedTerms ?? this.consentedTerms,
+      consented: consented ?? this.consented,
     );
   }
 
@@ -76,8 +72,7 @@ class CleverWelcomeState {
     'hasSingleCv': hasSingleCv,
     'applicationsPerDay': applicationsPerDay,
     'reasons': reasons.map((r) => r.name).toList(),
-    'consentedPrivacy': consentedPrivacy,
-    'consentedTerms': consentedTerms,
+    'consented': consented,
   };
 
   factory CleverWelcomeState.fromJson(Map<String, dynamic> json) {
@@ -94,8 +89,7 @@ class CleverWelcomeState {
             in json['reasons'] is List ? json['reasons']! as List : const [])
           if (_enumOrNull(CleverReason.values, name) case final r?) r,
       },
-      consentedPrivacy: json['consentedPrivacy'] is bool,
-      consentedTerms: json['consentedTerms'] is bool,
+      consented: json['consented'] is bool,
     );
   }
 
@@ -162,11 +156,7 @@ class CleverWelcomeNotifier extends StateNotifier<CleverWelcomeState> {
     _update(state.copyWith(reasons: reasons));
   }
 
-  void setConsentedPrivacy(bool value) =>
-      _update(state.copyWith(consentedPrivacy: value));
-
-  void setConsentedTerms(bool value) =>
-      _update(state.copyWith(consentedTerms: value));
+  void setConsented(bool value) => _update(state.copyWith(consented: value));
 
   void next() {
     if (!state.canContinue) return;

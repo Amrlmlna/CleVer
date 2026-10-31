@@ -38,10 +38,12 @@ class CleverWelcomeQuestionnairePage extends ConsumerWidget {
           children: [
             const Positioned.fill(child: _GlowBlobs()),
             if (state.step == CleverWelcomeState.stepCount - 1)
-              const Positioned(
+              Positioned(
                 left: -67,
-                bottom: -110,
-                child: CleverMascot(variant: CleverMascotVariant.authLoading),
+                top: MediaQuery.sizeOf(context).height * 0.30,
+                child: const CleverMascot(
+                  variant: CleverMascotVariant.authLoading,
+                ),
               ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -344,17 +346,9 @@ class _ConsentStep extends StatelessWidget {
             ),
             const Spacer(),
             _ConsentRow(
-              label: l10n.cleverConsentPrivacy,
-              checked: state.consentedPrivacy,
-              onChanged: notifier.setConsentedPrivacy,
+              checked: state.consented,
+              onChanged: notifier.setConsented,
               doc: CleverLegalDoc.privacy,
-            ),
-            const SizedBox(height: 24),
-            _ConsentRow(
-              label: l10n.cleverConsentTerms,
-              checked: state.consentedTerms,
-              onChanged: notifier.setConsentedTerms,
-              doc: CleverLegalDoc.terms,
             ),
           ],
         ),
@@ -363,16 +357,14 @@ class _ConsentStep extends StatelessWidget {
   }
 }
 
-/// Consent rows sit on the dark mascot, so all foreground colors are on-dark.
+/// Single consent line on the dark mascot; all foreground colors on-dark.
 class _ConsentRow extends StatelessWidget {
   const _ConsentRow({
-    required this.label,
     required this.checked,
     required this.onChanged,
     required this.doc,
   });
 
-  final String label;
   final bool checked;
   final ValueChanged<bool> onChanged;
   final CleverLegalDoc doc;
@@ -385,11 +377,10 @@ class _ConsentRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: 40,
-              height: 40,
+              width: 28,
+              height: 28,
               child: Checkbox(
                 value: checked,
                 onChanged: (value) => onChanged(value ?? false),
@@ -404,15 +395,14 @@ class _ConsentRow extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 10),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  label,
-                  style: CleverTypography.bodyStrong.copyWith(
-                    color: CleverColors.textOnDark,
-                  ),
+              child: Text(
+                l10n.cleverConsentLine,
+                maxLines: 1,
+                overflow: TextOverflow.visible,
+                style: CleverTypography.bodySm.copyWith(
+                  color: CleverColors.textOnDark,
                 ),
               ),
             ),
@@ -422,18 +412,18 @@ class _ConsentRow extends StatelessWidget {
           onPressed: () => context.push(AppRoutes.onboardingLegal, extra: doc),
           style: TextButton.styleFrom(
             foregroundColor: CleverColors.textOnDark,
-            padding: const EdgeInsets.only(left: 52, top: 4, bottom: 4),
+            padding: const EdgeInsets.only(left: 38, top: 4, bottom: 4),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 l10n.cleverReadMore,
-                style: CleverTypography.bodyStrong.copyWith(
+                style: CleverTypography.bodySm.copyWith(
                   color: CleverColors.textOnDark,
                 ),
               ),
-              const Icon(Icons.arrow_outward, size: 18),
+              const Icon(Icons.arrow_outward, size: 16),
             ],
           ),
         ),

@@ -2120,12 +2120,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get cleverReadMore => 'baca selengkapnya';
 
   @override
-  String get cleverConsentPrivacy => 'Saya setuju dengan Kebijakan Privasi';
-
-  @override
-  String get cleverConsentTerms => 'Saya setuju dengan Syarat dan Ketentuan';
-
-  @override
   String get cleverLegalPendingBody =>
       'Dokumen ini sedang disiapkan dan akan tersedia di sini segera.';
 
@@ -2154,4 +2148,8 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cleverEmailInvalid => 'masukkan email yang valid';
+
+  @override
+  String get cleverConsentLine =>
+      'Saya sudah membaca Kebijakan Privasi dan S&K';
 }

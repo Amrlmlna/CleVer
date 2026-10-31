@@ -809,8 +809,6 @@
   "cleverWelcomeThanksTitle": "thank you for trusting us.",
   "cleverWelcomePrivacyNote": "your privacy and personal security are our top priority.",
   "cleverReadMore": "read more",
-  "cleverConsentPrivacy": "I agree to the Privacy Policy",
-  "cleverConsentTerms": "I agree to the Terms & Conditions",
   "cleverLegalPendingBody": "This document is being prepared and will be available here soon.",
   "cleverWelcomeSocialProofTitle": "applying to 100 openings becomes effective with tailored CVs!",
   "cleverGetStartedTitle": "Nice to meet you!",
@@ -819,5 +817,6 @@
   "cleverSignInGreeting": "welcome back!",
   "cleverGoogleSignUp": "Sign up with Google",
   "cleverGoogleSignIn": "Sign in with Google",
-  "cleverEmailInvalid": "enter a valid email"
+  "cleverEmailInvalid": "enter a valid email",
+  "cleverConsentLine": "I have read the Privacy Policy & Terms"
 }
