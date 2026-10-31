@@ -9,6 +9,7 @@ class AppRoutes {
   static const String onboardingForm = '/onboarding/form';
   static const String onboardingLegal = '/onboarding/legal';
   static const String onboardingSteps = '/onboarding/steps';
+  static const String onboardingIntro = '/onboarding/intro';
   static const String onboardingLoading = '/onboarding/loading';
 
   static const String dashboard = '/dashboard';

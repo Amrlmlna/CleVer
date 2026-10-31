@@ -818,5 +818,8 @@
   "cleverGoogleSignUp": "Sign up with Google",
   "cleverGoogleSignIn": "Sign in with Google",
   "cleverEmailInvalid": "enter a valid email",
-  "cleverConsentLine": "I have read the Privacy Policy & Terms"
+  "cleverConsentLine": "I have read the Privacy Policy & Terms",
+  "cleverIntroTagline": "Your experience, always within reach.",
+  "cleverIntroSupport": "build a professional track record you can use every time an opportunity comes.",
+  "cleverIntroCta": "start now"
 }

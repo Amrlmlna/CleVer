@@ -811,5 +811,8 @@
   "cleverGoogleSignUp": "Daftar dengan Google",
   "cleverGoogleSignIn": "Masuk dengan Google",
   "cleverEmailInvalid": "masukkan email yang valid",
-  "cleverConsentLine": "Saya sudah membaca Kebijakan Privasi dan S&K"
+  "cleverConsentLine": "Saya sudah membaca Kebijakan Privasi dan S&K",
+  "cleverIntroTagline": "Pengalamanmu, selalu dalam jangkauan.",
+  "cleverIntroSupport": "bangun rekam jejak profesional yang bisa kamu manfaatkan setiap kali peluang datang.",
+  "cleverIntroCta": "mulai sekarang"
 }

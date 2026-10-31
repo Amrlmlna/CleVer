@@ -3977,6 +3977,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'I have read the Privacy Policy & Terms'**
   String get cleverConsentLine;
+
+  /// No description provided for @cleverIntroTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Your experience, always within reach.'**
+  String get cleverIntroTagline;
+
+  /// No description provided for @cleverIntroSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'build a professional track record you can use every time an opportunity comes.'**
+  String get cleverIntroSupport;
+
+  /// No description provided for @cleverIntroCta.
+  ///
+  /// In en, this message translates to:
+  /// **'start now'**
+  String get cleverIntroCta;
 }
 
 class _AppLocalizationsDelegate

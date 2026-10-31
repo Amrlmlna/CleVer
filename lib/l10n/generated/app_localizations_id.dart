@@ -2152,4 +2152,14 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get cleverConsentLine =>
       'Saya sudah membaca Kebijakan Privasi dan S&K';
+
+  @override
+  String get cleverIntroTagline => 'Pengalamanmu, selalu dalam jangkauan.';
+
+  @override
+  String get cleverIntroSupport =>
+      'bangun rekam jejak profesional yang bisa kamu manfaatkan setiap kali peluang datang.';
+
+  @override
+  String get cleverIntroCta => 'mulai sekarang';
 }

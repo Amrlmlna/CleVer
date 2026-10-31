@@ -2152,4 +2152,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cleverConsentLine => 'I have read the Privacy Policy & Terms';
+
+  @override
+  String get cleverIntroTagline => 'Your experience, always within reach.';
+
+  @override
+  String get cleverIntroSupport =>
+      'build a professional track record you can use every time an opportunity comes.';
+
+  @override
+  String get cleverIntroCta => 'start now';
 }

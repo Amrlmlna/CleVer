@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../presentation/onboarding/pages/clever_get_started_page.dart';
+import '../../presentation/onboarding/pages/clever_career_bank_intro_page.dart';
 import '../../presentation/onboarding/pages/onboarding_page.dart';
 import '../../presentation/onboarding/providers/onboarding_provider.dart';
 import '../../presentation/auth/providers/auth_state_provider.dart';
@@ -171,10 +172,15 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: 'steps',
             pageBuilder: (context, state) => _buildPage(
               CleverWelcomeQuestionnairePage(
-                onCompleted: () => context.go(AppRoutes.onboardingForm),
+                onCompleted: () => context.go(AppRoutes.onboardingIntro),
               ),
               state,
             ),
+          ),
+          GoRoute(
+            path: 'intro',
+            pageBuilder: (context, state) =>
+                _buildPage(const CleverCareerBankIntroPage(), state),
           ),
           GoRoute(
             path: 'loading',
