@@ -3,11 +3,18 @@ import 'package:lottie/lottie.dart';
 
 import '../../../../core/theme/clever/clever_colors.dart';
 
-enum CleverMascotVariant { getStarted, signUp, signIn, authLoading }
+enum CleverMascotVariant {
+  getStarted,
+  signUp,
+  signIn,
+  authLoading,
+  welcomeStep7,
+}
 
 /// Composes the mascot from exported assets: static body layers plus the
-/// animated face Lottie. Every geometry value below is taken from the Figma
-/// staging nodes or the exported body SVG (402×766, mascot-box local).
+/// face (animated Lottie, or the static PNG for welcomeStep7). Every
+/// geometry value below is taken from the Figma staging nodes or the
+/// exported body SVG (402×766, mascot-box local).
 class CleverMascot extends StatelessWidget {
   const CleverMascot({super.key, required this.variant});
 
@@ -23,11 +30,15 @@ class CleverMascot extends StatelessWidget {
         'assets/Lottie/SignInFormAuthLoadingAnimatedFace.json',
   };
 
+  /// Step 7's mascot is static: shared body plus the exported face PNG.
+  static const _step7FaceAsset = 'assets/Lottie/WelcomeStep7StaticMascot.png';
+
   Size get _boxSize => switch (variant) {
     CleverMascotVariant.getStarted => const Size(518, 632),
     CleverMascotVariant.signUp => const Size(458, 685),
     CleverMascotVariant.signIn => const Size(485, 685),
     CleverMascotVariant.authLoading => const Size(485, 767),
+    CleverMascotVariant.welcomeStep7 => const Size(485, 736),
   };
 
   /// Horizontal position of the mascot box on its screen; the shared body
@@ -36,6 +47,7 @@ class CleverMascot extends StatelessWidget {
     CleverMascotVariant.signUp => -(-56.0),
     CleverMascotVariant.signIn => -(-58.0),
     CleverMascotVariant.authLoading => -(-56.0),
+    CleverMascotVariant.welcomeStep7 => -(-67.0),
     CleverMascotVariant.getStarted => 0,
   };
 
@@ -46,6 +58,7 @@ class CleverMascot extends StatelessWidget {
     CleverMascotVariant.signUp => const Offset(125, 64),
     CleverMascotVariant.signIn => const Offset(162, 137),
     CleverMascotVariant.authLoading => const Offset(162, 153),
+    CleverMascotVariant.welcomeStep7 => const Offset(122, 199),
   };
 
   double get _faceWidth => switch (variant) {
@@ -53,12 +66,11 @@ class CleverMascot extends StatelessWidget {
     CleverMascotVariant.signUp => 207.4,
     CleverMascotVariant.signIn => 160,
     CleverMascotVariant.authLoading => 160,
+    CleverMascotVariant.welcomeStep7 => 193,
   };
 
   @override
   Widget build(BuildContext context) {
-    final face = _faceAssets[variant]!;
-
     return SizedBox(
       width: _boxSize.width,
       height: _boxSize.height,
@@ -72,12 +84,14 @@ class CleverMascot extends StatelessWidget {
           Positioned(
             left: _faceOffset.dx,
             top: _faceOffset.dy,
-            child: Lottie.asset(
-              face,
-              width: _faceWidth,
-              repeat: true,
-              filterQuality: FilterQuality.medium,
-            ),
+            child: variant == CleverMascotVariant.welcomeStep7
+                ? Image.asset(_step7FaceAsset, width: _faceWidth)
+                : Lottie.asset(
+                    _faceAssets[variant]!,
+                    width: _faceWidth,
+                    repeat: true,
+                    filterQuality: FilterQuality.medium,
+                  ),
           ),
         ],
       ),
@@ -122,9 +136,9 @@ class CleverMascot extends StatelessWidget {
     ];
   }
 
-  /// Shared body for signUp/signIn/authLoading, from the exported SVG:
-  /// scallop band (−56,0 485×209), midnight block (0,157 419×629), sheen
-  /// gradient (−19,25 431×751, painted bottom-up).
+  /// Shared body for signUp/signIn/authLoading/welcomeStep7, from the
+  /// exported SVG: scallop band (−56,0 485×209), midnight block (0,157
+  /// 419×629), sheen gradient (−19,25 431×751, painted bottom-up).
   List<Widget> _sharedBody() {
     Widget layer(
       double left,

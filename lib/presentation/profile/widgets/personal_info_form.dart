@@ -218,8 +218,10 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
 
   String? _getNormalizedGender(String text) {
     final lower = text.trim().toLowerCase();
-    if (lower == 'male' || lower == 'pria' || lower == 'laki-laki') return 'Male';
-    if (lower == 'female' || lower == 'wanita' || lower == 'perempuan') return 'Female';
+    if (lower == 'male' || lower == 'pria' || lower == 'laki-laki')
+      return 'Male';
+    if (lower == 'female' || lower == 'wanita' || lower == 'perempuan')
+      return 'Female';
     return null;
   }
 }

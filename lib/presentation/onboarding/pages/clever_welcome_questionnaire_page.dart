@@ -40,9 +40,9 @@ class CleverWelcomeQuestionnairePage extends ConsumerWidget {
             if (state.step == CleverWelcomeState.stepCount - 1)
               Positioned(
                 left: -67,
-                top: MediaQuery.sizeOf(context).height * 0.30,
+                top: MediaQuery.sizeOf(context).height * 0.316,
                 child: const CleverMascot(
-                  variant: CleverMascotVariant.authLoading,
+                  variant: CleverMascotVariant.welcomeStep7,
                 ),
               ),
             Column(
