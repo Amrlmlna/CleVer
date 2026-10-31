@@ -845,5 +845,7 @@
   "cleverEmptyExperiencePrompt": "yuk mulai tambahkan pengalaman kerja!",
   "cleverSkip": "lewati",
   "cleverDeleteExperienceTitle": "hapus pengalaman ini?",
-  "cleverConfirmDelete": "hapus"
+  "cleverConfirmDelete": "hapus",
+  "cleverToggleType": "ketik",
+  "cleverToggleDictate": "dikte"
 }

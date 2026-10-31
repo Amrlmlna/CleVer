@@ -20,6 +20,9 @@ class CleverTextField extends StatefulWidget {
     this.focusNode,
     this.onSubmitted,
     this.onChanged,
+    this.onTap,
+    this.readOnly = false,
+    this.maxLines = 1,
     this.enabled = true,
   });
 
@@ -34,6 +37,9 @@ class CleverTextField extends StatefulWidget {
   final FocusNode? focusNode;
   final ValueChanged<String>? onSubmitted;
   final ValueChanged<String>? onChanged;
+  final VoidCallback? onTap;
+  final bool readOnly;
+  final int maxLines;
   final bool enabled;
 
   @override
@@ -98,6 +104,9 @@ class _CleverTextFieldState extends State<CleverTextField> {
       obscureText: _obscured,
       cursorColor: controlColor,
       onChanged: widget.onChanged,
+      onTap: widget.onTap,
+      readOnly: widget.readOnly,
+      maxLines: widget.obscureText ? 1 : widget.maxLines,
       style: CleverTypography.body.copyWith(
         color: onAction ? CleverColors.textOnDark : CleverColors.textPrimary,
       ),

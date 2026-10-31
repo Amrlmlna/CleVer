@@ -2267,4 +2267,10 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cleverConfirmDelete => 'hapus';
+
+  @override
+  String get cleverToggleType => 'ketik';
+
+  @override
+  String get cleverToggleDictate => 'dikte';
 }

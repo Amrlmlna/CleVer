@@ -852,5 +852,7 @@
   "cleverEmptyExperiencePrompt": "start adding your work experience!",
   "cleverSkip": "skip",
   "cleverDeleteExperienceTitle": "delete this experience?",
-  "cleverConfirmDelete": "delete"
+  "cleverConfirmDelete": "delete",
+  "cleverToggleType": "type",
+  "cleverToggleDictate": "dictate"
 }

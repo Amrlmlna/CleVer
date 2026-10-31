@@ -2267,4 +2267,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cleverConfirmDelete => 'delete';
+
+  @override
+  String get cleverToggleType => 'type';
+
+  @override
+  String get cleverToggleDictate => 'dictate';
 }

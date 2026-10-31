@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import '../../../../domain/entities/user_profile.dart';
-import '../../common/widgets/custom_text_form_field.dart';
-import '../../cv/providers/cv_generation_provider.dart';
-import '../../common/widgets/spinning_text_loader.dart';
-import '../../../../core/providers/locale_provider.dart';
-import '../../../../core/utils/custom_snackbar.dart';
-import 'package:clever/l10n/generated/app_localizations.dart';
-import '../../common/widgets/unsaved_changes_dialog.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_theme.dart';
-import '../../common/widgets/sheet/sheet_header.dart';
-import '../../common/widgets/sheet/sheet_action_buttons.dart';
-import '../../common/widgets/voice_dictation_panel.dart';
 
+import '../../../../domain/entities/user_profile.dart';
+import '../../../../core/providers/locale_provider.dart';
+import '../../../../core/theme/clever/clever_colors.dart';
+import '../../../../core/theme/clever/clever_dimensions.dart';
+import '../../../../core/theme/clever/clever_typography.dart';
+import '../../../../core/utils/custom_snackbar.dart';
+import '../../common/widgets/clever/clever_confirm_sheet.dart';
+import '../../common/widgets/clever/clever_dictate_panel.dart';
+import '../../common/widgets/clever/clever_form_toggle.dart';
+import '../../common/widgets/clever/clever_nav_action_bar.dart';
+import '../../common/widgets/clever/clever_text_field.dart';
+import '../../common/widgets/spinning_text_loader.dart';
+import '../../cv/providers/cv_generation_provider.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
+
+/// Add/edit experience form — the Clever cream sheet with the ketik/dikte
+/// toggle. Dictate reuses the speech + /cv/parse-entity machinery; the
+/// manual (ketik) tab keeps the legacy fields until its restyle pass.
 class ExperienceBottomSheet extends ConsumerStatefulWidget {
   final Experience? existing;
 
@@ -28,20 +33,19 @@ class ExperienceBottomSheet extends ConsumerStatefulWidget {
       context: context,
       useRootNavigator: true,
       isScrollControlled: true,
-      backgroundColor: AppColors.sheetSurface,
+      backgroundColor: CleverColors.bgCanvas,
       isDismissible: false,
       enableDrag: false,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (context) => Theme(
-        data: AppTheme.sheetTheme,
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: ExperienceBottomSheet(existing: existing),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(CleverRadius.sheet),
         ),
+      ),
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: ExperienceBottomSheet(existing: existing),
       ),
     );
   }
@@ -110,31 +114,21 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
       return;
     }
 
-    Experience? savedExp;
-    final result = await UnsavedChangesDialog.show(
+    final l10n = AppLocalizations.of(context)!;
+    final result = await CleverConfirmSheet.show(
       context,
-      onSave: () async {
-        if (_formKey.currentState!.validate()) {
-          savedExp = Experience(
-            id:
-                widget.existing?.id ??
-                DateTime.now().millisecondsSinceEpoch.toString(),
-            jobTitle: _titleCtrl.text,
-            companyName: _companyCtrl.text,
-            startDate: _startCtrl.text,
-            endDate: _endCtrl.text.isEmpty ? null : _endCtrl.text,
-            description: _descCtrl.text,
-          );
-        }
-      },
-      onDiscard: () async {
-        // Just return true to the dialog
-      },
+      title: l10n.cleverConfirmTitle,
+      message: l10n.cleverConfirmMessage,
+      confirmLabel: l10n.save,
+      discardLabel: l10n.cleverConfirmDiscard,
     );
+    if (!mounted || result == null) return;
 
-    if (result == true && mounted) {
+    if (result) {
+      _save();
+    } else {
       setState(() => _canPopNow = true);
-      Navigator.pop(context, savedExp);
+      Navigator.pop(context);
     }
   }
 
@@ -150,6 +144,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
         endDate: _endCtrl.text.isEmpty ? null : _endCtrl.text,
         description: _descCtrl.text,
       );
+      setState(() => _canPopNow = true);
       Navigator.pop(context, exp);
     }
   }
@@ -214,8 +209,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final localization = AppLocalizations.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return PopScope(
       canPop: _canPopNow,
@@ -226,126 +220,93 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
       child: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+            padding: const EdgeInsets.fromLTRB(31, 16, 33, 24),
             child: Form(
               key: _formKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SheetHeader(
-                    title: widget.existing == null
-                        ? localization.addExperience
-                        : localization.editExperienceTitle,
-                    onClosing: _handlePop,
-                    trailing: Container(
-                      decoration: BoxDecoration(
-                        color: colorScheme.surfaceContainerHighest.withValues(
-                          alpha: 0.5,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: colorScheme.outlineVariant),
+                  CleverFormToggle(
+                    activeIndex: _isVoiceMode ? 1 : 0,
+                    onChanged: (i) => setState(() => _isVoiceMode = i == 1),
+                    segments: [
+                      CleverToggleSegment(
+                        label: l10n.cleverToggleType,
+                        icon: Icons.edit_outlined,
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          GestureDetector(
-                            onTap: () => setState(() => _isVoiceMode = true),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: _isVoiceMode
-                                    ? colorScheme.onSurface
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                              child: Text(
-                                localization.voiceMode,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                  color: _isVoiceMode
-                                      ? colorScheme.surface
-                                      : colorScheme.onSurfaceVariant,
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () => setState(() => _isVoiceMode = false),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: !_isVoiceMode
-                                    ? colorScheme.onSurface
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                              child: Text(
-                                localization.voiceForm,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                  color: !_isVoiceMode
-                                      ? colorScheme.surface
-                                      : colorScheme.onSurfaceVariant,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                      CleverToggleSegment(
+                        label: l10n.cleverToggleDictate,
+                        icon: Icons.mic_none,
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: CleverSpacing.space24),
+                  Text(
+                    widget.existing == null
+                        ? l10n.addExperience
+                        : l10n.editExperienceTitle,
+                    style: CleverTypography.h1.copyWith(
+                      color: CleverColors.textPrimary,
                     ),
                   ),
-
-                  const SizedBox(height: 24),
-
+                  const SizedBox(height: CleverSpacing.space24),
                   if (_isVoiceMode)
-                    VoiceDictationPanel(
+                    CleverDictatePanel(
                       entityType: 'experience',
-                      instruction: localization.voiceExplainExperience,
-                      checklistItems: [
-                        VoiceChecklistItem(
-                          label: localization.jobTitle,
-                          isFilled: _titleCtrl.text.isNotEmpty,
-                          onTap: () {
+                      onParsed: (data) {
+                        setState(() {
+                          void apply(
+                            String? value,
+                            TextEditingController controller,
+                          ) {
+                            if (value != null && value.isNotEmpty) {
+                              controller.text = value;
+                            }
+                          }
+
+                          apply(data['jobTitle']?.toString(), _titleCtrl);
+                          apply(data['companyName']?.toString(), _companyCtrl);
+                          apply(data['startDate']?.toString(), _startCtrl);
+                          apply(data['endDate']?.toString(), _endCtrl);
+                          apply(data['description']?.toString(), _descCtrl);
+                        });
+                      },
+                      items: [
+                        CleverDictateItem(
+                          label: l10n.jobTitle,
+                          captured: _titleCtrl.text.isNotEmpty,
+                          onEdit: () {
                             setState(() => _isVoiceMode = false);
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               _titleFocus.requestFocus();
                             });
                           },
                         ),
-                        VoiceChecklistItem(
-                          label: localization.company,
-                          isFilled: _companyCtrl.text.isNotEmpty,
-                          onTap: () {
+                        CleverDictateItem(
+                          label: l10n.company,
+                          captured: _companyCtrl.text.isNotEmpty,
+                          onEdit: () {
                             setState(() => _isVoiceMode = false);
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               _companyFocus.requestFocus();
                             });
                           },
                         ),
-                        VoiceChecklistItem(
-                          label:
-                              '${localization.startDate} & ${localization.endDate}',
-                          isFilled: _startCtrl.text.isNotEmpty,
-                          onTap: () {
+                        CleverDictateItem(
+                          label: '${l10n.startDate} & ${l10n.endDate}',
+                          captured: _startCtrl.text.isNotEmpty,
+                          onEdit: () {
                             setState(() => _isVoiceMode = false);
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               _pickDate(_startCtrl);
                             });
                           },
                         ),
-                        VoiceChecklistItem(
-                          label: localization.shortDescription,
-                          isFilled: _descCtrl.text.isNotEmpty,
-                          onTap: () {
+                        CleverDictateItem(
+                          label: l10n.shortDescription,
+                          captured: _descCtrl.text.isNotEmpty,
+                          onEdit: () {
                             setState(() => _isVoiceMode = false);
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               _descFocus.requestFocus();
@@ -353,181 +314,112 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                           },
                         ),
                       ],
-                      onParsed: (data) {
-                        setState(() {
-                          if (data['jobTitle'] != null &&
-                              data['jobTitle'].toString().isNotEmpty) {
-                            _titleCtrl.text = data['jobTitle'];
-                          }
-                          if (data['companyName'] != null &&
-                              data['companyName'].toString().isNotEmpty) {
-                            _companyCtrl.text = data['companyName'];
-                          }
-                          if (data['startDate'] != null &&
-                              data['startDate'].toString().isNotEmpty) {
-                            _startCtrl.text = data['startDate'];
-                          }
-                          if (data['endDate'] != null &&
-                              data['endDate'].toString().isNotEmpty) {
-                            _endCtrl.text = data['endDate'];
-                          }
-                          if (data['description'] != null &&
-                              data['description'].toString().isNotEmpty) {
-                            _descCtrl.text = data['description'];
-                          }
-                        });
-                      },
                     )
                   else ...[
-                    CustomTextFormField(
+                    CleverTextField(
                       controller: _titleCtrl,
                       focusNode: _titleFocus,
-                      labelText: localization.jobTitle,
-                      hintText: localization.jobTitleHint,
-                      validator: (v) =>
-                          v!.isEmpty ? localization.requiredField : null,
+                      hintText: l10n.jobTitle,
+                      surface: CleverFieldSurface.filled,
+                      textInputAction: TextInputAction.next,
+                      validator: (v) => v!.isEmpty ? l10n.requiredField : null,
                     ),
-                    const SizedBox(height: 16),
-                    CustomTextFormField(
+                    const SizedBox(height: CleverSpacing.space16),
+                    CleverTextField(
                       controller: _companyCtrl,
                       focusNode: _companyFocus,
-                      labelText: localization.company,
-                      hintText: localization.companyPlaceholder,
-                      validator: (v) =>
-                          v!.isEmpty ? localization.requiredField : null,
+                      hintText: l10n.company,
+                      surface: CleverFieldSurface.filled,
+                      textInputAction: TextInputAction.next,
+                      validator: (v) => v!.isEmpty ? l10n.requiredField : null,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: CleverSpacing.space16),
                     Row(
                       children: [
                         Expanded(
-                          child: CustomTextFormField(
+                          child: _LegacyDateField(
                             controller: _startCtrl,
-                            labelText: localization.startDate,
-                            hintText: localization.selectDate,
-                            readOnly: true,
-                            prefixIcon: Icons.calendar_today,
+                            hint: l10n.selectDate,
+                            icon: Icons.calendar_today,
                             onTap: () => _pickDate(_startCtrl),
-                            validator: (v) =>
-                                v!.isEmpty ? localization.requiredField : null,
                           ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: CustomTextFormField(
+                          child: _LegacyDateField(
                             controller: _endCtrl,
-                            labelText: localization.endDate,
-                            hintText: localization.untilNow,
-                            readOnly: true,
-                            prefixIcon: Icons.event,
+                            hint: l10n.untilNow,
+                            icon: Icons.event,
                             onTap: () => _pickDate(_endCtrl),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: CleverSpacing.space16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          localization.shortDescription,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
-                                fontWeight: FontWeight.w500,
-                              ),
+                          l10n.shortDescription,
+                          style: CleverTypography.bodySm.copyWith(
+                            color: CleverColors.textSecondary,
+                          ),
                         ),
-                        _isRewriting
-                            ? SizedBox(
-                                height: 16,
-                                width: 100,
-                                child: SpinningTextLoader(
-                                  texts: [
-                                    localization.improving,
-                                    localization.rephrasing,
-                                    localization.polishing,
-                                  ],
-                                  style: Theme.of(context).textTheme.bodySmall
-                                      ?.copyWith(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onSurface,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                  interval: const Duration(milliseconds: 800),
-                                ),
-                              )
-                            : TextButton.icon(
-                                onPressed: _rewriteDescription,
-                                icon: Icon(
+                        if (_isRewriting)
+                          SizedBox(
+                            height: 16,
+                            width: 100,
+                            child: SpinningTextLoader(
+                              texts: [
+                                l10n.improving,
+                                l10n.rephrasing,
+                                l10n.polishing,
+                              ],
+                              style: CleverTypography.bodySm.copyWith(
+                                color: CleverColors.textPrimary,
+                              ),
+                              interval: const Duration(milliseconds: 800),
+                            ),
+                          )
+                        else
+                          InkWell(
+                            onTap: _rewriteDescription,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
                                   Icons.auto_awesome,
                                   size: 14,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
+                                  color: CleverColors.bgAction,
                                 ),
-                                label: Text(
-                                  localization.rewriteAI,
-                                  style: Theme.of(context).textTheme.bodySmall
-                                      ?.copyWith(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onSurface,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  l10n.rewriteAI,
+                                  style: CleverTypography.bodySm.copyWith(
+                                    color: CleverColors.bgAction,
+                                  ),
                                 ),
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  minimumSize: const Size(0, 0),
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
-                              ),
+                              ],
+                            ),
+                          ),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    CustomTextFormField(
+                    const SizedBox(height: CleverSpacing.space8),
+                    CleverTextField(
                       controller: _descCtrl,
                       focusNode: _descFocus,
-                      labelText: '',
-                      hintText: localization.descriptionHint,
+                      hintText: l10n.descriptionHint,
+                      surface: CleverFieldSurface.filled,
                       maxLines: 4,
-                      validator: (v) =>
-                          v!.isEmpty ? localization.requiredField : null,
+                      validator: (v) => v!.isEmpty ? l10n.requiredField : null,
                     ),
                   ],
-                  const SizedBox(height: 32),
-                  SheetActionButtons(
-                    onSave: _save,
-                    onCancel: _handlePop,
-                    voiceEntityType: _isVoiceMode ? null : 'experience',
-                    onVoiceParsed: _isVoiceMode
-                        ? null
-                        : (data) {
-                            setState(() {
-                              if (data['jobTitle'] != null &&
-                                  data['jobTitle'].toString().isNotEmpty) {
-                                _titleCtrl.text = data['jobTitle'];
-                              }
-                              if (data['companyName'] != null &&
-                                  data['companyName'].toString().isNotEmpty) {
-                                _companyCtrl.text = data['companyName'];
-                              }
-                              if (data['startDate'] != null &&
-                                  data['startDate'].toString().isNotEmpty) {
-                                _startCtrl.text = data['startDate'];
-                              }
-                              if (data['endDate'] != null &&
-                                  data['endDate'].toString().isNotEmpty) {
-                                _endCtrl.text = data['endDate'];
-                              }
-                              if (data['description'] != null &&
-                                  data['description'].toString().isNotEmpty) {
-                                _descCtrl.text = data['description'];
-                              }
-                            });
-                          },
+                  const SizedBox(height: CleverSpacing.space24),
+                  CleverNavActionBar(
+                    tone: CleverNavTone.orange,
+                    onBack: _handlePop,
+                    nextLabel: l10n.save,
+                    onNext: _save,
                   ),
                 ],
               ),
@@ -535,6 +427,33 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Interim date field for the manual tab (restyled with the tab pass).
+class _LegacyDateField extends StatelessWidget {
+  const _LegacyDateField({
+    required this.controller,
+    required this.hint,
+    required this.icon,
+    required this.onTap,
+  });
+
+  final TextEditingController controller;
+  final String hint;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return CleverTextField(
+      controller: controller,
+      hintText: hint,
+      surface: CleverFieldSurface.filled,
+      prefixIcon: icon,
+      readOnly: true,
+      onTap: onTap,
     );
   }
 }

@@ -4181,6 +4181,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'delete'**
   String get cleverConfirmDelete;
+
+  /// No description provided for @cleverToggleType.
+  ///
+  /// In en, this message translates to:
+  /// **'type'**
+  String get cleverToggleType;
+
+  /// No description provided for @cleverToggleDictate.
+  ///
+  /// In en, this message translates to:
+  /// **'dictate'**
+  String get cleverToggleDictate;
 }
 
 class _AppLocalizationsDelegate
