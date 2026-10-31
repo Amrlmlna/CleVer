@@ -102,7 +102,7 @@ class SliderTrack extends StatelessWidget {
                 children: [
                   for (var i = 0; i < icons.length; i++)
                     Align(
-                      alignment: Alignment(i * 2.0 - 1.0, -0.72),
+                      alignment: Alignment(i * 1.6 - 0.8, -0.72),
                       child: Image.asset(
                         icons[i],
                         height: 40,

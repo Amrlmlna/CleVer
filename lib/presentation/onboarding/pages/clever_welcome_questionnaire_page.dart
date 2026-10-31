@@ -33,29 +33,32 @@ class CleverWelcomeQuestionnairePage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: CleverColors.bgCanvas,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 21),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 32),
-              CleverProgressBar(index: state.step + 1, total: 8),
-              Expanded(
-                child: AnimatedSwitcher(
-                  duration: CleverMotion.transition,
-                  switchInCurve: CleverMotion.transitionCurve,
-                  child: _StepBody(key: ValueKey(state.step), step: state.step),
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 32),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 21),
+              child: CleverProgressBar(index: state.step + 1, total: 8),
+            ),
+            Expanded(
+              child: AnimatedSwitcher(
+                duration: CleverMotion.transition,
+                switchInCurve: CleverMotion.transitionCurve,
+                child: _StepBody(key: ValueKey(state.step), step: state.step),
               ),
-              _BottomNav(
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: _BottomNav(
                 state: state,
                 notifier: notifier,
                 onCompleted: onCompleted,
                 l10n: l10n,
               ),
-              const SizedBox(height: 24),
-            ],
-          ),
+            ),
+            const SizedBox(height: 24),
+          ],
         ),
       ),
     );
@@ -194,19 +197,26 @@ class _QuestionStep extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.topCenter,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 48),
-          Text(
-            title,
-            style: isHero
-                ? CleverTypography.h1.copyWith(color: CleverColors.textPrimary)
-                : CleverTypography.h4.copyWith(color: CleverColors.textPrimary),
-          ),
-          const SizedBox(height: 48),
-          child,
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 48),
+            Text(
+              title,
+              style: isHero
+                  ? CleverTypography.h1.copyWith(
+                      color: CleverColors.textPrimary,
+                    )
+                  : CleverTypography.h4.copyWith(
+                      color: CleverColors.textPrimary,
+                    ),
+            ),
+            const SizedBox(height: 48),
+            child,
+          ],
+        ),
       ),
     );
   }
@@ -255,38 +265,41 @@ class _ConsentStep extends StatelessWidget {
 
     return Align(
       alignment: Alignment.topCenter,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: 48),
-          Text(
-            l10n.cleverWelcomeThanksTitle,
-            style: CleverTypography.h1.copyWith(
-              color: CleverColors.textPrimary,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 48),
+            Text(
+              l10n.cleverWelcomeThanksTitle,
+              style: CleverTypography.h1.copyWith(
+                color: CleverColors.textPrimary,
+              ),
             ),
-          ),
-          const SizedBox(height: 24),
-          Text(
-            l10n.cleverWelcomePrivacyNote,
-            style: CleverTypography.bodyStrong.copyWith(
-              color: CleverColors.textPrimary,
+            const SizedBox(height: 24),
+            Text(
+              l10n.cleverWelcomePrivacyNote,
+              style: CleverTypography.bodyStrong.copyWith(
+                color: CleverColors.textPrimary,
+              ),
             ),
-          ),
-          const SizedBox(height: 32),
-          _ConsentRow(
-            label: l10n.cleverConsentPrivacy,
-            checked: state.consentedPrivacy,
-            onChanged: notifier.setConsentedPrivacy,
-            doc: CleverLegalDoc.privacy,
-          ),
-          const SizedBox(height: 16),
-          _ConsentRow(
-            label: l10n.cleverConsentTerms,
-            checked: state.consentedTerms,
-            onChanged: notifier.setConsentedTerms,
-            doc: CleverLegalDoc.terms,
-          ),
-        ],
+            const SizedBox(height: 32),
+            _ConsentRow(
+              label: l10n.cleverConsentPrivacy,
+              checked: state.consentedPrivacy,
+              onChanged: notifier.setConsentedPrivacy,
+              doc: CleverLegalDoc.privacy,
+            ),
+            const SizedBox(height: 16),
+            _ConsentRow(
+              label: l10n.cleverConsentTerms,
+              checked: state.consentedTerms,
+              onChanged: notifier.setConsentedTerms,
+              doc: CleverLegalDoc.terms,
+            ),
+          ],
+        ),
       ),
     );
   }
