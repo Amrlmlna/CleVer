@@ -136,15 +136,15 @@ void main() {
         ),
       ),
     );
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 400));
 
     final track = tester.getRect(find.byType(SliderTrack));
     await tester.tapAt(Offset(track.left + track.width - 2, track.center.dy));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 400));
     expect(selected, 100);
 
     await tester.tapAt(Offset(track.left + 2, track.center.dy));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 400));
     expect(selected, 10);
   });
 
@@ -165,26 +165,27 @@ void main() {
         ),
       ),
     );
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 400));
 
     expect(find.text('7/8'), findsOneWidget);
     expect(find.byType(Checkbox), findsNWidgets(2));
     expect(find.text('read more'), findsNWidgets(2));
 
+    // Final step's next control is the staging icon-only pill.
     final nextButton = find.ancestor(
-      of: find.text('next'),
+      of: find.byIcon(Icons.arrow_outward).last,
       matching: find.byType(ElevatedButton),
     );
     await tester.tap(nextButton);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 400));
     expect(completed, 0);
 
     await tester.tap(find.byType(Checkbox).first);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 400));
     await tester.tap(find.byType(Checkbox).last);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 400));
     await tester.tap(nextButton);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 400));
     expect(completed, 1);
   });
 }

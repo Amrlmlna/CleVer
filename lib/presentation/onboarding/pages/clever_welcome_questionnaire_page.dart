@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../common/widgets/clever/clever_button.dart';
+import '../../common/widgets/clever/clever_mascot.dart';
 import '../../common/widgets/clever/clever_nav_action_bar.dart';
 import '../../common/widgets/clever/clever_option_tile.dart';
 import '../../common/widgets/clever/clever_progress_bar.dart';
@@ -33,33 +34,82 @@ class CleverWelcomeQuestionnairePage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: CleverColors.bgCanvas,
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Stack(
           children: [
-            const SizedBox(height: 32),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 21),
-              child: CleverProgressBar(index: state.step + 1, total: 8),
-            ),
-            Expanded(
-              child: AnimatedSwitcher(
-                duration: CleverMotion.transition,
-                switchInCurve: CleverMotion.transitionCurve,
-                child: _StepBody(key: ValueKey(state.step), step: state.step),
+            const Positioned.fill(child: _GlowBlobs()),
+            if (state.step == CleverWelcomeState.stepCount - 1)
+              const Positioned(
+                left: -67,
+                bottom: -110,
+                child: CleverMascot(variant: CleverMascotVariant.authLoading),
               ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 21),
+                  child: CleverProgressBar(index: state.step + 1, total: 8),
+                ),
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: CleverMotion.transition,
+                    switchInCurve: CleverMotion.transitionCurve,
+                    child: _StepBody(
+                      key: ValueKey(state.step),
+                      step: state.step,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  child: _BottomNav(
+                    state: state,
+                    notifier: notifier,
+                    onCompleted: onCompleted,
+                    l10n: l10n,
+                  ),
+                ),
+                const SizedBox(height: 24),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              child: _BottomNav(
-                state: state,
-                notifier: notifier,
-                onCompleted: onCompleted,
-                l10n: l10n,
-              ),
-            ),
-            const SizedBox(height: 24),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Soft radial glows present on every staging welcome frame: top-right and
+/// bottom-left, 334×336, royal-blue fading into the canvas.
+class _GlowBlobs extends StatelessWidget {
+  const _GlowBlobs();
+
+  @override
+  Widget build(BuildContext context) {
+    final blob = BoxDecoration(
+      gradient: RadialGradient(
+        colors: [
+          CleverColors.bgOnboarding.withValues(alpha: 0.4),
+          CleverColors.bgCanvas.withValues(alpha: 0.27),
+        ],
+      ),
+    );
+
+    return IgnorePointer(
+      child: Stack(
+        children: [
+          Positioned(
+            top: -70,
+            right: -70,
+            child: Container(width: 334, height: 336, decoration: blob),
+          ),
+          Positioned(
+            bottom: -70,
+            left: -70,
+            child: Container(width: 334, height: 336, decoration: blob),
+          ),
+        ],
       ),
     );
   }
@@ -234,21 +284,26 @@ class _SocialProofStep extends StatelessWidget {
     final markerIndex = headline.indexOf(marker);
 
     return Center(
-      child: Text.rich(
-        TextSpan(
-          text: headline.substring(0, markerIndex),
-          children: [
-            TextSpan(
-              text: marker,
-              style: CleverTypography.h1.copyWith(
-                color: CleverColors.textAccent,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 26),
+        child: Text.rich(
+          TextSpan(
+            text: headline.substring(0, markerIndex),
+            children: [
+              TextSpan(
+                text: marker,
+                style: CleverTypography.h1.copyWith(
+                  color: CleverColors.textAccent,
+                ),
               ),
+              TextSpan(text: headline.substring(markerIndex + marker.length)),
+            ],
+            style: CleverTypography.h1.copyWith(
+              color: CleverColors.textPrimary,
             ),
-            TextSpan(text: headline.substring(markerIndex + marker.length)),
-          ],
-          style: CleverTypography.h1.copyWith(color: CleverColors.textPrimary),
+          ),
+          textAlign: TextAlign.center,
         ),
-        textAlign: TextAlign.center,
       ),
     );
   }
@@ -274,6 +329,7 @@ class _ConsentStep extends StatelessWidget {
             const SizedBox(height: 36),
             Text(
               l10n.cleverWelcomeThanksTitle,
+              textAlign: TextAlign.center,
               style: CleverTypography.h1.copyWith(
                 color: CleverColors.textPrimary,
               ),
@@ -281,6 +337,7 @@ class _ConsentStep extends StatelessWidget {
             const SizedBox(height: 24),
             Text(
               l10n.cleverWelcomePrivacyNote,
+              textAlign: TextAlign.center,
               style: CleverTypography.bodyStrong.copyWith(
                 color: CleverColors.textPrimary,
               ),
@@ -292,7 +349,7 @@ class _ConsentStep extends StatelessWidget {
               onChanged: notifier.setConsentedPrivacy,
               doc: CleverLegalDoc.privacy,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             _ConsentRow(
               label: l10n.cleverConsentTerms,
               checked: state.consentedTerms,
@@ -306,6 +363,7 @@ class _ConsentStep extends StatelessWidget {
   }
 }
 
+/// Consent rows sit on the dark mascot, so all foreground colors are on-dark.
 class _ConsentRow extends StatelessWidget {
   const _ConsentRow({
     required this.label,
@@ -323,37 +381,58 @@ class _ConsentRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          width: 44,
-          height: 44,
-          child: Checkbox(
-            value: checked,
-            onChanged: (value) => onChanged(value ?? false),
-            activeColor: CleverColors.bgAction,
-            checkColor: CleverColors.textOnDark,
-            side: const BorderSide(
-              color: CleverColors.surfaceInverse,
-              width: CleverStrokes.hairline,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 40,
+              height: 40,
+              child: Checkbox(
+                value: checked,
+                onChanged: (value) => onChanged(value ?? false),
+                activeColor: CleverColors.bgAction,
+                checkColor: CleverColors.textOnDark,
+                side: const BorderSide(
+                  color: CleverColors.textOnDark,
+                  width: CleverStrokes.hairline,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  label,
+                  style: CleverTypography.bodyStrong.copyWith(
+                    color: CleverColors.textOnDark,
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
-        const SizedBox(width: 8),
-        Expanded(child: Text(label, style: CleverTypography.bodyStrong)),
         TextButton(
           onPressed: () => context.push(AppRoutes.onboardingLegal, extra: doc),
           style: TextButton.styleFrom(
-            foregroundColor: CleverColors.textPrimary,
-            padding: const EdgeInsets.symmetric(horizontal: 4),
+            foregroundColor: CleverColors.textOnDark,
+            padding: const EdgeInsets.only(left: 52, top: 4, bottom: 4),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(l10n.cleverReadMore, style: CleverTypography.bodyStrong),
+              Text(
+                l10n.cleverReadMore,
+                style: CleverTypography.bodyStrong.copyWith(
+                  color: CleverColors.textOnDark,
+                ),
+              ),
               const Icon(Icons.arrow_outward, size: 18),
             ],
           ),
@@ -387,11 +466,11 @@ class _BottomNav extends StatelessWidget {
       );
     }
 
+    final isFinalStep = state.step == CleverWelcomeState.stepCount - 1;
+
     return CleverNavActionBar(
       backLabel: l10n.back,
-      nextLabel: state.step == CleverWelcomeState.stepCount - 1
-          ? l10n.next
-          : null,
+      tone: isFinalStep ? CleverNavTone.cream : CleverNavTone.midnight,
       onBack: notifier.back,
       onNext: () {
         if (!enabled) return;
