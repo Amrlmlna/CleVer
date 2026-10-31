@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:clever/presentation/onboarding/providers/onboarding_provider.dart';
 import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_header_step.dart';
+import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_method_choice_step.dart';
 import 'package:clever/domain/entities/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -176,6 +177,52 @@ void main() {
       await tester.tap(find.text('wanita'));
       await tester.pump();
       expect(container.read(onboardingFormProvider).formData.gender, 'female');
+    });
+  });
+
+  group('CleverMethodChoiceStep', () {
+    testWidgets('cerita card advances to manual entry', (tester) async {
+      var manual = false;
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: CleverMethodChoiceStep(
+              onManualEntry: () => manual = true,
+              onImportSuccess: (_) {},
+            ),
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 400));
+
+      await tester.tap(find.text('cerita'));
+      await tester.pump();
+      expect(manual, isTrue);
+    });
+
+    testWidgets('scan card opens the upload sheet', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: CleverMethodChoiceStep(
+              onManualEntry: () {},
+              onImportSuccess: (_) {},
+            ),
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 400));
+
+      await tester.tap(find.text('scan'));
+      await tester.pumpAndSettle();
+      expect(find.text('unggah foto'), findsOneWidget);
+      expect(find.text('unggah file'), findsOneWidget);
     });
   });
 }

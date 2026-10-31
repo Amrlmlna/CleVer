@@ -2207,4 +2207,41 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cleverConfirmDiscard => 'buang';
+
+  @override
+  String get cleverMethodTitle => 'pilih metode kamu';
+
+  @override
+  String get cleverMethodSubtitle =>
+      'Pilih cara yang paling nyaman buat mengisi career Bank kamu.';
+
+  @override
+  String get cleverMethodScan => 'scan';
+
+  @override
+  String get cleverMethodScanDesc =>
+      'import riwayat profesional dari draft cv lama kamu.';
+
+  @override
+  String get cleverMethodCerita => 'cerita';
+
+  @override
+  String get cleverMethodCeritaDesc =>
+      'belum punya CV? ceritain semua riwayat profesional kamu';
+
+  @override
+  String get cleverScanSheetSubtitle =>
+      'semua riwayat profesional akan diekstrak secara otomatis oleh AI.';
+
+  @override
+  String get cleverUploadPhoto => 'unggah foto';
+
+  @override
+  String get cleverUploadPhotoHint => 'gunakan kamera atau pilih dari galeri.';
+
+  @override
+  String get cleverUploadFile => 'unggah file';
+
+  @override
+  String get cleverUploadFileHint => 'pilih dokumen dari perangkat ini.';
 }

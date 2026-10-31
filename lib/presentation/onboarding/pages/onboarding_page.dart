@@ -10,7 +10,7 @@ import '../providers/onboarding_auth_capture_provider.dart';
 import '../../../core/services/analytics_service.dart';
 
 import '../widgets/onboarding_personal_step.dart';
-import '../widgets/onboarding_import_step.dart';
+import '../widgets/clever_panel/clever_method_choice_step.dart';
 import '../widgets/onboarding_experience_step.dart';
 import '../widgets/onboarding_education_step.dart';
 import '../widgets/onboarding_certification_step.dart';
@@ -227,7 +227,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                     birthDateController: _birthDateController,
                     genderController: _genderController,
                   ),
-                  OnboardingImportStep(
+                  CleverMethodChoiceStep(
                     onManualEntry: _handleManualEntry,
                     onImportSuccess: _handleImportSuccess,
                   ),

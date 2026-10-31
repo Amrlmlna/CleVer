@@ -834,5 +834,16 @@
   "cleverConfirmTitle": "save your changes?",
   "cleverConfirmMessage": "you have unsaved progress on your profile.",
   "cleverConfirmSave": "save draft",
-  "cleverConfirmDiscard": "discard"
+  "cleverConfirmDiscard": "discard",
+  "cleverMethodTitle": "choose your method",
+  "cleverMethodSubtitle": "pick whatever is most comfortable for filling in your career bank.",
+  "cleverMethodScan": "scan",
+  "cleverMethodScanDesc": "import your professional history from an old cv draft.",
+  "cleverMethodCerita": "story",
+  "cleverMethodCeritaDesc": "no cv yet? just tell us your whole professional history",
+  "cleverScanSheetSubtitle": "your professional history gets extracted automatically by AI.",
+  "cleverUploadPhoto": "upload photo",
+  "cleverUploadPhotoHint": "use the camera or pick from your gallery.",
+  "cleverUploadFile": "upload file",
+  "cleverUploadFileHint": "pick a document from this device."
 }

@@ -4073,6 +4073,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'discard'**
   String get cleverConfirmDiscard;
+
+  /// No description provided for @cleverMethodTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'choose your method'**
+  String get cleverMethodTitle;
+
+  /// No description provided for @cleverMethodSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'pick whatever is most comfortable for filling in your career bank.'**
+  String get cleverMethodSubtitle;
+
+  /// No description provided for @cleverMethodScan.
+  ///
+  /// In en, this message translates to:
+  /// **'scan'**
+  String get cleverMethodScan;
+
+  /// No description provided for @cleverMethodScanDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'import your professional history from an old cv draft.'**
+  String get cleverMethodScanDesc;
+
+  /// No description provided for @cleverMethodCerita.
+  ///
+  /// In en, this message translates to:
+  /// **'story'**
+  String get cleverMethodCerita;
+
+  /// No description provided for @cleverMethodCeritaDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'no cv yet? just tell us your whole professional history'**
+  String get cleverMethodCeritaDesc;
+
+  /// No description provided for @cleverScanSheetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'your professional history gets extracted automatically by AI.'**
+  String get cleverScanSheetSubtitle;
+
+  /// No description provided for @cleverUploadPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'upload photo'**
+  String get cleverUploadPhoto;
+
+  /// No description provided for @cleverUploadPhotoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'use the camera or pick from your gallery.'**
+  String get cleverUploadPhotoHint;
+
+  /// No description provided for @cleverUploadFile.
+  ///
+  /// In en, this message translates to:
+  /// **'upload file'**
+  String get cleverUploadFile;
+
+  /// No description provided for @cleverUploadFileHint.
+  ///
+  /// In en, this message translates to:
+  /// **'pick a document from this device.'**
+  String get cleverUploadFileHint;
 }
 
 class _AppLocalizationsDelegate

@@ -67,7 +67,7 @@ class CVImportHandler {
                 label: AppLocalizations.of(context)!.camera,
                 onTap: () {
                   Navigator.pop(sheetContext);
-                  _importFromImage(
+                  importFromImage(
                     context,
                     ref,
                     ImageSource.camera,
@@ -81,7 +81,7 @@ class CVImportHandler {
                 label: AppLocalizations.of(context)!.gallery,
                 onTap: () {
                   Navigator.pop(sheetContext);
-                  _importFromImage(
+                  importFromImage(
                     context,
                     ref,
                     ImageSource.gallery,
@@ -95,7 +95,7 @@ class CVImportHandler {
                 label: AppLocalizations.of(context)!.pdfFile,
                 onTap: () {
                   Navigator.pop(sheetContext);
-                  _importFromPDF(context, ref, onImportSuccess);
+                  importFromPDF(context, ref, onImportSuccess);
                 },
               ),
             ],
@@ -156,7 +156,7 @@ class CVImportHandler {
     );
   }
 
-  static Future<void> _importFromImage(
+  static Future<void> importFromImage(
     BuildContext context,
     WidgetRef ref,
     ImageSource source,
@@ -197,7 +197,7 @@ class CVImportHandler {
     _handleResult(context, ref, result, onImportSuccess);
   }
 
-  static Future<void> _importFromPDF(
+  static Future<void> importFromPDF(
     BuildContext context,
     WidgetRef ref,
     Function(UserProfile) onImportSuccess,

@@ -2207,4 +2207,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cleverConfirmDiscard => 'discard';
+
+  @override
+  String get cleverMethodTitle => 'choose your method';
+
+  @override
+  String get cleverMethodSubtitle =>
+      'pick whatever is most comfortable for filling in your career bank.';
+
+  @override
+  String get cleverMethodScan => 'scan';
+
+  @override
+  String get cleverMethodScanDesc =>
+      'import your professional history from an old cv draft.';
+
+  @override
+  String get cleverMethodCerita => 'story';
+
+  @override
+  String get cleverMethodCeritaDesc =>
+      'no cv yet? just tell us your whole professional history';
+
+  @override
+  String get cleverScanSheetSubtitle =>
+      'your professional history gets extracted automatically by AI.';
+
+  @override
+  String get cleverUploadPhoto => 'upload photo';
+
+  @override
+  String get cleverUploadPhotoHint =>
+      'use the camera or pick from your gallery.';
+
+  @override
+  String get cleverUploadFile => 'upload file';
+
+  @override
+  String get cleverUploadFileHint => 'pick a document from this device.';
 }
