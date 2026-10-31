@@ -16,7 +16,6 @@ import '../widgets/onboarding_education_step.dart';
 import '../widgets/onboarding_certification_step.dart';
 import '../widgets/onboarding_skills_step.dart';
 import '../widgets/onboarding_final_step.dart';
-import '../widgets/onboarding_shell.dart';
 import '../widgets/onboarding_navigation_bar.dart';
 
 class OnboardingPage extends ConsumerStatefulWidget {
@@ -207,57 +206,55 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       }
     });
 
-    return OnboardingShell(
-      currentPage: currentPage,
-      totalSteps: 7,
+    // Embedded in the Clever panel sheet: the sheet provides the chrome
+    // (drag handle, orange container), so no legacy shell here.
+    return Form(
+      key: _formKey,
       child: Column(
         children: [
           Expanded(
-            child: Form(
-              key: _formKey,
-              child: PageView(
-                controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  OnboardingPersonalStep(
-                    nameController: _nameController,
-                    emailController: _emailController,
-                    phoneController: _phoneController,
-                    locationController: _locationController,
-                    birthDateController: _birthDateController,
-                    genderController: _genderController,
-                  ),
-                  CleverMethodChoiceStep(
-                    onManualEntry: _handleManualEntry,
-                    onImportSuccess: _handleImportSuccess,
-                  ),
-                  OnboardingExperienceStep(
-                    experiences: state.formData.experience,
-                    onChanged: (val) => ref
-                        .read(onboardingFormProvider.notifier)
-                        .updateExperience(val),
-                  ),
-                  OnboardingEducationStep(
-                    education: state.formData.education,
-                    onChanged: (val) => ref
-                        .read(onboardingFormProvider.notifier)
-                        .updateEducation(val),
-                  ),
-                  OnboardingCertificationStep(
-                    certifications: state.formData.certifications,
-                    onChanged: (val) => ref
-                        .read(onboardingFormProvider.notifier)
-                        .updateCertifications(val),
-                  ),
-                  OnboardingSkillsStep(
-                    skills: state.formData.skills,
-                    onChanged: (val) => ref
-                        .read(onboardingFormProvider.notifier)
-                        .updateSkills(val),
-                  ),
-                  const OnboardingFinalStep(),
-                ],
-              ),
+            child: PageView(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                OnboardingPersonalStep(
+                  nameController: _nameController,
+                  emailController: _emailController,
+                  phoneController: _phoneController,
+                  locationController: _locationController,
+                  birthDateController: _birthDateController,
+                  genderController: _genderController,
+                ),
+                CleverMethodChoiceStep(
+                  onManualEntry: _handleManualEntry,
+                  onImportSuccess: _handleImportSuccess,
+                ),
+                OnboardingExperienceStep(
+                  experiences: state.formData.experience,
+                  onChanged: (val) => ref
+                      .read(onboardingFormProvider.notifier)
+                      .updateExperience(val),
+                ),
+                OnboardingEducationStep(
+                  education: state.formData.education,
+                  onChanged: (val) => ref
+                      .read(onboardingFormProvider.notifier)
+                      .updateEducation(val),
+                ),
+                OnboardingCertificationStep(
+                  certifications: state.formData.certifications,
+                  onChanged: (val) => ref
+                      .read(onboardingFormProvider.notifier)
+                      .updateCertifications(val),
+                ),
+                OnboardingSkillsStep(
+                  skills: state.formData.skills,
+                  onChanged: (val) => ref
+                      .read(onboardingFormProvider.notifier)
+                      .updateSkills(val),
+                ),
+                const OnboardingFinalStep(),
+              ],
             ),
           ),
 
