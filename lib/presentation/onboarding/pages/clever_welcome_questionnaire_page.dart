@@ -37,14 +37,6 @@ class CleverWelcomeQuestionnairePage extends ConsumerWidget {
         child: Stack(
           children: [
             const Positioned.fill(child: _GlowBlobs()),
-            if (state.step == CleverWelcomeState.stepCount - 1)
-              Positioned(
-                left: -67,
-                top: MediaQuery.sizeOf(context).height * 0.316,
-                child: const CleverMascot(
-                  variant: CleverMascotVariant.welcomeStep7,
-                ),
-              ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -321,38 +313,57 @@ class _ConsentStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 36),
-            Text(
-              l10n.cleverWelcomeThanksTitle,
-              textAlign: TextAlign.center,
-              style: CleverTypography.h1.copyWith(
-                color: CleverColors.textPrimary,
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 36),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            l10n.cleverWelcomeThanksTitle,
+            textAlign: TextAlign.center,
+            style: CleverTypography.h1.copyWith(
+              color: CleverColors.textPrimary,
             ),
-            const SizedBox(height: 24),
-            Text(
-              l10n.cleverWelcomePrivacyNote,
-              textAlign: TextAlign.center,
-              style: CleverTypography.bodyStrong.copyWith(
-                color: CleverColors.textPrimary,
-              ),
-            ),
-            const Spacer(),
-            _ConsentRow(
-              checked: state.consented,
-              onChanged: notifier.setConsented,
-              doc: CleverLegalDoc.privacy,
-            ),
-          ],
+          ),
         ),
-      ),
+        const SizedBox(height: 24),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            l10n.cleverWelcomePrivacyNote,
+            textAlign: TextAlign.center,
+            style: CleverTypography.bodyStrong.copyWith(
+              color: CleverColors.textPrimary,
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+        // The mascot fills everything below the text, so the scallops can
+        // never collide with the copy at any font scale.
+        Expanded(
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              const Positioned(
+                left: -67,
+                top: 0,
+                child: CleverMascot(variant: CleverMascotVariant.welcomeStep7),
+              ),
+              Positioned(
+                left: 40,
+                right: 40,
+                bottom: 12,
+                child: _ConsentRow(
+                  checked: state.consented,
+                  onChanged: notifier.setConsented,
+                  doc: CleverLegalDoc.privacy,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -397,12 +408,15 @@ class _ConsentRow extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             Expanded(
-              child: Text(
-                l10n.cleverConsentLine,
-                maxLines: 1,
-                overflow: TextOverflow.visible,
-                style: CleverTypography.bodySm.copyWith(
-                  color: CleverColors.textOnDark,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  l10n.cleverConsentLine,
+                  maxLines: 1,
+                  style: CleverTypography.bodySm.copyWith(
+                    color: CleverColors.textOnDark,
+                  ),
                 ),
               ),
             ),
