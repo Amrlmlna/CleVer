@@ -845,5 +845,10 @@
   "cleverUploadPhoto": "upload photo",
   "cleverUploadPhotoHint": "use the camera or pick from your gallery.",
   "cleverUploadFile": "upload file",
-  "cleverUploadFileHint": "pick a document from this device."
+  "cleverUploadFileHint": "pick a document from this device.",
+  "cleverExperienceSubtitle": "add every work experience you have.",
+  "cleverListLabel": "list",
+  "cleverEmptyTitle": "nothing here yet",
+  "cleverEmptyExperiencePrompt": "start adding your work experience!",
+  "cleverSkip": "skip"
 }

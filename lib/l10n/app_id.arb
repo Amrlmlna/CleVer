@@ -838,5 +838,10 @@
   "cleverUploadPhoto": "unggah foto",
   "cleverUploadPhotoHint": "gunakan kamera atau pilih dari galeri.",
   "cleverUploadFile": "unggah file",
-  "cleverUploadFileHint": "pilih dokumen dari perangkat ini."
+  "cleverUploadFileHint": "pilih dokumen dari perangkat ini.",
+  "cleverExperienceSubtitle": "masukkan semua pengalaman yang kamu miliki.",
+  "cleverListLabel": "daftar",
+  "cleverEmptyTitle": "masih kosong nih",
+  "cleverEmptyExperiencePrompt": "yuk mulai tambahkan pengalaman kerja!",
+  "cleverSkip": "lewati"
 }

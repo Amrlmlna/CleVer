@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:clever/presentation/onboarding/providers/onboarding_provider.dart';
 import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_header_step.dart';
+import 'package:clever/presentation/profile/widgets/experience_bottom_sheet.dart';
+import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_experience_step.dart';
 import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_method_choice_step.dart';
 import 'package:clever/domain/entities/user_profile.dart';
 import 'package:flutter/material.dart';
@@ -223,6 +225,36 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('unggah foto'), findsOneWidget);
       expect(find.text('unggah file'), findsOneWidget);
+    });
+  });
+
+  group('CleverExperienceStep', () {
+    testWidgets('empty state shows dynamic skip label and opens add sheet', (
+      tester,
+    ) async {
+      final container = ProviderContainer();
+      container.listen(onboardingFormProvider, (_, __) {});
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp(
+            locale: const Locale('id'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Scaffold(body: CleverExperienceStep(onNext: () {})),
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 400));
+
+      expect(find.text('masih kosong nih'), findsOneWidget);
+      expect(find.text('lewati'), findsOneWidget);
+
+      await tester.tap(find.byIcon(Icons.add));
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(find.byType(ExperienceBottomSheet), findsOneWidget);
     });
   });
 }

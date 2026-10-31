@@ -2245,4 +2245,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cleverUploadFileHint => 'pick a document from this device.';
+
+  @override
+  String get cleverExperienceSubtitle => 'add every work experience you have.';
+
+  @override
+  String get cleverListLabel => 'list';
+
+  @override
+  String get cleverEmptyTitle => 'nothing here yet';
+
+  @override
+  String get cleverEmptyExperiencePrompt =>
+      'start adding your work experience!';
+
+  @override
+  String get cleverSkip => 'skip';
 }

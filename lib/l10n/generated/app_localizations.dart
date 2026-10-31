@@ -4139,6 +4139,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'pick a document from this device.'**
   String get cleverUploadFileHint;
+
+  /// No description provided for @cleverExperienceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'add every work experience you have.'**
+  String get cleverExperienceSubtitle;
+
+  /// No description provided for @cleverListLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'list'**
+  String get cleverListLabel;
+
+  /// No description provided for @cleverEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'nothing here yet'**
+  String get cleverEmptyTitle;
+
+  /// No description provided for @cleverEmptyExperiencePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'start adding your work experience!'**
+  String get cleverEmptyExperiencePrompt;
+
+  /// No description provided for @cleverSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'skip'**
+  String get cleverSkip;
 }
 
 class _AppLocalizationsDelegate

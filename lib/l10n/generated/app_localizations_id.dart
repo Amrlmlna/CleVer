@@ -2244,4 +2244,21 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cleverUploadFileHint => 'pilih dokumen dari perangkat ini.';
+
+  @override
+  String get cleverExperienceSubtitle =>
+      'masukkan semua pengalaman yang kamu miliki.';
+
+  @override
+  String get cleverListLabel => 'daftar';
+
+  @override
+  String get cleverEmptyTitle => 'masih kosong nih';
+
+  @override
+  String get cleverEmptyExperiencePrompt =>
+      'yuk mulai tambahkan pengalaman kerja!';
+
+  @override
+  String get cleverSkip => 'lewati';
 }
