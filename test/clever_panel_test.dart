@@ -256,5 +256,40 @@ void main() {
       await tester.pump(const Duration(milliseconds: 400));
       expect(find.byType(ExperienceBottomSheet), findsOneWidget);
     });
+
+    testWidgets('non-empty state lists entries with lanjut label', (
+      tester,
+    ) async {
+      final container = ProviderContainer();
+      container.listen(onboardingFormProvider, (_, __) {});
+      addTearDown(container.dispose);
+      container.read(onboardingFormProvider.notifier).updateExperience([
+        const Experience(
+          id: '1',
+          jobTitle: 'software engineer',
+          description: 'built things',
+          companyName: 'Google',
+          startDate: '2021 - sekarang',
+        ),
+      ]);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp(
+            locale: const Locale('id'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Scaffold(body: CleverExperienceStep(onNext: () {})),
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 400));
+
+      expect(find.text('software engineer'), findsOneWidget);
+      expect(find.text('Google'), findsOneWidget);
+      expect(find.text('lewati'), findsNothing);
+      expect(find.text('lanjut'), findsOneWidget);
+    });
   });
 }

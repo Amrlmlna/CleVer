@@ -2261,4 +2261,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cleverSkip => 'skip';
+
+  @override
+  String get cleverDeleteExperienceTitle => 'delete this experience?';
+
+  @override
+  String get cleverConfirmDelete => 'delete';
 }

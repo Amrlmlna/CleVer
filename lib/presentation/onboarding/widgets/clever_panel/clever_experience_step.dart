@@ -6,9 +6,9 @@ import '../../../../core/theme/clever/clever_colors.dart';
 import '../../../../core/theme/clever/clever_dimensions.dart';
 import '../../../../core/theme/clever/clever_typography.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../common/widgets/clever/clever_confirm_sheet.dart';
 import '../../../common/widgets/clever/clever_nav_action_bar.dart';
 import '../../../profile/widgets/experience_bottom_sheet.dart';
-import '../../../profile/widgets/experience_list_form.dart';
 import '../../../../domain/entities/user_profile.dart';
 import '../../providers/onboarding_provider.dart';
 
@@ -69,13 +69,35 @@ class CleverExperienceStep extends ConsumerWidget {
                           .updateExperience(value),
                     ),
                   )
-                : SingleChildScrollView(
-                    child: ExperienceListForm(
-                      experiences: experiences,
-                      onChanged: (value) => ref
+                : _EntryList(
+                    experiences: experiences,
+                    onEdit: (index, existing) async {
+                      final result = await ExperienceBottomSheet.show(
+                        context,
+                        existing: existing,
+                      );
+                      if (result == null || !context.mounted) return;
+                      final updated = [...experiences];
+                      updated[index] = result;
+                      ref
                           .read(onboardingFormProvider.notifier)
-                          .updateExperience(value),
-                    ),
+                          .updateExperience(updated);
+                    },
+                    onDelete: (index) async {
+                      final l10n = AppLocalizations.of(context)!;
+                      final confirmed = await CleverConfirmSheet.show(
+                        context,
+                        title: l10n.cleverDeleteExperienceTitle,
+                        message: experiences[index].jobTitle,
+                        confirmLabel: l10n.cleverConfirmDelete,
+                        discardLabel: l10n.cancel,
+                      );
+                      if (confirmed != true || !context.mounted) return;
+                      final updated = [...experiences]..removeAt(index);
+                      ref
+                          .read(onboardingFormProvider.notifier)
+                          .updateExperience(updated);
+                    },
                   ),
           ),
           const SizedBox(height: CleverSpacing.space16),
@@ -140,6 +162,137 @@ class _ListHeader extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Scrollable cream entry rows with a fade into the orange sheet at the
+/// bottom, per the staging mask.
+class _EntryList extends StatelessWidget {
+  const _EntryList({
+    required this.experiences,
+    required this.onEdit,
+    required this.onDelete,
+  });
+
+  final List<Experience> experiences;
+  final Future<void> Function(int index, Experience existing) onEdit;
+  final Future<void> Function(int index) onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                for (var i = 0; i < experiences.length; i++) ...[
+                  _EntryRow(
+                    experience: experiences[i],
+                    onTap: () => onEdit(i, experiences[i]),
+                    onLongPress: () => onDelete(i),
+                  ),
+                  if (i != experiences.length - 1)
+                    const SizedBox(height: CleverSpacing.space12),
+                ],
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 48,
+          child: IgnorePointer(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    CleverColors.bgAction.withValues(alpha: 0),
+                    CleverColors.bgAction,
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Cream row per the staging list: ↗ + role, right-aligned period/company.
+class _EntryRow extends StatelessWidget {
+  const _EntryRow({
+    required this.experience,
+    required this.onTap,
+    required this.onLongPress,
+  });
+
+  final Experience experience;
+  final VoidCallback onTap;
+  final VoidCallback onLongPress;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        onLongPress: onLongPress,
+        borderRadius: BorderRadius.circular(CleverRadius.button),
+        child: Container(
+          height: 55,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          decoration: BoxDecoration(
+            color: CleverColors.bgCanvas,
+            borderRadius: BorderRadius.circular(CleverRadius.button),
+          ),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.north_east,
+                size: 21,
+                color: CleverColors.surfaceInverse,
+              ),
+              const SizedBox(width: CleverSpacing.space12),
+              Expanded(
+                child: Text(
+                  experience.jobTitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: CleverTypography.bodyStrong.copyWith(
+                    color: CleverColors.textPrimary,
+                  ),
+                ),
+              ),
+              const SizedBox(width: CleverSpacing.space8),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    experience.startDate,
+                    style: CleverTypography.micro.copyWith(
+                      color: CleverColors.textPrimary,
+                    ),
+                  ),
+                  Text(
+                    experience.companyName,
+                    style: CleverTypography.caption.copyWith(
+                      color: CleverColors.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

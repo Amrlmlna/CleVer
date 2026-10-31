@@ -2261,4 +2261,10 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cleverSkip => 'lewati';
+
+  @override
+  String get cleverDeleteExperienceTitle => 'hapus pengalaman ini?';
+
+  @override
+  String get cleverConfirmDelete => 'hapus';
 }

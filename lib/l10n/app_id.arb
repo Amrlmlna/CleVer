@@ -843,5 +843,7 @@
   "cleverListLabel": "daftar",
   "cleverEmptyTitle": "masih kosong nih",
   "cleverEmptyExperiencePrompt": "yuk mulai tambahkan pengalaman kerja!",
-  "cleverSkip": "lewati"
+  "cleverSkip": "lewati",
+  "cleverDeleteExperienceTitle": "hapus pengalaman ini?",
+  "cleverConfirmDelete": "hapus"
 }

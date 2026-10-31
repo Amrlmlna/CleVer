@@ -850,5 +850,7 @@
   "cleverListLabel": "list",
   "cleverEmptyTitle": "nothing here yet",
   "cleverEmptyExperiencePrompt": "start adding your work experience!",
-  "cleverSkip": "skip"
+  "cleverSkip": "skip",
+  "cleverDeleteExperienceTitle": "delete this experience?",
+  "cleverConfirmDelete": "delete"
 }

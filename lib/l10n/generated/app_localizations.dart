@@ -4169,6 +4169,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'skip'**
   String get cleverSkip;
+
+  /// No description provided for @cleverDeleteExperienceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'delete this experience?'**
+  String get cleverDeleteExperienceTitle;
+
+  /// No description provided for @cleverConfirmDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'delete'**
+  String get cleverConfirmDelete;
 }
 
 class _AppLocalizationsDelegate
