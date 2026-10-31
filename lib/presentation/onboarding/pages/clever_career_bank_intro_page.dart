@@ -88,24 +88,38 @@ class _CleverCareerBankIntroPageState
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 24),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 21),
-                    child: _IntroProgressBar(),
-                  ),
-                  const SizedBox(height: CleverSpacing.space8),
-                  // Hero morphs: intro position (left) -> centered above the
-                  // open sheet, same timing as the sheet slide.
+                  // The progress bar steps aside as the sheet opens, freeing
+                  // the space the hero rises into.
                   AnimatedBuilder(
                     animation: _sheetAnimation,
                     builder: (context, child) {
-                      return Align(
-                        alignment: Alignment.lerp(
-                          Alignment.topLeft,
-                          Alignment.topCenter,
-                          _sheetAnimation.value,
-                        )!,
-                        child: child,
+                      final t = _sheetAnimation.value;
+                      return SizedBox(
+                        height: 24 + 20 * (1 - t),
+                        child: Opacity(opacity: 1 - t, child: child),
+                      );
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 21),
+                      child: _IntroProgressBar(),
+                    ),
+                  ),
+                  // Hero morphs: intro position (left) -> centered top, same
+                  // timing as the sheet slide.
+                  AnimatedBuilder(
+                    animation: _sheetAnimation,
+                    builder: (context, child) {
+                      final t = _sheetAnimation.value;
+                      return Padding(
+                        padding: EdgeInsets.only(top: 20 * (1 - t)),
+                        child: Align(
+                          alignment: Alignment.lerp(
+                            Alignment.topLeft,
+                            Alignment.topCenter,
+                            t,
+                          )!,
+                          child: child,
+                        ),
                       );
                     },
                     child: const Padding(
@@ -185,7 +199,6 @@ class _CleverCareerBankIntroPageState
                         (details.primaryVelocity ?? 0) > 500 ||
                         _sheet.value < 0.5;
                     if (closing) {
-                      _sheet.value = 1;
                       _closeSheet();
                     } else {
                       _sheet.forward();
@@ -198,38 +211,45 @@ class _CleverCareerBankIntroPageState
                         top: Radius.circular(CleverRadius.sheet),
                       ),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        GestureDetector(
-                          onTap: _closeSheet,
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              child: Container(
-                                width: 47,
-                                height: 4,
-                                decoration: BoxDecoration(
-                                  color: CleverColors.bgCanvas,
-                                  borderRadius: BorderRadius.circular(2),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            if (constraints.maxHeight > 64)
+                              GestureDetector(
+                                onTap: _closeSheet,
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 12,
+                                    ),
+                                    child: Container(
+                                      width: 47,
+                                      height: 4,
+                                      decoration: BoxDecoration(
+                                        color: CleverColors.bgCanvas,
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
+                            Expanded(
+                              child: currentPage == 0
+                                  ? CleverHeaderStep(
+                                      onNext: () => ref
+                                          .read(onboardingFormProvider.notifier)
+                                          .nextPage(),
+                                    )
+                                  : OnboardingPage(
+                                      shouldTrackOnInit: false,
+                                      initialPage: currentPage,
+                                    ),
                             ),
-                          ),
-                        ),
-                        Expanded(
-                          child: currentPage == 0
-                              ? CleverHeaderStep(
-                                  onNext: () => ref
-                                      .read(onboardingFormProvider.notifier)
-                                      .nextPage(),
-                                )
-                              : OnboardingPage(
-                                  shouldTrackOnInit: false,
-                                  initialPage: currentPage,
-                                ),
-                        ),
-                      ],
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),

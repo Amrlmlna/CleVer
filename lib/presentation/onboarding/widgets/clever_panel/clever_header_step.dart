@@ -18,10 +18,9 @@ import '../../providers/onboarding_provider.dart';
 /// so the existing submit flow stores it unchanged. The header cannot be
 /// skipped: the button is always "lanjut" and requires a name.
 class CleverHeaderStep extends ConsumerStatefulWidget {
-  const CleverHeaderStep({super.key, required this.onNext, this.onBack});
+  const CleverHeaderStep({super.key, required this.onNext});
 
   final VoidCallback onNext;
-  final VoidCallback? onBack;
 
   @override
   ConsumerState<CleverHeaderStep> createState() => _CleverHeaderStepState();
@@ -202,9 +201,7 @@ class _CleverHeaderStepState extends ConsumerState<CleverHeaderStep> {
           const SizedBox(height: CleverSpacing.space16),
           CleverNavActionBar(
             tone: CleverNavTone.cream,
-            backLabel: l10n.back,
             nextLabel: l10n.next,
-            onBack: widget.onBack ?? () {},
             onNext: _submit,
           ),
         ],

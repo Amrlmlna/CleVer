@@ -56,6 +56,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     _birthDateController = TextEditingController();
     _genderController = TextEditingController();
 
+    // Prefill BEFORE attaching listeners: seeding the controllers must not
+    // write the provider mid-build.
+    _prefillFromAuth();
+
     _nameController.addListener(
       () => ref
           .read(onboardingFormProvider.notifier)
@@ -87,7 +91,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           .updateGender(_genderController.text),
     );
 
-    _prefillFromAuth();
     if (widget.shouldTrackOnInit) {
       AnalyticsService().trackOnboardingStep('data_input', 0);
     }
