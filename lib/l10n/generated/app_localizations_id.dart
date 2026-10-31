@@ -2162,4 +2162,49 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cleverIntroCta => 'mulai sekarang';
+
+  @override
+  String get cleverPanelHeaderTitle => 'header';
+
+  @override
+  String get cleverPanelHeaderSubtitle =>
+      'informasi akan ditampilkan pada header CV kamu sebagai detail kontak.';
+
+  @override
+  String get cleverPhoneField => 'nomor telepon';
+
+  @override
+  String get cleverTooltipBirthDate =>
+      'beberapa lowongan punya persyaratan usia — AI tailoring memakai ini untuk mencocokkan kamu.';
+
+  @override
+  String get cleverTooltipGender =>
+      'beberapa lowongan menyasar gender tertentu — AI tailoring memakai ini untuk mencocokkan kamu.';
+
+  @override
+  String cleverYearsOld(Object age) {
+    return '$age tahun';
+  }
+
+  @override
+  String get cleverGenderMale => 'pria';
+
+  @override
+  String get cleverGenderFemale => 'wanita';
+
+  @override
+  String get cleverGenderNone => 'none';
+
+  @override
+  String get cleverConfirmTitle => 'simpan perubahan?';
+
+  @override
+  String get cleverConfirmMessage =>
+      'ada progres yang belum kamu simpan di profil kamu.';
+
+  @override
+  String get cleverConfirmSave => 'simpan draft';
+
+  @override
+  String get cleverConfirmDiscard => 'buang';
 }

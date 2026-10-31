@@ -19,6 +19,7 @@ class CleverTextField extends StatefulWidget {
     this.prefixIcon,
     this.focusNode,
     this.onSubmitted,
+    this.onChanged,
     this.enabled = true,
   });
 
@@ -32,6 +33,7 @@ class CleverTextField extends StatefulWidget {
   final IconData? prefixIcon;
   final FocusNode? focusNode;
   final ValueChanged<String>? onSubmitted;
+  final ValueChanged<String>? onChanged;
   final bool enabled;
 
   @override
@@ -95,6 +97,7 @@ class _CleverTextFieldState extends State<CleverTextField> {
       onFieldSubmitted: widget.onSubmitted,
       obscureText: _obscured,
       cursorColor: controlColor,
+      onChanged: widget.onChanged,
       style: CleverTypography.body.copyWith(
         color: onAction ? CleverColors.textOnDark : CleverColors.textPrimary,
       ),

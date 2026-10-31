@@ -121,7 +121,7 @@ void main() {
       );
       expect(
         resolveRedirect(
-          location: AppRoutes.onboardingForm,
+          location: AppRoutes.onboardingIntro,
           onboardingCompleted: true,
           isAuthenticated: true,
         ),

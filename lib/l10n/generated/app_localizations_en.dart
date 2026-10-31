@@ -2162,4 +2162,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cleverIntroCta => 'start now';
+
+  @override
+  String get cleverPanelHeaderTitle => 'header';
+
+  @override
+  String get cleverPanelHeaderSubtitle =>
+      'this information appears in your CV header as contact details.';
+
+  @override
+  String get cleverPhoneField => 'phone number';
+
+  @override
+  String get cleverTooltipBirthDate =>
+      'some job offers list age requirements — the AI tailoring uses this to match you.';
+
+  @override
+  String get cleverTooltipGender =>
+      'some job offers target a specific gender — the AI tailoring uses this to match you.';
+
+  @override
+  String cleverYearsOld(Object age) {
+    return '$age y.o.';
+  }
+
+  @override
+  String get cleverGenderMale => 'male';
+
+  @override
+  String get cleverGenderFemale => 'female';
+
+  @override
+  String get cleverGenderNone => 'rather not say';
+
+  @override
+  String get cleverConfirmTitle => 'save your changes?';
+
+  @override
+  String get cleverConfirmMessage =>
+      'you have unsaved progress on your profile.';
+
+  @override
+  String get cleverConfirmSave => 'save draft';
+
+  @override
+  String get cleverConfirmDiscard => 'discard';
 }

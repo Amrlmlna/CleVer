@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../presentation/onboarding/pages/clever_get_started_page.dart';
 import '../../presentation/onboarding/pages/clever_career_bank_intro_page.dart';
-import '../../presentation/onboarding/pages/onboarding_page.dart';
 import '../../presentation/onboarding/providers/onboarding_provider.dart';
 import '../../presentation/auth/providers/auth_state_provider.dart';
 import '../../presentation/home/pages/home_page.dart';
@@ -152,11 +151,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) =>
             _buildPage(const CleverGetStartedPage(), state),
         routes: [
-          GoRoute(
-            path: 'form', // Relative to /onboarding
-            pageBuilder: (context, state) =>
-                _buildPage(const OnboardingPage(), state),
-          ),
           GoRoute(
             path: 'legal',
             pageBuilder: (context, state) => _buildPage(

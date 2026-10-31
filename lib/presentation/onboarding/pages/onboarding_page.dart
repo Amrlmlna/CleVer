@@ -21,14 +21,22 @@ import '../widgets/onboarding_navigation_bar.dart';
 
 class OnboardingPage extends ConsumerStatefulWidget {
   final bool shouldTrackOnInit;
-  const OnboardingPage({super.key, this.shouldTrackOnInit = true});
+  final int initialPage;
+
+  const OnboardingPage({
+    super.key,
+    this.shouldTrackOnInit = true,
+    this.initialPage = 0,
+  });
 
   @override
   ConsumerState<OnboardingPage> createState() => _OnboardingPageState();
 }
 
 class _OnboardingPageState extends ConsumerState<OnboardingPage> {
-  final PageController _pageController = PageController();
+  late final PageController _pageController = PageController(
+    initialPage: widget.initialPage,
+  );
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _nameController;
@@ -86,14 +94,22 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   void _prefillFromAuth() {
+    final draft = ref.read(onboardingFormProvider).formData;
+    _nameController.text = draft.fullName;
+    _emailController.text = draft.email;
+    _phoneController.text = draft.phoneNumber ?? '';
+    _locationController.text = draft.location ?? '';
+    _birthDateController.text = draft.birthDate ?? '';
+    _genderController.text = draft.gender ?? '';
+
     final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      if (user.displayName != null && user.displayName!.isNotEmpty) {
-        _nameController.text = user.displayName!;
-      }
-      if (user.email != null && user.email!.isNotEmpty) {
-        _emailController.text = user.email!;
-      }
+    if (user == null) return;
+    if (_nameController.text.isEmpty &&
+        (user.displayName?.isNotEmpty ?? false)) {
+      _nameController.text = user.displayName!;
+    }
+    if (_emailController.text.isEmpty && (user.email?.isNotEmpty ?? false)) {
+      _emailController.text = user.email!;
     }
   }
 

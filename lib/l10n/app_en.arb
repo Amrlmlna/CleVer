@@ -821,5 +821,18 @@
   "cleverConsentLine": "I have read the Privacy Policy & Terms",
   "cleverIntroTagline": "Your experience, always within reach.",
   "cleverIntroSupport": "build a professional track record you can use every time an opportunity comes.",
-  "cleverIntroCta": "start now"
+  "cleverIntroCta": "start now",
+  "cleverPanelHeaderTitle": "header",
+  "cleverPanelHeaderSubtitle": "this information appears in your CV header as contact details.",
+  "cleverPhoneField": "phone number",
+  "cleverTooltipBirthDate": "some job offers list age requirements — the AI tailoring uses this to match you.",
+  "cleverTooltipGender": "some job offers target a specific gender — the AI tailoring uses this to match you.",
+  "cleverYearsOld": "{age} y.o.",
+  "cleverGenderMale": "male",
+  "cleverGenderFemale": "female",
+  "cleverGenderNone": "rather not say",
+  "cleverConfirmTitle": "save your changes?",
+  "cleverConfirmMessage": "you have unsaved progress on your profile.",
+  "cleverConfirmSave": "save draft",
+  "cleverConfirmDiscard": "discard"
 }

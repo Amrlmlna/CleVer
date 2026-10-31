@@ -3995,6 +3995,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'start now'**
   String get cleverIntroCta;
+
+  /// No description provided for @cleverPanelHeaderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'header'**
+  String get cleverPanelHeaderTitle;
+
+  /// No description provided for @cleverPanelHeaderSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'this information appears in your CV header as contact details.'**
+  String get cleverPanelHeaderSubtitle;
+
+  /// No description provided for @cleverPhoneField.
+  ///
+  /// In en, this message translates to:
+  /// **'phone number'**
+  String get cleverPhoneField;
+
+  /// No description provided for @cleverTooltipBirthDate.
+  ///
+  /// In en, this message translates to:
+  /// **'some job offers list age requirements — the AI tailoring uses this to match you.'**
+  String get cleverTooltipBirthDate;
+
+  /// No description provided for @cleverTooltipGender.
+  ///
+  /// In en, this message translates to:
+  /// **'some job offers target a specific gender — the AI tailoring uses this to match you.'**
+  String get cleverTooltipGender;
+
+  /// No description provided for @cleverYearsOld.
+  ///
+  /// In en, this message translates to:
+  /// **'{age} y.o.'**
+  String cleverYearsOld(Object age);
+
+  /// No description provided for @cleverGenderMale.
+  ///
+  /// In en, this message translates to:
+  /// **'male'**
+  String get cleverGenderMale;
+
+  /// No description provided for @cleverGenderFemale.
+  ///
+  /// In en, this message translates to:
+  /// **'female'**
+  String get cleverGenderFemale;
+
+  /// No description provided for @cleverGenderNone.
+  ///
+  /// In en, this message translates to:
+  /// **'rather not say'**
+  String get cleverGenderNone;
+
+  /// No description provided for @cleverConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'save your changes?'**
+  String get cleverConfirmTitle;
+
+  /// No description provided for @cleverConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'you have unsaved progress on your profile.'**
+  String get cleverConfirmMessage;
+
+  /// No description provided for @cleverConfirmSave.
+  ///
+  /// In en, this message translates to:
+  /// **'save draft'**
+  String get cleverConfirmSave;
+
+  /// No description provided for @cleverConfirmDiscard.
+  ///
+  /// In en, this message translates to:
+  /// **'discard'**
+  String get cleverConfirmDiscard;
 }
 
 class _AppLocalizationsDelegate

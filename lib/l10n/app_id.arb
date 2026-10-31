@@ -814,5 +814,18 @@
   "cleverConsentLine": "Saya sudah membaca Kebijakan Privasi dan S&K",
   "cleverIntroTagline": "Pengalamanmu, selalu dalam jangkauan.",
   "cleverIntroSupport": "bangun rekam jejak profesional yang bisa kamu manfaatkan setiap kali peluang datang.",
-  "cleverIntroCta": "mulai sekarang"
+  "cleverIntroCta": "mulai sekarang",
+  "cleverPanelHeaderTitle": "header",
+  "cleverPanelHeaderSubtitle": "informasi akan ditampilkan pada header CV kamu sebagai detail kontak.",
+  "cleverPhoneField": "nomor telepon",
+  "cleverTooltipBirthDate": "beberapa lowongan punya persyaratan usia — AI tailoring memakai ini untuk mencocokkan kamu.",
+  "cleverTooltipGender": "beberapa lowongan menyasar gender tertentu — AI tailoring memakai ini untuk mencocokkan kamu.",
+  "cleverYearsOld": "{age} tahun",
+  "cleverGenderMale": "pria",
+  "cleverGenderFemale": "wanita",
+  "cleverGenderNone": "none",
+  "cleverConfirmTitle": "simpan perubahan?",
+  "cleverConfirmMessage": "ada progres yang belum kamu simpan di profil kamu.",
+  "cleverConfirmSave": "simpan draft",
+  "cleverConfirmDiscard": "buang"
 }
