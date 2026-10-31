@@ -58,7 +58,7 @@ class CleverMascot extends StatelessWidget {
     CleverMascotVariant.signUp => const Offset(125, 64),
     CleverMascotVariant.signIn => const Offset(162, 137),
     CleverMascotVariant.authLoading => const Offset(162, 153),
-    CleverMascotVariant.welcomeStep7 => const Offset(122, 199),
+    CleverMascotVariant.welcomeStep7 => const Offset(146, 134),
   };
 
   double get _faceWidth => switch (variant) {
