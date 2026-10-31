@@ -37,13 +37,22 @@ class _CleverCareerBankIntroPageState
 
   bool get _sheetOpen => _sheet.isCompleted;
 
-  Future<void> _openSheet() => _sheet.forward();
+  /// True once the user edits anything while the sheet is open. Prefilled
+  /// and restored-draft data do not count — with the draft auto-persisting,
+  /// only real edits are worth a confirmation.
+  bool _touched = false;
 
-  /// Close flow: clean exits reverse immediately; a dirty panel asks via
-  /// the confirmation sheet (save draft / discard).
+  Future<void> _openSheet() async {
+    setState(() => _touched = false);
+    await _sheet.forward();
+  }
+
+  /// Close flow: clean exits reverse immediately; a panel the user actually
+  /// edited this session asks via the confirmation sheet (save draft /
+  /// discard).
   Future<void> _closeSheet() async {
     final l10n = AppLocalizations.of(context)!;
-    if (!ref.read(onboardingFormProvider).hasAnyData) {
+    if (!_touched) {
       await _sheet.reverse();
       return;
     }
@@ -61,6 +70,7 @@ class _CleverCareerBankIntroPageState
     if (result == false) {
       await ref.read(onboardingFormProvider.notifier).discardDraft();
     }
+    setState(() => _touched = false);
     await _sheet.reverse();
   }
 
@@ -72,6 +82,13 @@ class _CleverCareerBankIntroPageState
     );
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
     final screenH = MediaQuery.sizeOf(context).height;
+
+    // Track real edits: only formData changes count as touching the panel.
+    ref.listen<OnboardingState>(onboardingFormProvider, (prev, next) {
+      if (prev != null && prev.formData != next.formData) {
+        _touched = true;
+      }
+    });
 
     return PopScope(
       canPop: !_sheetOpen,
