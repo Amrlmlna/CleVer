@@ -202,7 +202,7 @@ class _QuestionStep extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 48),
+            SizedBox(height: isHero ? 72 : 104),
             Text(
               title,
               style: isHero
@@ -213,8 +213,9 @@ class _QuestionStep extends StatelessWidget {
                       color: CleverColors.textPrimary,
                     ),
             ),
-            const SizedBox(height: 48),
+            const Spacer(flex: 2),
             child,
+            const Spacer(flex: 3),
           ],
         ),
       ),
@@ -270,7 +271,7 @@ class _ConsentStep extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 48),
+            const SizedBox(height: 36),
             Text(
               l10n.cleverWelcomeThanksTitle,
               style: CleverTypography.h1.copyWith(
@@ -284,7 +285,7 @@ class _ConsentStep extends StatelessWidget {
                 color: CleverColors.textPrimary,
               ),
             ),
-            const SizedBox(height: 32),
+            const Spacer(),
             _ConsentRow(
               label: l10n.cleverConsentPrivacy,
               checked: state.consentedPrivacy,
