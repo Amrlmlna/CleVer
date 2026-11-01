@@ -1,3 +1,5 @@
+import 'dart:ui' show ImageFilter;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -125,16 +127,7 @@ class _CleverDictatePanelState extends ConsumerState<CleverDictatePanel> {
 
   @override
   Widget build(BuildContext context) {
-    if (_listening) {
-      return _TranscriptBar(
-        transcript: _transcript,
-        onCancel: () async {
-          await _speech.stop();
-          if (mounted) setState(() => _listening = false);
-        },
-        onConfirm: _stopAndProcess,
-      );
-    }
+    final l10n = AppLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -145,38 +138,76 @@ class _CleverDictatePanelState extends ConsumerState<CleverDictatePanel> {
             child: _TipRow(item: item),
           ),
         ),
-        const SizedBox(height: CleverSpacing.space16),
-        if (_error != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: CleverSpacing.space12),
-            child: Text(
-              _error!,
-              textAlign: TextAlign.center,
-              style: CleverTypography.bodySm.copyWith(
-                color: CleverColors.textDanger,
-              ),
-            ),
-          ),
-        if (_processing)
-          SizedBox(
-            height: 159,
-            child: Center(
-              child: SpinningTextLoader(
-                texts: [
-                  AppLocalizations.of(context)!.voiceProcessing,
-                  AppLocalizations.of(context)!.voiceAnalyzing,
-                  AppLocalizations.of(context)!.voiceAlmostDone,
-                ],
-                style: CleverTypography.bodyStrong.copyWith(
-                  color: CleverColors.textPrimary,
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // The blurred blob stays put in every state, per staging.
+              const _OrbBlob(),
+              const SizedBox(height: 20),
+              if (_listening)
+                _TranscriptRow(
+                  transcript: _transcript,
+                  onCancel: () async {
+                    await _speech.stop();
+                    if (mounted) setState(() => _listening = false);
+                  },
+                  onConfirm: _stopAndProcess,
+                )
+              else if (_processing)
+                SpinningTextLoader(
+                  texts: [
+                    l10n.voiceProcessing,
+                    l10n.voiceAnalyzing,
+                    l10n.voiceAlmostDone,
+                  ],
+                  style: CleverTypography.bodyStrong.copyWith(
+                    color: CleverColors.textPrimary,
+                  ),
+                  interval: const Duration(milliseconds: 800),
+                )
+              else
+                _MicButton(onTap: _startListening),
+              if (_error != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: CleverSpacing.space12),
+                  child: Text(
+                    _error!,
+                    textAlign: TextAlign.center,
+                    style: CleverTypography.bodySm.copyWith(
+                      color: CleverColors.textDanger,
+                    ),
+                  ),
                 ),
-                interval: const Duration(milliseconds: 800),
-              ),
-            ),
-          )
-        else
-          _DictateOrb(onTap: _startListening),
+            ],
+          ),
+        ),
       ],
+    );
+  }
+}
+
+/// The soft blurred blob from staging (159×159, layer blur 19.4) — no hard
+/// edge; the darker weight sits at the bottom and melts upward.
+class _OrbBlob extends StatelessWidget {
+  const _OrbBlob();
+
+  @override
+  Widget build(BuildContext context) {
+    return ImageFiltered(
+      imageFilter: ImageFilter.blur(sigmaX: 19.4, sigmaY: 19.4),
+      child: Container(
+        width: 159,
+        height: 159,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0x00863516), Color(0xE6863516)],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -229,75 +260,28 @@ class _TipRow extends StatelessWidget {
   }
 }
 
-class _DictateOrb extends StatelessWidget {
-  const _DictateOrb({required this.onTap});
+/// Tap target under the blob: starts listening.
+class _MicButton extends StatelessWidget {
+  const _MicButton({required this.onTap});
 
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
-    return Center(
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: onTap,
-            child: SizedBox(
-              width: 159,
-              height: 159,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  // Soft halo bleeding past the sphere edge.
-                  Container(
-                    width: 159,
-                    height: 159,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        colors: [Color(0x66863516), Color(0x00863516)],
-                      ),
-                    ),
-                  ),
-                  // The sphere itself, with the mic readable at the center.
-                  Container(
-                    width: 118,
-                    height: 118,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        radius: 0.9,
-                        colors: [Color(0xFFE39B72), Color(0xFFB45E33)],
-                      ),
-                    ),
-                  ),
-                  const Icon(
-                    Icons.mic_none,
-                    size: 38,
-                    color: CleverColors.textOnDark,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: CleverSpacing.space12),
-          Text(
-            l10n.voiceTapMicHint,
-            style: CleverTypography.bodySm.copyWith(
-              color: CleverColors.textSecondary,
-            ),
-          ),
-        ],
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: const Padding(
+        padding: EdgeInsets.all(8),
+        child: Icon(Icons.mic_none, size: 32, color: CleverColors.bgAction),
       ),
     );
   }
 }
 
-/// Live listening state: cancel X, the one-line transcript ticker (new
-/// lines slide up, edges fade out), confirm ✓.
-class _TranscriptBar extends StatelessWidget {
-  const _TranscriptBar({
+/// Live transcript row: bare text on cream, fade-masked on both edges.
+class _TranscriptRow extends StatelessWidget {
+  const _TranscriptRow({
     required this.transcript,
     required this.onCancel,
     required this.onConfirm,
@@ -323,110 +307,83 @@ class _TranscriptBar extends StatelessWidget {
         ? AppLocalizations.of(context)!.voiceListening
         : _latestLine(transcript);
 
-    return Container(
-      height: 159,
-      alignment: Alignment.center,
-      child: Row(
-        children: [
-          _RoundAction(icon: Icons.close, onTap: onCancel),
-          const SizedBox(width: CleverSpacing.space12),
-          Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(14.2),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: CleverSpacing.space16,
-                  vertical: CleverSpacing.space12,
-                ),
-                constraints: const BoxConstraints(minHeight: 55),
-                decoration: BoxDecoration(
-                  color: CleverColors.surfaceSelected,
-                  borderRadius: BorderRadius.circular(14.2),
-                ),
-                alignment: Alignment.center,
-                child: ShaderMask(
-                  shaderCallback: (bounds) {
-                    return const LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black,
-                        Colors.black,
-                        Colors.transparent,
-                      ],
-                      stops: [0.0, 0.12, 0.88, 1.0],
-                    ).createShader(bounds);
-                  },
-                  blendMode: BlendMode.dstIn,
-                  child: SizedBox(
-                    height: CleverTypography.bodySm.fontSize! * 1.4,
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
-                      switchInCurve: Curves.easeOut,
-                      switchOutCurve: Curves.easeIn,
-                      transitionBuilder: (child, animation) {
-                        return ClipRect(
-                          child: SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(0, 1),
-                              end: Offset.zero,
-                            ).animate(animation),
-                            child: FadeTransition(
-                              opacity: animation,
-                              child: child,
-                            ),
-                          ),
-                        );
-                      },
-                      layoutBuilder: (currentChild, previousChildren) {
-                        return Stack(
-                          alignment: Alignment.centerLeft,
-                          children: [
-                            ...previousChildren,
-                            if (currentChild != null) currentChild,
-                          ],
-                        );
-                      },
-                      child: Text(
-                        line,
-                        key: ValueKey(line),
-                        maxLines: 1,
-                        overflow: TextOverflow.visible,
-                        style: CleverTypography.bodySm.copyWith(
-                          color: CleverColors.textPrimary,
-                        ),
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: onCancel,
+          behavior: HitTestBehavior.opaque,
+          child: const Padding(
+            padding: EdgeInsets.all(10),
+            child: Icon(Icons.close, size: 20, color: CleverColors.bgAction),
+          ),
+        ),
+        Expanded(
+          child: ClipRect(
+            child: ShaderMask(
+              shaderCallback: (bounds) {
+                return const LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black,
+                    Colors.black,
+                    Colors.transparent,
+                  ],
+                  stops: [0.0, 0.15, 0.85, 1.0],
+                ).createShader(bounds);
+              },
+              blendMode: BlendMode.dstIn,
+              child: SizedBox(
+                height: CleverTypography.bodySm.fontSize! * 1.4,
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 250),
+                  switchInCurve: Curves.easeOut,
+                  switchOutCurve: Curves.easeIn,
+                  transitionBuilder: (child, animation) {
+                    return ClipRect(
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(0, 1),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: FadeTransition(opacity: animation, child: child),
                       ),
+                    );
+                  },
+                  layoutBuilder: (currentChild, previousChildren) {
+                    return Stack(
+                      alignment: Alignment.centerLeft,
+                      children: [
+                        ...previousChildren,
+                        if (currentChild != null) currentChild,
+                      ],
+                    );
+                  },
+                  child: Text(
+                    line,
+                    key: ValueKey(line),
+                    maxLines: 1,
+                    overflow: TextOverflow.visible,
+                    textAlign: TextAlign.right,
+                    style: CleverTypography.bodySm.copyWith(
+                      color: CleverColors.textPrimary,
                     ),
                   ),
                 ),
               ),
             ),
           ),
-          const SizedBox(width: CleverSpacing.space12),
-          _RoundAction(icon: Icons.check, onTap: onConfirm),
-        ],
-      ),
-    );
-  }
-}
-
-class _RoundAction extends StatelessWidget {
-  const _RoundAction({required this.icon, required this.onTap});
-
-  final IconData icon;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      customBorder: const CircleBorder(),
-      child: SizedBox(
-        width: 40,
-        height: 40,
-        child: Icon(icon, size: 22, color: CleverColors.bgAction),
-      ),
+        ),
+        GestureDetector(
+          onTap: onConfirm,
+          behavior: HitTestBehavior.opaque,
+          child: const Padding(
+            padding: EdgeInsets.all(10),
+            child: Icon(Icons.check, size: 22, color: CleverColors.bgAction),
+          ),
+        ),
+      ],
     );
   }
 }
