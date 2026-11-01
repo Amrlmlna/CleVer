@@ -138,7 +138,9 @@ class _CleverDictatePanelState extends ConsumerState<CleverDictatePanel> {
             child: _TipRow(item: item),
           ),
         ),
-        Expanded(
+        // Fixed-height stage: the sheet scrolls, so no Expanded here.
+        SizedBox(
+          height: 340,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
