@@ -34,8 +34,8 @@ class ExperienceBottomSheet extends ConsumerStatefulWidget {
       useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: CleverColors.bgCanvas,
-      isDismissible: false,
-      enableDrag: false,
+      isDismissible: true,
+      enableDrag: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(CleverRadius.sheet),
@@ -234,7 +234,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
                       ),
                       CleverToggleSegment(
                         label: l10n.cleverToggleDictate,
-                        icon: Icons.mic_none,
+                        icon: Icons.graphic_eq,
                       ),
                     ],
                   ),

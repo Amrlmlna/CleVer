@@ -192,14 +192,17 @@ class _TipRow extends StatelessWidget {
       opacity: item.captured ? 1 : 0.65,
       child: Row(
         children: [
-          Icon(
-            item.captured ? Icons.check_circle : Icons.do_not_disturb_on,
-            size: 15,
-            color: item.captured
-                ? CleverColors.bgAction
-                : CleverColors.textPrimary,
+          SizedBox(
+            width: 15,
+            child: Icon(
+              item.captured ? Icons.check : Icons.do_not_disturb_on,
+              size: item.captured ? 15 : 12,
+              color: item.captured
+                  ? CleverColors.bgAction
+                  : CleverColors.textPrimary,
+            ),
           ),
-          const SizedBox(width: CleverSpacing.space12),
+          const SizedBox(width: CleverSpacing.space8),
           Expanded(
             child: Text(
               item.label,
@@ -211,8 +214,8 @@ class _TipRow extends StatelessWidget {
           InkWell(
             onTap: item.onEdit,
             borderRadius: BorderRadius.circular(12),
-            child: Padding(
-              padding: const EdgeInsets.all(4),
+            child: const Padding(
+              padding: EdgeInsets.all(4),
               child: Icon(
                 Icons.north_east,
                 size: 19,
@@ -240,21 +243,41 @@ class _DictateOrb extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: onTap,
-            child: Container(
+            child: SizedBox(
               width: 159,
               height: 159,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [const Color(0x99863516), const Color(0x00863516)],
-                ),
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.mic_none,
-                  size: 40,
-                  color: CleverColors.bgAction,
-                ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Soft halo bleeding past the sphere edge.
+                  Container(
+                    width: 159,
+                    height: 159,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        colors: [Color(0x66863516), Color(0x00863516)],
+                      ),
+                    ),
+                  ),
+                  // The sphere itself, with the mic readable at the center.
+                  Container(
+                    width: 118,
+                    height: 118,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        radius: 0.9,
+                        colors: [Color(0xFFE39B72), Color(0xFFB45E33)],
+                      ),
+                    ),
+                  ),
+                  const Icon(
+                    Icons.mic_none,
+                    size: 38,
+                    color: CleverColors.textOnDark,
+                  ),
+                ],
               ),
             ),
           ),
