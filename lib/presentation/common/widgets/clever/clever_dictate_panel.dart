@@ -294,7 +294,8 @@ class _DictateOrb extends StatelessWidget {
   }
 }
 
-/// Live listening state: cancel X, the growing transcript pill, confirm ✓.
+/// Live listening state: cancel X, the one-line transcript ticker (new
+/// lines slide up, edges fade out), confirm ✓.
 class _TranscriptBar extends StatelessWidget {
   const _TranscriptBar({
     required this.transcript,
@@ -306,8 +307,22 @@ class _TranscriptBar extends StatelessWidget {
   final VoidCallback onCancel;
   final VoidCallback onConfirm;
 
+  /// The speech result is cumulative; the ticker shows the last chunk so
+  /// the freshest words stay in view, one line at a time.
+  static String _latestLine(String text) {
+    if (text.isEmpty) return '';
+    final words = text.trim().split(RegExp(r'\s+'));
+    const chunkSize = 5;
+    if (words.length <= chunkSize) return text;
+    return words.sublist(words.length - chunkSize).join(' ');
+  }
+
   @override
   Widget build(BuildContext context) {
+    final line = transcript.isEmpty
+        ? AppLocalizations.of(context)!.voiceListening
+        : _latestLine(transcript);
+
     return Container(
       height: 159,
       alignment: Alignment.center,
@@ -316,24 +331,74 @@ class _TranscriptBar extends StatelessWidget {
           _RoundAction(icon: Icons.close, onTap: onCancel),
           const SizedBox(width: CleverSpacing.space12),
           Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: CleverSpacing.space16,
-                vertical: CleverSpacing.space12,
-              ),
-              constraints: const BoxConstraints(minHeight: 55),
-              decoration: BoxDecoration(
-                color: CleverColors.surfaceSelected,
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: Text(
-                transcript.isEmpty
-                    ? AppLocalizations.of(context)!.voiceListening
-                    : transcript,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: CleverTypography.bodySm.copyWith(
-                  color: CleverColors.textPrimary,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14.2),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: CleverSpacing.space16,
+                  vertical: CleverSpacing.space12,
+                ),
+                constraints: const BoxConstraints(minHeight: 55),
+                decoration: BoxDecoration(
+                  color: CleverColors.surfaceSelected,
+                  borderRadius: BorderRadius.circular(14.2),
+                ),
+                alignment: Alignment.center,
+                child: ShaderMask(
+                  shaderCallback: (bounds) {
+                    return const LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black,
+                        Colors.black,
+                        Colors.transparent,
+                      ],
+                      stops: [0.0, 0.12, 0.88, 1.0],
+                    ).createShader(bounds);
+                  },
+                  blendMode: BlendMode.dstIn,
+                  child: SizedBox(
+                    height: CleverTypography.bodySm.fontSize! * 1.4,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      switchInCurve: Curves.easeOut,
+                      switchOutCurve: Curves.easeIn,
+                      transitionBuilder: (child, animation) {
+                        return ClipRect(
+                          child: SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(0, 1),
+                              end: Offset.zero,
+                            ).animate(animation),
+                            child: FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            ),
+                          ),
+                        );
+                      },
+                      layoutBuilder: (currentChild, previousChildren) {
+                        return Stack(
+                          alignment: Alignment.centerLeft,
+                          children: [
+                            ...previousChildren,
+                            if (currentChild != null) currentChild,
+                          ],
+                        );
+                      },
+                      child: Text(
+                        line,
+                        key: ValueKey(line),
+                        maxLines: 1,
+                        overflow: TextOverflow.visible,
+                        style: CleverTypography.bodySm.copyWith(
+                          color: CleverColors.textPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
