@@ -4,6 +4,8 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:clever/presentation/onboarding/providers/onboarding_provider.dart';
 import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_header_step.dart';
 import 'package:clever/presentation/profile/widgets/experience_bottom_sheet.dart';
+import 'package:clever/presentation/common/widgets/clever/clever_button.dart';
+import 'package:clever/presentation/common/widgets/clever/clever_dictate_panel.dart';
 import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_experience_step.dart';
 import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_method_choice_step.dart';
 import 'package:clever/domain/entities/user_profile.dart';
@@ -290,6 +292,73 @@ void main() {
       expect(find.text('Google'), findsOneWidget);
       expect(find.text('lewati'), findsNothing);
       expect(find.text('lanjut'), findsOneWidget);
+    });
+  });
+
+  group('ExperienceBottomSheet', () {
+    testWidgets('opens on the ketik tab with uncaptured tips', (tester) async {
+      Experience? saved;
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => Center(
+                child: CleverButton(
+                  label: 'buka',
+                  onTap: () async {
+                    saved = await ExperienceBottomSheet.show(context);
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 400));
+
+      await tester.tap(find.text('buka'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+
+      // Form tab is the default, and nothing is captured yet.
+      expect(find.text('ketik'), findsOneWidget);
+      expect(find.byIcon(Icons.do_not_disturb_on), findsNothing);
+
+      // Switch to dikte: all four tips must be uncaptured.
+      await tester.tap(find.text('dikte'));
+      await tester.pump(const Duration(milliseconds: 400));
+
+      // All four tips must be uncaptured on a fresh add.
+      expect(find.byType(CleverDictatePanel), findsOneWidget);
+      expect(find.byIcon(Icons.do_not_disturb_on), findsNWidgets(4));
+      expect(find.byIcon(Icons.check_circle), findsNothing);
+      expect(saved, isNull);
+    });
+
+    test('draft restores the page the user closed on', () async {
+      final writer = ProviderContainer();
+      writer.listen(onboardingFormProvider, (_, __) {});
+      addTearDown(writer.dispose);
+      final notifier = writer.read(onboardingFormProvider.notifier);
+      await Future<void>.delayed(Duration.zero);
+
+      notifier.updateName('Budi');
+      notifier.nextPage(); // -> method choice (1)
+      notifier.nextPage(); // -> experience (2)
+      await Future<void>.delayed(Duration.zero);
+
+      // Simulates an app restart: a brand-new container restores the draft.
+      final reader = ProviderContainer();
+      reader.listen(onboardingFormProvider, (_, __) {});
+      addTearDown(reader.dispose);
+      final restored = reader.read(onboardingFormProvider.notifier);
+      await Future<void>.delayed(Duration.zero);
+
+      expect(restored.state.currentPage, 2);
+      expect(restored.state.formData.fullName, 'Budi');
     });
   });
 }

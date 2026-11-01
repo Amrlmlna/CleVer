@@ -65,7 +65,7 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
 
   bool _isRewriting = false;
   bool _canPopNow = false;
-  bool _isVoiceMode = true;
+  bool _isVoiceMode = false;
 
   final FocusNode _titleFocus = FocusNode();
   final FocusNode _companyFocus = FocusNode();
@@ -79,9 +79,6 @@ class _ExperienceBottomSheetState extends ConsumerState<ExperienceBottomSheet> {
     _startCtrl = TextEditingController(text: widget.existing?.startDate);
     _endCtrl = TextEditingController(text: widget.existing?.endDate);
     _descCtrl = TextEditingController(text: widget.existing?.description);
-    if (widget.existing != null) {
-      _isVoiceMode = false; // default to manual form when editing
-    }
   }
 
   @override
