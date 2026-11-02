@@ -102,7 +102,7 @@ void main() {
     );
     expect(formKey.currentState!.validate(), isFalse);
     await tester.pump();
-    expect(find.text('wajib diisi'), findsNWidgets(3));
+    expect(find.text('wajib diisi'), findsNWidgets(4));
   });
 
   testWidgets('CleverNavActionBar tones build and fire callbacks', (
