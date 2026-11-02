@@ -3,16 +3,14 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../data/repositories/firestore_profile_repository.dart';
+import '../../../data/repositories/api_profile_repository.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import 'profile_provider.dart';
-import '../../../core/providers/firebase_providers.dart';
 
-final firestoreProfileRepositoryProvider = Provider<FirestoreProfileRepository>(
+final apiProfileRepositoryProvider = Provider<ApiProfileRepository>(
   (ref) {
-    final dataSource = ref.watch(firestoreDataSourceProvider);
-    return FirestoreProfileRepository(dataSource: dataSource);
+    return ApiProfileRepository();
   },
 );
 
@@ -26,10 +24,10 @@ class ProfileSyncManager {
   UserProfile? _lastSyncedProfile;
   static const String _syncKey = 'last_synced_profile_json';
 
-  late final FirestoreProfileRepository _firestoreRepo;
+  late final ApiProfileRepository _apiRepo;
 
   ProfileSyncManager(this._ref) {
-    _firestoreRepo = _ref.read(firestoreProfileRepositoryProvider);
+    _apiRepo = _ref.read(apiProfileRepositoryProvider);
   }
 
   void init() {
@@ -69,7 +67,7 @@ class ProfileSyncManager {
 
   Future<void> initialCloudFetch(String uid) async {
     try {
-      final cloudProfile = await _firestoreRepo.getProfile(uid);
+      final cloudProfile = await _apiRepo.getProfile(uid);
       if (cloudProfile != null) {
         await _ref
             .read(masterProfileProvider.notifier)
@@ -93,7 +91,7 @@ class ProfileSyncManager {
 
     if (currentProfile != _lastSyncedProfile) {
       try {
-        await _firestoreRepo.saveProfile(user.uid, currentProfile);
+        await _apiRepo.saveProfile(user.uid, currentProfile);
         await _updateLastSyncedCache(currentProfile);
       } catch (e) {
         debugPrint("[SyncManager] Sync error: $e");

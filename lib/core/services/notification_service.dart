@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../data/datasources/remote_library_datasource.dart';
 import 'notification_controller.dart';
 
 class NotificationService {
@@ -137,22 +137,19 @@ class NotificationService {
     });
   }
 
-  /// Saves the FCM token to Firestore under users/{uid}/fcmToken.
-  /// This allows Firebase Console to send targeted or broadcast notifications.
+  /// Saves the FCM token via the backend (Stage 0 — replaces the direct
+  /// Firestore write). The backend merges it into users/{uid}, so the Firebase
+  /// Console can still send targeted or broadcast notifications.
   static Future<void> _saveFcmToken(String? token) async {
     if (token == null) return;
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
     try {
-      await FirebaseFirestore.instance.collection('users').doc(uid).set(
-        {
-          'fcmToken': token,
-          'fcmUpdatedAt': FieldValue.serverTimestamp(),
-          'platform': Platform.operatingSystem,
-        },
-        SetOptions(merge: true), // never overwrites other user fields
+      await RemoteLibraryDataSource().updateFcmToken(
+        token: token,
+        platform: Platform.operatingSystem,
       );
-      debugPrint('FCM token saved to Firestore for user $uid');
+      debugPrint('FCM token saved for user $uid');
     } catch (e) {
       debugPrint('Failed to save FCM token: $e');
     }
