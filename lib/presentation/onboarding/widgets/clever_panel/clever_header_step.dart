@@ -78,6 +78,10 @@ class _CleverHeaderStepState extends ConsumerState<CleverHeaderStep> {
       );
       return;
     }
+    // Legacy parity: the auth-prefilled email must reach the provider even
+    // when the user never edits the field (the legacy controller listeners
+    // did this on prefill).
+    ref.read(onboardingFormProvider.notifier).updateEmail(_email.text);
     ref.read(onboardingFormProvider.notifier).updateName(_name.text);
     widget.onNext();
   }

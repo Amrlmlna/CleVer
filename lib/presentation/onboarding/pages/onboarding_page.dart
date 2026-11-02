@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../providers/onboarding_provider.dart';
-import '../../../core/utils/custom_snackbar.dart';
 import '../../../core/router/app_routes.dart';
-import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../core/theme/clever/clever_colors.dart';
+import '../../../core/theme/clever/clever_typography.dart';
+import '../../../l10n/generated/app_localizations.dart';
+import '../providers/onboarding_provider.dart';
 import '../providers/onboarding_auth_capture_provider.dart';
 import '../../../core/services/analytics_service.dart';
 
-import '../widgets/onboarding_personal_step.dart';
 import '../widgets/clever_panel/clever_certification_step.dart';
 import '../widgets/clever_panel/clever_education_step.dart';
 import '../widgets/clever_panel/clever_skills_step.dart';
 import '../widgets/clever_panel/clever_experience_step.dart';
 import '../widgets/clever_panel/clever_method_choice_step.dart';
 import '../widgets/clever_panel/clever_complete_step.dart';
-import '../widgets/onboarding_navigation_bar.dart';
 
+/// Host for panel pages 1–6, embedded in the intro page's bottom sheet.
+/// Page 0 (header) renders outside this widget — the intro swaps it in —
+/// so the PageView keeps a placeholder at index 0 to stay aligned with
+/// [onboardingFormProvider]'s currentPage indices.
 class OnboardingPage extends ConsumerStatefulWidget {
   final bool shouldTrackOnInit;
   final int initialPage;
@@ -36,134 +38,30 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   late final PageController _pageController = PageController(
     initialPage: widget.initialPage,
   );
-  final _formKey = GlobalKey<FormState>();
-
-  late TextEditingController _nameController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneController;
-  late TextEditingController _locationController;
-  late TextEditingController _birthDateController;
-  late TextEditingController _genderController;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController();
-    _emailController = TextEditingController();
-    _phoneController = TextEditingController();
-    _locationController = TextEditingController();
-    _birthDateController = TextEditingController();
-    _genderController = TextEditingController();
-
-    // Prefill BEFORE attaching listeners: seeding the controllers must not
-    // write the provider mid-build.
-    _prefillFromAuth();
-
-    _nameController.addListener(
-      () => ref
-          .read(onboardingFormProvider.notifier)
-          .updateName(_nameController.text),
-    );
-    _emailController.addListener(
-      () => ref
-          .read(onboardingFormProvider.notifier)
-          .updateEmail(_emailController.text),
-    );
-    _phoneController.addListener(
-      () => ref
-          .read(onboardingFormProvider.notifier)
-          .updatePhone(_phoneController.text),
-    );
-    _locationController.addListener(
-      () => ref
-          .read(onboardingFormProvider.notifier)
-          .updateLocation(_locationController.text),
-    );
-    _birthDateController.addListener(
-      () => ref
-          .read(onboardingFormProvider.notifier)
-          .updateBirthDate(_birthDateController.text),
-    );
-    _genderController.addListener(
-      () => ref
-          .read(onboardingFormProvider.notifier)
-          .updateGender(_genderController.text),
-    );
 
     if (widget.shouldTrackOnInit) {
       AnalyticsService().trackOnboardingStep('data_input', 0);
     }
   }
 
-  void _prefillFromAuth() {
-    final draft = ref.read(onboardingFormProvider).formData;
-    _nameController.text = draft.fullName;
-    _emailController.text = draft.email;
-    _phoneController.text = draft.phoneNumber ?? '';
-    _locationController.text = draft.location ?? '';
-    _birthDateController.text = draft.birthDate ?? '';
-    _genderController.text = draft.gender ?? '';
-
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-    if (_nameController.text.isEmpty &&
-        (user.displayName?.isNotEmpty ?? false)) {
-      _nameController.text = user.displayName!;
-    }
-    if (_emailController.text.isEmpty && (user.email?.isNotEmpty ?? false)) {
-      _emailController.text = user.email!;
-    }
-  }
-
   @override
   void dispose() {
     _pageController.dispose();
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _locationController.dispose();
-    _birthDateController.dispose();
-    _genderController.dispose();
     super.dispose();
-  }
-
-  void _nextPage() {
-    final notifier = ref.read(onboardingFormProvider.notifier);
-
-    if (ref.read(onboardingFormProvider).currentPage == 0) {
-      if (_nameController.text.isEmpty) {
-        CustomSnackBar.showWarning(
-          context,
-          AppLocalizations.of(context)!.fillNameError,
-        );
-        return;
-      }
-    }
-
-    if (notifier.nextPage()) {
-    } else {}
-  }
-
-  void _prevPage() {
-    ref.read(onboardingFormProvider.notifier).prevPage();
   }
 
   void _handleImportSuccess(profile) {
     final notifier = ref.read(onboardingFormProvider.notifier);
 
     notifier.populateFromImport(profile);
-
-    _nameController.text = profile.fullName;
-    _emailController.text = profile.email;
-    _phoneController.text = profile.phoneNumber ?? '';
-    _locationController.text = profile.location ?? '';
-    _birthDateController.text = profile.birthDate ?? '';
-    _genderController.text = profile.gender ?? '';
-
     notifier.skipToFinal();
 
     if (mounted) {
-      CustomSnackBar.showSuccess(
+      CustomSnackBarHelper.showSuccess(
         context,
         AppLocalizations.of(context)!.cvImportedSuccess,
       );
@@ -186,14 +84,13 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(onboardingFormProvider);
-    final currentPage = state.currentPage;
-    final isSaving = state.isSaving;
+    final currentPage = ref.watch(
+      onboardingFormProvider.select((s) => s.currentPage),
+    );
 
-    final bool isLegacyNavStep = currentPage >= 1;
-    final bool isLastPage = currentPage == 6;
-
-    final bool isSkippable = currentPage >= 2 && currentPage <= 5;
+    void nextPage() {
+      ref.read(onboardingFormProvider.notifier).nextPage();
+    }
 
     ref.listen(onboardingFormProvider, (prev, next) {
       if (prev?.currentPage != next.currentPage) {
@@ -208,55 +105,45 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
     // Embedded in the Clever panel sheet: the sheet provides the chrome
     // (drag handle, orange container), so no legacy shell here.
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                OnboardingPersonalStep(
-                  nameController: _nameController,
-                  emailController: _emailController,
-                  phoneController: _phoneController,
-                  locationController: _locationController,
-                  birthDateController: _birthDateController,
-                  genderController: _genderController,
-                ),
-                CleverMethodChoiceStep(
-                  onManualEntry: _handleManualEntry,
-                  onImportSuccess: _handleImportSuccess,
-                ),
-                CleverExperienceStep(
-                  onNext: currentPage < 6 ? _nextPage : _finishOnboarding,
-                ),
-                CleverEducationStep(
-                  onNext: currentPage < 6 ? _nextPage : _finishOnboarding,
-                ),
-                CleverCertificationStep(
-                  onNext: currentPage < 6 ? _nextPage : _finishOnboarding,
-                ),
-                CleverSkillsStep(
-                  onNext: currentPage < 6 ? _nextPage : _finishOnboarding,
-                ),
-                CleverCompleteStep(onFinish: _finishOnboarding),
-              ],
-            ),
-          ),
+    return PageView(
+      controller: _pageController,
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        // Index 0: the header step renders OUTSIDE this PageView (intro
+        // page swaps it in) — placeholder keeps indices aligned.
+        const SizedBox.shrink(),
+        CleverMethodChoiceStep(
+          onManualEntry: _handleManualEntry,
+          onImportSuccess: _handleImportSuccess,
+        ),
+        CleverExperienceStep(
+          onNext: currentPage < 6 ? nextPage : _finishOnboarding,
+        ),
+        CleverEducationStep(
+          onNext: currentPage < 6 ? nextPage : _finishOnboarding,
+        ),
+        CleverCertificationStep(
+          onNext: currentPage < 6 ? nextPage : _finishOnboarding,
+        ),
+        CleverSkillsStep(
+          onNext: currentPage < 6 ? nextPage : _finishOnboarding,
+        ),
+        CleverCompleteStep(onFinish: _finishOnboarding),
+      ],
+    );
+  }
+}
 
-          if (!isLegacyNavStep)
-            OnboardingNavigationBar(
-              currentPage: currentPage,
-              isLastPage: isLastPage,
-              isLoading: isSaving,
-              onNext: currentPage < 6 ? _nextPage : _finishOnboarding,
-              onBack: _prevPage,
-              isSkippable: isSkippable,
-              onSkip: isSkippable ? _nextPage : null,
-            ),
-        ],
+/// Legacy-parity snackbar shim (success styling matches the Clever look).
+class CustomSnackBarHelper {
+  static void showSuccess(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: CleverTypography.body.copyWith(color: CleverColors.textOnDark),
+        ),
+        backgroundColor: CleverColors.bgSuccess,
       ),
     );
   }
