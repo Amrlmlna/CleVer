@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../auth/providers/auth_state_provider.dart';
-import '../../common/widgets/spinning_text_loader.dart';
+import '../../../core/theme/clever/clever_colors.dart';
+import '../../../core/theme/clever/clever_dimensions.dart';
+import '../../../core/theme/clever/clever_typography.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../../auth/providers/auth_state_provider.dart';
+import '../../common/widgets/clever/clever_button.dart';
+import '../../common/widgets/spinning_text_loader.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 
@@ -34,7 +38,14 @@ class EmailVerificationBottomSheet extends ConsumerStatefulWidget {
       context: context,
       useRootNavigator: true,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: CleverColors.bgCanvas,
+      isDismissible: false,
+      enableDrag: false,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(CleverRadius.sheet),
+        ),
+      ),
       builder: (context) => EmailVerificationBottomSheet(
         title: title,
         description: description,
@@ -121,134 +132,112 @@ class _EmailVerificationBottomSheetState
   Widget build(BuildContext context) {
     final user = fb.FirebaseAuth.instance.currentUser;
     final email = user?.email ?? '';
-
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
     final l10n = AppLocalizations.of(context)!;
 
     return Container(
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+      decoration: const BoxDecoration(
+        color: CleverColors.bgCanvas,
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(CleverRadius.sheet),
+        ),
       ),
       padding: EdgeInsets.fromLTRB(
-        24,
+        31,
         16,
-        24,
+        33,
         MediaQuery.of(context).padding.bottom + 24,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: colorScheme.outlineVariant,
-              borderRadius: BorderRadius.circular(2),
+          Center(
+            child: Container(
+              width: 47,
+              height: 4,
+              decoration: BoxDecoration(
+                color: CleverColors.surfaceInverse.withValues(alpha: 0.25),
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: CleverSpacing.space24),
           Text(
             widget.title ?? l10n.verifyYourEmail,
             textAlign: TextAlign.center,
-            style: textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w900,
-              color: colorScheme.onSurface,
-              letterSpacing: -1.0,
+            style: CleverTypography.h1.copyWith(
+              color: CleverColors.textPrimary,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: CleverSpacing.space12),
           Text(
             widget.description ?? l10n.verificationSentTo(email),
             textAlign: TextAlign.center,
-            style: textTheme.bodyMedium?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w500,
+            style: CleverTypography.body.copyWith(
+              color: CleverColors.textSecondary,
             ),
           ),
           if (widget.extensionContent != null) ...[
-            const SizedBox(height: 24),
+            const SizedBox(height: CleverSpacing.space24),
             widget.extensionContent!,
           ],
-          const SizedBox(height: 32),
+          const SizedBox(height: CleverSpacing.space24),
           Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(CleverSpacing.space16),
             decoration: BoxDecoration(
-              color: colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: colorScheme.outlineVariant),
+              color: CleverColors.surfaceSelected,
+              borderRadius: BorderRadius.circular(CleverRadius.card),
             ),
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.info_outline_rounded,
-                  color: colorScheme.onSurfaceVariant,
+                  color: CleverColors.textSecondary,
                   size: 20,
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: CleverSpacing.space16),
                 Expanded(
                   child: Text(
                     l10n.checkSpamFolder,
-                    style: textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w600,
+                    style: CleverTypography.bodySm.copyWith(
+                      color: CleverColors.textSecondary,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 40),
-          SizedBox(
-            width: double.infinity,
-            height: 56,
-            child: ElevatedButton(
-              onPressed: _isChecking ? null : _checkStatus,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: colorScheme.onSurface,
-                foregroundColor: colorScheme.surface,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+          const SizedBox(height: CleverSpacing.space24),
+          CleverButton(
+            label: _isChecking ? '' : l10n.iHaveVerified,
+            onTap: _isChecking ? null : _checkStatus,
+          ),
+          const SizedBox(height: CleverSpacing.space16),
+          if (_isChecking)
+            SizedBox(
+              height: 20,
+              child: SpinningTextLoader(
+                texts: [
+                  l10n.checkingSystem,
+                  l10n.validatingLink,
+                  l10n.almostThere,
+                ],
+                style: CleverTypography.bodyStrong.copyWith(
+                  color: CleverColors.textSecondary,
                 ),
-                elevation: 0,
+                interval: const Duration(milliseconds: 800),
               ),
-              child: _isChecking
-                  ? SpinningTextLoader(
-                      texts: [
-                        l10n.checkingSystem,
-                        l10n.validatingLink,
-                        l10n.almostThere,
-                      ],
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        color: colorScheme.surface,
-                      ),
-                    )
-                  : Text(
-                      l10n.iHaveVerified.toUpperCase(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 14,
-                        letterSpacing: 1.0,
-                      ),
-                    ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          TextButton(
-            onPressed: _isResending ? null : _resendLink,
-            child: Text(
-              (_isResending ? l10n.sending : l10n.resendEmail).toUpperCase(),
-              style: TextStyle(
-                color: colorScheme.primary,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 0.5,
+            )
+          else
+            TextButton(
+              onPressed: _isResending ? null : _resendLink,
+              child: Text(
+                _isResending ? l10n.sending : l10n.resendEmail,
+                style: CleverTypography.bodyStrong.copyWith(
+                  color: CleverColors.textLink,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

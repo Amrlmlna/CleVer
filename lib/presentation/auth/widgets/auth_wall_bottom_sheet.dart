@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/custom_snackbar.dart';
+
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/theme/clever/clever_colors.dart';
+import '../../../../core/theme/clever/clever_dimensions.dart';
+import '../../../../core/theme/clever/clever_typography.dart';
+import '../../../../core/utils/custom_snackbar.dart';
+import '../../../core/services/analytics_service.dart';
+import '../../common/widgets/clever/clever_button.dart';
+import '../../common/widgets/clever/clever_divider.dart';
+import '../../common/widgets/clever/clever_google_button.dart';
 import '../../profile/providers/profile_sync_provider.dart';
 import '../providers/auth_state_provider.dart';
-import '../widgets/social_login_button.dart';
-import '../../home/widgets/mascot_header.dart';
-import '../../home/models/mascot_state.dart';
-import '../../../core/services/analytics_service.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class AuthWallBottomSheet extends ConsumerStatefulWidget {
@@ -38,8 +40,14 @@ class AuthWallBottomSheet extends ConsumerStatefulWidget {
       context: context,
       useRootNavigator: true,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withValues(alpha: 0.8),
+      backgroundColor: CleverColors.bgCanvas,
+      isDismissible: true,
+      enableDrag: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(CleverRadius.sheet),
+        ),
+      ),
       builder: (context) => AuthWallBottomSheet(
         featureTitle: featureTitle,
         featureDescription: featureDescription,
@@ -109,197 +117,98 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
     }
   }
 
+  void _goLogin() {
+    AnalyticsService().trackAuthGuardInteraction(
+      'login_redirect',
+      feature: widget.featureTitle,
+    );
+    Navigator.of(context).pop(false);
+    context.push(AppRoutes.login);
+  }
+
+  void _goSignup() {
+    AnalyticsService().trackAuthGuardInteraction(
+      'signup_redirect',
+      feature: widget.featureTitle,
+    );
+    Navigator.of(context).pop(false);
+    context.push(AppRoutes.signup);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Theme(
-      data: AppTheme.sheetTheme,
-      child: Builder(
-        builder: (context) {
-          final sheetTheme = Theme.of(context);
-          return Container(
-            decoration: BoxDecoration(
-              color: sheetTheme.colorScheme.surface,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(32),
+    return Container(
+      decoration: const BoxDecoration(
+        color: CleverColors.bgCanvas,
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(CleverRadius.sheet),
+        ),
+      ),
+      padding: const EdgeInsets.fromLTRB(31, 16, 33, 32),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Center(
+            child: Container(
+              width: 47,
+              height: 4,
+              decoration: BoxDecoration(
+                color: CleverColors.surfaceInverse.withValues(alpha: 0.25),
+                borderRadius: BorderRadius.circular(2),
               ),
             ),
-            padding: const EdgeInsets.only(bottom: 32),
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Positioned(
-                  right: -40,
-                  top: 60,
-                  child: Icon(
-                    Icons.lock_person_outlined,
-                    size: 240,
-                    color: sheetTheme.colorScheme.onSurface.withValues(
-                      alpha: 0.04,
+          ),
+          const SizedBox(height: CleverSpacing.space24),
+          Text(
+            widget.featureTitle ?? l10n.loginToSave,
+            textAlign: TextAlign.center,
+            style: CleverTypography.h1.copyWith(
+              color: CleverColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: CleverSpacing.space12),
+          Text(
+            widget.featureDescription ?? l10n.syncAnywhere,
+            textAlign: TextAlign.center,
+            style: CleverTypography.body.copyWith(
+              color: CleverColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: CleverSpacing.space24),
+          CleverGoogleButton(
+            label: l10n.continueWithGoogle,
+            onTap: _isLoading ? null : _signInWithGoogle,
+          ),
+          const SizedBox(height: CleverSpacing.space16),
+          CleverDivider(label: l10n.or),
+          const SizedBox(height: CleverSpacing.space16),
+          CleverButton(label: l10n.login, onTap: _isLoading ? null : _goLogin),
+          const SizedBox(height: CleverSpacing.space16),
+          TextButton(
+            onPressed: _isLoading ? null : _goSignup,
+            child: Text.rich(
+              TextSpan(
+                text: '${l10n.dontHaveAccount} ',
+                children: [
+                  TextSpan(
+                    text: l10n.signUp,
+                    style: CleverTypography.h4.copyWith(
+                      color: CleverColors.textPrimary,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
+                ],
+                style: CleverTypography.h4.copyWith(
+                  color: CleverColors.textPrimary,
+                  fontWeight: FontWeight.w400,
                 ),
-
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 48,
-                        height: 5,
-                        margin: const EdgeInsets.symmetric(vertical: 12),
-                        decoration: BoxDecoration(
-                          color: sheetTheme.colorScheme.outlineVariant,
-                          borderRadius: BorderRadius.circular(2.5),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 8),
-
-                    Container(
-                      width: double.infinity,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        color: sheetTheme.colorScheme.surfaceContainerHighest,
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(40),
-                          bottomRight: Radius.circular(40),
-                        ),
-                      ),
-                      padding: const EdgeInsets.only(top: 40),
-                      child: const MascotHeader(
-                        expression: MascotExpression.exciting,
-                        mascotColor: AppColors.vibrantPurple,
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32),
-                      child: Column(
-                        children: [
-                          Text(
-                            (widget.featureTitle ?? l10n.loginToSave)
-                                .toUpperCase(),
-                            textAlign: TextAlign.center,
-                            style: sheetTheme.textTheme.headlineMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 26,
-                                  letterSpacing: -1.0,
-                                  height: 1.1,
-                                ),
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            widget.featureDescription ?? l10n.syncAnywhere,
-                            textAlign: TextAlign.center,
-                            style: sheetTheme.textTheme.bodyMedium?.copyWith(
-                              color: sheetTheme.colorScheme.onSurfaceVariant,
-                              height: 1.5,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 40),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Column(
-                        children: [
-                          SocialLoginButton(
-                            onPressed: _isLoading ? null : _signInWithGoogle,
-                            text: l10n.continueWithGoogle.toUpperCase(),
-                            icon: Image.asset(
-                              'assets/images/google_logo.png',
-                              height: 20,
-                            ),
-                            isLoading: _isLoading,
-                          ),
-                          const SizedBox(height: 12),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton.icon(
-                              onPressed: _isLoading
-                                  ? null
-                                  : () {
-                                      AnalyticsService()
-                                          .trackAuthGuardInteraction(
-                                            'login_redirect',
-                                            feature: widget.featureTitle,
-                                          );
-                                      Navigator.of(context).pop(false);
-                                      context.push(AppRoutes.login);
-                                    },
-                              icon: const Icon(Icons.email_outlined, size: 20),
-                              label: Text(l10n.login.toUpperCase()),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: sheetTheme.colorScheme.primary,
-                                foregroundColor:
-                                    sheetTheme.colorScheme.onPrimary,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 18,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 14,
-                                  letterSpacing: 1.0,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          l10n.dontHaveAccount,
-                          style: TextStyle(
-                            color: AppColors.grey500,
-                            fontSize: 14,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            AnalyticsService().trackAuthGuardInteraction(
-                              'signup_redirect',
-                              feature: widget.featureTitle,
-                            );
-                            Navigator.of(context).pop(false);
-                            context.push(AppRoutes.signup);
-                          },
-                          child: Text(
-                            l10n.signUp.toUpperCase(),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w900,
-                              color: AppColors.vibrantPurple,
-                              fontSize: 14,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+              ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

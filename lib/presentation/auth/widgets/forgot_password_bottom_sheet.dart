@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../auth/providers/auth_state_provider.dart';
+
+import '../../../core/theme/clever/clever_colors.dart';
+import '../../../core/theme/clever/clever_dimensions.dart';
+import '../../../core/theme/clever/clever_typography.dart';
 import '../../../core/utils/custom_snackbar.dart';
-import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../l10n/generated/app_localizations.dart';
+import '../../auth/providers/auth_state_provider.dart';
+import '../../common/widgets/clever/clever_button.dart';
+import '../../common/widgets/clever/clever_text_field.dart';
 
 class ForgotPasswordBottomSheet extends ConsumerStatefulWidget {
   const ForgotPasswordBottomSheet({super.key});
@@ -12,7 +18,14 @@ class ForgotPasswordBottomSheet extends ConsumerStatefulWidget {
       context: context,
       useRootNavigator: true,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: CleverColors.bgCanvas,
+      isDismissible: true,
+      enableDrag: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(CleverRadius.sheet),
+        ),
+      ),
       builder: (context) => const ForgotPasswordBottomSheet(),
     );
   }
@@ -63,18 +76,19 @@ class _ForgotPasswordBottomSheetState
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+
     return Container(
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+      decoration: const BoxDecoration(
+        color: CleverColors.bgCanvas,
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(CleverRadius.sheet),
+        ),
       ),
       padding: EdgeInsets.fromLTRB(
-        24,
+        31,
         16,
-        24,
-        MediaQuery.of(context).viewInsets.bottom + 40,
+        33,
+        MediaQuery.of(context).viewInsets.bottom + 24,
       ),
       child: Form(
         key: _formKey,
@@ -84,74 +98,38 @@ class _ForgotPasswordBottomSheetState
           children: [
             Center(
               child: Container(
-                width: 40,
+                width: 47,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: colorScheme.outlineVariant,
+                  color: CleverColors.surfaceInverse.withValues(alpha: 0.25),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: CleverSpacing.space24),
             Text(
               l10n.forgotPassword,
               textAlign: TextAlign.center,
-              style: textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w900,
-                color: colorScheme.onSurface,
-                letterSpacing: -1.0,
+              style: CleverTypography.h1.copyWith(
+                color: CleverColors.textPrimary,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: CleverSpacing.space12),
             Text(
               l10n.forgotPasswordResetMessage,
               textAlign: TextAlign.center,
-              style: textTheme.bodyMedium?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-                fontWeight: FontWeight.w500,
+              style: CleverTypography.body.copyWith(
+                color: CleverColors.textSecondary,
               ),
             ),
-            const SizedBox(height: 32),
-            TextFormField(
+            const SizedBox(height: CleverSpacing.space24),
+            CleverTextField(
               controller: _emailController,
+              hintText: l10n.email,
+              surface: CleverFieldSurface.filled,
+              prefixIcon: Icons.mail_outline,
               keyboardType: TextInputType.emailAddress,
-              style: TextStyle(
-                color: colorScheme.onSurface,
-                fontWeight: FontWeight.w600,
-              ),
-              decoration: InputDecoration(
-                labelText: l10n.email,
-                labelStyle: TextStyle(
-                  color: colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w600,
-                ),
-                prefixIcon: Icon(
-                  Icons.email_outlined,
-                  color: colorScheme.onSurface,
-                  size: 20,
-                ),
-                filled: true,
-                fillColor: colorScheme.surfaceContainerHighest,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
-                    color: colorScheme.onSurface,
-                    width: 2,
-                  ),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                  horizontal: 16,
-                ),
-              ),
+              textInputAction: TextInputAction.done,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return l10n.pleaseEnterEmail;
@@ -159,37 +137,10 @@ class _ForgotPasswordBottomSheetState
                 return null;
               },
             ),
-            const SizedBox(height: 24),
-            SizedBox(
-              height: 56,
-              child: ElevatedButton(
-                onPressed: _isLoading ? null : _sendResetLink,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: colorScheme.onSurface,
-                  foregroundColor: colorScheme.surface,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  elevation: 0,
-                ),
-                child: _isLoading
-                    ? SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.5,
-                          color: colorScheme.surface,
-                        ),
-                      )
-                    : Text(
-                        l10n.sendResetLink.toUpperCase(),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 14,
-                          letterSpacing: 1.0,
-                        ),
-                      ),
-              ),
+            const SizedBox(height: CleverSpacing.space24),
+            CleverButton(
+              label: l10n.sendResetLink,
+              onTap: _isLoading ? null : _sendResetLink,
             ),
           ],
         ),
