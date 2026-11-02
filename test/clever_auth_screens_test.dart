@@ -1,7 +1,6 @@
 import 'package:clever/core/router/app_routes.dart';
 import 'package:clever/domain/entities/app_user.dart';
 import 'package:clever/domain/entities/user_profile.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:clever/presentation/auth/pages/clever_auth_loading_page.dart';
 import 'package:clever/presentation/profile/providers/master_profile_provider.dart';
@@ -14,8 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'dart:convert';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
