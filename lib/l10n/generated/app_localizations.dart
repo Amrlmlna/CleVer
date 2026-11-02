@@ -4193,6 +4193,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'dictate'**
   String get cleverToggleDictate;
+
+  /// No description provided for @cleverEducationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'add every education you have completed.'**
+  String get cleverEducationSubtitle;
+
+  /// No description provided for @cleverEmptyEducationPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'start adding your education!'**
+  String get cleverEmptyEducationPrompt;
+
+  /// No description provided for @cleverDeleteEducationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'delete this education?'**
+  String get cleverDeleteEducationTitle;
 }
 
 class _AppLocalizationsDelegate

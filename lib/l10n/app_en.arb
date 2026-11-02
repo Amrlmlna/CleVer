@@ -854,5 +854,8 @@
   "cleverDeleteExperienceTitle": "delete this experience?",
   "cleverConfirmDelete": "delete",
   "cleverToggleType": "type",
-  "cleverToggleDictate": "dictate"
+  "cleverToggleDictate": "dictate",
+  "cleverEducationSubtitle": "add every education you have completed.",
+  "cleverEmptyEducationPrompt": "start adding your education!",
+  "cleverDeleteEducationTitle": "delete this education?"
 }

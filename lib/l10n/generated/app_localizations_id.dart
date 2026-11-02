@@ -2273,4 +2273,15 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cleverToggleDictate => 'dikte';
+
+  @override
+  String get cleverEducationSubtitle =>
+      'tambahkan dan kelola riwayat pendidikan kamu di sini.';
+
+  @override
+  String get cleverEmptyEducationPrompt =>
+      'yuk mulai tambahkan pendidikan kamu!';
+
+  @override
+  String get cleverDeleteEducationTitle => 'hapus pendidikan ini?';
 }

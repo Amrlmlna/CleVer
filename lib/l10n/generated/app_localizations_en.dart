@@ -2273,4 +2273,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cleverToggleDictate => 'dictate';
+
+  @override
+  String get cleverEducationSubtitle =>
+      'add every education you have completed.';
+
+  @override
+  String get cleverEmptyEducationPrompt => 'start adding your education!';
+
+  @override
+  String get cleverDeleteEducationTitle => 'delete this education?';
 }

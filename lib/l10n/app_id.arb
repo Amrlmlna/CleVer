@@ -847,5 +847,8 @@
   "cleverDeleteExperienceTitle": "hapus pengalaman ini?",
   "cleverConfirmDelete": "hapus",
   "cleverToggleType": "ketik",
-  "cleverToggleDictate": "dikte"
+  "cleverToggleDictate": "dikte",
+  "cleverEducationSubtitle": "tambahkan dan kelola riwayat pendidikan kamu di sini.",
+  "cleverEmptyEducationPrompt": "yuk mulai tambahkan pendidikan kamu!",
+  "cleverDeleteEducationTitle": "hapus pendidikan ini?"
 }
