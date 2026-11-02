@@ -4211,6 +4211,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'delete this education?'**
   String get cleverDeleteEducationTitle;
+
+  /// No description provided for @cleverCertificationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'add every certification and license you hold.'**
+  String get cleverCertificationSubtitle;
+
+  /// No description provided for @cleverEmptyCertificationPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'start adding your certifications!'**
+  String get cleverEmptyCertificationPrompt;
+
+  /// No description provided for @cleverDeleteCertificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'delete this certification?'**
+  String get cleverDeleteCertificationTitle;
 }
 
 class _AppLocalizationsDelegate

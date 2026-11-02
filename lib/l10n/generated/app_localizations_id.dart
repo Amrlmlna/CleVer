@@ -2284,4 +2284,15 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cleverDeleteEducationTitle => 'hapus pendidikan ini?';
+
+  @override
+  String get cleverCertificationSubtitle =>
+      'tambahkan dan kelola sertifikasi kamu disini. mulai dari SIM hingga sertifikat profesional.';
+
+  @override
+  String get cleverEmptyCertificationPrompt =>
+      'yuk mulai tambahkan sertifikasi kamu!';
+
+  @override
+  String get cleverDeleteCertificationTitle => 'hapus sertifikasi ini?';
 }

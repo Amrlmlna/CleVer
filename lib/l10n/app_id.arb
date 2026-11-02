@@ -850,5 +850,8 @@
   "cleverToggleDictate": "dikte",
   "cleverEducationSubtitle": "tambahkan dan kelola riwayat pendidikan kamu di sini.",
   "cleverEmptyEducationPrompt": "yuk mulai tambahkan pendidikan kamu!",
-  "cleverDeleteEducationTitle": "hapus pendidikan ini?"
+  "cleverDeleteEducationTitle": "hapus pendidikan ini?",
+  "cleverCertificationSubtitle": "tambahkan dan kelola sertifikasi kamu disini. mulai dari SIM hingga sertifikat profesional.",
+  "cleverEmptyCertificationPrompt": "yuk mulai tambahkan sertifikasi kamu!",
+  "cleverDeleteCertificationTitle": "hapus sertifikasi ini?"
 }

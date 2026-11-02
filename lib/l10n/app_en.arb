@@ -857,5 +857,8 @@
   "cleverToggleDictate": "dictate",
   "cleverEducationSubtitle": "add every education you have completed.",
   "cleverEmptyEducationPrompt": "start adding your education!",
-  "cleverDeleteEducationTitle": "delete this education?"
+  "cleverDeleteEducationTitle": "delete this education?",
+  "cleverCertificationSubtitle": "add every certification and license you hold.",
+  "cleverEmptyCertificationPrompt": "start adding your certifications!",
+  "cleverDeleteCertificationTitle": "delete this certification?"
 }
