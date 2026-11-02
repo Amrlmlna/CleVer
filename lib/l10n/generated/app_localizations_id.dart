@@ -2320,4 +2320,10 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get cleverCompleteFootnote =>
       'semua data bisa kamu ubah kapan saja di profil.';
+
+  @override
+  String get total => 'total';
+
+  @override
+  String get searchResult => 'hasil pencarian';
 }

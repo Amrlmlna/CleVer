@@ -16,7 +16,7 @@ import '../../common/widgets/clever/clever_nav_action_bar.dart';
 import '../../common/widgets/clever/clever_text_field.dart';
 import '../../common/widgets/spinning_text_loader.dart';
 import '../../cv/providers/cv_generation_provider.dart';
-import 'education/subject_list_section.dart';
+import '../../onboarding/widgets/clever_panel/clever_subjects_section.dart';
 import '../../common/widgets/university_picker.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -439,8 +439,9 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                       maxLines: 3,
                     ),
                     const SizedBox(height: CleverSpacing.space24),
-                    // Courses + KHS scan — legacy section, full logic.
-                    SubjectListSection(
+                    // Courses + KHS scan — scan logic preserved from the
+                    // legacy SubjectListSection via the Clever section.
+                    CleverSubjectsSection(
                       subjects: _subjects,
                       onChanged: (newList) =>
                           setState(() => _subjects = newList),

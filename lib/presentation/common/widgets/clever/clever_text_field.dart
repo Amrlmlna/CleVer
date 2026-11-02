@@ -4,7 +4,7 @@ import '../../../../core/theme/clever/clever_colors.dart';
 import '../../../../core/theme/clever/clever_dimensions.dart';
 import '../../../../core/theme/clever/clever_typography.dart';
 
-enum CleverFieldSurface { outline, filled, filledOnAction }
+enum CleverFieldSurface { outline, filled, filledOnAction, raised }
 
 class CleverTextField extends StatefulWidget {
   const CleverTextField({
@@ -73,6 +73,7 @@ class _CleverTextFieldState extends State<CleverTextField> {
       CleverFieldSurface.outline => CleverColors.bgCanvas,
       CleverFieldSurface.filled => CleverColors.surfaceField,
       CleverFieldSurface.filledOnAction => CleverColors.surfaceFieldOnAction,
+      CleverFieldSurface.raised => CleverColors.surfaceRaised,
     };
     final hintColor = switch (widget.surface) {
       CleverFieldSurface.outline => CleverColors.textSecondary.withValues(
@@ -82,6 +83,9 @@ class _CleverTextFieldState extends State<CleverTextField> {
         alpha: 0.6,
       ),
       CleverFieldSurface.filledOnAction => CleverColors.textOnDark.withValues(
+        alpha: 0.6,
+      ),
+      CleverFieldSurface.raised => CleverColors.textPrimary.withValues(
         alpha: 0.6,
       ),
     };

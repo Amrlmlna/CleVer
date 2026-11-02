@@ -860,5 +860,7 @@
   "cleverCompleteSummary": "ringkasan profil",
   "cleverCompleteCount": "{count} entri",
   "cleverCompleteRowHeader": "header — nama, kontak, tanggal lahir",
-  "cleverCompleteFootnote": "semua data bisa kamu ubah kapan saja di profil."
+  "cleverCompleteFootnote": "semua data bisa kamu ubah kapan saja di profil.",
+  "total": "total",
+  "searchResult": "hasil pencarian"
 }

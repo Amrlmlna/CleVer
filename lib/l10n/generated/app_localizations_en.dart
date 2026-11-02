@@ -2319,4 +2319,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cleverCompleteFootnote =>
       'you can edit everything anytime in your profile.';
+
+  @override
+  String get total => 'total';
+
+  @override
+  String get searchResult => 'search results';
 }

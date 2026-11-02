@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:clever/l10n/generated/app_localizations.dart';
-import '../../common/widgets/unsaved_changes_dialog.dart';
-import '../../common/widgets/custom_text_form_field.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../domain/entities/skill.dart';
-import '../../common/widgets/sheet/sheet_header.dart';
-import '../../common/widgets/sheet/sheet_action_buttons.dart';
 
+import '../../../domain/entities/skill.dart';
+import '../../../core/theme/clever/clever_colors.dart';
+import '../../../core/theme/clever/clever_dimensions.dart';
+import '../../../core/theme/clever/clever_typography.dart';
+import '../../../core/utils/custom_snackbar.dart';
+import '../../../l10n/generated/app_localizations.dart';
+import '../../common/widgets/clever/clever_button.dart';
+import '../../common/widgets/clever/clever_form_toggle.dart';
+import '../../common/widgets/clever/clever_text_field.dart';
+
+/// Add-skill sheet per the staging search overlay: hardskill/softskill
+/// toggle (no icons), search field (surfaceRaised), and a "tambah"
+/// result row. Duplicate check preserved from the legacy sheet.
 class SkillsBottomSheet extends StatefulWidget {
   final List<Skill> currentSkills;
 
@@ -18,18 +23,19 @@ class SkillsBottomSheet extends StatefulWidget {
       context: context,
       useRootNavigator: true,
       isScrollControlled: true,
-      backgroundColor: AppColors.sheetSurface,
+      backgroundColor: CleverColors.bgCanvas,
+      isDismissible: true,
+      enableDrag: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (context) => Theme(
-        data: AppTheme.sheetTheme,
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: SkillsBottomSheet(currentSkills: currentSkills),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(CleverRadius.sheet),
         ),
+      ),
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: SkillsBottomSheet(currentSkills: currentSkills),
       ),
     );
   }
@@ -40,11 +46,9 @@ class SkillsBottomSheet extends StatefulWidget {
 
 class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
   final _controller = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  // Staging maps the toggle to two categories: hardskill → technical,
+  // softskill → soft.
   SkillCategory _selectedCategory = SkillCategory.technical;
-  bool _canPopNow = false;
-
-  bool get _isDirty => _controller.text.trim().isNotEmpty;
 
   @override
   void dispose() {
@@ -53,167 +57,111 @@ class _SkillsBottomSheetState extends State<SkillsBottomSheet> {
   }
 
   void _submit() {
-    if (_formKey.currentState!.validate()) {
-      setState(() => _canPopNow = true);
-      Navigator.pop(
+    final name = _controller.text.trim();
+    if (name.isEmpty) return;
+
+    final isDuplicate = widget.currentSkills.any(
+      (s) => s.name.toLowerCase() == name.toLowerCase(),
+    );
+    if (isDuplicate) {
+      CustomSnackBar.showWarning(
         context,
-        Skill(name: _controller.text.trim(), category: _selectedCategory),
+        AppLocalizations.of(context)!.cvDataExists,
       );
+      return;
     }
+
+    Navigator.pop(context, Skill(name: name, category: _selectedCategory));
   }
 
   @override
   Widget build(BuildContext context) {
-    final localization = AppLocalizations.of(context)!;
-    final isId = Localizations.localeOf(context).languageCode == 'id';
+    final l10n = AppLocalizations.of(context)!;
+    final query = _controller.text.trim();
 
-    return PopScope(
-      canPop: _canPopNow,
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop) return;
-        _handlePop();
-      },
-      child: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SheetHeader(
-                    title: localization.addSkill,
-                    onClosing: _handlePop,
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  Text(
-                    isId ? 'Kategori' : 'Category',
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: SkillCategory.values.map((category) {
-                      final isSelected = _selectedCategory == category;
-                      return ChoiceChip(
-                        label: Text(
-                          isId ? category.displayNameId : category.displayName,
-                        ),
-                        selected: isSelected,
-                        onSelected: (_) {
-                          setState(() => _selectedCategory = category);
-                        },
-                        selectedColor: Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(alpha: 0.15),
-                        labelStyle: TextStyle(
-                          color: isSelected
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context).colorScheme.onSurface,
-                          fontWeight: isSelected
-                              ? FontWeight.w600
-                              : FontWeight.w400,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: BorderSide(
-                            color: isSelected
-                                ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context).colorScheme.outlineVariant,
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 20),
-
-                  CustomTextFormField(
-                    controller: _controller,
-                    labelText: localization.skills,
-                    hintText: localization.skillHint,
-                    validator: (v) {
-                      if (v == null || v.trim().isEmpty) {
-                        return localization.requiredField;
-                      }
-                      if (widget.currentSkills.any(
-                        (s) => s.name.toLowerCase() == v.trim().toLowerCase(),
-                      )) {
-                        return localization.cvDataExists;
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 32),
-                  SheetActionButtons(
-                    onSave: _submit,
-                    onCancel: _handlePop,
-                    saveLabel: localization.add,
-                    voiceEntityType: 'skill',
-                    onVoiceParsed: (data) {
-                      setState(() {
-                        if (data['name'] != null &&
-                            data['name'].toString().isNotEmpty) {
-                          _controller.text = data['name'];
-                        }
-                        if (data['category'] != null &&
-                            data['category'].toString().isNotEmpty) {
-                          final categoryStr = data['category']
-                              .toString()
-                              .toLowerCase();
-                          try {
-                            _selectedCategory = SkillCategory.values.firstWhere(
-                              (c) => c.name.toLowerCase() == categoryStr,
-                            );
-                          } catch (_) {
-                            // Fallback to existing or default
-                          }
-                        }
-                      });
-                    },
-                  ),
-                ],
-              ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(31, 16, 33, 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          CleverFormToggle(
+            activeIndex: _selectedCategory == SkillCategory.soft ? 1 : 0,
+            onChanged: (i) => setState(
+              () => _selectedCategory = i == 1
+                  ? SkillCategory.soft
+                  : SkillCategory.technical,
+            ),
+            segments: const [
+              CleverToggleSegment(label: 'hardskill'),
+              CleverToggleSegment(label: 'softskill'),
+            ],
+          ),
+          const SizedBox(height: CleverSpacing.space24),
+          Text(
+            l10n.addSkill,
+            style: CleverTypography.h1.copyWith(
+              color: CleverColors.textPrimary,
             ),
           ),
-        ),
+          const SizedBox(height: CleverSpacing.space24),
+          CleverTextField(
+            controller: _controller,
+            hintText: l10n.skillHint,
+            surface: CleverFieldSurface.raised,
+            prefixIcon: Icons.search,
+            textInputAction: TextInputAction.done,
+            onChanged: (_) => setState(() {}),
+            onSubmitted: (_) => _submit(),
+          ),
+          const SizedBox(height: CleverSpacing.space24),
+          if (query.isNotEmpty) ...[
+            Text(
+              l10n.searchResult,
+              style: CleverTypography.bodySm.copyWith(
+                color: CleverColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: CleverSpacing.space8),
+            // The staging has no skills catalog — the single result row is
+            // the create-new affordance.
+            InkWell(
+              onTap: _submit,
+              borderRadius: BorderRadius.circular(CleverRadius.button),
+              child: Container(
+                height: 55,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: CleverColors.surfaceSelected,
+                  borderRadius: BorderRadius.circular(CleverRadius.button),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.add,
+                      size: 21,
+                      color: CleverColors.bgAction,
+                    ),
+                    const SizedBox(width: CleverSpacing.space12),
+                    Expanded(
+                      child: Text(
+                        "'$query'",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: CleverTypography.bodyStrong.copyWith(
+                          color: CleverColors.textPrimary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+          const SizedBox(height: CleverSpacing.space24),
+          CleverButton(label: l10n.add, onTap: _submit),
+        ],
       ),
     );
-  }
-
-  void _handlePop() async {
-    if (_canPopNow) return;
-
-    if (!_isDirty) {
-      setState(() => _canPopNow = true);
-      Navigator.pop(context);
-      return;
-    }
-
-    Skill? savedSkill;
-    final result = await UnsavedChangesDialog.show(
-      context,
-      onSave: () async {
-        if (_formKey.currentState!.validate()) {
-          savedSkill = Skill(
-            name: _controller.text.trim(),
-            category: _selectedCategory,
-          );
-        }
-      },
-      onDiscard: () async {},
-    );
-
-    if (result == true && mounted) {
-      setState(() => _canPopNow = true);
-      Navigator.pop(context, savedSkill);
-    }
   }
 }

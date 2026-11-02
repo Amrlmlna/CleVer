@@ -4271,6 +4271,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'you can edit everything anytime in your profile.'**
   String get cleverCompleteFootnote;
+
+  /// No description provided for @total.
+  ///
+  /// In en, this message translates to:
+  /// **'total'**
+  String get total;
+
+  /// No description provided for @searchResult.
+  ///
+  /// In en, this message translates to:
+  /// **'search results'**
+  String get searchResult;
 }
 
 class _AppLocalizationsDelegate

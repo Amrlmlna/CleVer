@@ -874,5 +874,7 @@
         "type": "int"
       }
     }
-  }
+  },
+  "total": "total",
+  "searchResult": "search results"
 }
