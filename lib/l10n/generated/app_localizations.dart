@@ -4235,6 +4235,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'start adding your skills!'**
   String get cleverEmptySkillsPrompt;
+
+  /// No description provided for @cleverCompleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'all set!'**
+  String get cleverCompleteTitle;
+
+  /// No description provided for @cleverCompleteSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'your profile is complete.\nnow all that\'s left is making your first CV.'**
+  String get cleverCompleteSubtitle;
+
+  /// No description provided for @cleverCompleteSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'profile summary'**
+  String get cleverCompleteSummary;
+
+  /// No description provided for @cleverCompleteCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} entries'**
+  String cleverCompleteCount(int count);
+
+  /// No description provided for @cleverCompleteRowHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'header — name, contact, birth date'**
+  String get cleverCompleteRowHeader;
+
+  /// No description provided for @cleverCompleteFootnote.
+  ///
+  /// In en, this message translates to:
+  /// **'you can edit everything anytime in your profile.'**
+  String get cleverCompleteFootnote;
 }
 
 class _AppLocalizationsDelegate

@@ -854,5 +854,11 @@
   "cleverCertificationSubtitle": "tambahkan dan kelola sertifikasi kamu disini. mulai dari SIM hingga sertifikat profesional.",
   "cleverEmptyCertificationPrompt": "yuk mulai tambahkan sertifikasi kamu!",
   "cleverDeleteCertificationTitle": "hapus sertifikasi ini?",
-  "cleverEmptySkillsPrompt": "yuk mulai tambahkan keahlian kamu!"
+  "cleverEmptySkillsPrompt": "yuk mulai tambahkan keahlian kamu!",
+  "cleverCompleteTitle": "semua siap!",
+  "cleverCompleteSubtitle": "profil kamu sudah lengkap.\nsekarang tinggal bikin CV pertamamu.",
+  "cleverCompleteSummary": "ringkasan profil",
+  "cleverCompleteCount": "{count} entri",
+  "cleverCompleteRowHeader": "header — nama, kontak, tanggal lahir",
+  "cleverCompleteFootnote": "semua data bisa kamu ubah kapan saja di profil."
 }

@@ -861,5 +861,18 @@
   "cleverCertificationSubtitle": "add every certification and license you hold.",
   "cleverEmptyCertificationPrompt": "start adding your certifications!",
   "cleverDeleteCertificationTitle": "delete this certification?",
-  "cleverEmptySkillsPrompt": "start adding your skills!"
+  "cleverEmptySkillsPrompt": "start adding your skills!",
+  "cleverCompleteTitle": "all set!",
+  "cleverCompleteSubtitle": "your profile is complete.\nnow all that's left is making your first CV.",
+  "cleverCompleteSummary": "profile summary",
+  "cleverCompleteCount": "{count} entries",
+  "cleverCompleteRowHeader": "header — name, contact, birth date",
+  "cleverCompleteFootnote": "you can edit everything anytime in your profile.",
+  "@cleverCompleteCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -2297,4 +2297,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cleverEmptySkillsPrompt => 'start adding your skills!';
+
+  @override
+  String get cleverCompleteTitle => 'all set!';
+
+  @override
+  String get cleverCompleteSubtitle =>
+      'your profile is complete.\nnow all that\'s left is making your first CV.';
+
+  @override
+  String get cleverCompleteSummary => 'profile summary';
+
+  @override
+  String cleverCompleteCount(int count) {
+    return '$count entries';
+  }
+
+  @override
+  String get cleverCompleteRowHeader => 'header — name, contact, birth date';
+
+  @override
+  String get cleverCompleteFootnote =>
+      'you can edit everything anytime in your profile.';
 }

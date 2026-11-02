@@ -2298,4 +2298,26 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cleverEmptySkillsPrompt => 'yuk mulai tambahkan keahlian kamu!';
+
+  @override
+  String get cleverCompleteTitle => 'semua siap!';
+
+  @override
+  String get cleverCompleteSubtitle =>
+      'profil kamu sudah lengkap.\nsekarang tinggal bikin CV pertamamu.';
+
+  @override
+  String get cleverCompleteSummary => 'ringkasan profil';
+
+  @override
+  String cleverCompleteCount(int count) {
+    return '$count entri';
+  }
+
+  @override
+  String get cleverCompleteRowHeader => 'header — nama, kontak, tanggal lahir';
+
+  @override
+  String get cleverCompleteFootnote =>
+      'semua data bisa kamu ubah kapan saja di profil.';
 }
