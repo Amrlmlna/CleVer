@@ -2294,4 +2294,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cleverDeleteCertificationTitle => 'delete this certification?';
+
+  @override
+  String get cleverEmptySkillsPrompt => 'start adding your skills!';
 }

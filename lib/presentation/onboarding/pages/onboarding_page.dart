@@ -12,9 +12,9 @@ import '../../../core/services/analytics_service.dart';
 import '../widgets/onboarding_personal_step.dart';
 import '../widgets/clever_panel/clever_certification_step.dart';
 import '../widgets/clever_panel/clever_education_step.dart';
+import '../widgets/clever_panel/clever_skills_step.dart';
 import '../widgets/clever_panel/clever_experience_step.dart';
 import '../widgets/clever_panel/clever_method_choice_step.dart';
-import '../widgets/onboarding_skills_step.dart';
 import '../widgets/onboarding_final_step.dart';
 import '../widgets/onboarding_navigation_bar.dart';
 
@@ -190,7 +190,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     final currentPage = state.currentPage;
     final isSaving = state.isSaving;
 
-    final bool isLegacyNavStep = currentPage >= 1 && currentPage <= 4;
+    final bool isLegacyNavStep = currentPage >= 1 && currentPage <= 5;
     final bool isLastPage = currentPage == 6;
 
     final bool isSkippable = currentPage >= 2 && currentPage <= 5;
@@ -238,11 +238,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 CleverCertificationStep(
                   onNext: currentPage < 6 ? _nextPage : _finishOnboarding,
                 ),
-                OnboardingSkillsStep(
-                  skills: state.formData.skills,
-                  onChanged: (val) => ref
-                      .read(onboardingFormProvider.notifier)
-                      .updateSkills(val),
+                CleverSkillsStep(
+                  onNext: currentPage < 6 ? _nextPage : _finishOnboarding,
                 ),
                 const OnboardingFinalStep(),
               ],

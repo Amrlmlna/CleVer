@@ -853,5 +853,6 @@
   "cleverDeleteEducationTitle": "hapus pendidikan ini?",
   "cleverCertificationSubtitle": "tambahkan dan kelola sertifikasi kamu disini. mulai dari SIM hingga sertifikat profesional.",
   "cleverEmptyCertificationPrompt": "yuk mulai tambahkan sertifikasi kamu!",
-  "cleverDeleteCertificationTitle": "hapus sertifikasi ini?"
+  "cleverDeleteCertificationTitle": "hapus sertifikasi ini?",
+  "cleverEmptySkillsPrompt": "yuk mulai tambahkan keahlian kamu!"
 }

@@ -860,5 +860,6 @@
   "cleverDeleteEducationTitle": "delete this education?",
   "cleverCertificationSubtitle": "add every certification and license you hold.",
   "cleverEmptyCertificationPrompt": "start adding your certifications!",
-  "cleverDeleteCertificationTitle": "delete this certification?"
+  "cleverDeleteCertificationTitle": "delete this certification?",
+  "cleverEmptySkillsPrompt": "start adding your skills!"
 }
