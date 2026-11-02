@@ -4,11 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../common/widgets/unsaved_changes_dialog.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../onboarding/providers/onboarding_auth_capture_provider.dart';
-import '../../auth/providers/auth_state_provider.dart';
-import '../../auth/widgets/auth_wall_bottom_sheet.dart';
 import '../../../core/router/app_routes.dart';
-import 'package:clever/l10n/generated/app_localizations.dart';
-import '../../../core/services/analytics_service.dart';
 
 class DashboardNavigationHandler {
   static Future<void> onTabTap({
@@ -52,30 +48,9 @@ class DashboardNavigationHandler {
     // Reset state immediately to avoid duplicate triggers
     ref.read(onboardingAuthCaptureProvider.notifier).state = false;
 
-    final user = ref.read(authStateProvider).value;
-
-    if (user == null) {
-      AnalyticsService().trackAuthGuardViewed(feature: 'momentum_forced_auth');
-      AuthWallBottomSheet.show(
-        context,
-        featureTitle: AppLocalizations.of(context)!.authWallCreateCV,
-        featureDescription: AppLocalizations.of(context)!.authWallCreateCVDesc,
-        onAuthenticated: () {
-          AnalyticsService().trackAuthGuardInteraction(
-            'success',
-            feature: 'momentum_forced_auth',
-          );
-          context.push(AppRoutes.createJobInput);
-        },
-        onDismiss: () {
-          AnalyticsService().trackAuthGuardInteraction(
-            'dismiss',
-            feature: 'momentum_forced_auth',
-          );
-        },
-      );
-    } else {
-      context.push(AppRoutes.createJobInput);
-    }
+    // Auth-first onboarding: users completing the panel are always
+    // authenticated, so the legacy forced auth wall here is dead. Straight
+    // into the momentum flow.
+    context.push(AppRoutes.createJobInput);
   }
 }

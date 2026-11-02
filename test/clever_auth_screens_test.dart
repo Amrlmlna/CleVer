@@ -1,7 +1,10 @@
 import 'package:clever/core/router/app_routes.dart';
 import 'package:clever/domain/entities/app_user.dart';
+import 'package:clever/domain/entities/user_profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:clever/presentation/auth/pages/clever_auth_loading_page.dart';
+import 'package:clever/presentation/profile/providers/master_profile_provider.dart';
 import 'package:clever/presentation/auth/pages/clever_signup_page.dart';
 import 'package:clever/presentation/auth/providers/auth_state_provider.dart';
 import 'package:clever/presentation/common/widgets/clever/clever_mascot.dart';
@@ -11,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'dart:convert';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
@@ -99,7 +104,7 @@ void main() {
     expect(find.text('required'), findsNWidgets(2));
   });
 
-  testWidgets('auth loading routes to questionnaire once signed in', (
+  testWidgets('auth loading routes to questionnaire for fresh accounts', (
     tester,
   ) async {
     final router = testRouter(initialLocation: AppRoutes.onboardingLoading);
@@ -117,5 +122,40 @@ void main() {
     await tester.pump(const Duration(milliseconds: 400));
 
     expect(find.byType(CleverWelcomeQuestionnairePage), findsOneWidget);
+  });
+
+  testWidgets('auth loading routes home for accounts with a profile', (
+    tester,
+  ) async {
+    const profile = UserProfile(
+      fullName: 'Budi',
+      email: 'a@b.co',
+      experience: [],
+      education: [],
+      skills: [],
+      certifications: [],
+    );
+
+    final router = testRouter(initialLocation: AppRoutes.onboardingLoading);
+    await tester.pumpWidget(
+      materialRouter(
+        router: router,
+        overrides: [
+          authStateProvider.overrideWith(
+            (ref) => Stream.value(const AppUser(uid: 'u1', email: 'a@b.co')),
+          ),
+          // Seeded profile = established account.
+          masterProfileProvider.overrideWith(
+            (ref) => MasterProfileNotifier(initialState: profile),
+          ),
+        ],
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    // completeOnboarding fired and the user landed home (redirect bounces
+    // onboarding routes away).
+    expect(find.byType(CleverWelcomeQuestionnairePage), findsNothing);
   });
 }

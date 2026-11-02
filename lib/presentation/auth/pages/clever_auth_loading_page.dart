@@ -9,33 +9,77 @@ import '../../../domain/entities/app_user.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../../common/widgets/clever/clever_mascot.dart';
 import '../providers/auth_state_provider.dart';
+import '../../profile/providers/profile_sync_provider.dart';
+import '../../profile/providers/master_profile_provider.dart';
 import '../../onboarding/providers/onboarding_provider.dart';
 
 /// Post-auth loading screen ("SignInFormLoading"). Waits for the Firebase
 /// auth state and routes onward: completed onboarding → home (legacy users
-/// arriving through the auth wall), otherwise the welcome questionnaire.
-class CleverAuthLoadingPage extends ConsumerWidget {
+/// arriving through the auth wall), existing accounts with a cloud profile
+/// → home directly (their data is already set), fresh accounts → the
+/// welcome questionnaire.
+class CleverAuthLoadingPage extends ConsumerStatefulWidget {
   const CleverAuthLoadingPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
+  ConsumerState<CleverAuthLoadingPage> createState() =>
+      _CleverAuthLoadingPageState();
+}
 
-    void navigateIfSignedIn(AppUser? user) {
-      if (user == null) return;
-      final onboarded = ref.read(onboardingProvider);
-      context.go(onboarded ? AppRoutes.home : AppRoutes.onboardingSteps);
+class _CleverAuthLoadingPageState extends ConsumerState<CleverAuthLoadingPage> {
+  bool _navigated = false;
+
+  Future<void> _navigateIfSignedIn(AppUser? user) async {
+    if (user == null || _navigated || !mounted) return;
+    _navigated = true;
+
+    final onboarded = ref.read(onboardingProvider);
+    var route = AppRoutes.onboardingSteps;
+
+    if (onboarded) {
+      route = AppRoutes.home;
+    } else {
+      // Auth-first: an existing account may already carry a complete
+      // profile from another device or the legacy flow. Pull it and skip
+      // the questionnaire when it has real data. If the fetch fails
+      // (offline, Firebase hiccup), degrade to onboarding — the profile
+      // heartbeat merges the cloud data in the background either way.
+      try {
+        await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
+      } catch (_) {}
+
+      final profile = ref.read(masterProfileProvider);
+      final hasCloudProfile =
+          profile != null &&
+          (profile.fullName.isNotEmpty ||
+              profile.experience.isNotEmpty ||
+              profile.education.isNotEmpty ||
+              profile.certifications.isNotEmpty ||
+              profile.skills.isNotEmpty);
+
+      if (hasCloudProfile) {
+        await ref.read(onboardingProvider.notifier).completeOnboarding();
+        route = AppRoutes.home;
+      }
     }
+
+    if (!mounted) return;
+    context.go(route);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
 
     // The auth state may already be resolved when this screen opens.
     final current = ref.watch(authStateProvider).value;
     if (current != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (context.mounted) navigateIfSignedIn(current);
+        _navigateIfSignedIn(current);
       });
     }
     ref.listen<AsyncValue<AppUser?>>(authStateProvider, (_, next) {
-      navigateIfSignedIn(next.value);
+      _navigateIfSignedIn(next.value);
     });
 
     return Scaffold(
