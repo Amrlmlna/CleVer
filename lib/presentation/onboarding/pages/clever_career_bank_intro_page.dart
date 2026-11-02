@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/services/analytics_service.dart';
 import '../../../core/theme/clever/clever_colors.dart';
 import '../../../core/theme/clever/clever_dimensions.dart';
 import '../../../core/theme/clever/clever_typography.dart';
@@ -44,6 +45,8 @@ class _CleverCareerBankIntroPageState
 
   Future<void> _openSheet() async {
     setState(() => _touched = false);
+    // Legacy parity: the panel mount used to fire the first data_input hit.
+    AnalyticsService().trackOnboardingStep('data_input', 0);
     await _sheet.forward();
   }
 

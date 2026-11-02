@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/theme/clever/clever_colors.dart';
 import '../../../../core/theme/clever/clever_dimensions.dart';
 import '../../../../core/theme/clever/clever_typography.dart';
+import '../../../../core/utils/custom_snackbar.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../common/widgets/clever/clever_confirm_sheet.dart';
 import '../../../common/widgets/clever/clever_nav_action_bar.dart';
@@ -120,7 +121,21 @@ class CleverExperienceStep extends ConsumerWidget {
     final result = await ExperienceBottomSheet.show(context);
     if (result == null || !context.mounted) return;
 
-    // First entry from the empty state cannot duplicate anything.
+    // Legacy parity: warn instead of adding an identical entry.
+    final isDuplicate = experiences.any(
+      (exp) =>
+          exp.jobTitle.toLowerCase() == result.jobTitle.toLowerCase() &&
+          exp.companyName.toLowerCase() == result.companyName.toLowerCase() &&
+          exp.startDate == result.startDate,
+    );
+    if (isDuplicate) {
+      CustomSnackBar.showWarning(
+        context,
+        AppLocalizations.of(context)!.cvDataExists,
+      );
+      return;
+    }
+
     onExperienceChanged([...experiences, result]);
   }
 }
