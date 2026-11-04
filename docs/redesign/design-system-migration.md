@@ -31,10 +31,10 @@ onboarding until the app-wide reface, then gets removed entirely.
 
 ## Deferred removal checklist (backend, `backend-express`)
 
-- [ ] `aiLimiterAnonymous` + fail-open `optionalAuthMiddleware` on the five public AI routes (`/cv/rewrite`, `/cv/parse`, `/cv/parse-entity`, `/education/parse-study-card`, `/job/extract`) — flip to required auth after the auth-first app release reaches sufficient adoption (anonymous request volume ≈ 0; criterion to be proposed in Phase F)
-- [ ] Identity-free AI cache binding (cross-user read + plaintext PII) — bind cache keys to uid or disable sharing
-- [ ] `templateId` path-traversal allowlist on `/cv/generate`
-- [ ] `maxOutputTokens` cap on the JSON generation path
+- [x] The five AI routes (`/cv/rewrite`, `/cv/parse`, `/cv/parse-entity`, `/education/parse-study-card`, `/job/extract`) now REQUIRE auth like every other endpoint — owner decision 2026-11-05 (no env gate, no anonymous tier; `aiLimiterAnonymous` + the dynamic limiter switch deleted). backend-express `staging` commit `34ab6db`/gate-removal follow-up. Deploy note: pre-auth-first app versions still in production lose these endpoints until they update.
+- [x] Identity-free AI cache binding — all AI cache keys + the `/cv/generate` PDF cache key are uid-scoped (`scopedKey` helper)
+- [x] `templateId` path-traversal allowlist on `/cv/generate` (templateMetadata check + PDFService path-containment guard)
+- [x] `maxOutputTokens` cap (2048) on the JSON generation path
 
 ## Migration status
 
@@ -42,8 +42,10 @@ onboarding until the app-wide reface, then gets removed entirely.
 |---|---|---|
 | A1 | Token layer (`CleverPalette`, `CleverColors`, `CleverTypography`, `CleverDimensions`, `CleverMotion`) | Done |
 | A2 | Shared Clever components (`clever_button`, `clever_google_button`, `clever_text_field`, `clever_nav_action_bar`, `clever_progress_bar`, `clever_option_tile`, `clever_sheet`, `clever_divider` + widget tests) | Done |
-| B | GetStarted / SignUp / SignIn / Welcome steps 1–7 / legal scaffold | Pending |
-| C | Input panel restyle (header, method choice, lists, forms, dictate, skills, complete) | Pending |
-| D | Loading screens + mascot | Pending |
-| E–H | Analytics, backend security, guard cleanup, regression | Pending |
+| B | GetStarted / SignUp / SignIn / Welcome steps 1–7 / legal scaffold | Done (device-confirmed; commits 9ec810e…ad244b1) |
+| C | Input panel restyle (header, method choice, lists, forms, dictate, skills, complete) | Done (device-confirmed; 8fd4bd8 retired all legacy panel files) |
+| D | Loading screens + mascot | Mostly done — getStarted/signUp/signIn/authLoading/step7 mascot live; Import/KHS mascot variants + auth face offsets pending (needs Figwright session) |
+| E | Analytics (PostHog 5.58.4 fix, cutover memo, guard sheets) | Done (80101c6 + ba56160); welcome-step events still missing — see analytics-cutover.md |
+| F | Backend security (AI routes auth-required, uid cache binding, templateId, token cap) | Done on backend `staging` (owner decision 2026-11-05) |
+| G | Auth guard cleanup (sign-in skip, dead auth wall removed) | Done (ad244b1) |
 | Reface | Migrate all non-onboarding UI off legacy tokens, then delete legacy files | Pending |
