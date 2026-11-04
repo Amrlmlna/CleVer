@@ -13,6 +13,7 @@ import '../../../common/widgets/clever/clever_button.dart';
 import '../../../common/widgets/clever/clever_text_field.dart';
 import '../../../common/widgets/app_loading_screen.dart';
 import '../../../cv/providers/cv_generation_provider.dart';
+import 'clever_scan_sheet.dart';
 
 /// "mata kuliah / pelajaran" section per staging: header + small orange
 /// add button, and the total-count row. Tapping either opens the add /
@@ -273,54 +274,17 @@ class _CleverSubjectsSheetState extends ConsumerState<CleverSubjectsSheet> {
     }
   }
 
+  /// Same staging sheet as the CV import (method choice) scan entry —
+  /// handle, centred title + subtitle, upload photo / file cards.
   void _showScanOptions(BuildContext sheetContext) {
     final l10n = AppLocalizations.of(context)!;
 
-    showModalBottomSheet<void>(
-      context: sheetContext,
-      backgroundColor: CleverColors.bgCanvas,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(CleverRadius.sheet),
-        ),
-      ),
-      builder: (scanContext) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(22, 16, 23, 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _ScanOptionRow(
-                icon: Icons.photo_camera_outlined,
-                label: l10n.camera,
-                onTap: () {
-                  Navigator.pop(scanContext);
-                  _scanKHS(ImageSource.camera);
-                },
-              ),
-              const SizedBox(height: CleverSpacing.space12),
-              _ScanOptionRow(
-                icon: Icons.photo_library_outlined,
-                label: l10n.gallery,
-                onTap: () {
-                  Navigator.pop(scanContext);
-                  _scanKHS(ImageSource.gallery);
-                },
-              ),
-              const SizedBox(height: CleverSpacing.space12),
-              _ScanOptionRow(
-                icon: Icons.picture_as_pdf_outlined,
-                label: l10n.pdfFile,
-                onTap: () {
-                  Navigator.pop(scanContext);
-                  _scanKHS(null);
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+    showCleverScanSheet(
+      sheetContext,
+      title: l10n.scanKHSTitle,
+      subtitle: l10n.scanKHSMessage,
+      onPickImage: _scanKHS,
+      onPickFile: () => _scanKHS(null),
     );
   }
 
@@ -457,55 +421,6 @@ class _SubjectRow extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _ScanOptionRow extends StatelessWidget {
-  const _ScanOptionRow({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(CleverRadius.card),
-        child: Container(
-          padding: const EdgeInsets.all(CleverSpacing.space16),
-          decoration: BoxDecoration(
-            color: CleverColors.surfaceSelected,
-            borderRadius: BorderRadius.circular(CleverRadius.card),
-          ),
-          child: Row(
-            children: [
-              Icon(icon, size: 24, color: CleverColors.surfaceInverse),
-              const SizedBox(width: CleverSpacing.space16),
-              Expanded(
-                child: Text(
-                  label,
-                  style: CleverTypography.bodyStrong.copyWith(
-                    color: CleverColors.textPrimary,
-                  ),
-                ),
-              ),
-              const Icon(
-                Icons.arrow_forward,
-                size: 18,
-                color: CleverColors.textSecondary,
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
