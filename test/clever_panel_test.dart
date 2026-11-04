@@ -8,6 +8,7 @@ import 'package:clever/presentation/common/widgets/clever/clever_button.dart';
 import 'package:clever/presentation/common/widgets/clever/clever_dictate_panel.dart';
 import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_experience_step.dart';
 import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_method_choice_step.dart';
+import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_complete_step.dart';
 import 'package:clever/domain/entities/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -361,4 +362,57 @@ void main() {
       expect(restored.state.formData.fullName, 'Budi');
     });
   });
+
+  group('CleverCompleteStep', () {
+    late ProviderContainer container;
+
+    setUp(() {
+      container = ProviderContainer();
+      container.listen(onboardingFormProvider, (_, __) {});
+    });
+
+    tearDown(() => container.dispose());
+
+    testWidgets('summary rows scroll instead of overflowing a short sheet', (
+      tester,
+    ) async {
+      // The device that reported the overflow gave the step ~670px against
+      // ~694px of fixed content; a 560px box forces the rows to scroll while
+      // leaving room for the (Ahem-font, wider) fixed section.
+      tester.view.physicalSize = const Size(822, 1800);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.reset);
+
+      container.read(onboardingFormProvider.notifier).updateName('Budi');
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp(
+            locale: const Locale('id'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const Scaffold(
+              body: Center(
+                child: SizedBox(
+                  width: 360,
+                  height: 560,
+                  child: CleverCompleteStep(onFinish: _noFinish),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 400));
+
+      expect(find.text('semua siap!'), findsOneWidget);
+      expect(find.text('mulai sekarang'), findsOneWidget);
+      // All five rows exist even though the box is shorter than their fixed
+      // height — they scroll instead of blowing the column.
+      expect(find.byType(Scrollable), findsWidgets);
+    });
+  });
 }
+
+void _noFinish() {}

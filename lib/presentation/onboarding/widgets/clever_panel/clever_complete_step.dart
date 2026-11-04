@@ -36,83 +36,100 @@ class CleverCompleteStep extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: CleverSpacing.space24),
-          Center(
-            child: Container(
-              width: 64,
-              height: 64,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: CleverColors.bgCanvas,
-              ),
-              child: const Icon(
-                Icons.check,
-                size: 34,
-                color: CleverColors.bgAction,
+          // Everything but the nav bar scrolls: the badge + title + subtitle
+          // + header + five summary rows total ~694px of fixed height, which
+          // overflowed short devices (~670px) by 23px.
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: CleverSpacing.space24),
+                  Center(
+                    child: Container(
+                      width: 64,
+                      height: 64,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: CleverColors.bgCanvas,
+                      ),
+                      child: const Icon(
+                        Icons.check,
+                        size: 34,
+                        color: CleverColors.bgAction,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: CleverSpacing.space24),
+                  Text(
+                    l10n.cleverCompleteTitle,
+                    textAlign: TextAlign.center,
+                    style: CleverTypography.h1.copyWith(
+                      color: CleverColors.textOnInverse,
+                    ),
+                  ),
+                  const SizedBox(height: CleverSpacing.space8),
+                  Text(
+                    l10n.cleverCompleteSubtitle,
+                    textAlign: TextAlign.center,
+                    style: CleverTypography.body.copyWith(
+                      color: CleverColors.textOnInverse.withValues(alpha: 0.8),
+                    ),
+                  ),
+                  const SizedBox(height: CleverSpacing.space24),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          l10n.cleverCompleteSummary,
+                          style: CleverTypography.h4.copyWith(
+                            color: CleverColors.textOnInverse,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '$completed dari 5',
+                        style: CleverTypography.body.copyWith(
+                          color: CleverColors.textOnInverse
+                              .withValues(alpha: 0.75),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: CleverSpacing.space16),
+                  _SummaryRow(
+                    label: l10n.cleverCompleteRowHeader,
+                    detail: formData.fullName,
+                    done: filled[0],
+                  ),
+                  _SummaryRow(
+                    label: l10n.experienceTitle,
+                    detail: l10n.cleverCompleteCount(
+                      formData.experience.length,
+                    ),
+                    done: filled[1],
+                  ),
+                  _SummaryRow(
+                    label: l10n.educationTitle,
+                    detail: l10n.cleverCompleteCount(formData.education.length),
+                    done: filled[2],
+                  ),
+                  _SummaryRow(
+                    label: l10n.certificationTitle,
+                    detail: l10n.cleverCompleteCount(
+                      formData.certifications.length,
+                    ),
+                    done: filled[3],
+                  ),
+                  _SummaryRow(
+                    label: l10n.skillsTitle,
+                    detail: l10n.cleverCompleteCount(formData.skills.length),
+                    done: filled[4],
+                  ),
+                ],
               ),
             ),
           ),
-          const SizedBox(height: CleverSpacing.space24),
-          Text(
-            l10n.cleverCompleteTitle,
-            textAlign: TextAlign.center,
-            style: CleverTypography.h1.copyWith(
-              color: CleverColors.textOnInverse,
-            ),
-          ),
-          const SizedBox(height: CleverSpacing.space8),
-          Text(
-            l10n.cleverCompleteSubtitle,
-            textAlign: TextAlign.center,
-            style: CleverTypography.body.copyWith(
-              color: CleverColors.textOnInverse.withValues(alpha: 0.8),
-            ),
-          ),
-          const SizedBox(height: CleverSpacing.space24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                l10n.cleverCompleteSummary,
-                style: CleverTypography.h4.copyWith(
-                  color: CleverColors.textOnInverse,
-                ),
-              ),
-              Text(
-                '$completed dari 5',
-                style: CleverTypography.body.copyWith(
-                  color: CleverColors.textOnInverse.withValues(alpha: 0.75),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: CleverSpacing.space16),
-          _SummaryRow(
-            label: l10n.cleverCompleteRowHeader,
-            detail: formData.fullName,
-            done: filled[0],
-          ),
-          _SummaryRow(
-            label: l10n.experienceTitle,
-            detail: l10n.cleverCompleteCount(formData.experience.length),
-            done: filled[1],
-          ),
-          _SummaryRow(
-            label: l10n.educationTitle,
-            detail: l10n.cleverCompleteCount(formData.education.length),
-            done: filled[2],
-          ),
-          _SummaryRow(
-            label: l10n.certificationTitle,
-            detail: l10n.cleverCompleteCount(formData.certifications.length),
-            done: filled[3],
-          ),
-          _SummaryRow(
-            label: l10n.skillsTitle,
-            detail: l10n.cleverCompleteCount(formData.skills.length),
-            done: filled[4],
-          ),
-          const Spacer(),
           Text(
             l10n.cleverCompleteFootnote,
             textAlign: TextAlign.center,
