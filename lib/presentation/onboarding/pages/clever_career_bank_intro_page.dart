@@ -54,6 +54,10 @@ class _CleverCareerBankIntroPageState
   /// edited this session asks via the confirmation sheet (save draft /
   /// discard).
   Future<void> _closeSheet() async {
+    // Dismiss the keyboard first: the sheet positions against viewInsets, and
+    // a closing sheet under an open keyboard would collapse to near-zero
+    // height (RenderFlex overflow in the panel steps).
+    FocusManager.instance.primaryFocus?.unfocus();
     final l10n = AppLocalizations.of(context)!;
     if (!_touched) {
       await _sheet.reverse();
@@ -195,20 +199,45 @@ class _CleverCareerBankIntroPageState
                   const SizedBox(height: 24),
                 ],
               ),
-              // The panel sheet.
+              // The panel sheet. Not rendered while fully closed — a closed
+              // sheet under an open keyboard would otherwise lay out as an
+              // inverted (negative-height) box and paint an orange sliver.
               AnimatedBuilder(
                 animation: _sheetAnimation,
                 builder: (context, child) {
+                  final t = _sheetAnimation.value;
+                  if (t == 0) return const SizedBox.shrink();
+                  final top = screenH * (1 - 0.90 * t);
+                  // The keyboard inset can never exceed the sheet's own
+                  // height: mid-close under an open keyboard it would invert
+                  // the box.
+                  final maxBottom = 0.90 * t * screenH;
+                  final bottom = bottomInset > maxBottom
+                      ? maxBottom
+                      : bottomInset;
+                  // Closing or dragging under an open keyboard squeezes the
+                  // sheet below the panel steps' fixed content (title +
+                  // subtitle + nav bar ≈ 222px) — lay it out instead of
+                  // overflowing. The keyboard is dismissed on close/drag
+                  // start, so this window is at most a frame in production.
+                  if (t < 1 && maxBottom - bottom < 240) {
+                    return const SizedBox.shrink();
+                  }
                   return Positioned(
                     left: 0,
                     right: 0,
-                    top: screenH * (1 - 0.90 * _sheetAnimation.value),
-                    bottom: bottomInset,
+                    top: top,
+                    bottom: bottom,
                     child: child!,
                   );
                 },
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
+                  onVerticalDragStart: (_) {
+                    // Dragging the sheet means leaving the field: drop the
+                    // keyboard so the inset cannot shrink the sheet mid-drag.
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
                   onVerticalDragUpdate: (details) {
                     _sheet.value =
                         (_sheet.value - details.primaryDelta! / (screenH * 0.9))
