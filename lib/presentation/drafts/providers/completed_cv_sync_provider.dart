@@ -1,17 +1,14 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../data/repositories/firestore_completed_cv_repository.dart';
+import '../../../data/repositories/api_completed_cv_repository.dart';
 import '../../../domain/entities/completed_cv.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import 'completed_cv_provider.dart';
-import '../../../core/providers/firebase_providers.dart';
 
-final firestoreCompletedCVRepositoryProvider =
-    Provider<FirestoreCompletedCVRepository>((ref) {
-      final dataSource = ref.watch(firestoreDataSourceProvider);
-      return FirestoreCompletedCVRepository(dataSource: dataSource);
-    });
+final apiCompletedCVRepositoryProvider = Provider<ApiCompletedCVRepository>((ref) {
+  return ApiCompletedCVRepository();
+});
 
 final completedCVSyncProvider = Provider<CompletedCVSyncManager>((ref) {
   return CompletedCVSyncManager(ref);
@@ -19,10 +16,10 @@ final completedCVSyncProvider = Provider<CompletedCVSyncManager>((ref) {
 
 class CompletedCVSyncManager {
   final Ref _ref;
-  late final FirestoreCompletedCVRepository _firestoreRepo;
+  late final ApiCompletedCVRepository _apiRepo;
 
   CompletedCVSyncManager(this._ref) {
-    _firestoreRepo = _ref.read(firestoreCompletedCVRepositoryProvider);
+    _apiRepo = _ref.read(apiCompletedCVRepositoryProvider);
   }
 
   void init() {
@@ -36,7 +33,7 @@ class CompletedCVSyncManager {
 
   Future<void> initialCloudFetch(String uid) async {
     try {
-      final cloudCVs = await _firestoreRepo.getCompletedCVs(uid);
+      final cloudCVs = await _apiRepo.getCompletedCVs(uid);
       if (cloudCVs.isNotEmpty) {
         await _ref.read(completedCVProvider.notifier).mergeRemoteCVs(cloudCVs);
       }
@@ -50,7 +47,7 @@ class CompletedCVSyncManager {
     if (user == null) return;
 
     try {
-      await _firestoreRepo.saveCompletedCV(user.uid, cv);
+      await _apiRepo.saveCompletedCV(user.uid, cv);
     } catch (e) {
       debugPrint("[CompletedCVSync] Sync error for CV ${cv.id}: $e");
       rethrow;
@@ -62,7 +59,7 @@ class CompletedCVSyncManager {
     if (user == null) return;
 
     try {
-      await _firestoreRepo.deleteCompletedCV(user.uid, cvId);
+      await _apiRepo.deleteCompletedCV(user.uid, cvId);
     } catch (e) {
       debugPrint("[CompletedCVSync] Delete error for CV $cvId: $e");
     }

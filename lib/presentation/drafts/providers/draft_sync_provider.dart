@@ -7,14 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../domain/entities/cv_data.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import '../providers/draft_provider.dart';
-import '../../../core/providers/firebase_providers.dart';
-import '../../../data/repositories/firestore_draft_repository.dart';
+import '../../../data/repositories/api_draft_repository.dart';
 
-final firestoreDraftRepositoryProvider = Provider<FirestoreDraftRepository>((
-  ref,
-) {
-  final dataSource = ref.watch(firestoreDataSourceProvider);
-  return FirestoreDraftRepository(dataSource: dataSource);
+final apiDraftRepositoryProvider = Provider<ApiDraftRepository>((ref) {
+  return ApiDraftRepository();
 });
 
 final draftSyncProvider = Provider<DraftSyncManager>((ref) {
@@ -27,10 +23,10 @@ class DraftSyncManager {
   List<CVData>? _lastSyncedDrafts;
   static const String _syncKey = 'last_synced_drafts_json';
 
-  late final FirestoreDraftRepository _firestoreRepo;
+  late final ApiDraftRepository _apiRepo;
 
   DraftSyncManager(this._ref) {
-    _firestoreRepo = _ref.read(firestoreDraftRepositoryProvider);
+    _apiRepo = _ref.read(apiDraftRepositoryProvider);
   }
 
   bool _isInitialized = false;
@@ -84,7 +80,7 @@ class DraftSyncManager {
 
   Future<void> initialCloudFetch(String uid) async {
     try {
-      final cloudDrafts = await _firestoreRepo.getDrafts(uid);
+      final cloudDrafts = await _apiRepo.getDrafts(uid);
       final localDrafts = await _ref.read(draftRepositoryProvider).getDrafts();
 
       if (cloudDrafts.isEmpty && localDrafts.isEmpty) {
@@ -123,7 +119,7 @@ class DraftSyncManager {
     if (user == null) return;
 
     try {
-      await _firestoreRepo.deleteDraft(user.uid, draftId);
+      await _apiRepo.deleteDraft(user.uid, draftId);
 
       // Update cache immediately to prevent heartbeat from re-syncing
       if (_lastSyncedDrafts != null) {
@@ -141,7 +137,7 @@ class DraftSyncManager {
 
     try {
       for (final id in draftIds) {
-        await _firestoreRepo.deleteDraft(user.uid, id);
+        await _apiRepo.deleteDraft(user.uid, id);
       }
 
       // Update cache
@@ -171,13 +167,13 @@ class DraftSyncManager {
           final currentIds = currentDrafts.map((d) => d.id).toSet();
           for (final oldDraft in _lastSyncedDrafts!) {
             if (!currentIds.contains(oldDraft.id)) {
-              await _firestoreRepo.deleteDraft(user.uid, oldDraft.id);
+              await _apiRepo.deleteDraft(user.uid, oldDraft.id);
             }
           }
         }
 
         for (final draft in currentDrafts) {
-          await _firestoreRepo.saveDraft(user.uid, draft);
+          await _apiRepo.saveDraft(user.uid, draft);
         }
 
         await _updateLastSyncedCache(currentDrafts);
