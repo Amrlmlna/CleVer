@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../providers/cv_import_provider.dart';
-import '../../common/widgets/app_loading_screen.dart';
+import '../../common/widgets/clever/clever_import_loading_screen.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../widgets/import_success_bottom_sheet.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
@@ -156,42 +156,46 @@ class CVImportHandler {
     );
   }
 
+  /// Shows the staging import loading screen and runs [import]. Returns the
+  /// import result; "batal" on the loading screen only dismisses it — the
+  /// import keeps running and its result is still reported.
+  static Future<CVImportState> _runImport(
+    BuildContext context,
+    Future<CVImportState> Function(VoidCallback onProcessingStart) import,
+  ) async {
+    var loadingOpen = false;
+
+    final result = await import(() {
+      if (loadingOpen) return;
+      loadingOpen = true;
+      Navigator.of(context)
+          .push(
+            MaterialPageRoute(
+              builder: (_) => const CleverImportLoadingScreen(),
+            ),
+          )
+          .whenComplete(() => loadingOpen = false);
+    });
+
+    // Pop only if the user has not already dismissed via "batal".
+    if (loadingOpen && context.mounted) {
+      Navigator.pop(context);
+    }
+    return result;
+  }
+
   static Future<void> importFromImage(
     BuildContext context,
     WidgetRef ref,
     ImageSource source,
     Function(UserProfile) onImportSuccess,
   ) async {
-    bool loadingShown = false;
-
-    final result = await ref
-        .read(cvImportProvider.notifier)
-        .importFromImage(
-          source,
-          onProcessingStart: () {
-            if (!loadingShown) {
-              loadingShown = true;
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  opaque: false,
-                  barrierDismissible: false,
-                  pageBuilder: (ctx, _, __) => AppLoadingScreen(
-                    badge: AppLocalizations.of(context)!.importingCVBadge,
-                    messages: [
-                      AppLocalizations.of(context)!.readingCV,
-                      AppLocalizations.of(context)!.extractingData,
-                      AppLocalizations.of(context)!.compilingProfile,
-                    ],
-                  ),
-                ),
-              );
-            }
-          },
-        );
-
-    if (loadingShown && context.mounted) {
-      Navigator.pop(context);
-    }
+    final result = await _runImport(
+      context,
+      (onProcessingStart) => ref
+          .read(cvImportProvider.notifier)
+          .importFromImage(source, onProcessingStart: onProcessingStart),
+    );
 
     if (!context.mounted) return;
     _handleResult(context, ref, result, onImportSuccess);
@@ -202,35 +206,12 @@ class CVImportHandler {
     WidgetRef ref,
     Function(UserProfile) onImportSuccess,
   ) async {
-    bool loadingShown = false;
-
-    final result = await ref
-        .read(cvImportProvider.notifier)
-        .importFromPDF(
-          onProcessingStart: () {
-            if (!loadingShown) {
-              loadingShown = true;
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  opaque: false,
-                  barrierDismissible: false,
-                  pageBuilder: (ctx, _, __) => AppLoadingScreen(
-                    badge: AppLocalizations.of(context)!.importingCVBadge,
-                    messages: [
-                      AppLocalizations.of(context)!.readingPDF,
-                      AppLocalizations.of(context)!.extractingData,
-                      AppLocalizations.of(context)!.compilingProfile,
-                    ],
-                  ),
-                ),
-              );
-            }
-          },
-        );
-
-    if (loadingShown && context.mounted) {
-      Navigator.pop(context);
-    }
+    final result = await _runImport(
+      context,
+      (onProcessingStart) => ref
+          .read(cvImportProvider.notifier)
+          .importFromPDF(onProcessingStart: onProcessingStart),
+    );
 
     if (!context.mounted) return;
     _handleResult(context, ref, result, onImportSuccess);

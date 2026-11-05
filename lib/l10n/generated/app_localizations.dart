@@ -4254,6 +4254,12 @@ abstract class AppLocalizations {
   /// **'profile summary'**
   String get cleverCompleteSummary;
 
+  /// No description provided for @cleverCompleteProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} of 5'**
+  String cleverCompleteProgress(int completed);
+
   /// No description provided for @cleverCompleteCount.
   ///
   /// In en, this message translates to:
@@ -4283,6 +4289,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'search results'**
   String get searchResult;
+
+  /// Import loading screen title per staging
+  ///
+  /// In en, this message translates to:
+  /// **'importing'**
+  String get cleverImportingTitle;
 }
 
 class _AppLocalizationsDelegate

@@ -17,6 +17,10 @@ void main() {
         seconds: 5,
         milliseconds: 533,
       ),
+      'assets/Lottie/ImportAnimatedFace.json': Duration(
+        seconds: 5,
+        milliseconds: 400,
+      ),
     };
 
     for (final entry in exports.entries) {
@@ -40,6 +44,18 @@ void main() {
           body: SvgPicture.asset(
             'assets/ComplexShape/BodyShape - SignInUp - WelcomeStep7 - AuthLoading.svg',
           ),
+        ),
+      ),
+    );
+    await tester.pump();
+    expect(find.byType(SvgPicture), findsOneWidget);
+  });
+
+  testWidgets('import loading body SVG parses and renders', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SvgPicture.asset('assets/ComplexShape/ImportBodyShape.svg'),
         ),
       ),
     );

@@ -865,9 +865,17 @@
   "cleverCompleteTitle": "all set!",
   "cleverCompleteSubtitle": "your profile is complete.\nnow all that's left is making your first CV.",
   "cleverCompleteSummary": "profile summary",
+  "cleverCompleteProgress": "{completed} of 5",
   "cleverCompleteCount": "{count} entries",
   "cleverCompleteRowHeader": "header — name, contact, birth date",
   "cleverCompleteFootnote": "you can edit everything anytime in your profile.",
+  "@cleverCompleteProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      }
+    }
+  },
   "@cleverCompleteCount": {
     "placeholders": {
       "count": {
@@ -876,5 +884,9 @@
     }
   },
   "total": "total",
-  "searchResult": "search results"
+  "searchResult": "search results",
+  "cleverImportingTitle": "importing",
+  "@cleverImportingTitle": {
+    "description": "Import loading screen title per staging"
+  }
 }

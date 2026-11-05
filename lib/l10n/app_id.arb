@@ -858,9 +858,14 @@
   "cleverCompleteTitle": "semua siap!",
   "cleverCompleteSubtitle": "profil kamu sudah lengkap.\nsekarang tinggal bikin CV pertamamu.",
   "cleverCompleteSummary": "ringkasan profil",
+  "cleverCompleteProgress": "{completed} dari 5",
   "cleverCompleteCount": "{count} entri",
   "cleverCompleteRowHeader": "header — nama, kontak, tanggal lahir",
   "cleverCompleteFootnote": "semua data bisa kamu ubah kapan saja di profil.",
   "total": "total",
-  "searchResult": "hasil pencarian"
+  "searchResult": "hasil pencarian",
+  "cleverImportingTitle": "sedang mengimpor",
+  "@cleverImportingTitle": {
+    "description": "Import loading screen title per staging"
+  }
 }

@@ -11,7 +11,7 @@ import '../../../../domain/entities/subject.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../common/widgets/clever/clever_button.dart';
 import '../../../common/widgets/clever/clever_text_field.dart';
-import '../../../common/widgets/app_loading_screen.dart';
+import '../../../common/widgets/clever/clever_import_loading_screen.dart';
 import '../../../cv/providers/cv_generation_provider.dart';
 import 'clever_scan_sheet.dart';
 
@@ -204,31 +204,25 @@ class _CleverSubjectsSheetState extends ConsumerState<CleverSubjectsSheet> {
     widget.onChanged(updated);
   }
 
-  /// KHS scan — same OCR → parse-study-card flow as the legacy scanner.
+  /// KHS scan — same OCR → parse-study-card flow, on the staging import
+  /// loading screen. "batal" only dismisses the screen; the scan keeps
+  /// running and its result still lands.
   Future<void> _scanKHS(ImageSource? source) async {
     final l10n = AppLocalizations.of(context)!;
     final ocrService = OCRDataSource();
-    var loadingShown = false;
+    var loadingOpen = false;
 
     try {
       void showLoading() {
-        if (!loadingShown) {
-          loadingShown = true;
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              opaque: false,
-              barrierDismissible: false,
-              pageBuilder: (ctx, _, __) => AppLoadingScreen(
-                badge: l10n.scanningKHSBadge,
-                messages: [
-                  l10n.readingKHS,
-                  l10n.extractingGPA,
-                  l10n.compilingProfile,
-                ],
+        if (loadingOpen) return;
+        loadingOpen = true;
+        Navigator.of(context)
+            .push(
+              MaterialPageRoute(
+                builder: (_) => const CleverImportLoadingScreen(),
               ),
-            ),
-          );
-        }
+            )
+            .whenComplete(() => loadingOpen = false);
       }
 
       showLoading();
@@ -244,8 +238,9 @@ class _CleverSubjectsSheetState extends ConsumerState<CleverSubjectsSheet> {
       final navigator = Navigator.of(context);
 
       if (text == null || text.isEmpty) {
-        if (loadingShown && navigator.canPop()) {
+        if (loadingOpen && navigator.canPop()) {
           navigator.pop();
+          loadingOpen = false;
         }
         return;
       }
@@ -254,15 +249,16 @@ class _CleverSubjectsSheetState extends ConsumerState<CleverSubjectsSheet> {
       final result = await repository.parseStudyCard(text);
 
       if (!mounted) return;
-      if (loadingShown && navigator.canPop()) {
+      if (loadingOpen && navigator.canPop()) {
         navigator.pop();
-        loadingShown = false;
+        loadingOpen = false;
       }
 
       widget.onScanResult(gpa: result.gpa, subjects: result.subjects);
     } catch (e) {
-      if (loadingShown && mounted && Navigator.of(context).canPop()) {
+      if (loadingOpen && mounted && Navigator.of(context).canPop()) {
         Navigator.pop(context);
+        loadingOpen = false;
       }
       if (mounted) {
         ScaffoldMessenger.of(

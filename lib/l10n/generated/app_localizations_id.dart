@@ -2310,6 +2310,11 @@ class AppLocalizationsId extends AppLocalizations {
   String get cleverCompleteSummary => 'ringkasan profil';
 
   @override
+  String cleverCompleteProgress(int completed) {
+    return '$completed dari 5';
+  }
+
+  @override
   String cleverCompleteCount(int count) {
     return '$count entri';
   }
@@ -2326,4 +2331,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get searchResult => 'hasil pencarian';
+
+  @override
+  String get cleverImportingTitle => 'sedang mengimpor';
 }
