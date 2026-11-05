@@ -31,8 +31,6 @@ class CleverEducationStep extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          CleverListHeader(onAdd: () => _addEducation(context, education, ref)),
-          const SizedBox(height: CleverSpacing.space24),
           Text(
             l10n.educationTitle,
             style: CleverTypography.h1.copyWith(
@@ -46,6 +44,9 @@ class CleverEducationStep extends ConsumerWidget {
               color: CleverColors.textOnInverse,
             ),
           ),
+          const SizedBox(height: CleverSpacing.space24),
+          CleverListHeader(onAdd: () => _addEducation(context, education, ref)),
+          const SizedBox(height: CleverSpacing.space32),
           Expanded(
             child: education.isEmpty
                 ? CleverListEmptyState(

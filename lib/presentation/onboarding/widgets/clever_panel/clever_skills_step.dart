@@ -31,8 +31,6 @@ class CleverSkillsStep extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          CleverListHeader(onAdd: () => _addSkill(context, skills, ref)),
-          const SizedBox(height: CleverSpacing.space24),
           Text(
             l10n.skillsTitle,
             style: CleverTypography.h1.copyWith(
@@ -46,6 +44,9 @@ class CleverSkillsStep extends ConsumerWidget {
               color: CleverColors.textOnInverse,
             ),
           ),
+          const SizedBox(height: CleverSpacing.space24),
+          CleverListHeader(onAdd: () => _addSkill(context, skills, ref)),
+          const SizedBox(height: CleverSpacing.space32),
           Expanded(
             child: skills.isEmpty
                 ? CleverListEmptyState(
@@ -56,7 +57,7 @@ class CleverSkillsStep extends ConsumerWidget {
                 : SingleChildScrollView(
                     child: Wrap(
                       spacing: CleverSpacing.space8,
-                      runSpacing: CleverSpacing.space8,
+                      runSpacing: CleverSpacing.space12,
                       children: [
                         for (final skill in skills)
                           _SkillChip(
@@ -106,6 +107,8 @@ class CleverSkillsStep extends ConsumerWidget {
   }
 }
 
+/// Staging pill: tan surfaceField, r20, 60%-opacity micro label, thin orange
+/// stroke ✕ (not a filled cancel circle).
 class _SkillChip extends StatelessWidget {
   const _SkillChip({required this.label, required this.onRemove});
 
@@ -115,7 +118,7 @@ class _SkillChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 16, right: 6, top: 6, bottom: 6),
+      padding: const EdgeInsets.only(left: 10, right: 7, top: 7, bottom: 7),
       decoration: BoxDecoration(
         color: CleverColors.surfaceField,
         borderRadius: BorderRadius.circular(CleverRadius.field),
@@ -126,15 +129,15 @@ class _SkillChip extends StatelessWidget {
           Text(
             label,
             style: CleverTypography.micro.copyWith(
-              color: CleverColors.textPrimary,
+              color: CleverColors.textPrimary.withValues(alpha: 0.6),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
           GestureDetector(
             onTap: onRemove,
             child: const Icon(
-              Icons.cancel,
-              size: 16,
+              Icons.close,
+              size: 13,
               color: CleverColors.bgAction,
             ),
           ),

@@ -9,6 +9,7 @@ import 'package:clever/presentation/common/widgets/clever/clever_dictate_panel.d
 import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_experience_step.dart';
 import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_method_choice_step.dart';
 import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_complete_step.dart';
+import 'package:clever/presentation/onboarding/widgets/clever_panel/clever_skills_step.dart';
 import 'package:clever/domain/entities/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -411,6 +412,51 @@ void main() {
       // All five rows exist even though the box is shorter than their fixed
       // height — they scroll instead of blowing the column.
       expect(find.byType(Scrollable), findsWidgets);
+    });
+  });
+
+  group('CleverSkillsStep (staging order)', () {
+    late ProviderContainer container;
+
+    setUp(() {
+      container = ProviderContainer();
+      container.listen(onboardingFormProvider, (_, __) {});
+    });
+
+    tearDown(() => container.dispose());
+
+    testWidgets('title sits above the daftar header, non-empty chips render', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(822, 1800);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.reset);
+
+      container.read(onboardingFormProvider.notifier).updateSkills([
+        const Skill(name: 'public speaking'),
+      ]);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp(
+            locale: const Locale('id'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const Scaffold(
+              body: CleverSkillsStep(onNext: _noFinish),
+            ),
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 400));
+
+      // Staging: h1 title + subtitle FIRST, then the daftar row — the old
+      // build had the order reversed with no gap before the content.
+      final titleTop = tester.getTopLeft(find.text('skill kamu apa aja?')).dy;
+      final daftarTop = tester.getTopLeft(find.text('daftar')).dy;
+      expect(titleTop, lessThan(daftarTop));
+      expect(find.text('public speaking'), findsOneWidget);
     });
   });
 }

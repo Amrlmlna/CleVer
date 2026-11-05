@@ -12,6 +12,7 @@ import '../../../common/widgets/clever/clever_nav_action_bar.dart';
 import '../../../profile/widgets/experience_bottom_sheet.dart';
 import '../../../../domain/entities/user_profile.dart';
 import '../../providers/onboarding_provider.dart';
+import 'clever_list_step_widgets.dart';
 
 /// Panel page 2 — work experience. Empty state per staging (briefcase
 /// illustration + "masih kosong nih"); entries added through the existing
@@ -34,16 +35,6 @@ class CleverExperienceStep extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _ListHeader(
-            onAdd: () => _addExperience(
-              context,
-              experiences,
-              (value) => ref
-                  .read(onboardingFormProvider.notifier)
-                  .updateExperience(value),
-            ),
-          ),
-          const SizedBox(height: CleverSpacing.space24),
           Text(
             l10n.experienceTitle,
             style: CleverTypography.h1.copyWith(
@@ -57,6 +48,17 @@ class CleverExperienceStep extends ConsumerWidget {
               color: CleverColors.textOnInverse,
             ),
           ),
+          const SizedBox(height: CleverSpacing.space24),
+          CleverListHeader(
+            onAdd: () => _addExperience(
+              context,
+              experiences,
+              (value) => ref
+                  .read(onboardingFormProvider.notifier)
+                  .updateExperience(value),
+            ),
+          ),
+          const SizedBox(height: CleverSpacing.space32),
           Expanded(
             child: experiences.isEmpty
                 ? _EmptyState(
@@ -137,47 +139,6 @@ class CleverExperienceStep extends ConsumerWidget {
     }
 
     onExperienceChanged([...experiences, result]);
-  }
-}
-
-/// "daftar" label + the round add button shared by every list step.
-class _ListHeader extends StatelessWidget {
-  const _ListHeader({required this.onAdd});
-
-  final VoidCallback onAdd;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
-    return Row(
-      children: [
-        Text(
-          l10n.cleverListLabel,
-          style: CleverTypography.h3.copyWith(
-            color: CleverColors.textOnInverse,
-          ),
-        ),
-        const Spacer(),
-        InkWell(
-          onTap: onAdd,
-          borderRadius: BorderRadius.circular(CleverRadius.field),
-          child: Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: CleverColors.bgCanvas,
-              borderRadius: BorderRadius.circular(CleverRadius.field),
-            ),
-            child: const Icon(
-              Icons.add,
-              size: 24,
-              color: CleverColors.surfaceInverse,
-            ),
-          ),
-        ),
-      ],
-    );
   }
 }
 

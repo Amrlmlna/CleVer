@@ -6,7 +6,8 @@ import '../../../../core/theme/clever/clever_dimensions.dart';
 import '../../../../core/theme/clever/clever_typography.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 
-/// "daftar" label + the round add button shared by every list step.
+/// "daftar" label + the round add button shared by every list step. Per
+/// staging the "+" is a bare cream icon — no filled box behind it.
 class CleverListHeader extends StatelessWidget {
   const CleverListHeader({super.key, required this.onAdd});
 
@@ -28,17 +29,13 @@ class CleverListHeader extends StatelessWidget {
         InkWell(
           onTap: onAdd,
           borderRadius: BorderRadius.circular(CleverRadius.field),
-          child: Container(
+          child: const SizedBox(
             width: 40,
             height: 40,
-            decoration: BoxDecoration(
-              color: CleverColors.bgCanvas,
-              borderRadius: BorderRadius.circular(CleverRadius.field),
-            ),
-            child: const Icon(
+            child: Icon(
               Icons.add,
               size: 24,
-              color: CleverColors.surfaceInverse,
+              color: CleverColors.textOnInverse,
             ),
           ),
         ),

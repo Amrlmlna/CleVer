@@ -33,10 +33,6 @@ class CleverCertificationStep extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          CleverListHeader(
-            onAdd: () => _addCertification(context, certifications, ref),
-          ),
-          const SizedBox(height: CleverSpacing.space24),
           Text(
             l10n.certificationTitle,
             style: CleverTypography.h1.copyWith(
@@ -50,6 +46,11 @@ class CleverCertificationStep extends ConsumerWidget {
               color: CleverColors.textOnInverse,
             ),
           ),
+          const SizedBox(height: CleverSpacing.space24),
+          CleverListHeader(
+            onAdd: () => _addCertification(context, certifications, ref),
+          ),
+          const SizedBox(height: CleverSpacing.space32),
           Expanded(
             child: certifications.isEmpty
                 ? CleverListEmptyState(
