@@ -51,13 +51,14 @@ class CleverMascot extends StatelessWidget {
     CleverMascotVariant.getStarted => 0,
   };
 
-  // TODO(figma): face offsets for signUp/signIn/authLoading are estimates
-  // pending a Figwright session; getStarted is the exact staging value.
+  // Face offsets measured from the Figma staging nodes (MascotBody-local):
+  // signUp 628:914, signIn 568:2819; authLoading anchored on the eyes of
+  // group 568:3108 scaled to the shared 160×108 face Lottie.
   Offset get _faceOffset => switch (variant) {
     CleverMascotVariant.getStarted => const Offset(224.9, 90.9),
-    CleverMascotVariant.signUp => const Offset(125, 64),
-    CleverMascotVariant.signIn => const Offset(162, 137),
-    CleverMascotVariant.authLoading => const Offset(162, 153),
+    CleverMascotVariant.signUp => const Offset(154.4, 85.0),
+    CleverMascotVariant.signIn => const Offset(188, 97),
+    CleverMascotVariant.authLoading => const Offset(168.7, 278.9),
     CleverMascotVariant.welcomeStep7 => const Offset(146, 134),
   };
 
@@ -65,7 +66,7 @@ class CleverMascot extends StatelessWidget {
     CleverMascotVariant.getStarted => 170.8,
     CleverMascotVariant.signUp => 207.4,
     CleverMascotVariant.signIn => 160,
-    CleverMascotVariant.authLoading => 160,
+    CleverMascotVariant.authLoading => 200.3,
     CleverMascotVariant.welcomeStep7 => 193,
   };
 
