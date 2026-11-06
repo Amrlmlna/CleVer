@@ -195,16 +195,14 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                 children: [
                   TextSpan(
                     text: l10n.signUp,
-                    style: CleverTypography.h4.copyWith(
-                      color: CleverColors.textPrimary,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: CleverTypography.h4Weight(
+                      FontWeight.w600,
+                    ).copyWith(color: CleverColors.textPrimary),
                   ),
                 ],
-                style: CleverTypography.h4.copyWith(
-                  color: CleverColors.textPrimary,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: CleverTypography.h4Weight(
+                  FontWeight.w400,
+                ).copyWith(color: CleverColors.textPrimary),
               ),
             ),
           ),

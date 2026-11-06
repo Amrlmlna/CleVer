@@ -31,4 +31,10 @@ abstract final class CleverTypography {
       letterSpacing: letterSpacing,
     );
   }
+
+  /// h4 with an explicit weight. Do NOT restyle a CleverTypography style via
+  /// `copyWith(fontWeight:)`: google_fonts bakes the weight into the matched
+  /// static font family ("Inter SemiBold"), so the copied style keeps
+  /// rendering the original face. A different weight must be rebuilt here.
+  static TextStyle h4Weight(FontWeight weight) => _style(20, 24, weight, -0.4);
 }
