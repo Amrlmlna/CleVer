@@ -134,288 +134,6 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 minute} other{{count} minutes}}'**
   String minutes(int count);
 
-  /// No description provided for @active.
-  ///
-  /// In en, this message translates to:
-  /// **'active'**
-  String get active;
-
-  /// No description provided for @activePass.
-  ///
-  /// In en, this message translates to:
-  /// **'active pass'**
-  String get activePass;
-
-  /// No description provided for @free.
-  ///
-  /// In en, this message translates to:
-  /// **'free'**
-  String get free;
-
-  /// No description provided for @membershipStatus.
-  ///
-  /// In en, this message translates to:
-  /// **'membership status'**
-  String get membershipStatus;
-
-  /// No description provided for @subscriptionWarning.
-  ///
-  /// In en, this message translates to:
-  /// **'you have an active job hunter pass. deleting your account will terminate your access immediately and cannot be refunded.'**
-  String get subscriptionWarning;
-
-  /// No description provided for @jobHunterPass.
-  ///
-  /// In en, this message translates to:
-  /// **'job hunter pass'**
-  String get jobHunterPass;
-
-  /// No description provided for @unlockYourPotential.
-  ///
-  /// In en, this message translates to:
-  /// **'unlock your career potential'**
-  String get unlockYourPotential;
-
-  /// No description provided for @unlimitedGenerations.
-  ///
-  /// In en, this message translates to:
-  /// **'unlimited generations'**
-  String get unlimitedGenerations;
-
-  /// No description provided for @unlimitedGenerationsDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'create as many tailored cvs as you need'**
-  String get unlimitedGenerationsDesc;
-
-  /// No description provided for @premiumTemplates.
-  ///
-  /// In en, this message translates to:
-  /// **'premium templates'**
-  String get premiumTemplates;
-
-  /// No description provided for @premiumTemplatesDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'access all exclusive and high-converting designs'**
-  String get premiumTemplatesDesc;
-
-  /// No description provided for @aiOptimization.
-  ///
-  /// In en, this message translates to:
-  /// **'ai optimization'**
-  String get aiOptimization;
-
-  /// No description provided for @aiOptimizationDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'advanced ats-friendly content generation'**
-  String get aiOptimizationDesc;
-
-  /// No description provided for @instantPdfExport.
-  ///
-  /// In en, this message translates to:
-  /// **'instant pdf export'**
-  String get instantPdfExport;
-
-  /// No description provided for @instantPdfExportDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'download your cv in high-quality pdf format'**
-  String get instantPdfExportDesc;
-
-  /// No description provided for @getJobHunterPassNow.
-  ///
-  /// In en, this message translates to:
-  /// **'subscribe'**
-  String get getJobHunterPassNow;
-
-  /// No description provided for @paywallHeadline.
-  ///
-  /// In en, this message translates to:
-  /// **'Land Your Dream Job'**
-  String get paywallHeadline;
-
-  /// No description provided for @paywallSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Unlimited AI-crafted CVs that get past ATS filters'**
-  String get paywallSubtitle;
-
-  /// No description provided for @bestValue.
-  ///
-  /// In en, this message translates to:
-  /// **'Best Value'**
-  String get bestValue;
-
-  /// No description provided for @downsellHeadline.
-  ///
-  /// In en, this message translates to:
-  /// **'Just Need It Today?'**
-  String get downsellHeadline;
-
-  /// No description provided for @downsellSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Get full access for 24 hours — no strings attached'**
-  String get downsellSubtitle;
-
-  /// No description provided for @downsellBenefitAll.
-  ///
-  /// In en, this message translates to:
-  /// **'Everything included'**
-  String get downsellBenefitAll;
-
-  /// No description provided for @downsellBenefitSame.
-  ///
-  /// In en, this message translates to:
-  /// **'Same AI, same templates'**
-  String get downsellBenefitSame;
-
-  /// No description provided for @downsellBenefitInstant.
-  ///
-  /// In en, this message translates to:
-  /// **'Instant activation'**
-  String get downsellBenefitInstant;
-
-  /// No description provided for @downsellCta.
-  ///
-  /// In en, this message translates to:
-  /// **'Try It for 24 Hours'**
-  String get downsellCta;
-
-  /// No description provided for @downsellTrust.
-  ///
-  /// In en, this message translates to:
-  /// **'No auto-renew · One-time pass'**
-  String get downsellTrust;
-
-  /// No description provided for @noThanks.
-  ///
-  /// In en, this message translates to:
-  /// **'No thanks'**
-  String get noThanks;
-
-  /// No description provided for @paywallSimpleBenefit.
-  ///
-  /// In en, this message translates to:
-  /// **'access all features and templates unlimited. no ads'**
-  String get paywallSimpleBenefit;
-
-  /// No description provided for @product24hTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'24 Hour Pass'**
-  String get product24hTitle;
-
-  /// No description provided for @product24hDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Full access for 24 hours'**
-  String get product24hDesc;
-
-  /// No description provided for @product3dTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'3 Day Pass'**
-  String get product3dTitle;
-
-  /// No description provided for @product3dDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Full access for 3 days'**
-  String get product3dDesc;
-
-  /// No description provided for @productWeeklyTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Weekly'**
-  String get productWeeklyTitle;
-
-  /// No description provided for @productWeeklyDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'≈ {price}/day'**
-  String productWeeklyDesc(String price);
-
-  /// No description provided for @productMonthlyTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Monthly'**
-  String get productMonthlyTitle;
-
-  /// No description provided for @productMonthlyDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'≈ {price}/day'**
-  String productMonthlyDesc(String price);
-
-  /// No description provided for @productYearlyTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Yearly'**
-  String get productYearlyTitle;
-
-  /// No description provided for @productYearlyDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'≈ {price}/day'**
-  String productYearlyDesc(String price);
-
-  /// No description provided for @productLifetimeTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Lifetime Access'**
-  String get productLifetimeTitle;
-
-  /// No description provided for @productLifetimeDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'One-time payment · Forever'**
-  String get productLifetimeDesc;
-
-  /// No description provided for @passLifetime.
-  ///
-  /// In en, this message translates to:
-  /// **'lifetime'**
-  String get passLifetime;
-
-  /// No description provided for @cv.
-  ///
-  /// In en, this message translates to:
-  /// **'cv'**
-  String get cv;
-
-  /// No description provided for @accountDeleteError.
-  ///
-  /// In en, this message translates to:
-  /// **'failed to delete account: {error}'**
-  String accountDeleteError(Object error);
-
-  /// No description provided for @accountDeletedGoodbye.
-  ///
-  /// In en, this message translates to:
-  /// **'account successfully deleted. goodbye!'**
-  String get accountDeletedGoodbye;
-
-  /// No description provided for @activityOverview.
-  ///
-  /// In en, this message translates to:
-  /// **'activity overview'**
-  String get activityOverview;
-
-  /// No description provided for @quickActions.
-  ///
-  /// In en, this message translates to:
-  /// **'quick actions'**
-  String get quickActions;
-
-  /// No description provided for @cleverUser.
-  ///
-  /// In en, this message translates to:
-  /// **'clever user'**
-  String get cleverUser;
-
   /// No description provided for @add.
   ///
   /// In en, this message translates to:
@@ -427,174 +145,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'added'**
   String get added;
-
-  /// No description provided for @activate.
-  ///
-  /// In en, this message translates to:
-  /// **'activate'**
-  String get activate;
-
-  /// No description provided for @subscriptionExpiryCount.
-  ///
-  /// In en, this message translates to:
-  /// **'expires in {time}'**
-  String subscriptionExpiryCount(String time);
-
-  /// No description provided for @addCertification.
-  ///
-  /// In en, this message translates to:
-  /// **'add certification'**
-  String get addCertification;
-
-  /// No description provided for @addEducation.
-  ///
-  /// In en, this message translates to:
-  /// **'add education'**
-  String get addEducation;
-
-  /// No description provided for @addExperience.
-  ///
-  /// In en, this message translates to:
-  /// **'add experience'**
-  String get addExperience;
-
-  /// No description provided for @addSubject.
-  ///
-  /// In en, this message translates to:
-  /// **'add subject'**
-  String get addSubject;
-
-  /// No description provided for @addSubjectManually.
-  ///
-  /// In en, this message translates to:
-  /// **'add subject manually'**
-  String get addSubjectManually;
-
-  /// No description provided for @addSkill.
-  ///
-  /// In en, this message translates to:
-  /// **'add skill'**
-  String get addSkill;
-
-  /// No description provided for @aiAnalysisTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'ai analysis'**
-  String get aiAnalysisTitle;
-
-  /// No description provided for @aiTailoringOptions.
-  ///
-  /// In en, this message translates to:
-  /// **'ai tailoring options'**
-  String get aiTailoringOptions;
-
-  /// No description provided for @aiAnalyzingProfile.
-  ///
-  /// In en, this message translates to:
-  /// **'ai is analyzing your profile...'**
-  String get aiAnalyzingProfile;
-
-  /// No description provided for @aiExtractingInsights.
-  ///
-  /// In en, this message translates to:
-  /// **'extracting insights...'**
-  String get aiExtractingInsights;
-
-  /// No description provided for @aiHelpCreateCV.
-  ///
-  /// In en, this message translates to:
-  /// **'ai will help create a cv perfectly tailored for this goal.'**
-  String get aiHelpCreateCV;
-
-  /// No description provided for @aiPowered.
-  ///
-  /// In en, this message translates to:
-  /// **'ai powered'**
-  String get aiPowered;
-
-  /// No description provided for @aiTestingConstraints.
-  ///
-  /// In en, this message translates to:
-  /// **'testing against ats constraints...'**
-  String get aiTestingConstraints;
-
-  /// No description provided for @maxSkills.
-  ///
-  /// In en, this message translates to:
-  /// **'max skills'**
-  String get maxSkills;
-
-  /// No description provided for @honestAiFeedback.
-  ///
-  /// In en, this message translates to:
-  /// **'honest ai feedback'**
-  String get honestAiFeedback;
-
-  /// No description provided for @honestAiFeedbackDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'get strict & critical advice'**
-  String get honestAiFeedbackDesc;
-
-  /// No description provided for @conciseFormat.
-  ///
-  /// In en, this message translates to:
-  /// **'concise format'**
-  String get conciseFormat;
-
-  /// No description provided for @conciseFormatDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'focus on brevity & impact'**
-  String get conciseFormatDesc;
-
-  /// No description provided for @cvOutputLanguage.
-  ///
-  /// In en, this message translates to:
-  /// **'cv output language'**
-  String get cvOutputLanguage;
-
-  /// No description provided for @cvOutputLanguageDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'ai will write your cv content in this language'**
-  String get cvOutputLanguageDesc;
-
-  /// No description provided for @cvOutputLanguageAuto.
-  ///
-  /// In en, this message translates to:
-  /// **'auto'**
-  String get cvOutputLanguageAuto;
-
-  /// No description provided for @almostThere.
-  ///
-  /// In en, this message translates to:
-  /// **'almost there...'**
-  String get almostThere;
-
-  /// No description provided for @alreadyHaveAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'already have an account?'**
-  String get alreadyHaveAccount;
-
-  /// No description provided for @alreadyHaveCV.
-  ///
-  /// In en, this message translates to:
-  /// **'already have a cv?'**
-  String get alreadyHaveCV;
-
-  /// No description provided for @alreadyHaveCVSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'speed things up! import your existing cv and we\'ll fill everything in for you.'**
-  String get alreadyHaveCVSubtitle;
-
-  /// No description provided for @analyzeProfileError.
-  ///
-  /// In en, this message translates to:
-  /// **'failed to analyze profile: {error}'**
-  String analyzeProfileError(Object error);
 
   /// No description provided for @analyzingText.
   ///
@@ -614,54 +164,6 @@ abstract class AppLocalizations {
   /// **'applying design...'**
   String get applyingDesign;
 
-  /// No description provided for @atsStandard.
-  ///
-  /// In en, this message translates to:
-  /// **'ats standard'**
-  String get atsStandard;
-
-  /// No description provided for @authWallBuyCredits.
-  ///
-  /// In en, this message translates to:
-  /// **'sign in to get pass'**
-  String get authWallBuyCredits;
-
-  /// No description provided for @authWallBuyCreditsDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'an account is required to activate a job hunter pass'**
-  String get authWallBuyCreditsDesc;
-
-  /// No description provided for @authWallCreateCV.
-  ///
-  /// In en, this message translates to:
-  /// **'sign in to create your cv'**
-  String get authWallCreateCV;
-
-  /// No description provided for @authWallCreateCVDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'an account is required to create and save your cv'**
-  String get authWallCreateCVDesc;
-
-  /// No description provided for @authWallSelectTemplate.
-  ///
-  /// In en, this message translates to:
-  /// **'sign in to select a template'**
-  String get authWallSelectTemplate;
-
-  /// No description provided for @authWallSelectTemplateDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'an account is required to choose a template'**
-  String get authWallSelectTemplateDesc;
-
-  /// No description provided for @autoFillFromMaster.
-  ///
-  /// In en, this message translates to:
-  /// **'data auto-filled from your master profile'**
-  String get autoFillFromMaster;
-
   /// No description provided for @back.
   ///
   /// In en, this message translates to:
@@ -674,18 +176,6 @@ abstract class AppLocalizations {
   /// **'bold'**
   String get bold;
 
-  /// No description provided for @bugReport.
-  ///
-  /// In en, this message translates to:
-  /// **'bug report'**
-  String get bugReport;
-
-  /// No description provided for @birthDate.
-  ///
-  /// In en, this message translates to:
-  /// **'birth date'**
-  String get birthDate;
-
   /// No description provided for @camera.
   ///
   /// In en, this message translates to:
@@ -697,66 +187,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'cancel'**
   String get cancel;
-
-  /// No description provided for @cantOpenEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'could not open email app.'**
-  String get cantOpenEmail;
-
-  /// No description provided for @careerAnalytics.
-  ///
-  /// In en, this message translates to:
-  /// **'career analytics'**
-  String get careerAnalytics;
-
-  /// No description provided for @category.
-  ///
-  /// In en, this message translates to:
-  /// **'category'**
-  String get category;
-
-  /// No description provided for @certificationName.
-  ///
-  /// In en, this message translates to:
-  /// **'certification name'**
-  String get certificationName;
-
-  /// No description provided for @certificationNameHint.
-  ///
-  /// In en, this message translates to:
-  /// **'e.g. AWS Certified Cloud Practitioner'**
-  String get certificationNameHint;
-
-  /// No description provided for @certificationSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'enter relevant certifications, licenses, or awards. this can be a huge plus.'**
-  String get certificationSubtitle;
-
-  /// No description provided for @certificationTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'certifications & licenses'**
-  String get certificationTitle;
-
-  /// No description provided for @certifications.
-  ///
-  /// In en, this message translates to:
-  /// **'certifications'**
-  String get certifications;
-
-  /// No description provided for @certificationsLicenses.
-  ///
-  /// In en, this message translates to:
-  /// **'certifications & licenses'**
-  String get certificationsLicenses;
-
-  /// No description provided for @checkSpamFolder.
-  ///
-  /// In en, this message translates to:
-  /// **'can\'t find it? please check your spam or junk folder.'**
-  String get checkSpamFolder;
 
   /// No description provided for @checkingSystem.
   ///
@@ -776,65 +206,11 @@ abstract class AppLocalizations {
   /// **'close'**
   String get close;
 
-  /// No description provided for @company.
-  ///
-  /// In en, this message translates to:
-  /// **'company'**
-  String get company;
-
-  /// No description provided for @companyHint.
-  ///
-  /// In en, this message translates to:
-  /// **'company name (optional)'**
-  String get companyHint;
-
-  /// No description provided for @companyPlaceholder.
-  ///
-  /// In en, this message translates to:
-  /// **'ex: google'**
-  String get companyPlaceholder;
-
-  /// No description provided for @compilingProfile.
-  ///
-  /// In en, this message translates to:
-  /// **'compiling profile...'**
-  String get compilingProfile;
-
   /// No description provided for @complete.
   ///
   /// In en, this message translates to:
   /// **'complete'**
   String get complete;
-
-  /// No description provided for @completeProfileFirst.
-  ///
-  /// In en, this message translates to:
-  /// **'complete profile first for best results'**
-  String get completeProfileFirst;
-
-  /// No description provided for @confirmDelete.
-  ///
-  /// In en, this message translates to:
-  /// **'confirm deletion'**
-  String get confirmDelete;
-
-  /// No description provided for @contactHint.
-  ///
-  /// In en, this message translates to:
-  /// **'so we can get back to you...'**
-  String get contactHint;
-
-  /// No description provided for @contactOptional.
-  ///
-  /// In en, this message translates to:
-  /// **'email / whatsapp (optional)'**
-  String get contactOptional;
-
-  /// No description provided for @contactSupport.
-  ///
-  /// In en, this message translates to:
-  /// **'contact support'**
-  String get contactSupport;
 
   /// No description provided for @continueChooseTemplate.
   ///
@@ -848,113 +224,11 @@ abstract class AppLocalizations {
   /// **'continue: review data'**
   String get continueToReview;
 
-  /// No description provided for @continueWithGoogle.
-  ///
-  /// In en, this message translates to:
-  /// **'continue with google'**
-  String get continueWithGoogle;
-
-  /// No description provided for @continuingToForm.
-  ///
-  /// In en, this message translates to:
-  /// **'continuing to form...'**
-  String get continuingToForm;
-
-  /// No description provided for @createAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'create account'**
-  String get createAccount;
-
-  /// No description provided for @createAccountSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'start your journey to a better career'**
-  String get createAccountSubtitle;
-
-  /// No description provided for @createCV.
-  ///
-  /// In en, this message translates to:
-  /// **'create cv'**
-  String get createCV;
-
-  /// No description provided for @createFirstCV.
-  ///
-  /// In en, this message translates to:
-  /// **'create your\nfirst cv.'**
-  String get createFirstCV;
-
-  /// No description provided for @createProfessionalCV.
-  ///
-  /// In en, this message translates to:
-  /// **'create a\nprofessional cv.'**
-  String get createProfessionalCV;
-
-  /// No description provided for @created.
-  ///
-  /// In en, this message translates to:
-  /// **'created'**
-  String get created;
-
   /// No description provided for @creatingPages.
   ///
   /// In en, this message translates to:
   /// **'creating pages...'**
   String get creatingPages;
-
-  /// No description provided for @creativeDesign.
-  ///
-  /// In en, this message translates to:
-  /// **'creative design'**
-  String get creativeDesign;
-
-  /// No description provided for @creditBalance.
-  ///
-  /// In en, this message translates to:
-  /// **'credit balance'**
-  String get creditBalance;
-
-  /// No description provided for @creditWarning.
-  ///
-  /// In en, this message translates to:
-  /// **'warning: you have {count} credits remaining. these are non-refundable.'**
-  String creditWarning(int count);
-
-  /// No description provided for @credits.
-  ///
-  /// In en, this message translates to:
-  /// **'credits'**
-  String get credits;
-
-  /// No description provided for @currentLevel.
-  ///
-  /// In en, this message translates to:
-  /// **'current level'**
-  String get currentLevel;
-
-  /// No description provided for @cvDataExists.
-  ///
-  /// In en, this message translates to:
-  /// **'cv data already exists in your profile.'**
-  String get cvDataExists;
-
-  /// No description provided for @cvGeneratedSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'cv generated successfully'**
-  String get cvGeneratedSuccess;
-
-  /// No description provided for @cvImportedSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'cv imported successfully! let\'s complete your profile.'**
-  String get cvImportedSuccess;
-
-  /// No description provided for @cvReadyMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'your cv for {jobTitle} is ready!'**
-  String cvReadyMessage(Object jobTitle);
 
   /// No description provided for @download.
   ///
@@ -1010,161 +284,11 @@ abstract class AppLocalizations {
   /// **'open pdf'**
   String get openPDF;
 
-  /// No description provided for @noCompletedCVs.
-  ///
-  /// In en, this message translates to:
-  /// **'no generated cvs yet'**
-  String get noCompletedCVs;
-
-  /// No description provided for @generateCVFirst.
-  ///
-  /// In en, this message translates to:
-  /// **'generate your first cv to see it here'**
-  String get generateCVFirst;
-
-  /// No description provided for @cvs.
-  ///
-  /// In en, this message translates to:
-  /// **'cvs'**
-  String get cvs;
-
-  /// No description provided for @dateLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'date:'**
-  String get dateLabel;
-
-  /// No description provided for @degree.
-  ///
-  /// In en, this message translates to:
-  /// **'degree / major'**
-  String get degree;
-
-  /// No description provided for @degreeHint.
-  ///
-  /// In en, this message translates to:
-  /// **'bachelor of computer science'**
-  String get degreeHint;
-
   /// No description provided for @delete.
   ///
   /// In en, this message translates to:
   /// **'delete'**
   String get delete;
-
-  /// No description provided for @deleteAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'delete account'**
-  String get deleteAccount;
-
-  /// No description provided for @deleteAccountQuestion.
-  ///
-  /// In en, this message translates to:
-  /// **'delete account?'**
-  String get deleteAccountQuestion;
-
-  /// No description provided for @deleteAccountWarning.
-  ///
-  /// In en, this message translates to:
-  /// **'this action is irreversible. all your data, including generated cvs and active subscriptions, will be permanently deleted.'**
-  String get deleteAccountWarning;
-
-  /// No description provided for @deleteConfirmation.
-  ///
-  /// In en, this message translates to:
-  /// **'are you sure you want to delete this item?'**
-  String get deleteConfirmation;
-
-  /// No description provided for @descriptionHint.
-  ///
-  /// In en, this message translates to:
-  /// **'explain your main responsibilities and achievements...'**
-  String get descriptionHint;
-
-  /// No description provided for @dontHaveAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'don\'t have an account?'**
-  String get dontHaveAccount;
-
-  /// No description provided for @drafts.
-  ///
-  /// In en, this message translates to:
-  /// **'drafts'**
-  String get drafts;
-
-  /// No description provided for @dropYourDetails.
-  ///
-  /// In en, this message translates to:
-  /// **'drop your details.'**
-  String get dropYourDetails;
-
-  /// No description provided for @editCertification.
-  ///
-  /// In en, this message translates to:
-  /// **'edit certification'**
-  String get editCertification;
-
-  /// No description provided for @editEducation.
-  ///
-  /// In en, this message translates to:
-  /// **'edit education'**
-  String get editEducation;
-
-  /// No description provided for @editExperienceTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'edit experience'**
-  String get editExperienceTitle;
-
-  /// No description provided for @educationHistory.
-  ///
-  /// In en, this message translates to:
-  /// **'education history'**
-  String get educationHistory;
-
-  /// No description provided for @educationSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'fill in all your education history. ai will choose the most relevant level to put on your cv.'**
-  String get educationSubtitle;
-
-  /// No description provided for @educationTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'education history'**
-  String get educationTitle;
-
-  /// No description provided for @email.
-  ///
-  /// In en, this message translates to:
-  /// **'email'**
-  String get email;
-
-  /// No description provided for @emailNotVerifiedYet.
-  ///
-  /// In en, this message translates to:
-  /// **'email not verified yet. please check your inbox.'**
-  String get emailNotVerifiedYet;
-
-  /// No description provided for @emailVerifiedSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'email verified successfully!'**
-  String get emailVerifiedSuccess;
-
-  /// No description provided for @endDate.
-  ///
-  /// In en, this message translates to:
-  /// **'end date'**
-  String get endDate;
-
-  /// No description provided for @errorDetailsCopied.
-  ///
-  /// In en, this message translates to:
-  /// **'error details copied to clipboard'**
-  String get errorDetailsCopied;
 
   /// No description provided for @exitWithoutSaving.
   ///
@@ -1172,149 +296,11 @@ abstract class AppLocalizations {
   /// **'Discard'**
   String get exitWithoutSaving;
 
-  /// No description provided for @experience.
-  ///
-  /// In en, this message translates to:
-  /// **'experience'**
-  String get experience;
-
-  /// No description provided for @experienceSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'tell us your experience (work, internship, organization). ai will choose the most relevant ones for your goals.'**
-  String get experienceSubtitle;
-
-  /// No description provided for @experienceTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'work experience'**
-  String get experienceTitle;
-
-  /// No description provided for @exportPdf.
-  ///
-  /// In en, this message translates to:
-  /// **'export pdf'**
-  String get exportPdf;
-
-  /// No description provided for @extractingData.
-  ///
-  /// In en, this message translates to:
-  /// **'extracting data...'**
-  String get extractingData;
-
   /// No description provided for @failed.
   ///
   /// In en, this message translates to:
   /// **'failed'**
   String get failed;
-
-  /// No description provided for @faqDataAnswer.
-  ///
-  /// In en, this message translates to:
-  /// **'your data is stored locally (master profile). data sent to ai is processed briefly and not stored.'**
-  String get faqDataAnswer;
-
-  /// No description provided for @faqDataQuestion.
-  ///
-  /// In en, this message translates to:
-  /// **'is my data safe?'**
-  String get faqDataQuestion;
-
-  /// No description provided for @faqEditAnswer.
-  ///
-  /// In en, this message translates to:
-  /// **'go to the profile menu, edit the section you want, and hit save.'**
-  String get faqEditAnswer;
-
-  /// No description provided for @faqEditQuestion.
-  ///
-  /// In en, this message translates to:
-  /// **'how to edit profile?'**
-  String get faqEditQuestion;
-
-  /// No description provided for @faqFreeAnswer.
-  ///
-  /// In en, this message translates to:
-  /// **'yes, basic features are free. we might add premium features in the future.'**
-  String get faqFreeAnswer;
-
-  /// No description provided for @faqFreeQuestion.
-  ///
-  /// In en, this message translates to:
-  /// **'is cv master free?'**
-  String get faqFreeQuestion;
-
-  /// No description provided for @faqPdfAnswer.
-  ///
-  /// In en, this message translates to:
-  /// **'sure! after creating your cv, you can download/print pdf in the preview.'**
-  String get faqPdfAnswer;
-
-  /// No description provided for @faqPdfQuestion.
-  ///
-  /// In en, this message translates to:
-  /// **'can i export to pdf?'**
-  String get faqPdfQuestion;
-
-  /// No description provided for @featureRequest.
-  ///
-  /// In en, this message translates to:
-  /// **'feature request'**
-  String get featureRequest;
-
-  /// No description provided for @feedback.
-  ///
-  /// In en, this message translates to:
-  /// **'feedback'**
-  String get feedback;
-
-  /// No description provided for @feedbackSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'share your experience or report an issue.'**
-  String get feedbackSubtitle;
-
-  /// No description provided for @menuCreateCV.
-  ///
-  /// In en, this message translates to:
-  /// **'Create New CV'**
-  String get menuCreateCV;
-
-  /// No description provided for @menuAddData.
-  ///
-  /// In en, this message translates to:
-  /// **'Add to Profile'**
-  String get menuAddData;
-
-  /// No description provided for @menuExperience.
-  ///
-  /// In en, this message translates to:
-  /// **'Experience'**
-  String get menuExperience;
-
-  /// No description provided for @menuEducation.
-  ///
-  /// In en, this message translates to:
-  /// **'Education'**
-  String get menuEducation;
-
-  /// No description provided for @menuSkills.
-  ///
-  /// In en, this message translates to:
-  /// **'Skills'**
-  String get menuSkills;
-
-  /// No description provided for @menuCertifications.
-  ///
-  /// In en, this message translates to:
-  /// **'Certifications'**
-  String get menuCertifications;
-
-  /// No description provided for @message.
-  ///
-  /// In en, this message translates to:
-  /// **'message'**
-  String get message;
 
   /// No description provided for @male.
   ///
@@ -1328,12 +314,6 @@ abstract class AppLocalizations {
   /// **'female'**
   String get female;
 
-  /// No description provided for @secure.
-  ///
-  /// In en, this message translates to:
-  /// **'secure'**
-  String get secure;
-
   /// No description provided for @gender.
   ///
   /// In en, this message translates to:
@@ -1345,48 +325,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'view all'**
   String get viewAll;
-
-  /// No description provided for @member.
-  ///
-  /// In en, this message translates to:
-  /// **'member'**
-  String get member;
-
-  /// No description provided for @recentTransactions.
-  ///
-  /// In en, this message translates to:
-  /// **'recent transactions'**
-  String get recentTransactions;
-
-  /// No description provided for @feedbackThanksMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'your feedback is valuable for cv master development.'**
-  String get feedbackThanksMessage;
-
-  /// No description provided for @fetchingTemplates.
-  ///
-  /// In en, this message translates to:
-  /// **'fetching templates...'**
-  String get fetchingTemplates;
-
-  /// No description provided for @fillDescriptionFirst.
-  ///
-  /// In en, this message translates to:
-  /// **'please fill in the description first to use ai rewrite!'**
-  String get fillDescriptionFirst;
-
-  /// No description provided for @fillJobTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'fill job title first!'**
-  String get fillJobTitle;
-
-  /// No description provided for @fillNameError.
-  ///
-  /// In en, this message translates to:
-  /// **'please fill in your full name first.'**
-  String get fillNameError;
 
   /// No description provided for @finalizing.
   ///
@@ -1400,53 +338,11 @@ abstract class AppLocalizations {
   /// **'finalizing pdf...'**
   String get finalizingPdf;
 
-  /// No description provided for @folderEmpty.
-  ///
-  /// In en, this message translates to:
-  /// **'folder is empty'**
-  String get folderEmpty;
-
-  /// No description provided for @forgotPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'forgot password'**
-  String get forgotPassword;
-
-  /// No description provided for @forgotPasswordResetMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'enter your email address and we\'ll send you a link to reset your password.'**
-  String get forgotPasswordResetMessage;
-
-  /// No description provided for @frequentQuestions.
-  ///
-  /// In en, this message translates to:
-  /// **'common questions'**
-  String get frequentQuestions;
-
-  /// No description provided for @fri.
-  ///
-  /// In en, this message translates to:
-  /// **'fri'**
-  String get fri;
-
-  /// No description provided for @fullName.
-  ///
-  /// In en, this message translates to:
-  /// **'full name'**
-  String get fullName;
-
   /// No description provided for @gallery.
   ///
   /// In en, this message translates to:
   /// **'gallery'**
   String get gallery;
-
-  /// No description provided for @generated.
-  ///
-  /// In en, this message translates to:
-  /// **'generated'**
-  String get generated;
 
   /// No description provided for @generatingPdfBadge.
   ///
@@ -1454,65 +350,11 @@ abstract class AppLocalizations {
   /// **'generating pdf'**
   String get generatingPdfBadge;
 
-  /// No description provided for @getStarted.
-  ///
-  /// In en, this message translates to:
-  /// **'get started'**
-  String get getStarted;
-
   /// No description provided for @goHome.
   ///
   /// In en, this message translates to:
   /// **'go home'**
   String get goHome;
-
-  /// No description provided for @googleSignInError.
-  ///
-  /// In en, this message translates to:
-  /// **'google sign-in failed: {error}'**
-  String googleSignInError(Object error);
-
-  /// No description provided for @googleSignInSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'signed in with google!'**
-  String get googleSignInSuccess;
-
-  /// No description provided for @header.
-  ///
-  /// In en, this message translates to:
-  /// **'header'**
-  String get header;
-
-  /// No description provided for @helloName.
-  ///
-  /// In en, this message translates to:
-  /// **'hello, {name}'**
-  String helloName(Object name);
-
-  /// No description provided for @helpSupport.
-  ///
-  /// In en, this message translates to:
-  /// **'help & support'**
-  String get helpSupport;
-
-  /// No description provided for @home.
-  ///
-  /// In en, this message translates to:
-  /// **'home'**
-  String get home;
-
-  /// No description provided for @howCanWeHelp.
-  ///
-  /// In en, this message translates to:
-  /// **'how can we help you?'**
-  String get howCanWeHelp;
-
-  /// No description provided for @iHaveVerified.
-  ///
-  /// In en, this message translates to:
-  /// **'i have verified'**
-  String get iHaveVerified;
 
   /// No description provided for @identifyingVacancy.
   ///
@@ -1520,147 +362,11 @@ abstract class AppLocalizations {
   /// **'identifying vacancy...'**
   String get identifyingVacancy;
 
-  /// No description provided for @importCV.
-  ///
-  /// In en, this message translates to:
-  /// **'import cv'**
-  String get importCV;
-
-  /// No description provided for @importCVMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'choose how to import your cv:'**
-  String get importCVMessage;
-
-  /// No description provided for @importCVTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'import cv'**
-  String get importCVTitle;
-
-  /// No description provided for @importExistingCV.
-  ///
-  /// In en, this message translates to:
-  /// **'import my cv'**
-  String get importExistingCV;
-
-  /// No description provided for @importExistingCVDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'upload a pdf or take a photo — ai fills in the rest.'**
-  String get importExistingCVDesc;
-
-  /// No description provided for @importFailedMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'failed to import cv. please try again!'**
-  String get importFailedMessage;
-
-  /// No description provided for @importFromCV.
-  ///
-  /// In en, this message translates to:
-  /// **'import from cv'**
-  String get importFromCV;
-
-  /// No description provided for @importCVHeroSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'instantly organize your profile by importing your existing cv.'**
-  String get importCVHeroSubtitle;
-
-  /// No description provided for @importSuccessMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'cv imported successfully!\nadded: {expCount} experience, {eduCount} education, {skillsCount} skills'**
-  String importSuccessMessage(
-    Object eduCount,
-    Object expCount,
-    Object skillsCount,
-  );
-
-  /// No description provided for @importSuccessTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'import successful!'**
-  String get importSuccessTitle;
-
-  /// No description provided for @importSuccessSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'here\'s what we found in your cv:'**
-  String get importSuccessSubtitle;
-
-  /// No description provided for @importSuccessPersonalInfo.
-  ///
-  /// In en, this message translates to:
-  /// **'personal info detected'**
-  String get importSuccessPersonalInfo;
-
-  /// No description provided for @importSuccessExperience.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} experience(s)'**
-  String importSuccessExperience(int count);
-
-  /// No description provided for @importSuccessEducation.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} education(s)'**
-  String importSuccessEducation(int count);
-
-  /// No description provided for @importSuccessSkills.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} skill(s)'**
-  String importSuccessSkills(int count);
-
-  /// No description provided for @importSuccessCertifications.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} certification(s)'**
-  String importSuccessCertifications(int count);
-
-  /// No description provided for @importSuccessContinue.
-  ///
-  /// In en, this message translates to:
-  /// **'continue'**
-  String get importSuccessContinue;
-
-  /// No description provided for @importSuccessNoNewData.
-  ///
-  /// In en, this message translates to:
-  /// **'all data already exists in your profile.'**
-  String get importSuccessNoNewData;
-
-  /// No description provided for @importingCVBadge.
-  ///
-  /// In en, this message translates to:
-  /// **'importing cv'**
-  String get importingCVBadge;
-
   /// No description provided for @improving.
   ///
   /// In en, this message translates to:
   /// **'improving...'**
   String get improving;
-
-  /// No description provided for @includeProfilePhoto.
-  ///
-  /// In en, this message translates to:
-  /// **'include profile photo'**
-  String get includeProfilePhoto;
-
-  /// No description provided for @issuer.
-  ///
-  /// In en, this message translates to:
-  /// **'issuer'**
-  String get issuer;
-
-  /// No description provided for @issuerHint.
-  ///
-  /// In en, this message translates to:
-  /// **'e.g. Amazon Web Services'**
-  String get issuerHint;
 
   /// No description provided for @italic.
   ///
@@ -1668,167 +374,11 @@ abstract class AppLocalizations {
   /// **'italic'**
   String get italic;
 
-  /// No description provided for @jobDetailHint.
-  ///
-  /// In en, this message translates to:
-  /// **'paste job description, requirements, or qualifications here...'**
-  String get jobDetailHint;
-
-  /// No description provided for @jobDetailLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'detail / qualification (optional)'**
-  String get jobDetailLabel;
-
-  /// No description provided for @jobExtractionFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'failed to extract job posting'**
-  String get jobExtractionFailed;
-
-  /// No description provided for @jobExtractionSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'job posting extracted successfully!'**
-  String get jobExtractionSuccess;
-
-  /// No description provided for @jobListTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'find jobs'**
-  String get jobListTitle;
-
-  /// No description provided for @jobListSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Find the best career opportunities for you'**
-  String get jobListSubtitle;
-
-  /// No description provided for @jobListSocialTab.
-  ///
-  /// In en, this message translates to:
-  /// **'social (top picks)'**
-  String get jobListSocialTab;
-
-  /// No description provided for @jobListApiTab.
-  ///
-  /// In en, this message translates to:
-  /// **'job boards (api)'**
-  String get jobListApiTab;
-
-  /// No description provided for @jobListScannerHint.
-  ///
-  /// In en, this message translates to:
-  /// **'found a job here? take a screenshot and use our smart scanner to instantly auto-fill your cv!'**
-  String get jobListScannerHint;
-
-  /// No description provided for @jobListNoAccountsFound.
-  ///
-  /// In en, this message translates to:
-  /// **'no accounts found'**
-  String get jobListNoAccountsFound;
-
-  /// No description provided for @jobListNoAccountsFoundDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'could not find any accounts matching \"{query}\". want us to add a specific account?'**
-  String jobListNoAccountsFoundDesc(String query);
-
-  /// No description provided for @jobListGiveFeedback.
-  ///
-  /// In en, this message translates to:
-  /// **'give feedback'**
-  String get jobListGiveFeedback;
-
-  /// No description provided for @jobListSearchTagsHint.
-  ///
-  /// In en, this message translates to:
-  /// **'search tags (e.g. design, tech, remote)'**
-  String get jobListSearchTagsHint;
-
-  /// No description provided for @jobListNoApiJobs.
-  ///
-  /// In en, this message translates to:
-  /// **'no api jobs available yet'**
-  String get jobListNoApiJobs;
-
-  /// No description provided for @jobListNoApiJobsSub.
-  ///
-  /// In en, this message translates to:
-  /// **'check out the social tab for the best curated jobs!'**
-  String get jobListNoApiJobsSub;
-
-  /// No description provided for @jobListCreateCvForJob.
-  ///
-  /// In en, this message translates to:
-  /// **'create cv for this job'**
-  String get jobListCreateCvForJob;
-
-  /// No description provided for @jobListViewOriginal.
-  ///
-  /// In en, this message translates to:
-  /// **'view original'**
-  String get jobListViewOriginal;
-
-  /// No description provided for @jobDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'job description'**
-  String get jobDescription;
-
-  /// No description provided for @jobRequirements.
-  ///
-  /// In en, this message translates to:
-  /// **'requirements'**
-  String get jobRequirements;
-
-  /// No description provided for @jobCouldNotOpen.
-  ///
-  /// In en, this message translates to:
-  /// **'could not open link'**
-  String get jobCouldNotOpen;
-
-  /// No description provided for @jobTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'job title'**
-  String get jobTitle;
-
-  /// No description provided for @jobTitleHint.
-  ///
-  /// In en, this message translates to:
-  /// **'e.g. UI Designer'**
-  String get jobTitleHint;
-
-  /// No description provided for @jobs.
-  ///
-  /// In en, this message translates to:
-  /// **'jobs'**
-  String get jobs;
-
-  /// No description provided for @keepBuilding.
-  ///
-  /// In en, this message translates to:
-  /// **'keep building your profile to reach the next level!'**
-  String get keepBuilding;
-
   /// No description provided for @keepLocalData.
   ///
   /// In en, this message translates to:
   /// **'keep my local data (master profile)'**
   String get keepLocalData;
-
-  /// No description provided for @keyMetrics.
-  ///
-  /// In en, this message translates to:
-  /// **'key metrics'**
-  String get keyMetrics;
-
-  /// No description provided for @locked.
-  ///
-  /// In en, this message translates to:
-  /// **'locked'**
-  String get locked;
 
   /// No description provided for @loadingPreview.
   ///
@@ -1836,335 +386,11 @@ abstract class AppLocalizations {
   /// **'loading preview...'**
   String get loadingPreview;
 
-  /// No description provided for @loadingTemplatesBadge.
-  ///
-  /// In en, this message translates to:
-  /// **'loading templates'**
-  String get loadingTemplatesBadge;
-
-  /// No description provided for @locationHint.
-  ///
-  /// In en, this message translates to:
-  /// **'ex: jakarta -> dki jakarta, south jakarta'**
-  String get locationHint;
-
-  /// No description provided for @locationLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'location (search city/regency)'**
-  String get locationLabel;
-
-  /// No description provided for @logIn.
-  ///
-  /// In en, this message translates to:
-  /// **'log in'**
-  String get logIn;
-
-  /// No description provided for @logOut.
-  ///
-  /// In en, this message translates to:
-  /// **'log out'**
-  String get logOut;
-
-  /// No description provided for @login.
-  ///
-  /// In en, this message translates to:
-  /// **'login'**
-  String get login;
-
-  /// No description provided for @loginToSave.
-  ///
-  /// In en, this message translates to:
-  /// **'login to access all features'**
-  String get loginToSave;
-
-  /// No description provided for @masterProfileUpdated.
-  ///
-  /// In en, this message translates to:
-  /// **'master profile updated successfully'**
-  String get masterProfileUpdated;
-
-  /// No description provided for @messageDetail.
-  ///
-  /// In en, this message translates to:
-  /// **'message / detail'**
-  String get messageDetail;
-
-  /// No description provided for @mon.
-  ///
-  /// In en, this message translates to:
-  /// **'mon'**
-  String get mon;
-
-  /// No description provided for @myCVs.
-  ///
-  /// In en, this message translates to:
-  /// **'my cvs'**
-  String get myCVs;
-
-  /// No description provided for @myDrafts.
-  ///
-  /// In en, this message translates to:
-  /// **'my drafts'**
-  String get myDrafts;
-
   /// No description provided for @next.
   ///
   /// In en, this message translates to:
   /// **'next'**
   String get next;
-
-  /// No description provided for @nextStep.
-  ///
-  /// In en, this message translates to:
-  /// **'next step'**
-  String get nextStep;
-
-  /// No description provided for @noCertifications.
-  ///
-  /// In en, this message translates to:
-  /// **'no certifications yet.'**
-  String get noCertifications;
-
-  /// No description provided for @noDrafts.
-  ///
-  /// In en, this message translates to:
-  /// **'no drafts yet.'**
-  String get noDrafts;
-
-  /// No description provided for @noEducation.
-  ///
-  /// In en, this message translates to:
-  /// **'no education history yet.'**
-  String get noEducation;
-
-  /// No description provided for @noExperience.
-  ///
-  /// In en, this message translates to:
-  /// **'no work experience yet.'**
-  String get noExperience;
-
-  /// No description provided for @noMatchingJobs.
-  ///
-  /// In en, this message translates to:
-  /// **'no matching jobs found.'**
-  String get noMatchingJobs;
-
-  /// No description provided for @noMatchingPdfs.
-  ///
-  /// In en, this message translates to:
-  /// **'no pdfs match your search.'**
-  String get noMatchingPdfs;
-
-  /// No description provided for @searchGeneratedCvs.
-  ///
-  /// In en, this message translates to:
-  /// **'search generated cvs...'**
-  String get searchGeneratedCvs;
-
-  /// No description provided for @allFilter.
-  ///
-  /// In en, this message translates to:
-  /// **'all'**
-  String get allFilter;
-
-  /// No description provided for @noNotifications.
-  ///
-  /// In en, this message translates to:
-  /// **'no notifications yet'**
-  String get noNotifications;
-
-  /// No description provided for @noSkills.
-  ///
-  /// In en, this message translates to:
-  /// **'no skills yet.'**
-  String get noSkills;
-
-  /// No description provided for @noTextFound.
-  ///
-  /// In en, this message translates to:
-  /// **'no text found in image'**
-  String get noTextFound;
-
-  /// No description provided for @noTextFoundInCV.
-  ///
-  /// In en, this message translates to:
-  /// **'no text found in cv'**
-  String get noTextFoundInCV;
-
-  /// No description provided for @notificationChannelCVDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'notifications for cv generation updates'**
-  String get notificationChannelCVDesc;
-
-  /// No description provided for @notificationChannelCVTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'cv generation'**
-  String get notificationChannelCVTitle;
-
-  /// No description provided for @notificationChannelGeneralDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'general app notifications'**
-  String get notificationChannelGeneralDesc;
-
-  /// No description provided for @notificationChannelGeneralTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'general alerts'**
-  String get notificationChannelGeneralTitle;
-
-  /// No description provided for @notificationNew.
-  ///
-  /// In en, this message translates to:
-  /// **'new notification'**
-  String get notificationNew;
-
-  /// No description provided for @notifications.
-  ///
-  /// In en, this message translates to:
-  /// **'notifications'**
-  String get notifications;
-
-  /// No description provided for @ocrScanning.
-  ///
-  /// In en, this message translates to:
-  /// **'ocr scanning'**
-  String get ocrScanning;
-
-  /// No description provided for @onboardingFinalMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'master profile safe. now just quickly create your cv.'**
-  String get onboardingFinalMessage;
-
-  /// No description provided for @onboardingFeedbackCompleteTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Amazing work, {name}!'**
-  String onboardingFeedbackCompleteTitle(String name);
-
-  /// No description provided for @onboardingFeedbackCompleteMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Your profile is 90% ready. You\'re now in the top tier to get noticed by recruiters!'**
-  String get onboardingFeedbackCompleteMessage;
-
-  /// No description provided for @onboardingFeedbackPartialTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Great start!'**
-  String get onboardingFeedbackPartialTitle;
-
-  /// No description provided for @onboardingFeedbackPartialMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'We\'ve lined up some initial recommendations for you. Don\'t forget to fill in the rest later to unlock even better matches.'**
-  String get onboardingFeedbackPartialMessage;
-
-  /// No description provided for @onboardingFeedbackEmptyTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'No worries!'**
-  String get onboardingFeedbackEmptyTitle;
-
-  /// No description provided for @onboardingFeedbackEmptyMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'You can explore first. Spruce up your profile anytime in the \'Master Profile\' tab so we can work our magic for you.'**
-  String get onboardingFeedbackEmptyMessage;
-
-  /// No description provided for @onboardingFeedbackGetSmarterHint.
-  ///
-  /// In en, this message translates to:
-  /// **'The app gets smarter as you add more info.'**
-  String get onboardingFeedbackGetSmarterHint;
-
-  /// No description provided for @onboardingFeedbackCompleteFeatureTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Top Tier Profile'**
-  String get onboardingFeedbackCompleteFeatureTitle;
-
-  /// No description provided for @onboardingFeedbackCompleteFeatureSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'You\'re among the most prepared candidates.'**
-  String get onboardingFeedbackCompleteFeatureSubtitle;
-
-  /// No description provided for @onboardingHeadline1.
-  ///
-  /// In en, this message translates to:
-  /// **'still editing your cv at 1am?'**
-  String get onboardingHeadline1;
-
-  /// No description provided for @onboardingHeadline2.
-  ///
-  /// In en, this message translates to:
-  /// **'qualified, but still getting rejected?'**
-  String get onboardingHeadline2;
-
-  /// No description provided for @onboardingHeadline3.
-  ///
-  /// In en, this message translates to:
-  /// **'don\'t start from zero.'**
-  String get onboardingHeadline3;
-
-  /// No description provided for @onboardingHeadline4.
-  ///
-  /// In en, this message translates to:
-  /// **'dump everything here.'**
-  String get onboardingHeadline4;
-
-  /// No description provided for @onboardingHeadline6.
-  ///
-  /// In en, this message translates to:
-  /// **'one profile. unlimited tailored cvs.'**
-  String get onboardingHeadline6;
-
-  /// No description provided for @onboardingHeadline7.
-  ///
-  /// In en, this message translates to:
-  /// **'we want you to try clever for free.'**
-  String get onboardingHeadline7;
-
-  /// No description provided for @onboardingSubtext1.
-  ///
-  /// In en, this message translates to:
-  /// **'stop manual editing. tailor your cv for every job in seconds, not hours.'**
-  String get onboardingSubtext1;
-
-  /// No description provided for @onboardingSubtext2.
-  ///
-  /// In en, this message translates to:
-  /// **'your cv might be failing the ats. we ensure your keywords match what recruiters want.'**
-  String get onboardingSubtext2;
-
-  /// No description provided for @onboardingSubtext3.
-  ///
-  /// In en, this message translates to:
-  /// **'upload your old pdf. we’ll extract and organize your entire history instantly.'**
-  String get onboardingSubtext3;
-
-  /// No description provided for @onboardingSubtext4.
-  ///
-  /// In en, this message translates to:
-  /// **'every role matters. from side jobs to tech lead—we’ll pick what’s relevant.'**
-  String get onboardingSubtext4;
-
-  /// No description provided for @onboardingSubtext6.
-  ///
-  /// In en, this message translates to:
-  /// **'swap between pro-templates instantly. no expensive designers needed.'**
-  String get onboardingSubtext6;
-
-  /// No description provided for @onboardingSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'fill in data once, generate thousands of cvs without retyping. save time, focus on \"grinding\".'**
-  String get onboardingSubtitle;
 
   /// No description provided for @or.
   ///
@@ -2184,113 +410,17 @@ abstract class AppLocalizations {
   /// **'other'**
   String get other;
 
-  /// No description provided for @password.
-  ///
-  /// In en, this message translates to:
-  /// **'password'**
-  String get password;
-
-  /// No description provided for @passwordMinLength.
-  ///
-  /// In en, this message translates to:
-  /// **'password must be at least 6 characters'**
-  String get passwordMinLength;
-
   /// No description provided for @pdfFile.
   ///
   /// In en, this message translates to:
   /// **'pdf file'**
   String get pdfFile;
 
-  /// No description provided for @pdfGenerateError.
-  ///
-  /// In en, this message translates to:
-  /// **'failed to generate pdf: {error}'**
-  String pdfGenerateError(Object error);
-
-  /// No description provided for @pdfOpenError.
-  ///
-  /// In en, this message translates to:
-  /// **'failed to open pdf: {error}'**
-  String pdfOpenError(Object error);
-
-  /// No description provided for @personalInfo.
-  ///
-  /// In en, this message translates to:
-  /// **'contact information'**
-  String get personalInfo;
-
-  /// No description provided for @phoneNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'phone number'**
-  String get phoneNumber;
-
-  /// No description provided for @photoSettings.
-  ///
-  /// In en, this message translates to:
-  /// **'photo settings'**
-  String get photoSettings;
-
-  /// No description provided for @photoUpdateError.
-  ///
-  /// In en, this message translates to:
-  /// **'error uploading photo: {error}'**
-  String photoUpdateError(String error);
-
-  /// No description provided for @photoUpdateSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'profile photo updated successfully!'**
-  String get photoUpdateSuccess;
-
-  /// No description provided for @profilePhotoExportTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **'this photo will be used for every pdf export that includes a photo.'**
-  String get profilePhotoExportTooltip;
-
-  /// No description provided for @pleaseEnterEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'please enter your email'**
-  String get pleaseEnterEmail;
-
-  /// No description provided for @pleaseEnterName.
-  ///
-  /// In en, this message translates to:
-  /// **'please enter your name'**
-  String get pleaseEnterName;
-
-  /// No description provided for @pleaseEnterPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'please enter your password'**
-  String get pleaseEnterPassword;
-
   /// No description provided for @polishing.
   ///
   /// In en, this message translates to:
   /// **'polishing...'**
   String get polishing;
-
-  /// No description provided for @positionHint.
-  ///
-  /// In en, this message translates to:
-  /// **'position (ex: ui designer)'**
-  String get positionHint;
-
-  /// No description provided for @premium.
-  ///
-  /// In en, this message translates to:
-  /// **'premium'**
-  String get premium;
-
-  /// No description provided for @premiumBadge.
-  ///
-  /// In en, this message translates to:
-  /// **'get pass'**
-  String get premiumBadge;
 
   /// No description provided for @preparingGallery.
   ///
@@ -2316,77 +446,17 @@ abstract class AppLocalizations {
   /// **'preview cv'**
   String get previewCV;
 
-  /// No description provided for @previewTemplate.
-  ///
-  /// In en, this message translates to:
-  /// **'preview template'**
-  String get previewTemplate;
-
-  /// No description provided for @privacyPolicy.
-  ///
-  /// In en, this message translates to:
-  /// **'privacy policy'**
-  String get privacyPolicy;
-
   /// No description provided for @processingData.
   ///
   /// In en, this message translates to:
   /// **'processing data...'**
   String get processingData;
 
-  /// No description provided for @professionalSummary.
-  ///
-  /// In en, this message translates to:
-  /// **'professional summary'**
-  String get professionalSummary;
-
-  /// No description provided for @profile.
-  ///
-  /// In en, this message translates to:
-  /// **'profile'**
-  String get profile;
-
-  /// No description provided for @profileSaveError.
-  ///
-  /// In en, this message translates to:
-  /// **'failed to save profile: {error}'**
-  String profileSaveError(Object error);
-
-  /// No description provided for @profileSavedSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'profile saved! will be used for your next cv.'**
-  String get profileSavedSuccess;
-
-  /// No description provided for @question.
-  ///
-  /// In en, this message translates to:
-  /// **'question'**
-  String get question;
-
-  /// No description provided for @readingCV.
-  ///
-  /// In en, this message translates to:
-  /// **'reading cv...'**
-  String get readingCV;
-
-  /// No description provided for @readingPDF.
-  ///
-  /// In en, this message translates to:
-  /// **'reading pdf...'**
-  String get readingPDF;
-
   /// No description provided for @ready.
   ///
   /// In en, this message translates to:
   /// **'ready!'**
   String get ready;
-
-  /// No description provided for @readyToAchieve.
-  ///
-  /// In en, this message translates to:
-  /// **'ready to achieve your career goals?'**
-  String get readyToAchieve;
 
   /// No description provided for @rephrasing.
   ///
@@ -2406,59 +476,11 @@ abstract class AppLocalizations {
   /// **'this is required!'**
   String get requiredFieldFriendly;
 
-  /// No description provided for @requirementsCheckLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'requirements check:'**
-  String get requirementsCheckLabel;
-
-  /// No description provided for @resendEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'resend verification email'**
-  String get resendEmail;
-
   /// No description provided for @retry.
   ///
   /// In en, this message translates to:
   /// **'retry'**
   String get retry;
-
-  /// No description provided for @reviewData.
-  ///
-  /// In en, this message translates to:
-  /// **'review data'**
-  String get reviewData;
-
-  /// No description provided for @reviewedByAI.
-  ///
-  /// In en, this message translates to:
-  /// **'data & summary tailored by ai'**
-  String get reviewedByAI;
-
-  /// No description provided for @rewrite.
-  ///
-  /// In en, this message translates to:
-  /// **'rewrite'**
-  String get rewrite;
-
-  /// No description provided for @rewriteAI.
-  ///
-  /// In en, this message translates to:
-  /// **'rewrite ai'**
-  String get rewriteAI;
-
-  /// No description provided for @rewriteFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'rewrite failed: {error}'**
-  String rewriteFailed(String error);
-
-  /// No description provided for @sat.
-  ///
-  /// In en, this message translates to:
-  /// **'sat'**
-  String get sat;
 
   /// No description provided for @save.
   ///
@@ -2472,41 +494,587 @@ abstract class AppLocalizations {
   /// **'save'**
   String get saveAllCaps;
 
-  /// No description provided for @saveChangesMessage.
+  /// No description provided for @selectDate.
   ///
   /// In en, this message translates to:
-  /// **'You have unsaved changes. Would you like to save them before leaving?'**
-  String get saveChangesMessage;
+  /// **'select date'**
+  String get selectDate;
 
-  /// No description provided for @saveChangesTitle.
+  /// No description provided for @skipIntro.
   ///
   /// In en, this message translates to:
-  /// **'Unsaved Changes'**
-  String get saveChangesTitle;
+  /// **'skip'**
+  String get skipIntro;
 
-  /// No description provided for @saveProfile.
+  /// No description provided for @startNow.
   ///
   /// In en, this message translates to:
-  /// **'save profile'**
-  String get saveProfile;
+  /// **'start now'**
+  String get startNow;
 
-  /// No description provided for @savingProfile.
+  /// No description provided for @stayHere.
   ///
   /// In en, this message translates to:
-  /// **'saving profile...'**
-  String get savingProfile;
+  /// **'Cancel'**
+  String get stayHere;
 
-  /// No description provided for @scanJobPosting.
+  /// No description provided for @syncAnywhere.
   ///
   /// In en, this message translates to:
-  /// **'scan job posting'**
-  String get scanJobPosting;
+  /// **'access from any device, auto-sync'**
+  String get syncAnywhere;
 
-  /// No description provided for @scanKHS.
+  /// No description provided for @syncData.
   ///
   /// In en, this message translates to:
-  /// **'Scan KHS'**
-  String get scanKHS;
+  /// **'sync data'**
+  String get syncData;
+
+  /// No description provided for @typeHere.
+  ///
+  /// In en, this message translates to:
+  /// **'type here...'**
+  String get typeHere;
+
+  /// No description provided for @unknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'unknown error'**
+  String get unknownError;
+
+  /// No description provided for @unknownErrorDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'something went wrong, but we aren\'t sure what.'**
+  String get unknownErrorDesc;
+
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'update'**
+  String get update;
+
+  /// No description provided for @untilNow.
+  ///
+  /// In en, this message translates to:
+  /// **'until now'**
+  String get untilNow;
+
+  /// No description provided for @uploadInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'tap to upload your professional photo'**
+  String get uploadInstruction;
+
+  /// No description provided for @uploadingPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'uploading photo...'**
+  String get uploadingPhoto;
+
+  /// No description provided for @validatingData.
+  ///
+  /// In en, this message translates to:
+  /// **'validating data...'**
+  String get validatingData;
+
+  /// No description provided for @validatingLink.
+  ///
+  /// In en, this message translates to:
+  /// **'validating link...'**
+  String get validatingLink;
+
+  /// No description provided for @writeSomething.
+  ///
+  /// In en, this message translates to:
+  /// **'please write something'**
+  String get writeSomething;
+
+  /// No description provided for @year.
+  ///
+  /// In en, this message translates to:
+  /// **'year'**
+  String get year;
+
+  /// No description provided for @uploadPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'upload photo'**
+  String get uploadPhoto;
+
+  /// No description provided for @cleverYes.
+  ///
+  /// In en, this message translates to:
+  /// **'yes'**
+  String get cleverYes;
+
+  /// No description provided for @cleverNo.
+  ///
+  /// In en, this message translates to:
+  /// **'no'**
+  String get cleverNo;
+
+  /// No description provided for @total.
+  ///
+  /// In en, this message translates to:
+  /// **'total'**
+  String get total;
+
+  /// No description provided for @searchResult.
+  ///
+  /// In en, this message translates to:
+  /// **'search results'**
+  String get searchResult;
+
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'already have an account?'**
+  String get alreadyHaveAccount;
+
+  /// No description provided for @authWallBuyCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'sign in to get pass'**
+  String get authWallBuyCredits;
+
+  /// No description provided for @authWallBuyCreditsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'an account is required to activate a job hunter pass'**
+  String get authWallBuyCreditsDesc;
+
+  /// No description provided for @authWallCreateCV.
+  ///
+  /// In en, this message translates to:
+  /// **'sign in to create your cv'**
+  String get authWallCreateCV;
+
+  /// No description provided for @authWallCreateCVDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'an account is required to create and save your cv'**
+  String get authWallCreateCVDesc;
+
+  /// No description provided for @authWallSelectTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'sign in to select a template'**
+  String get authWallSelectTemplate;
+
+  /// No description provided for @authWallSelectTemplateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'an account is required to choose a template'**
+  String get authWallSelectTemplateDesc;
+
+  /// No description provided for @cantOpenEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'could not open email app.'**
+  String get cantOpenEmail;
+
+  /// No description provided for @checkSpamFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'can\'t find it? please check your spam or junk folder.'**
+  String get checkSpamFolder;
+
+  /// No description provided for @continueWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'continue with google'**
+  String get continueWithGoogle;
+
+  /// No description provided for @createAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'create account'**
+  String get createAccount;
+
+  /// No description provided for @dontHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'don\'t have an account?'**
+  String get dontHaveAccount;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'email'**
+  String get email;
+
+  /// No description provided for @emailNotVerifiedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'email not verified yet. please check your inbox.'**
+  String get emailNotVerifiedYet;
+
+  /// No description provided for @emailVerifiedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'email verified successfully!'**
+  String get emailVerifiedSuccess;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'forgot password'**
+  String get forgotPassword;
+
+  /// No description provided for @forgotPasswordResetMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'enter your email address and we\'ll send you a link to reset your password.'**
+  String get forgotPasswordResetMessage;
+
+  /// No description provided for @iHaveVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'i have verified'**
+  String get iHaveVerified;
+
+  /// No description provided for @logIn.
+  ///
+  /// In en, this message translates to:
+  /// **'log in'**
+  String get logIn;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'login'**
+  String get login;
+
+  /// No description provided for @loginToSave.
+  ///
+  /// In en, this message translates to:
+  /// **'login to access all features'**
+  String get loginToSave;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'password'**
+  String get password;
+
+  /// No description provided for @passwordMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'password must be at least 6 characters'**
+  String get passwordMinLength;
+
+  /// No description provided for @pleaseEnterEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'please enter your email'**
+  String get pleaseEnterEmail;
+
+  /// No description provided for @resendEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'resend verification email'**
+  String get resendEmail;
+
+  /// No description provided for @sendResetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'send reset link'**
+  String get sendResetLink;
+
+  /// No description provided for @signUp.
+  ///
+  /// In en, this message translates to:
+  /// **'sign up'**
+  String get signUp;
+
+  /// No description provided for @unlockFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'activate job hunter pass'**
+  String get unlockFeatures;
+
+  /// No description provided for @userNotLoggedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'user not logged in'**
+  String get userNotLoggedIn;
+
+  /// No description provided for @verificationEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'verification email sent!'**
+  String get verificationEmailSent;
+
+  /// No description provided for @verificationSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'a verification link has been sent to {email}. please check your inbox and spam folder.'**
+  String verificationSentTo(String email);
+
+  /// No description provided for @verifyYourEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'verify your email'**
+  String get verifyYourEmail;
+
+  /// No description provided for @cleverGetStartedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nice to meet you!'**
+  String get cleverGetStartedTitle;
+
+  /// No description provided for @cleverGetStartedSubtitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'feel more confident with tailored cvs.'**
+  String get cleverGetStartedSubtitle1;
+
+  /// No description provided for @cleverGetStartedSubtitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'without the manual editing anymore.'**
+  String get cleverGetStartedSubtitle2;
+
+  /// No description provided for @cleverSignInGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'welcome back!'**
+  String get cleverSignInGreeting;
+
+  /// No description provided for @cleverGoogleSignUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up with Google'**
+  String get cleverGoogleSignUp;
+
+  /// No description provided for @cleverGoogleSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
+  String get cleverGoogleSignIn;
+
+  /// No description provided for @cleverEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'enter a valid email'**
+  String get cleverEmailInvalid;
+
+  /// No description provided for @cleverConsentLine.
+  ///
+  /// In en, this message translates to:
+  /// **'I have read the Privacy Policy & Terms'**
+  String get cleverConsentLine;
+
+  /// No description provided for @addCertification.
+  ///
+  /// In en, this message translates to:
+  /// **'add certification'**
+  String get addCertification;
+
+  /// No description provided for @addEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'add education'**
+  String get addEducation;
+
+  /// No description provided for @addExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'add experience'**
+  String get addExperience;
+
+  /// No description provided for @addSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'add subject'**
+  String get addSubject;
+
+  /// No description provided for @addSkill.
+  ///
+  /// In en, this message translates to:
+  /// **'add skill'**
+  String get addSkill;
+
+  /// No description provided for @birthDate.
+  ///
+  /// In en, this message translates to:
+  /// **'birth date'**
+  String get birthDate;
+
+  /// No description provided for @certificationName.
+  ///
+  /// In en, this message translates to:
+  /// **'certification name'**
+  String get certificationName;
+
+  /// No description provided for @certificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'certifications & licenses'**
+  String get certificationTitle;
+
+  /// No description provided for @certifications.
+  ///
+  /// In en, this message translates to:
+  /// **'certifications'**
+  String get certifications;
+
+  /// No description provided for @certificationsLicenses.
+  ///
+  /// In en, this message translates to:
+  /// **'certifications & licenses'**
+  String get certificationsLicenses;
+
+  /// No description provided for @company.
+  ///
+  /// In en, this message translates to:
+  /// **'company'**
+  String get company;
+
+  /// No description provided for @companyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'company name (optional)'**
+  String get companyHint;
+
+  /// No description provided for @contactHint.
+  ///
+  /// In en, this message translates to:
+  /// **'so we can get back to you...'**
+  String get contactHint;
+
+  /// No description provided for @contactOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'email / whatsapp (optional)'**
+  String get contactOptional;
+
+  /// No description provided for @degree.
+  ///
+  /// In en, this message translates to:
+  /// **'degree / major'**
+  String get degree;
+
+  /// No description provided for @descriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'explain your main responsibilities and achievements...'**
+  String get descriptionHint;
+
+  /// No description provided for @educationHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'education history'**
+  String get educationHistory;
+
+  /// No description provided for @educationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'education history'**
+  String get educationTitle;
+
+  /// No description provided for @endDate.
+  ///
+  /// In en, this message translates to:
+  /// **'end date'**
+  String get endDate;
+
+  /// No description provided for @experience.
+  ///
+  /// In en, this message translates to:
+  /// **'experience'**
+  String get experience;
+
+  /// No description provided for @experienceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'work experience'**
+  String get experienceTitle;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'full name'**
+  String get fullName;
+
+  /// No description provided for @header.
+  ///
+  /// In en, this message translates to:
+  /// **'header'**
+  String get header;
+
+  /// No description provided for @issuer.
+  ///
+  /// In en, this message translates to:
+  /// **'issuer'**
+  String get issuer;
+
+  /// No description provided for @jobTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'job title'**
+  String get jobTitle;
+
+  /// No description provided for @locationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'ex: jakarta -> dki jakarta, south jakarta'**
+  String get locationHint;
+
+  /// No description provided for @locationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'location (search city/regency)'**
+  String get locationLabel;
+
+  /// No description provided for @noCertifications.
+  ///
+  /// In en, this message translates to:
+  /// **'no certifications yet.'**
+  String get noCertifications;
+
+  /// No description provided for @noEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'no education history yet.'**
+  String get noEducation;
+
+  /// No description provided for @noExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'no work experience yet.'**
+  String get noExperience;
+
+  /// No description provided for @noSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'no skills yet.'**
+  String get noSkills;
+
+  /// No description provided for @personalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'contact information'**
+  String get personalInfo;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'phone number'**
+  String get phoneNumber;
+
+  /// No description provided for @positionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'position (ex: ui designer)'**
+  String get positionHint;
+
+  /// No description provided for @professionalSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'professional summary'**
+  String get professionalSummary;
 
   /// No description provided for @scanKHSTitle.
   ///
@@ -2519,24 +1087,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select a source to extract GPA and subjects'**
   String get scanKHSMessage;
-
-  /// No description provided for @scanningKHSBadge.
-  ///
-  /// In en, this message translates to:
-  /// **'scanning khs'**
-  String get scanningKHSBadge;
-
-  /// No description provided for @readingKHS.
-  ///
-  /// In en, this message translates to:
-  /// **'reading khs...'**
-  String get readingKHS;
-
-  /// No description provided for @extractingGPA.
-  ///
-  /// In en, this message translates to:
-  /// **'extracting gpa & subjects...'**
-  String get extractingGPA;
 
   /// No description provided for @academicSubjects.
   ///
@@ -2562,29 +1112,11 @@ abstract class AppLocalizations {
   /// **'what did you learn? (optional)'**
   String get whatDidYouLearn;
 
-  /// No description provided for @noSubjectsAdded.
-  ///
-  /// In en, this message translates to:
-  /// **'no subjects added yet.'**
-  String get noSubjectsAdded;
-
-  /// No description provided for @editSubject.
-  ///
-  /// In en, this message translates to:
-  /// **'edit subject'**
-  String get editSubject;
-
   /// No description provided for @gpaLabel.
   ///
   /// In en, this message translates to:
   /// **'GPA / IPK'**
   String get gpaLabel;
-
-  /// No description provided for @gpaHint.
-  ///
-  /// In en, this message translates to:
-  /// **'e.g. 3.85'**
-  String get gpaHint;
 
   /// No description provided for @educationDescriptionLabel.
   ///
@@ -2616,65 +1148,11 @@ abstract class AppLocalizations {
   /// **'school name'**
   String get schoolName;
 
-  /// No description provided for @searchJob.
-  ///
-  /// In en, this message translates to:
-  /// **'search for jobs...'**
-  String get searchJob;
-
-  /// No description provided for @selectDate.
-  ///
-  /// In en, this message translates to:
-  /// **'select date'**
-  String get selectDate;
-
-  /// No description provided for @selectTemplate.
-  ///
-  /// In en, this message translates to:
-  /// **'select template'**
-  String get selectTemplate;
-
-  /// No description provided for @sendFeedback.
-  ///
-  /// In en, this message translates to:
-  /// **'send feedback'**
-  String get sendFeedback;
-
-  /// No description provided for @sendResetLink.
-  ///
-  /// In en, this message translates to:
-  /// **'send reset link'**
-  String get sendResetLink;
-
-  /// No description provided for @sending.
-  ///
-  /// In en, this message translates to:
-  /// **'sending...'**
-  String get sending;
-
   /// No description provided for @shortDescription.
   ///
   /// In en, this message translates to:
   /// **'short description'**
   String get shortDescription;
-
-  /// No description provided for @signInSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'sign in to sync your cvs across devices'**
-  String get signInSubtitle;
-
-  /// No description provided for @signUp.
-  ///
-  /// In en, this message translates to:
-  /// **'sign up'**
-  String get signUp;
-
-  /// No description provided for @skillHint.
-  ///
-  /// In en, this message translates to:
-  /// **'ex: flutter, leadership'**
-  String get skillHint;
 
   /// No description provided for @skills.
   ///
@@ -2694,101 +1172,11 @@ abstract class AppLocalizations {
   /// **'what are your skills?'**
   String get skillsTitle;
 
-  /// No description provided for @skipForNow.
-  ///
-  /// In en, this message translates to:
-  /// **'skip for now'**
-  String get skipForNow;
-
-  /// No description provided for @skipIntro.
-  ///
-  /// In en, this message translates to:
-  /// **'skip'**
-  String get skipIntro;
-
   /// No description provided for @startDate.
   ///
   /// In en, this message translates to:
   /// **'start date'**
   String get startDate;
-
-  /// No description provided for @startFromScratch.
-  ///
-  /// In en, this message translates to:
-  /// **'Form Input'**
-  String get startFromScratch;
-
-  /// No description provided for @startFromScratchDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Input once, use forever. Includes AI Dictation for effortless entry.'**
-  String get startFromScratchDesc;
-
-  /// No description provided for @startNow.
-  ///
-  /// In en, this message translates to:
-  /// **'start now'**
-  String get startNow;
-
-  /// No description provided for @statistics.
-  ///
-  /// In en, this message translates to:
-  /// **'statistics'**
-  String get statistics;
-
-  /// No description provided for @stayHere.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
-  String get stayHere;
-
-  /// No description provided for @stepCertifications.
-  ///
-  /// In en, this message translates to:
-  /// **'certifications'**
-  String get stepCertifications;
-
-  /// No description provided for @stepEducation.
-  ///
-  /// In en, this message translates to:
-  /// **'education'**
-  String get stepEducation;
-
-  /// No description provided for @stepExperience.
-  ///
-  /// In en, this message translates to:
-  /// **'experience'**
-  String get stepExperience;
-
-  /// No description provided for @stepFinish.
-  ///
-  /// In en, this message translates to:
-  /// **'finish'**
-  String get stepFinish;
-
-  /// No description provided for @stepImportCV.
-  ///
-  /// In en, this message translates to:
-  /// **'quick setup'**
-  String get stepImportCV;
-
-  /// No description provided for @stepPersonalInfo.
-  ///
-  /// In en, this message translates to:
-  /// **'contact info'**
-  String get stepPersonalInfo;
-
-  /// No description provided for @stepSkills.
-  ///
-  /// In en, this message translates to:
-  /// **'skills'**
-  String get stepSkills;
-
-  /// No description provided for @suggestionsBugs.
-  ///
-  /// In en, this message translates to:
-  /// **'suggestions & bugs'**
-  String get suggestionsBugs;
 
   /// No description provided for @summaryEmpty.
   ///
@@ -2802,245 +1190,11 @@ abstract class AppLocalizations {
   /// **'write a brief professional summary...'**
   String get summaryHint;
 
-  /// No description provided for @sun.
-  ///
-  /// In en, this message translates to:
-  /// **'sun'**
-  String get sun;
-
-  /// No description provided for @syncAnywhere.
-  ///
-  /// In en, this message translates to:
-  /// **'access from any device, auto-sync'**
-  String get syncAnywhere;
-
-  /// No description provided for @syncData.
-  ///
-  /// In en, this message translates to:
-  /// **'sync data'**
-  String get syncData;
-
-  /// No description provided for @tailoredDataMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'this data has been tailored by ai to be relevant to your target position. please review!'**
-  String get tailoredDataMessage;
-
-  /// No description provided for @takesLessThan3Min.
-  ///
-  /// In en, this message translates to:
-  /// **'takes less than 3 minutes.'**
-  String get takesLessThan3Min;
-
   /// No description provided for @targetPosition.
   ///
   /// In en, this message translates to:
   /// **'target position'**
   String get targetPosition;
-
-  /// No description provided for @technicalDetails.
-  ///
-  /// In en, this message translates to:
-  /// **'technical details'**
-  String get technicalDetails;
-
-  /// No description provided for @templateLoadError.
-  ///
-  /// In en, this message translates to:
-  /// **'error loading templates: {error}'**
-  String templateLoadError(Object error);
-
-  /// No description provided for @termsAgreePrefix.
-  ///
-  /// In en, this message translates to:
-  /// **'by continuing, you agree to our'**
-  String get termsAgreePrefix;
-
-  /// No description provided for @termsAgreeSuffix.
-  ///
-  /// In en, this message translates to:
-  /// **'.'**
-  String get termsAgreeSuffix;
-
-  /// No description provided for @termsOfService.
-  ///
-  /// In en, this message translates to:
-  /// **'terms of service'**
-  String get termsOfService;
-
-  /// No description provided for @thankYou.
-  ///
-  /// In en, this message translates to:
-  /// **'thank you!'**
-  String get thankYou;
-
-  /// No description provided for @thu.
-  ///
-  /// In en, this message translates to:
-  /// **'thu'**
-  String get thu;
-
-  /// No description provided for @totalCVs.
-  ///
-  /// In en, this message translates to:
-  /// **'total cvs'**
-  String get totalCVs;
-
-  /// No description provided for @totalCreditsLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'active pass'**
-  String get totalCreditsLabel;
-
-  /// No description provided for @tue.
-  ///
-  /// In en, this message translates to:
-  /// **'tue'**
-  String get tue;
-
-  /// No description provided for @typeHere.
-  ///
-  /// In en, this message translates to:
-  /// **'type here...'**
-  String get typeHere;
-
-  /// No description provided for @unknownError.
-  ///
-  /// In en, this message translates to:
-  /// **'unknown error'**
-  String get unknownError;
-
-  /// No description provided for @unknownErrorDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'something went wrong, but we aren\'t sure what.'**
-  String get unknownErrorDesc;
-
-  /// No description provided for @update.
-  ///
-  /// In en, this message translates to:
-  /// **'update'**
-  String get update;
-
-  /// No description provided for @unlockFeatures.
-  ///
-  /// In en, this message translates to:
-  /// **'activate job hunter pass'**
-  String get unlockFeatures;
-
-  /// No description provided for @untilNow.
-  ///
-  /// In en, this message translates to:
-  /// **'until now'**
-  String get untilNow;
-
-  /// No description provided for @uploadInstruction.
-  ///
-  /// In en, this message translates to:
-  /// **'tap to upload your professional photo'**
-  String get uploadInstruction;
-
-  /// No description provided for @uploadingPhoto.
-  ///
-  /// In en, this message translates to:
-  /// **'uploading photo...'**
-  String get uploadingPhoto;
-
-  /// No description provided for @usageHistoryComingSoon.
-  ///
-  /// In en, this message translates to:
-  /// **'usage history coming soon'**
-  String get usageHistoryComingSoon;
-
-  /// No description provided for @userLevelExpert.
-  ///
-  /// In en, this message translates to:
-  /// **'expert career builder'**
-  String get userLevelExpert;
-
-  /// No description provided for @userLevelMid.
-  ///
-  /// In en, this message translates to:
-  /// **'mid-level professional'**
-  String get userLevelMid;
-
-  /// No description provided for @userLevelRookie.
-  ///
-  /// In en, this message translates to:
-  /// **'rookie job seeker'**
-  String get userLevelRookie;
-
-  /// No description provided for @userNotLoggedIn.
-  ///
-  /// In en, this message translates to:
-  /// **'user not logged in'**
-  String get userNotLoggedIn;
-
-  /// No description provided for @usingMasterPhoto.
-  ///
-  /// In en, this message translates to:
-  /// **'using master profile photo'**
-  String get usingMasterPhoto;
-
-  /// No description provided for @validatingData.
-  ///
-  /// In en, this message translates to:
-  /// **'validating data...'**
-  String get validatingData;
-
-  /// No description provided for @validatingLink.
-  ///
-  /// In en, this message translates to:
-  /// **'validating link...'**
-  String get validatingLink;
-
-  /// No description provided for @verificationEmailSent.
-  ///
-  /// In en, this message translates to:
-  /// **'verification email sent!'**
-  String get verificationEmailSent;
-
-  /// No description provided for @verificationSentTo.
-  ///
-  /// In en, this message translates to:
-  /// **'a verification link has been sent to {email}. please check your inbox and spam folder.'**
-  String verificationSentTo(String email);
-
-  /// No description provided for @verifyYourEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'verify your email'**
-  String get verifyYourEmail;
-
-  /// No description provided for @viewDrafts.
-  ///
-  /// In en, this message translates to:
-  /// **'view drafts'**
-  String get viewDrafts;
-
-  /// No description provided for @wallet.
-  ///
-  /// In en, this message translates to:
-  /// **'wallet'**
-  String get wallet;
-
-  /// No description provided for @wed.
-  ///
-  /// In en, this message translates to:
-  /// **'wed'**
-  String get wed;
-
-  /// No description provided for @welcomeBack.
-  ///
-  /// In en, this message translates to:
-  /// **'welcome back'**
-  String get welcomeBack;
-
-  /// No description provided for @welcomeBackSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'welcome back!'**
-  String get welcomeBackSuccess;
 
   /// No description provided for @whatJobApply.
   ///
@@ -3053,546 +1207,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'work experience'**
   String get workExperience;
-
-  /// No description provided for @writeSomething.
-  ///
-  /// In en, this message translates to:
-  /// **'please write something'**
-  String get writeSomething;
-
-  /// No description provided for @year.
-  ///
-  /// In en, this message translates to:
-  /// **'year'**
-  String get year;
-
-  /// No description provided for @youreAllSet.
-  ///
-  /// In en, this message translates to:
-  /// **'you\'re all set!'**
-  String get youreAllSet;
-
-  /// text for the generate cv button
-  ///
-  /// In en, this message translates to:
-  /// **'generate'**
-  String generateCvCost(int cost);
-
-  /// No description provided for @generateCvFree.
-  ///
-  /// In en, this message translates to:
-  /// **'generate'**
-  String get generateCvFree;
-
-  /// No description provided for @onboardingStartFree.
-  ///
-  /// In en, this message translates to:
-  /// **'get started, it\'s free'**
-  String get onboardingStartFree;
-
-  /// No description provided for @onboardingFreeLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'2 free cvs, no credit card.'**
-  String get onboardingFreeLabel;
-
-  /// No description provided for @getCredits.
-  ///
-  /// In en, this message translates to:
-  /// **'get job hunter pass'**
-  String get getCredits;
-
-  /// No description provided for @benefitRegularTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'unlimited tailored generations'**
-  String get benefitRegularTitle;
-
-  /// No description provided for @benefitRegularDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'create as many cvs as you need, perfectly matched to every job'**
-  String get benefitRegularDesc;
-
-  /// No description provided for @benefitPremiumTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'access all premium templates'**
-  String get benefitPremiumTitle;
-
-  /// No description provided for @benefitPremiumDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'stand out with exclusive designs used by top professionals'**
-  String get benefitPremiumDesc;
-
-  /// No description provided for @benefitSkipAdsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'ad-free experience'**
-  String get benefitSkipAdsTitle;
-
-  /// No description provided for @benefitSkipAdsDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'no interruptions, just pure focus on your career'**
-  String get benefitSkipAdsDesc;
-
-  /// No description provided for @pass24h.
-  ///
-  /// In en, this message translates to:
-  /// **'24 hours'**
-  String get pass24h;
-
-  /// No description provided for @passWeekly.
-  ///
-  /// In en, this message translates to:
-  /// **'weekly'**
-  String get passWeekly;
-
-  /// No description provided for @passYearly.
-  ///
-  /// In en, this message translates to:
-  /// **'yearly'**
-  String get passYearly;
-
-  /// No description provided for @subscriptionRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'subscription required'**
-  String get subscriptionRequired;
-
-  /// No description provided for @upgradeNow.
-  ///
-  /// In en, this message translates to:
-  /// **'upgrade now'**
-  String get upgradeNow;
-
-  /// No description provided for @accessAllTemplates.
-  ///
-  /// In en, this message translates to:
-  /// **'access all templates'**
-  String get accessAllTemplates;
-
-  /// No description provided for @noAdsForever.
-  ///
-  /// In en, this message translates to:
-  /// **'no ads forever'**
-  String get noAdsForever;
-
-  /// No description provided for @daily.
-  ///
-  /// In en, this message translates to:
-  /// **'daily'**
-  String get daily;
-
-  /// No description provided for @weekly.
-  ///
-  /// In en, this message translates to:
-  /// **'weekly'**
-  String get weekly;
-
-  /// No description provided for @yearly.
-  ///
-  /// In en, this message translates to:
-  /// **'yearly'**
-  String get yearly;
-
-  /// No description provided for @creditsCount.
-  ///
-  /// In en, this message translates to:
-  /// **'active'**
-  String get creditsCount;
-
-  /// No description provided for @popularBadge.
-  ///
-  /// In en, this message translates to:
-  /// **'popular'**
-  String get popularBadge;
-
-  /// No description provided for @securePayment.
-  ///
-  /// In en, this message translates to:
-  /// **'secure payment via google play'**
-  String get securePayment;
-
-  /// No description provided for @perCredit.
-  ///
-  /// In en, this message translates to:
-  /// **'/credit'**
-  String get perCredit;
-
-  /// No description provided for @savePercent.
-  ///
-  /// In en, this message translates to:
-  /// **'save ~{percent}%'**
-  String savePercent(int percent);
-
-  /// No description provided for @packageSmall.
-  ///
-  /// In en, this message translates to:
-  /// **'24h'**
-  String get packageSmall;
-
-  /// No description provided for @packageMedium.
-  ///
-  /// In en, this message translates to:
-  /// **'weekly'**
-  String get packageMedium;
-
-  /// No description provided for @packagePro.
-  ///
-  /// In en, this message translates to:
-  /// **'yearly'**
-  String get packagePro;
-
-  /// No description provided for @noTransactionsYet.
-  ///
-  /// In en, this message translates to:
-  /// **'no transactions yet'**
-  String get noTransactionsYet;
-
-  /// No description provided for @topUp.
-  ///
-  /// In en, this message translates to:
-  /// **'top up'**
-  String get topUp;
-
-  /// No description provided for @cvExport.
-  ///
-  /// In en, this message translates to:
-  /// **'cv export'**
-  String get cvExport;
-
-  /// No description provided for @failedToLoadTransactions.
-  ///
-  /// In en, this message translates to:
-  /// **'failed to load transactions'**
-  String get failedToLoadTransactions;
-
-  /// No description provided for @freeExportsLeft.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} free exports left'**
-  String freeExportsLeft(Object count);
-
-  /// No description provided for @transactionHistory.
-  ///
-  /// In en, this message translates to:
-  /// **'transaction history'**
-  String get transactionHistory;
-
-  /// No description provided for @exports.
-  ///
-  /// In en, this message translates to:
-  /// **'exports'**
-  String get exports;
-
-  /// No description provided for @topUps.
-  ///
-  /// In en, this message translates to:
-  /// **'top ups'**
-  String get topUps;
-
-  /// No description provided for @onboardingTweetHandle1.
-  ///
-  /// In en, this message translates to:
-  /// **'@career_warrior'**
-  String get onboardingTweetHandle1;
-
-  /// No description provided for @onboardingTweetContent1.
-  ///
-  /// In en, this message translates to:
-  /// **'Finally, an app that builds my CV perfectly in minutes. The layout is just 🤌 #CleverApp'**
-  String get onboardingTweetContent1;
-
-  /// No description provided for @onboardingTweetHandle2.
-  ///
-  /// In en, this message translates to:
-  /// **'@intern_life'**
-  String get onboardingTweetHandle2;
-
-  /// No description provided for @onboardingTweetContent2.
-  ///
-  /// In en, this message translates to:
-  /// **'Interview invite 2 days after using Clever! The keyword optimization is actual magic. ✨'**
-  String get onboardingTweetContent2;
-
-  /// No description provided for @onboardingTweetHandle3.
-  ///
-  /// In en, this message translates to:
-  /// **'@stressed_grad'**
-  String get onboardingTweetHandle3;
-
-  /// No description provided for @onboardingTweetContent3.
-  ///
-  /// In en, this message translates to:
-  /// **'Stop manually editing layouts. Just focus on your skills, let Clever handle the rest. Best investment! 🚀'**
-  String get onboardingTweetContent3;
-
-  /// No description provided for @onboardingBurnoutTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'What part makes you burnout most when making a CV?'**
-  String get onboardingBurnoutTitle;
-
-  /// No description provided for @onboardingBurnout1.
-  ///
-  /// In en, this message translates to:
-  /// **'Copy paste from scratch'**
-  String get onboardingBurnout1;
-
-  /// No description provided for @onboardingBurnout2.
-  ///
-  /// In en, this message translates to:
-  /// **'Manual keyword analysis'**
-  String get onboardingBurnout2;
-
-  /// No description provided for @onboardingBurnout3.
-  ///
-  /// In en, this message translates to:
-  /// **'Fixing layout in Canva'**
-  String get onboardingBurnout3;
-
-  /// No description provided for @onboardingTimeSpentTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'How much time on average do you need to make a CV?'**
-  String get onboardingTimeSpentTitle;
-
-  /// No description provided for @onboardingTime1.
-  ///
-  /// In en, this message translates to:
-  /// **'1 hour'**
-  String get onboardingTime1;
-
-  /// No description provided for @onboardingTime2.
-  ///
-  /// In en, this message translates to:
-  /// **'2 hours'**
-  String get onboardingTime2;
-
-  /// No description provided for @onboardingTime3.
-  ///
-  /// In en, this message translates to:
-  /// **'1 day'**
-  String get onboardingTime3;
-
-  /// No description provided for @onboardingTime4.
-  ///
-  /// In en, this message translates to:
-  /// **'1 week'**
-  String get onboardingTime4;
-
-  /// No description provided for @onboardingProcrastinationTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'How often do you postpone making a CV because the process is exhausting?'**
-  String get onboardingProcrastinationTitle;
-
-  /// No description provided for @onboardingProcrastination1.
-  ///
-  /// In en, this message translates to:
-  /// **'Always, it\'s so stressful'**
-  String get onboardingProcrastination1;
-
-  /// No description provided for @onboardingProcrastination2.
-  ///
-  /// In en, this message translates to:
-  /// **'Quite often, whenever I apply'**
-  String get onboardingProcrastination2;
-
-  /// No description provided for @onboardingProcrastination3.
-  ///
-  /// In en, this message translates to:
-  /// **'Rarely, but I hate starting it'**
-  String get onboardingProcrastination3;
-
-  /// No description provided for @onboardingDiagnosisTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Diagnosis: You\'re Trapped in Routine'**
-  String get onboardingDiagnosisTitle;
-
-  /// No description provided for @onboardingDiagnosisSub.
-  ///
-  /// In en, this message translates to:
-  /// **'Spending {time} purely on {burnout} is draining your potential. Clever automates this in seconds, so you can focus on winning.'**
-  String onboardingDiagnosisSub(String time, String burnout);
-
-  /// No description provided for @onboardingSocialProof.
-  ///
-  /// In en, this message translates to:
-  /// **'1,240+ people are optimizing their CVs right now.'**
-  String get onboardingSocialProof;
-
-  /// No description provided for @onboardingSolutionHeadline.
-  ///
-  /// In en, this message translates to:
-  /// **'Leave it to CleVer.\nIn seconds.'**
-  String get onboardingSolutionHeadline;
-
-  /// No description provided for @onboardingStepWallTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Your career shortcut.'**
-  String get onboardingStepWallTitle;
-
-  /// No description provided for @onboardingStepWallSub.
-  ///
-  /// In en, this message translates to:
-  /// **'Join others who land jobs faster with Clever AI.'**
-  String get onboardingStepWallSub;
-
-  /// No description provided for @onboardingComparisonTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Achieve 2X more focus and clarity with CleVer'**
-  String get onboardingComparisonTitle;
-
-  /// No description provided for @onboardingComparisonLabelLeft.
-  ///
-  /// In en, this message translates to:
-  /// **'Without CleVer'**
-  String get onboardingComparisonLabelLeft;
-
-  /// No description provided for @onboardingComparisonLabelRight.
-  ///
-  /// In en, this message translates to:
-  /// **'With CleVer'**
-  String get onboardingComparisonLabelRight;
-
-  /// No description provided for @onboardingComparisonValueLeft.
-  ///
-  /// In en, this message translates to:
-  /// **'20%'**
-  String get onboardingComparisonValueLeft;
-
-  /// No description provided for @onboardingComparisonValueRight.
-  ///
-  /// In en, this message translates to:
-  /// **'2X'**
-  String get onboardingComparisonValueRight;
-
-  /// No description provided for @onboardingComparisonFooter.
-  ///
-  /// In en, this message translates to:
-  /// **'CleVer makes it easy and holds you accountable.'**
-  String get onboardingComparisonFooter;
-
-  /// No description provided for @onboardingViewSolution.
-  ///
-  /// In en, this message translates to:
-  /// **'View Solution'**
-  String get onboardingViewSolution;
-
-  /// No description provided for @showMeTheWay.
-  ///
-  /// In en, this message translates to:
-  /// **'Show Me The Way'**
-  String get showMeTheWay;
-
-  /// No description provided for @reviewPromptTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Loving your new CV?'**
-  String get reviewPromptTitle;
-
-  /// No description provided for @reviewPromptContent.
-  ///
-  /// In en, this message translates to:
-  /// **'Your support keeps CleVer running. If you\'re happy, a quick review means the world to us!'**
-  String get reviewPromptContent;
-
-  /// No description provided for @reviewPromptPositive.
-  ///
-  /// In en, this message translates to:
-  /// **'I love it!'**
-  String get reviewPromptPositive;
-
-  /// No description provided for @reviewPromptNegative.
-  ///
-  /// In en, this message translates to:
-  /// **'Needs improvement'**
-  String get reviewPromptNegative;
-
-  /// No description provided for @feedbackEmailSubject.
-  ///
-  /// In en, this message translates to:
-  /// **'CleVer CV Feedback'**
-  String get feedbackEmailSubject;
-
-  /// No description provided for @feedbackEmailBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Hi Clever Team,\n\nI have some feedback regarding the app:\n\n'**
-  String get feedbackEmailBody;
-
-  /// No description provided for @tutorialJobOcrTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Scan Job Postings'**
-  String get tutorialJobOcrTitle;
-
-  /// No description provided for @tutorialJobOcrDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Did you know you can screenshot a job posting? We\'ll extract the details for you instantly!'**
-  String get tutorialJobOcrDesc;
-
-  /// No description provided for @tutorialDraftsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Your Drafts'**
-  String get tutorialDraftsTitle;
-
-  /// No description provided for @tutorialDraftsDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'You can edit your drafts here and export them with different designs anytime.'**
-  String get tutorialDraftsDesc;
-
-  /// No description provided for @tutorialProfileTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Master Profile'**
-  String get tutorialProfileTitle;
-
-  /// No description provided for @tutorialProfileDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage your Master Profile here to keep your base CV data up to date.'**
-  String get tutorialProfileDesc;
-
-  /// No description provided for @tutorialNext.
-  ///
-  /// In en, this message translates to:
-  /// **'Next'**
-  String get tutorialNext;
-
-  /// No description provided for @tutorialFinish.
-  ///
-  /// In en, this message translates to:
-  /// **'Got it!'**
-  String get tutorialFinish;
-
-  /// No description provided for @legalInformation.
-  ///
-  /// In en, this message translates to:
-  /// **'legal information'**
-  String get legalInformation;
-
-  /// No description provided for @privacyPolicyAndTerms.
-  ///
-  /// In en, this message translates to:
-  /// **'privacy policy and terms'**
-  String get privacyPolicyAndTerms;
-
-  /// No description provided for @supportAndLegal.
-  ///
-  /// In en, this message translates to:
-  /// **'support & legal'**
-  String get supportAndLegal;
 
   /// No description provided for @mascotWelcome.
   ///
@@ -3630,192 +1244,6 @@ abstract class AppLocalizations {
   /// **'you just created your first cv! let\'s keep the momentum going.'**
   String get mascotExcitingSub;
 
-  /// No description provided for @voiceInput.
-  ///
-  /// In en, this message translates to:
-  /// **'voice input'**
-  String get voiceInput;
-
-  /// No description provided for @voiceMode.
-  ///
-  /// In en, this message translates to:
-  /// **'Voice'**
-  String get voiceMode;
-
-  /// No description provided for @voiceForm.
-  ///
-  /// In en, this message translates to:
-  /// **'Form'**
-  String get voiceForm;
-
-  /// No description provided for @voiceListening.
-  ///
-  /// In en, this message translates to:
-  /// **'listening...'**
-  String get voiceListening;
-
-  /// No description provided for @voiceProcessing.
-  ///
-  /// In en, this message translates to:
-  /// **'processing...'**
-  String get voiceProcessing;
-
-  /// No description provided for @voiceError.
-  ///
-  /// In en, this message translates to:
-  /// **'sorry, i couldn\'t catch that.'**
-  String get voiceError;
-
-  /// No description provided for @voiceParseError.
-  ///
-  /// In en, this message translates to:
-  /// **'couldn\'t process your voice input. please try again.'**
-  String get voiceParseError;
-
-  /// No description provided for @voicePermissionRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'microphone permission is required for voice input.'**
-  String get voicePermissionRequired;
-
-  /// No description provided for @voiceHint.
-  ///
-  /// In en, this message translates to:
-  /// **'tap to speak your details'**
-  String get voiceHint;
-
-  /// No description provided for @voiceExplainExperience.
-  ///
-  /// In en, this message translates to:
-  /// **'Try speaking naturally to tell your work story. For example:\n\"I worked as a Senior Software Engineer at Google from January 2021 until now. I led a checkout redesign that increased conversion rate by 12%.\"'**
-  String get voiceExplainExperience;
-
-  /// No description provided for @voiceExplainEducation.
-  ///
-  /// In en, this message translates to:
-  /// **'Tell us about your educational background in your own words. For example:\n\"I studied Computer Science at the University of Indonesia from 2018 to 2022, majoring in AI and graduated with honors.\"'**
-  String get voiceExplainEducation;
-
-  /// No description provided for @voiceUseSuara.
-  ///
-  /// In en, this message translates to:
-  /// **'Use voice'**
-  String get voiceUseSuara;
-
-  /// No description provided for @voiceAnalyzing.
-  ///
-  /// In en, this message translates to:
-  /// **'analyzing...'**
-  String get voiceAnalyzing;
-
-  /// No description provided for @voiceAlmostDone.
-  ///
-  /// In en, this message translates to:
-  /// **'almost done...'**
-  String get voiceAlmostDone;
-
-  /// No description provided for @voiceChecklistFilled.
-  ///
-  /// In en, this message translates to:
-  /// **'Filled'**
-  String get voiceChecklistFilled;
-
-  /// No description provided for @voiceSpeechUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Speech recognition unavailable'**
-  String get voiceSpeechUnavailable;
-
-  /// No description provided for @voiceTapToStop.
-  ///
-  /// In en, this message translates to:
-  /// **'Tap to stop recording'**
-  String get voiceTapToStop;
-
-  /// No description provided for @voiceParsingData.
-  ///
-  /// In en, this message translates to:
-  /// **'Parsing data...'**
-  String get voiceParsingData;
-
-  /// No description provided for @voiceTapMicHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Tap mic & speak naturally'**
-  String get voiceTapMicHint;
-
-  /// No description provided for @voiceExplainCertification.
-  ///
-  /// In en, this message translates to:
-  /// **'Describe your certifications or achievements. For example:\n\"I earned the AWS Certified Cloud Practitioner certification from Amazon Web Services in June 2023.\"'**
-  String get voiceExplainCertification;
-
-  /// No description provided for @onboardingNewBadge.
-  ///
-  /// In en, this message translates to:
-  /// **'NEW'**
-  String get onboardingNewBadge;
-
-  /// No description provided for @templateRequiresPhoto.
-  ///
-  /// In en, this message translates to:
-  /// **'this template needs a photo'**
-  String get templateRequiresPhoto;
-
-  /// No description provided for @templateRequiresPhotoDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'you selected a style with a profile photo, but no photo has been uploaded yet.'**
-  String get templateRequiresPhotoDesc;
-
-  /// No description provided for @uploadPhoto.
-  ///
-  /// In en, this message translates to:
-  /// **'upload photo'**
-  String get uploadPhoto;
-
-  /// No description provided for @useStyleWithoutPhoto.
-  ///
-  /// In en, this message translates to:
-  /// **'use style without photo'**
-  String get useStyleWithoutPhoto;
-
-  /// No description provided for @deviceLimitReached.
-  ///
-  /// In en, this message translates to:
-  /// **'Device limit reached. Free exports are limited to 2 per device.'**
-  String get deviceLimitReached;
-
-  /// No description provided for @lifetimeAccessActive.
-  ///
-  /// In en, this message translates to:
-  /// **'You have Lifetime Access!'**
-  String get lifetimeAccessActive;
-
-  /// No description provided for @lifetimeAccessActiveDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Enjoy unlimited CV generation and premium templates forever. No further actions needed.'**
-  String get lifetimeAccessActiveDesc;
-
-  /// No description provided for @upgradeToLifetime.
-  ///
-  /// In en, this message translates to:
-  /// **'Upgrade to Lifetime'**
-  String get upgradeToLifetime;
-
-  /// No description provided for @upgradeToLifetimeDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Get unlimited access forever and stop recurring billing.'**
-  String get upgradeToLifetimeDesc;
-
-  /// No description provided for @cancelRecurringWarning.
-  ///
-  /// In en, this message translates to:
-  /// **'You currently have an active subscription. Confirm now to instantly upgrade to Lifetime!'**
-  String get cancelRecurringWarning;
-
   /// No description provided for @cleverWelcomePersonaTitle.
   ///
   /// In en, this message translates to:
@@ -3851,18 +1279,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'do you use just 1 CV for every application?'**
   String get cleverWelcomeSingleCvTitle;
-
-  /// No description provided for @cleverYes.
-  ///
-  /// In en, this message translates to:
-  /// **'yes'**
-  String get cleverYes;
-
-  /// No description provided for @cleverNo.
-  ///
-  /// In en, this message translates to:
-  /// **'no'**
-  String get cleverNo;
 
   /// No description provided for @cleverWelcomeAppsTitle.
   ///
@@ -3929,54 +1345,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'applying to 100 openings becomes effective with tailored CVs!'**
   String get cleverWelcomeSocialProofTitle;
-
-  /// No description provided for @cleverGetStartedTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Nice to meet you!'**
-  String get cleverGetStartedTitle;
-
-  /// No description provided for @cleverGetStartedSubtitle1.
-  ///
-  /// In en, this message translates to:
-  /// **'feel more confident with tailored cvs.'**
-  String get cleverGetStartedSubtitle1;
-
-  /// No description provided for @cleverGetStartedSubtitle2.
-  ///
-  /// In en, this message translates to:
-  /// **'without the manual editing anymore.'**
-  String get cleverGetStartedSubtitle2;
-
-  /// No description provided for @cleverSignInGreeting.
-  ///
-  /// In en, this message translates to:
-  /// **'welcome back!'**
-  String get cleverSignInGreeting;
-
-  /// No description provided for @cleverGoogleSignUp.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign up with Google'**
-  String get cleverGoogleSignUp;
-
-  /// No description provided for @cleverGoogleSignIn.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in with Google'**
-  String get cleverGoogleSignIn;
-
-  /// No description provided for @cleverEmailInvalid.
-  ///
-  /// In en, this message translates to:
-  /// **'enter a valid email'**
-  String get cleverEmailInvalid;
-
-  /// No description provided for @cleverConsentLine.
-  ///
-  /// In en, this message translates to:
-  /// **'I have read the Privacy Policy & Terms'**
-  String get cleverConsentLine;
 
   /// No description provided for @cleverIntroTagline.
   ///
@@ -4278,23 +1646,1419 @@ abstract class AppLocalizations {
   /// **'you can edit everything anytime in your profile.'**
   String get cleverCompleteFootnote;
 
-  /// No description provided for @total.
-  ///
-  /// In en, this message translates to:
-  /// **'total'**
-  String get total;
-
-  /// No description provided for @searchResult.
-  ///
-  /// In en, this message translates to:
-  /// **'search results'**
-  String get searchResult;
-
   /// Import loading screen title per staging
   ///
   /// In en, this message translates to:
   /// **'importing'**
   String get cleverImportingTitle;
+
+  /// No description provided for @aiAnalyzingProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'ai is analyzing your profile...'**
+  String get aiAnalyzingProfile;
+
+  /// No description provided for @aiExtractingInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'extracting insights...'**
+  String get aiExtractingInsights;
+
+  /// No description provided for @cvDataExists.
+  ///
+  /// In en, this message translates to:
+  /// **'cv data already exists in your profile.'**
+  String get cvDataExists;
+
+  /// No description provided for @cvImportedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'cv imported successfully! let\'s complete your profile.'**
+  String get cvImportedSuccess;
+
+  /// No description provided for @importCV.
+  ///
+  /// In en, this message translates to:
+  /// **'import cv'**
+  String get importCV;
+
+  /// No description provided for @importCVMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'choose how to import your cv:'**
+  String get importCVMessage;
+
+  /// No description provided for @importCVTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'import cv'**
+  String get importCVTitle;
+
+  /// No description provided for @importFailedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'failed to import cv. please try again!'**
+  String get importFailedMessage;
+
+  /// No description provided for @importFromCV.
+  ///
+  /// In en, this message translates to:
+  /// **'import from cv'**
+  String get importFromCV;
+
+  /// No description provided for @importSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'cv imported successfully!\nadded: {expCount} experience, {eduCount} education, {skillsCount} skills'**
+  String importSuccessMessage(
+    Object eduCount,
+    Object expCount,
+    Object skillsCount,
+  );
+
+  /// No description provided for @importSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'import successful!'**
+  String get importSuccessTitle;
+
+  /// No description provided for @importSuccessSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'here\'s what we found in your cv:'**
+  String get importSuccessSubtitle;
+
+  /// No description provided for @importSuccessPersonalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'personal info detected'**
+  String get importSuccessPersonalInfo;
+
+  /// No description provided for @importSuccessExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} experience(s)'**
+  String importSuccessExperience(int count);
+
+  /// No description provided for @importSuccessEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} education(s)'**
+  String importSuccessEducation(int count);
+
+  /// No description provided for @importSuccessSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} skill(s)'**
+  String importSuccessSkills(int count);
+
+  /// No description provided for @importSuccessCertifications.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} certification(s)'**
+  String importSuccessCertifications(int count);
+
+  /// No description provided for @importSuccessContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'continue'**
+  String get importSuccessContinue;
+
+  /// No description provided for @importSuccessNoNewData.
+  ///
+  /// In en, this message translates to:
+  /// **'all data already exists in your profile.'**
+  String get importSuccessNoNewData;
+
+  /// No description provided for @jobExtractionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'failed to extract job posting'**
+  String get jobExtractionFailed;
+
+  /// No description provided for @jobExtractionSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'job posting extracted successfully!'**
+  String get jobExtractionSuccess;
+
+  /// No description provided for @jobDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'job description'**
+  String get jobDescription;
+
+  /// No description provided for @jobRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'requirements'**
+  String get jobRequirements;
+
+  /// No description provided for @noTextFound.
+  ///
+  /// In en, this message translates to:
+  /// **'no text found in image'**
+  String get noTextFound;
+
+  /// No description provided for @noTextFoundInCV.
+  ///
+  /// In en, this message translates to:
+  /// **'no text found in cv'**
+  String get noTextFoundInCV;
+
+  /// No description provided for @ocrScanning.
+  ///
+  /// In en, this message translates to:
+  /// **'ocr scanning'**
+  String get ocrScanning;
+
+  /// No description provided for @scanJobPosting.
+  ///
+  /// In en, this message translates to:
+  /// **'scan job posting'**
+  String get scanJobPosting;
+
+  /// No description provided for @searchJob.
+  ///
+  /// In en, this message translates to:
+  /// **'search for jobs...'**
+  String get searchJob;
+
+  /// No description provided for @cv.
+  ///
+  /// In en, this message translates to:
+  /// **'cv'**
+  String get cv;
+
+  /// No description provided for @aiAnalysisTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ai analysis'**
+  String get aiAnalysisTitle;
+
+  /// No description provided for @aiTailoringOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'ai tailoring options'**
+  String get aiTailoringOptions;
+
+  /// No description provided for @aiHelpCreateCV.
+  ///
+  /// In en, this message translates to:
+  /// **'ai will help create a cv perfectly tailored for this goal.'**
+  String get aiHelpCreateCV;
+
+  /// No description provided for @aiTestingConstraints.
+  ///
+  /// In en, this message translates to:
+  /// **'testing against ats constraints...'**
+  String get aiTestingConstraints;
+
+  /// No description provided for @maxSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'max skills'**
+  String get maxSkills;
+
+  /// No description provided for @honestAiFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'honest ai feedback'**
+  String get honestAiFeedback;
+
+  /// No description provided for @honestAiFeedbackDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'get strict & critical advice'**
+  String get honestAiFeedbackDesc;
+
+  /// No description provided for @conciseFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'concise format'**
+  String get conciseFormat;
+
+  /// No description provided for @conciseFormatDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'focus on brevity & impact'**
+  String get conciseFormatDesc;
+
+  /// No description provided for @cvOutputLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'cv output language'**
+  String get cvOutputLanguage;
+
+  /// No description provided for @cvOutputLanguageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'ai will write your cv content in this language'**
+  String get cvOutputLanguageDesc;
+
+  /// No description provided for @cvOutputLanguageAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'auto'**
+  String get cvOutputLanguageAuto;
+
+  /// No description provided for @atsStandard.
+  ///
+  /// In en, this message translates to:
+  /// **'ats standard'**
+  String get atsStandard;
+
+  /// No description provided for @autoFillFromMaster.
+  ///
+  /// In en, this message translates to:
+  /// **'data auto-filled from your master profile'**
+  String get autoFillFromMaster;
+
+  /// No description provided for @createCV.
+  ///
+  /// In en, this message translates to:
+  /// **'create cv'**
+  String get createCV;
+
+  /// No description provided for @creativeDesign.
+  ///
+  /// In en, this message translates to:
+  /// **'creative design'**
+  String get creativeDesign;
+
+  /// No description provided for @cvGeneratedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'cv generated successfully'**
+  String get cvGeneratedSuccess;
+
+  /// No description provided for @cvReadyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'your cv for {jobTitle} is ready!'**
+  String cvReadyMessage(Object jobTitle);
+
+  /// No description provided for @generateCVFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'generate your first cv to see it here'**
+  String get generateCVFirst;
+
+  /// No description provided for @cvs.
+  ///
+  /// In en, this message translates to:
+  /// **'cvs'**
+  String get cvs;
+
+  /// No description provided for @drafts.
+  ///
+  /// In en, this message translates to:
+  /// **'drafts'**
+  String get drafts;
+
+  /// No description provided for @exportPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'export pdf'**
+  String get exportPdf;
+
+  /// No description provided for @fetchingTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'fetching templates...'**
+  String get fetchingTemplates;
+
+  /// No description provided for @folderEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'folder is empty'**
+  String get folderEmpty;
+
+  /// No description provided for @includeProfilePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'include profile photo'**
+  String get includeProfilePhoto;
+
+  /// No description provided for @jobListTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'find jobs'**
+  String get jobListTitle;
+
+  /// No description provided for @jobListSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find the best career opportunities for you'**
+  String get jobListSubtitle;
+
+  /// No description provided for @jobListSocialTab.
+  ///
+  /// In en, this message translates to:
+  /// **'social (top picks)'**
+  String get jobListSocialTab;
+
+  /// No description provided for @jobListApiTab.
+  ///
+  /// In en, this message translates to:
+  /// **'job boards (api)'**
+  String get jobListApiTab;
+
+  /// No description provided for @jobListScannerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'found a job here? take a screenshot and use our smart scanner to instantly auto-fill your cv!'**
+  String get jobListScannerHint;
+
+  /// No description provided for @jobListNoAccountsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'no accounts found'**
+  String get jobListNoAccountsFound;
+
+  /// No description provided for @jobListNoAccountsFoundDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'could not find any accounts matching \"{query}\". want us to add a specific account?'**
+  String jobListNoAccountsFoundDesc(String query);
+
+  /// No description provided for @jobListGiveFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'give feedback'**
+  String get jobListGiveFeedback;
+
+  /// No description provided for @jobListSearchTagsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'search tags (e.g. design, tech, remote)'**
+  String get jobListSearchTagsHint;
+
+  /// No description provided for @jobListNoApiJobs.
+  ///
+  /// In en, this message translates to:
+  /// **'no api jobs available yet'**
+  String get jobListNoApiJobs;
+
+  /// No description provided for @jobListNoApiJobsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'check out the social tab for the best curated jobs!'**
+  String get jobListNoApiJobsSub;
+
+  /// No description provided for @jobListCreateCvForJob.
+  ///
+  /// In en, this message translates to:
+  /// **'create cv for this job'**
+  String get jobListCreateCvForJob;
+
+  /// No description provided for @jobListViewOriginal.
+  ///
+  /// In en, this message translates to:
+  /// **'view original'**
+  String get jobListViewOriginal;
+
+  /// No description provided for @locked.
+  ///
+  /// In en, this message translates to:
+  /// **'locked'**
+  String get locked;
+
+  /// No description provided for @loadingTemplatesBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'loading templates'**
+  String get loadingTemplatesBadge;
+
+  /// No description provided for @myCVs.
+  ///
+  /// In en, this message translates to:
+  /// **'my cvs'**
+  String get myCVs;
+
+  /// No description provided for @myDrafts.
+  ///
+  /// In en, this message translates to:
+  /// **'my drafts'**
+  String get myDrafts;
+
+  /// No description provided for @noDrafts.
+  ///
+  /// In en, this message translates to:
+  /// **'no drafts yet.'**
+  String get noDrafts;
+
+  /// No description provided for @noMatchingPdfs.
+  ///
+  /// In en, this message translates to:
+  /// **'no pdfs match your search.'**
+  String get noMatchingPdfs;
+
+  /// No description provided for @searchGeneratedCvs.
+  ///
+  /// In en, this message translates to:
+  /// **'search generated cvs...'**
+  String get searchGeneratedCvs;
+
+  /// No description provided for @premium.
+  ///
+  /// In en, this message translates to:
+  /// **'premium'**
+  String get premium;
+
+  /// No description provided for @previewTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'preview template'**
+  String get previewTemplate;
+
+  /// No description provided for @requirementsCheckLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'requirements check:'**
+  String get requirementsCheckLabel;
+
+  /// No description provided for @reviewData.
+  ///
+  /// In en, this message translates to:
+  /// **'review data'**
+  String get reviewData;
+
+  /// No description provided for @reviewedByAI.
+  ///
+  /// In en, this message translates to:
+  /// **'data & summary tailored by ai'**
+  String get reviewedByAI;
+
+  /// No description provided for @selectTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'select template'**
+  String get selectTemplate;
+
+  /// No description provided for @tailoredDataMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'this data has been tailored by ai to be relevant to your target position. please review!'**
+  String get tailoredDataMessage;
+
+  /// No description provided for @templateLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'error loading templates: {error}'**
+  String templateLoadError(Object error);
+
+  /// No description provided for @usingMasterPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'using master profile photo'**
+  String get usingMasterPhoto;
+
+  /// No description provided for @viewDrafts.
+  ///
+  /// In en, this message translates to:
+  /// **'view drafts'**
+  String get viewDrafts;
+
+  /// No description provided for @generateCvFree.
+  ///
+  /// In en, this message translates to:
+  /// **'generate'**
+  String get generateCvFree;
+
+  /// No description provided for @cvExport.
+  ///
+  /// In en, this message translates to:
+  /// **'cv export'**
+  String get cvExport;
+
+  /// No description provided for @freeExportsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} free exports left'**
+  String freeExportsLeft(Object count);
+
+  /// No description provided for @exports.
+  ///
+  /// In en, this message translates to:
+  /// **'exports'**
+  String get exports;
+
+  /// No description provided for @templateRequiresPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'this template needs a photo'**
+  String get templateRequiresPhoto;
+
+  /// No description provided for @templateRequiresPhotoDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'you selected a style with a profile photo, but no photo has been uploaded yet.'**
+  String get templateRequiresPhotoDesc;
+
+  /// No description provided for @useStyleWithoutPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'use style without photo'**
+  String get useStyleWithoutPhoto;
+
+  /// No description provided for @accountDeleteError.
+  ///
+  /// In en, this message translates to:
+  /// **'failed to delete account: {error}'**
+  String accountDeleteError(Object error);
+
+  /// No description provided for @accountDeletedGoodbye.
+  ///
+  /// In en, this message translates to:
+  /// **'account successfully deleted. goodbye!'**
+  String get accountDeletedGoodbye;
+
+  /// No description provided for @quickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'quick actions'**
+  String get quickActions;
+
+  /// No description provided for @cleverUser.
+  ///
+  /// In en, this message translates to:
+  /// **'clever user'**
+  String get cleverUser;
+
+  /// No description provided for @bugReport.
+  ///
+  /// In en, this message translates to:
+  /// **'bug report'**
+  String get bugReport;
+
+  /// No description provided for @completeProfileFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'complete profile first for best results'**
+  String get completeProfileFirst;
+
+  /// No description provided for @confirmDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'confirm deletion'**
+  String get confirmDelete;
+
+  /// No description provided for @contactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'contact support'**
+  String get contactSupport;
+
+  /// No description provided for @noCompletedCVs.
+  ///
+  /// In en, this message translates to:
+  /// **'no generated cvs yet'**
+  String get noCompletedCVs;
+
+  /// No description provided for @deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'delete account'**
+  String get deleteAccount;
+
+  /// No description provided for @deleteAccountQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'delete account?'**
+  String get deleteAccountQuestion;
+
+  /// No description provided for @deleteAccountWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'this action is irreversible. all your data, including generated cvs and active subscriptions, will be permanently deleted.'**
+  String get deleteAccountWarning;
+
+  /// No description provided for @deleteConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'are you sure you want to delete this item?'**
+  String get deleteConfirmation;
+
+  /// No description provided for @editExperienceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'edit experience'**
+  String get editExperienceTitle;
+
+  /// No description provided for @faqDataAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'your data is stored locally (master profile). data sent to ai is processed briefly and not stored.'**
+  String get faqDataAnswer;
+
+  /// No description provided for @faqDataQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'is my data safe?'**
+  String get faqDataQuestion;
+
+  /// No description provided for @faqEditAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'go to the profile menu, edit the section you want, and hit save.'**
+  String get faqEditAnswer;
+
+  /// No description provided for @faqEditQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'how to edit profile?'**
+  String get faqEditQuestion;
+
+  /// No description provided for @faqFreeAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'yes, basic features are free. we might add premium features in the future.'**
+  String get faqFreeAnswer;
+
+  /// No description provided for @faqFreeQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'is cv master free?'**
+  String get faqFreeQuestion;
+
+  /// No description provided for @faqPdfAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'sure! after creating your cv, you can download/print pdf in the preview.'**
+  String get faqPdfAnswer;
+
+  /// No description provided for @faqPdfQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'can i export to pdf?'**
+  String get faqPdfQuestion;
+
+  /// No description provided for @featureRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'feature request'**
+  String get featureRequest;
+
+  /// No description provided for @feedback.
+  ///
+  /// In en, this message translates to:
+  /// **'feedback'**
+  String get feedback;
+
+  /// No description provided for @feedbackSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'share your experience or report an issue.'**
+  String get feedbackSubtitle;
+
+  /// No description provided for @message.
+  ///
+  /// In en, this message translates to:
+  /// **'message'**
+  String get message;
+
+  /// No description provided for @recentTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'recent transactions'**
+  String get recentTransactions;
+
+  /// No description provided for @feedbackThanksMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'your feedback is valuable for cv master development.'**
+  String get feedbackThanksMessage;
+
+  /// No description provided for @frequentQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'common questions'**
+  String get frequentQuestions;
+
+  /// No description provided for @helpSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'help & support'**
+  String get helpSupport;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'home'**
+  String get home;
+
+  /// No description provided for @howCanWeHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'how can we help you?'**
+  String get howCanWeHelp;
+
+  /// No description provided for @logOut.
+  ///
+  /// In en, this message translates to:
+  /// **'log out'**
+  String get logOut;
+
+  /// No description provided for @masterProfileUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'master profile updated successfully'**
+  String get masterProfileUpdated;
+
+  /// No description provided for @noMatchingJobs.
+  ///
+  /// In en, this message translates to:
+  /// **'no matching jobs found.'**
+  String get noMatchingJobs;
+
+  /// No description provided for @noNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'no notifications yet'**
+  String get noNotifications;
+
+  /// No description provided for @notificationChannelCVDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'notifications for cv generation updates'**
+  String get notificationChannelCVDesc;
+
+  /// No description provided for @notificationChannelCVTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'cv generation'**
+  String get notificationChannelCVTitle;
+
+  /// No description provided for @notificationChannelGeneralDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'general app notifications'**
+  String get notificationChannelGeneralDesc;
+
+  /// No description provided for @notificationChannelGeneralTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'general alerts'**
+  String get notificationChannelGeneralTitle;
+
+  /// No description provided for @notificationNew.
+  ///
+  /// In en, this message translates to:
+  /// **'new notification'**
+  String get notificationNew;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'notifications'**
+  String get notifications;
+
+  /// No description provided for @photoSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'photo settings'**
+  String get photoSettings;
+
+  /// No description provided for @photoUpdateError.
+  ///
+  /// In en, this message translates to:
+  /// **'error uploading photo: {error}'**
+  String photoUpdateError(String error);
+
+  /// No description provided for @photoUpdateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'profile photo updated successfully!'**
+  String get photoUpdateSuccess;
+
+  /// No description provided for @profilePhotoExportTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'this photo will be used for every pdf export that includes a photo.'**
+  String get profilePhotoExportTooltip;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'privacy policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'profile'**
+  String get profile;
+
+  /// No description provided for @profileSavedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'profile saved! will be used for your next cv.'**
+  String get profileSavedSuccess;
+
+  /// No description provided for @saveChangesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have unsaved changes. Would you like to save them before leaving?'**
+  String get saveChangesMessage;
+
+  /// No description provided for @saveChangesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsaved Changes'**
+  String get saveChangesTitle;
+
+  /// No description provided for @saveProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'save profile'**
+  String get saveProfile;
+
+  /// No description provided for @sendFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'send feedback'**
+  String get sendFeedback;
+
+  /// No description provided for @suggestionsBugs.
+  ///
+  /// In en, this message translates to:
+  /// **'suggestions & bugs'**
+  String get suggestionsBugs;
+
+  /// No description provided for @termsOfService.
+  ///
+  /// In en, this message translates to:
+  /// **'terms of service'**
+  String get termsOfService;
+
+  /// No description provided for @wallet.
+  ///
+  /// In en, this message translates to:
+  /// **'wallet'**
+  String get wallet;
+
+  /// No description provided for @noTransactionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'no transactions yet'**
+  String get noTransactionsYet;
+
+  /// No description provided for @failedToLoadTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'failed to load transactions'**
+  String get failedToLoadTransactions;
+
+  /// No description provided for @transactionHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'transaction history'**
+  String get transactionHistory;
+
+  /// No description provided for @reviewPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Loving your new CV?'**
+  String get reviewPromptTitle;
+
+  /// No description provided for @reviewPromptContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your support keeps CleVer running. If you\'re happy, a quick review means the world to us!'**
+  String get reviewPromptContent;
+
+  /// No description provided for @reviewPromptPositive.
+  ///
+  /// In en, this message translates to:
+  /// **'I love it!'**
+  String get reviewPromptPositive;
+
+  /// No description provided for @reviewPromptNegative.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs improvement'**
+  String get reviewPromptNegative;
+
+  /// No description provided for @tutorialJobOcrTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan Job Postings'**
+  String get tutorialJobOcrTitle;
+
+  /// No description provided for @tutorialJobOcrDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Did you know you can screenshot a job posting? We\'ll extract the details for you instantly!'**
+  String get tutorialJobOcrDesc;
+
+  /// No description provided for @tutorialDraftsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Drafts'**
+  String get tutorialDraftsTitle;
+
+  /// No description provided for @tutorialDraftsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You can edit your drafts here and export them with different designs anytime.'**
+  String get tutorialDraftsDesc;
+
+  /// No description provided for @tutorialProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Master Profile'**
+  String get tutorialProfileTitle;
+
+  /// No description provided for @tutorialProfileDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your Master Profile here to keep your base CV data up to date.'**
+  String get tutorialProfileDesc;
+
+  /// No description provided for @tutorialNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get tutorialNext;
+
+  /// No description provided for @tutorialFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it!'**
+  String get tutorialFinish;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'active'**
+  String get active;
+
+  /// No description provided for @activePass.
+  ///
+  /// In en, this message translates to:
+  /// **'active pass'**
+  String get activePass;
+
+  /// No description provided for @free.
+  ///
+  /// In en, this message translates to:
+  /// **'free'**
+  String get free;
+
+  /// No description provided for @membershipStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'membership status'**
+  String get membershipStatus;
+
+  /// No description provided for @subscriptionWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'you have an active job hunter pass. deleting your account will terminate your access immediately and cannot be refunded.'**
+  String get subscriptionWarning;
+
+  /// No description provided for @jobHunterPass.
+  ///
+  /// In en, this message translates to:
+  /// **'job hunter pass'**
+  String get jobHunterPass;
+
+  /// No description provided for @getJobHunterPassNow.
+  ///
+  /// In en, this message translates to:
+  /// **'subscribe'**
+  String get getJobHunterPassNow;
+
+  /// No description provided for @paywallHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Land Your Dream Job'**
+  String get paywallHeadline;
+
+  /// No description provided for @bestValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Best Value'**
+  String get bestValue;
+
+  /// No description provided for @downsellHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Just Need It Today?'**
+  String get downsellHeadline;
+
+  /// No description provided for @downsellCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Try It for 24 Hours'**
+  String get downsellCta;
+
+  /// No description provided for @downsellTrust.
+  ///
+  /// In en, this message translates to:
+  /// **'No auto-renew · One-time pass'**
+  String get downsellTrust;
+
+  /// No description provided for @noThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'No thanks'**
+  String get noThanks;
+
+  /// No description provided for @paywallSimpleBenefit.
+  ///
+  /// In en, this message translates to:
+  /// **'access all features and templates unlimited. no ads'**
+  String get paywallSimpleBenefit;
+
+  /// No description provided for @product24hTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'24 Hour Pass'**
+  String get product24hTitle;
+
+  /// No description provided for @product24hDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Full access for 24 hours'**
+  String get product24hDesc;
+
+  /// No description provided for @product3dTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'3 Day Pass'**
+  String get product3dTitle;
+
+  /// No description provided for @product3dDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Full access for 3 days'**
+  String get product3dDesc;
+
+  /// No description provided for @productWeeklyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get productWeeklyTitle;
+
+  /// No description provided for @productWeeklyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'≈ {price}/day'**
+  String productWeeklyDesc(String price);
+
+  /// No description provided for @productMonthlyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get productMonthlyTitle;
+
+  /// No description provided for @productMonthlyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'≈ {price}/day'**
+  String productMonthlyDesc(String price);
+
+  /// No description provided for @productYearlyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get productYearlyTitle;
+
+  /// No description provided for @productYearlyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'≈ {price}/day'**
+  String productYearlyDesc(String price);
+
+  /// No description provided for @productLifetimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime Access'**
+  String get productLifetimeTitle;
+
+  /// No description provided for @productLifetimeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time payment · Forever'**
+  String get productLifetimeDesc;
+
+  /// No description provided for @passLifetime.
+  ///
+  /// In en, this message translates to:
+  /// **'lifetime'**
+  String get passLifetime;
+
+  /// No description provided for @activate.
+  ///
+  /// In en, this message translates to:
+  /// **'activate'**
+  String get activate;
+
+  /// No description provided for @subscriptionExpiryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'expires in {time}'**
+  String subscriptionExpiryCount(String time);
+
+  /// No description provided for @upgradeNow.
+  ///
+  /// In en, this message translates to:
+  /// **'upgrade now'**
+  String get upgradeNow;
+
+  /// No description provided for @weekly.
+  ///
+  /// In en, this message translates to:
+  /// **'weekly'**
+  String get weekly;
+
+  /// No description provided for @yearly.
+  ///
+  /// In en, this message translates to:
+  /// **'yearly'**
+  String get yearly;
+
+  /// No description provided for @deviceLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Device limit reached. Free exports are limited to 2 per device.'**
+  String get deviceLimitReached;
+
+  /// No description provided for @lifetimeAccessActive.
+  ///
+  /// In en, this message translates to:
+  /// **'You have Lifetime Access!'**
+  String get lifetimeAccessActive;
+
+  /// No description provided for @lifetimeAccessActiveDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy unlimited CV generation and premium templates forever. No further actions needed.'**
+  String get lifetimeAccessActiveDesc;
+
+  /// No description provided for @upgradeToLifetime.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Lifetime'**
+  String get upgradeToLifetime;
+
+  /// No description provided for @upgradeToLifetimeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get unlimited access forever and stop recurring billing.'**
+  String get upgradeToLifetimeDesc;
+
+  /// No description provided for @cancelRecurringWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'You currently have an active subscription. Confirm now to instantly upgrade to Lifetime!'**
+  String get cancelRecurringWarning;
+
+  /// No description provided for @almostThere.
+  ///
+  /// In en, this message translates to:
+  /// **'almost there...'**
+  String get almostThere;
+
+  /// No description provided for @analyzeProfileError.
+  ///
+  /// In en, this message translates to:
+  /// **'failed to analyze profile: {error}'**
+  String analyzeProfileError(Object error);
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'category'**
+  String get category;
+
+  /// No description provided for @continuingToForm.
+  ///
+  /// In en, this message translates to:
+  /// **'continuing to form...'**
+  String get continuingToForm;
+
+  /// No description provided for @created.
+  ///
+  /// In en, this message translates to:
+  /// **'created'**
+  String get created;
+
+  /// No description provided for @dateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'date:'**
+  String get dateLabel;
+
+  /// No description provided for @errorDetailsCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'error details copied to clipboard'**
+  String get errorDetailsCopied;
+
+  /// No description provided for @fillDescriptionFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'please fill in the description first to use ai rewrite!'**
+  String get fillDescriptionFirst;
+
+  /// No description provided for @fillJobTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'fill job title first!'**
+  String get fillJobTitle;
+
+  /// No description provided for @fillNameError.
+  ///
+  /// In en, this message translates to:
+  /// **'please fill in your full name first.'**
+  String get fillNameError;
+
+  /// No description provided for @generated.
+  ///
+  /// In en, this message translates to:
+  /// **'generated'**
+  String get generated;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'get started'**
+  String get getStarted;
+
+  /// No description provided for @jobDetailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'paste job description, requirements, or qualifications here...'**
+  String get jobDetailHint;
+
+  /// No description provided for @jobDetailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'detail / qualification (optional)'**
+  String get jobDetailLabel;
+
+  /// No description provided for @jobCouldNotOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'could not open link'**
+  String get jobCouldNotOpen;
+
+  /// No description provided for @jobs.
+  ///
+  /// In en, this message translates to:
+  /// **'jobs'**
+  String get jobs;
+
+  /// No description provided for @messageDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'message / detail'**
+  String get messageDetail;
+
+  /// No description provided for @allFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'all'**
+  String get allFilter;
+
+  /// No description provided for @question.
+  ///
+  /// In en, this message translates to:
+  /// **'question'**
+  String get question;
+
+  /// No description provided for @rewrite.
+  ///
+  /// In en, this message translates to:
+  /// **'rewrite'**
+  String get rewrite;
+
+  /// No description provided for @rewriteAI.
+  ///
+  /// In en, this message translates to:
+  /// **'rewrite ai'**
+  String get rewriteAI;
+
+  /// No description provided for @rewriteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'rewrite failed: {error}'**
+  String rewriteFailed(String error);
+
+  /// No description provided for @sending.
+  ///
+  /// In en, this message translates to:
+  /// **'sending...'**
+  String get sending;
+
+  /// No description provided for @skillHint.
+  ///
+  /// In en, this message translates to:
+  /// **'ex: flutter, leadership'**
+  String get skillHint;
+
+  /// No description provided for @technicalDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'technical details'**
+  String get technicalDetails;
+
+  /// No description provided for @thankYou.
+  ///
+  /// In en, this message translates to:
+  /// **'thank you!'**
+  String get thankYou;
+
+  /// No description provided for @voiceListening.
+  ///
+  /// In en, this message translates to:
+  /// **'listening...'**
+  String get voiceListening;
+
+  /// No description provided for @voiceProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'processing...'**
+  String get voiceProcessing;
+
+  /// No description provided for @voiceParseError.
+  ///
+  /// In en, this message translates to:
+  /// **'couldn\'t process your voice input. please try again.'**
+  String get voiceParseError;
+
+  /// No description provided for @voiceUseSuara.
+  ///
+  /// In en, this message translates to:
+  /// **'Use voice'**
+  String get voiceUseSuara;
+
+  /// No description provided for @voiceAnalyzing.
+  ///
+  /// In en, this message translates to:
+  /// **'analyzing...'**
+  String get voiceAnalyzing;
+
+  /// No description provided for @voiceAlmostDone.
+  ///
+  /// In en, this message translates to:
+  /// **'almost done...'**
+  String get voiceAlmostDone;
+
+  /// No description provided for @voiceSpeechUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech recognition unavailable'**
+  String get voiceSpeechUnavailable;
+
+  /// No description provided for @voiceTapMicHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap mic & speak naturally'**
+  String get voiceTapMicHint;
 }
 
 class _AppLocalizationsDelegate
