@@ -69,7 +69,7 @@ class AppLoadingScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      badgeIcon ?? Icons.auto_awesome,
+                      badgeIcon ?? Icons.autorenew,
                       size: 16,
                       color: colorScheme.onSurfaceVariant,
                     ),

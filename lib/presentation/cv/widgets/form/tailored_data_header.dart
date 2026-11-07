@@ -18,8 +18,6 @@ class TailoredDataHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.auto_awesome, color: Colors.blue),
-          const SizedBox(width: 12),
           Expanded(
             child: Text(
               AppLocalizations.of(context)!.tailoredDataMessage,

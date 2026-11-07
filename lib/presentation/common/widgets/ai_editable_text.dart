@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_micro_interactions/flutter_micro_interactions.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class AIEditableText extends StatefulWidget {
@@ -170,16 +171,15 @@ class _AIEditableTextState extends State<AIEditableText> {
                 ),
                 const Spacer(),
                 if (_isRewriting)
-                  const SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                  const TypewriterText(
+                    strings: ['improving...'],
+                    loop: true,
+                    style: TextStyle(fontSize: 12),
                   )
                 else
-                  TextButton.icon(
+                  TextButton(
                     onPressed: _handleRewrite,
-                    icon: const Icon(Icons.auto_awesome, size: 16),
-                    label: Text(
+                    child: Text(
                       AppLocalizations.of(context)!.rewrite,
                       style: const TextStyle(fontSize: 12),
                     ),

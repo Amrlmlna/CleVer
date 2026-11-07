@@ -13,8 +13,8 @@ import '../../common/widgets/clever/clever_confirm_sheet.dart';
 import '../../common/widgets/clever/clever_dictate_panel.dart';
 import '../../common/widgets/clever/clever_form_toggle.dart';
 import '../../common/widgets/clever/clever_nav_action_bar.dart';
+import '../../common/widgets/clever/clever_rewrite_trigger.dart';
 import '../../common/widgets/clever/clever_text_field.dart';
-import '../../common/widgets/spinning_text_loader.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../onboarding/widgets/clever_panel/clever_subjects_section.dart';
 import '../../common/widgets/university_picker.dart';
@@ -392,41 +392,17 @@ class _EducationBottomSheetState extends ConsumerState<EducationBottomSheet> {
                           ),
                         ),
                         if (_isRewriting)
-                          SizedBox(
-                            height: 16,
-                            width: 100,
-                            child: SpinningTextLoader(
-                              texts: [
-                                l10n.improving,
-                                l10n.rephrasing,
-                                l10n.polishing,
-                              ],
-                              style: CleverTypography.bodySm.copyWith(
-                                color: CleverColors.textPrimary,
-                              ),
-                              interval: const Duration(milliseconds: 800),
-                            ),
+                          CleverRewriteLoading(
+                            phrases: [
+                              l10n.improving,
+                              l10n.rephrasing,
+                              l10n.polishing,
+                            ],
                           )
                         else
-                          InkWell(
+                          CleverRewriteTrigger(
+                            label: l10n.rewriteAI,
                             onTap: _rewriteDescription,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.auto_awesome,
-                                  size: 14,
-                                  color: CleverColors.bgAction,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  l10n.rewriteAI,
-                                  style: CleverTypography.bodySm.copyWith(
-                                    color: CleverColors.bgAction,
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                       ],
                     ),
