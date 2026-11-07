@@ -163,7 +163,8 @@ class _CleverSignupPageState extends ConsumerState<CleverSignupPage> {
                       const SizedBox(height: CleverSpacing.space24),
                       CleverButton(
                         label: l10n.createAccount,
-                        onTap: _submitting ? null : _submit,
+                        onTap: _submit,
+                        busy: _submitting,
                       ),
                       const SizedBox(height: CleverSpacing.space16),
                       _SwitchPrompt(

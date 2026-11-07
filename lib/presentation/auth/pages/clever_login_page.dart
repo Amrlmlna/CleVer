@@ -181,7 +181,8 @@ class _CleverLoginPageState extends ConsumerState<CleverLoginPage> {
                       const SizedBox(height: CleverSpacing.space8),
                       CleverButton(
                         label: l10n.login,
-                        onTap: _submitting ? null : _submit,
+                        onTap: _submit,
+                        busy: _submitting,
                       ),
                       const SizedBox(height: CleverSpacing.space16),
                       TextButton(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_micro_interactions/flutter_micro_interactions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/theme/clever/clever_colors.dart';
@@ -109,57 +110,61 @@ class CleverEntryRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TapFeedback without onTap: the tap-down listener drives the press
+    // animation while the inner InkWell keeps ownership of tap/long-press.
     return Material(
       color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        onLongPress: onLongPress,
-        borderRadius: BorderRadius.circular(CleverRadius.button),
-        child: Container(
-          height: 55,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(
-            color: CleverColors.bgCanvas,
-            borderRadius: BorderRadius.circular(CleverRadius.button),
-          ),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.north_east,
-                size: 21,
-                color: CleverColors.surfaceInverse,
-              ),
-              const SizedBox(width: CleverSpacing.space12),
-              Expanded(
-                child: Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: CleverTypography.bodyStrong.copyWith(
-                    color: CleverColors.textPrimary,
+      child: TapFeedback.scale(
+        child: InkWell(
+          onTap: onTap,
+          onLongPress: onLongPress,
+          borderRadius: BorderRadius.circular(CleverRadius.button),
+          child: Container(
+            height: 55,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+              color: CleverColors.bgCanvas,
+              borderRadius: BorderRadius.circular(CleverRadius.button),
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.north_east,
+                  size: 21,
+                  color: CleverColors.surfaceInverse,
+                ),
+                const SizedBox(width: CleverSpacing.space12),
+                Expanded(
+                  child: Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: CleverTypography.bodyStrong.copyWith(
+                      color: CleverColors.textPrimary,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: CleverSpacing.space8),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    metaTop,
-                    style: CleverTypography.micro.copyWith(
-                      color: CleverColors.textPrimary,
+                const SizedBox(width: CleverSpacing.space8),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      metaTop,
+                      style: CleverTypography.micro.copyWith(
+                        color: CleverColors.textPrimary,
+                      ),
                     ),
-                  ),
-                  Text(
-                    metaBottom,
-                    style: CleverTypography.caption.copyWith(
-                      color: CleverColors.textPrimary,
+                    Text(
+                      metaBottom,
+                      style: CleverTypography.caption.copyWith(
+                        color: CleverColors.textPrimary,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -184,10 +189,12 @@ class CleverEntryList extends StatelessWidget {
       children: [
         Positioned.fill(
           child: SingleChildScrollView(
+            // StaggeredItem (not StaggeredList — that one is itself a
+            // ListView and cannot nest inside this scrollable).
             child: Column(
               children: [
                 for (var i = 0; i < itemCount; i++) ...[
-                  rowBuilder(i),
+                  StaggeredItem(index: i, child: rowBuilder(i)),
                   if (i != itemCount - 1)
                     const SizedBox(height: CleverSpacing.space12),
                 ],

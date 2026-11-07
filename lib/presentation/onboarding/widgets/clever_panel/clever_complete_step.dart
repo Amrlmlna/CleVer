@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_micro_interactions/flutter_micro_interactions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/clever/clever_colors.dart';
@@ -53,10 +54,11 @@ class CleverCompleteStep extends ConsumerWidget {
                         shape: BoxShape.circle,
                         color: CleverColors.bgCanvas,
                       ),
-                      child: const Icon(
-                        Icons.check,
+                      // The check draws itself stroke-by-stroke on mount.
+                      child: AnimatedCheck(
                         size: 34,
                         color: CleverColors.bgAction,
+                        showCircle: false,
                       ),
                     ),
                   ),
@@ -88,7 +90,7 @@ class CleverCompleteStep extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        '$completed dari 5',
+                        l10n.cleverCompleteProgress(completed),
                         style: CleverTypography.body.copyWith(
                           color: CleverColors.textOnInverse
                               .withValues(alpha: 0.75),
@@ -97,34 +99,53 @@ class CleverCompleteStep extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: CleverSpacing.space16),
-                  _SummaryRow(
-                    label: l10n.cleverCompleteRowHeader,
-                    detail: formData.fullName,
-                    done: filled[0],
-                  ),
-                  _SummaryRow(
-                    label: l10n.experienceTitle,
-                    detail: l10n.cleverCompleteCount(
-                      formData.experience.length,
+                  // StaggeredItem per row — StaggeredList is itself a
+                  // ListView and cannot nest inside this scrollable.
+                  StaggeredItem(
+                    index: 0,
+                    child: _SummaryRow(
+                      label: l10n.cleverCompleteRowHeader,
+                      detail: formData.fullName,
+                      done: filled[0],
                     ),
-                    done: filled[1],
                   ),
-                  _SummaryRow(
-                    label: l10n.educationTitle,
-                    detail: l10n.cleverCompleteCount(formData.education.length),
-                    done: filled[2],
-                  ),
-                  _SummaryRow(
-                    label: l10n.certificationTitle,
-                    detail: l10n.cleverCompleteCount(
-                      formData.certifications.length,
+                  StaggeredItem(
+                    index: 1,
+                    child: _SummaryRow(
+                      label: l10n.experienceTitle,
+                      detail: l10n.cleverCompleteCount(
+                        formData.experience.length,
+                      ),
+                      done: filled[1],
                     ),
-                    done: filled[3],
                   ),
-                  _SummaryRow(
-                    label: l10n.skillsTitle,
-                    detail: l10n.cleverCompleteCount(formData.skills.length),
-                    done: filled[4],
+                  StaggeredItem(
+                    index: 2,
+                    child: _SummaryRow(
+                      label: l10n.educationTitle,
+                      detail: l10n.cleverCompleteCount(
+                        formData.education.length,
+                      ),
+                      done: filled[2],
+                    ),
+                  ),
+                  StaggeredItem(
+                    index: 3,
+                    child: _SummaryRow(
+                      label: l10n.certificationTitle,
+                      detail: l10n.cleverCompleteCount(
+                        formData.certifications.length,
+                      ),
+                      done: filled[3],
+                    ),
+                  ),
+                  StaggeredItem(
+                    index: 4,
+                    child: _SummaryRow(
+                      label: l10n.skillsTitle,
+                      detail: l10n.cleverCompleteCount(formData.skills.length),
+                      done: filled[4],
+                    ),
                   ),
                 ],
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_micro_interactions/flutter_micro_interactions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/clever/clever_colors.dart';
@@ -97,42 +98,47 @@ class _MethodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TapFeedback without onTap: its tap-down listener still drives the
+    // press animation (it fires optimistically before the arena resolves in
+    // the inner InkWell's favour), and it can never double-fire navigation.
     return Material(
       color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(CleverRadius.card),
-        child: Container(
-          padding: const EdgeInsets.all(CleverSpacing.space16),
-          decoration: BoxDecoration(
-            color: CleverColors.surfaceFieldOnAction,
-            borderRadius: BorderRadius.circular(CleverRadius.card),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: CleverTypography.h3.copyWith(
-                        color: CleverColors.textOnInverse,
+      child: TapFeedback.scale(
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(CleverRadius.card),
+          child: Container(
+            padding: const EdgeInsets.all(CleverSpacing.space16),
+            decoration: BoxDecoration(
+              color: CleverColors.surfaceFieldOnAction,
+              borderRadius: BorderRadius.circular(CleverRadius.card),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: CleverTypography.h3.copyWith(
+                          color: CleverColors.textOnInverse,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      description,
-                      style: CleverTypography.bodySm.copyWith(
-                        color: CleverColors.textOnInverse,
+                      const SizedBox(height: 6),
+                      Text(
+                        description,
+                        style: CleverTypography.bodySm.copyWith(
+                          color: CleverColors.textOnInverse,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: CleverSpacing.space16),
-              Icon(icon, size: 24, color: CleverColors.textOnInverse),
-            ],
+                const SizedBox(width: CleverSpacing.space16),
+                Icon(icon, size: 24, color: CleverColors.textOnInverse),
+              ],
+            ),
           ),
         ),
       ),

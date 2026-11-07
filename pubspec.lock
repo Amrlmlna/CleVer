@@ -443,6 +443,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.7+1"
+  flutter_micro_interactions:
+    dependency: "direct main"
+    description:
+      name: flutter_micro_interactions
+      sha256: "2eb5190b4adb4aed55fa215f5c8183ccef01cf51d24277370fed1652d4275278"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   flutter_native_splash:
     dependency: "direct dev"
     description:
