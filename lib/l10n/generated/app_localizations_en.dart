@@ -961,12 +961,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get jobExtractionSuccess => 'job posting extracted successfully!';
 
   @override
-  String get jobDescription => 'job description';
-
-  @override
-  String get jobRequirements => 'requirements';
-
-  @override
   String get noTextFound => 'no text found in image';
 
   @override
@@ -1064,47 +1058,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get includeProfilePhoto => 'include profile photo';
 
   @override
-  String get jobListTitle => 'find jobs';
-
-  @override
-  String get jobListSubtitle => 'Find the best career opportunities for you';
-
-  @override
-  String get jobListSocialTab => 'social (top picks)';
-
-  @override
-  String get jobListApiTab => 'job boards (api)';
-
-  @override
   String get jobListScannerHint =>
       'found a job here? take a screenshot and use our smart scanner to instantly auto-fill your cv!';
-
-  @override
-  String get jobListNoAccountsFound => 'no accounts found';
-
-  @override
-  String jobListNoAccountsFoundDesc(String query) {
-    return 'could not find any accounts matching \"$query\". want us to add a specific account?';
-  }
-
-  @override
-  String get jobListGiveFeedback => 'give feedback';
-
-  @override
-  String get jobListSearchTagsHint => 'search tags (e.g. design, tech, remote)';
-
-  @override
-  String get jobListNoApiJobs => 'no api jobs available yet';
-
-  @override
-  String get jobListNoApiJobsSub =>
-      'check out the social tab for the best curated jobs!';
-
-  @override
-  String get jobListCreateCvForJob => 'create cv for this job';
-
-  @override
-  String get jobListViewOriginal => 'view original';
 
   @override
   String get locked => 'locked';
@@ -1588,12 +1543,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get jobDetailLabel => 'detail / qualification (optional)';
-
-  @override
-  String get jobCouldNotOpen => 'could not open link';
-
-  @override
-  String get jobs => 'jobs';
 
   @override
   String get messageDetail => 'message / detail';

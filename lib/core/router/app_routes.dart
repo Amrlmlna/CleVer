@@ -21,7 +21,6 @@ class AppRoutes {
 
   // Content
   static const String drafts = '/drafts';
-  static const String jobs = '/jobs';
   static const String wallet = '/wallet';
   static const String transactionHistory = '/wallet/history';
 

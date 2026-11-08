@@ -42,17 +42,6 @@ class BentoQuickActions extends ConsumerWidget {
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 2,
-            mainAxisCellCount: 1,
-            child: _BentoTile(
-              title: l10n.jobs,
-              icon: Icons.work_outline,
-              color: AppColors.vibrantBlue,
-              textColor: AppColors.white,
-              onTap: () => context.push('/jobs'),
-            ),
-          ),
-          StaggeredGridTile.count(
-            crossAxisCellCount: 2,
             mainAxisCellCount: 2,
             child: _BentoTile(
               title: l10n.importCV,

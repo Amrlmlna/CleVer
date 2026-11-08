@@ -10,7 +10,6 @@ import '../../presentation/auth/providers/auth_state_provider.dart';
 import '../../presentation/home/pages/home_page.dart';
 import '../../presentation/dashboard/pages/main_wrapper_page.dart';
 
-import '../../presentation/jobs/pages/job_list_page.dart';
 import '../../presentation/drafts/pages/drafts_page.dart';
 import '../../presentation/profile/pages/profile_page.dart';
 import '../../presentation/cv/pages/job_input_page.dart';
@@ -271,10 +270,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.legal,
         pageBuilder: (context, state) => _buildPage(const LegalPage(), state),
-      ),
-      GoRoute(
-        path: AppRoutes.jobs,
-        pageBuilder: (context, state) => _buildPage(const JobListPage(), state),
       ),
       GoRoute(
         path: AppRoutes.createJobInput,

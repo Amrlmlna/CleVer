@@ -1782,18 +1782,6 @@ abstract class AppLocalizations {
   /// **'job posting extracted successfully!'**
   String get jobExtractionSuccess;
 
-  /// No description provided for @jobDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'job description'**
-  String get jobDescription;
-
-  /// No description provided for @jobRequirements.
-  ///
-  /// In en, this message translates to:
-  /// **'requirements'**
-  String get jobRequirements;
-
   /// No description provided for @noTextFound.
   ///
   /// In en, this message translates to:
@@ -1980,83 +1968,11 @@ abstract class AppLocalizations {
   /// **'include profile photo'**
   String get includeProfilePhoto;
 
-  /// No description provided for @jobListTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'find jobs'**
-  String get jobListTitle;
-
-  /// No description provided for @jobListSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Find the best career opportunities for you'**
-  String get jobListSubtitle;
-
-  /// No description provided for @jobListSocialTab.
-  ///
-  /// In en, this message translates to:
-  /// **'social (top picks)'**
-  String get jobListSocialTab;
-
-  /// No description provided for @jobListApiTab.
-  ///
-  /// In en, this message translates to:
-  /// **'job boards (api)'**
-  String get jobListApiTab;
-
   /// No description provided for @jobListScannerHint.
   ///
   /// In en, this message translates to:
   /// **'found a job here? take a screenshot and use our smart scanner to instantly auto-fill your cv!'**
   String get jobListScannerHint;
-
-  /// No description provided for @jobListNoAccountsFound.
-  ///
-  /// In en, this message translates to:
-  /// **'no accounts found'**
-  String get jobListNoAccountsFound;
-
-  /// No description provided for @jobListNoAccountsFoundDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'could not find any accounts matching \"{query}\". want us to add a specific account?'**
-  String jobListNoAccountsFoundDesc(String query);
-
-  /// No description provided for @jobListGiveFeedback.
-  ///
-  /// In en, this message translates to:
-  /// **'give feedback'**
-  String get jobListGiveFeedback;
-
-  /// No description provided for @jobListSearchTagsHint.
-  ///
-  /// In en, this message translates to:
-  /// **'search tags (e.g. design, tech, remote)'**
-  String get jobListSearchTagsHint;
-
-  /// No description provided for @jobListNoApiJobs.
-  ///
-  /// In en, this message translates to:
-  /// **'no api jobs available yet'**
-  String get jobListNoApiJobs;
-
-  /// No description provided for @jobListNoApiJobsSub.
-  ///
-  /// In en, this message translates to:
-  /// **'check out the social tab for the best curated jobs!'**
-  String get jobListNoApiJobsSub;
-
-  /// No description provided for @jobListCreateCvForJob.
-  ///
-  /// In en, this message translates to:
-  /// **'create cv for this job'**
-  String get jobListCreateCvForJob;
-
-  /// No description provided for @jobListViewOriginal.
-  ///
-  /// In en, this message translates to:
-  /// **'view original'**
-  String get jobListViewOriginal;
 
   /// No description provided for @locked.
   ///
@@ -2939,18 +2855,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'detail / qualification (optional)'**
   String get jobDetailLabel;
-
-  /// No description provided for @jobCouldNotOpen.
-  ///
-  /// In en, this message translates to:
-  /// **'could not open link'**
-  String get jobCouldNotOpen;
-
-  /// No description provided for @jobs.
-  ///
-  /// In en, this message translates to:
-  /// **'jobs'**
-  String get jobs;
 
   /// No description provided for @messageDetail.
   ///

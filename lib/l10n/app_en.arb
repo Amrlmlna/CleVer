@@ -385,8 +385,6 @@
   "importSuccessNoNewData": "all data already exists in your profile.",
   "jobExtractionFailed": "failed to extract job posting",
   "jobExtractionSuccess": "job posting extracted successfully!",
-  "jobDescription": "job description",
-  "jobRequirements": "requirements",
   "noTextFound": "no text found in image",
   "noTextFoundInCV": "no text found in cv",
   "ocrScanning": "ocr scanning",
@@ -419,26 +417,7 @@
   "fetchingTemplates": "fetching templates...",
   "folderEmpty": "folder is empty",
   "includeProfilePhoto": "include profile photo",
-  "jobListTitle": "find jobs",
-  "jobListSubtitle": "Find the best career opportunities for you",
-  "jobListSocialTab": "social (top picks)",
-  "jobListApiTab": "job boards (api)",
   "jobListScannerHint": "found a job here? take a screenshot and use our smart scanner to instantly auto-fill your cv!",
-  "jobListNoAccountsFound": "no accounts found",
-  "jobListNoAccountsFoundDesc": "could not find any accounts matching \"{query}\". want us to add a specific account?",
-  "@jobListNoAccountsFoundDesc": {
-    "placeholders": {
-      "query": {
-        "type": "String"
-      }
-    }
-  },
-  "jobListGiveFeedback": "give feedback",
-  "jobListSearchTagsHint": "search tags (e.g. design, tech, remote)",
-  "jobListNoApiJobs": "no api jobs available yet",
-  "jobListNoApiJobsSub": "check out the social tab for the best curated jobs!",
-  "jobListCreateCvForJob": "create cv for this job",
-  "jobListViewOriginal": "view original",
   "locked": "locked",
   "loadingTemplatesBadge": "loading templates",
   "myCVs": "my cvs",
@@ -624,8 +603,6 @@
   "getStarted": "get started",
   "jobDetailHint": "paste job description, requirements, or qualifications here...",
   "jobDetailLabel": "detail / qualification (optional)",
-  "jobCouldNotOpen": "could not open link",
-  "jobs": "jobs",
   "messageDetail": "message / detail",
   "allFilter": "all",
   "question": "question",

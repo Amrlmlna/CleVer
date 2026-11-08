@@ -2,9 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../data/datasources/ocr_datasource.dart';
+import '../../../data/datasources/remote_job_datasource.dart';
 import '../../../data/repositories/job_extraction_repository.dart';
 import '../../../domain/entities/job_input.dart';
-import '../../jobs/providers/job_provider.dart';
+
+final remoteJobDataSourceProvider = Provider<RemoteJobDataSource>((ref) {
+  return RemoteJobDataSource();
+});
 
 final jobExtractionRepositoryProvider = Provider<JobExtractionRepository>((
   ref,

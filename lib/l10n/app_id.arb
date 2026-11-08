@@ -371,8 +371,6 @@
   "importSuccessNoNewData": "semua data sudah ada di profilmu.",
   "jobExtractionFailed": "gagal mengekstrak lowongan kerja",
   "jobExtractionSuccess": "lowongan kerja berhasil diekstrak!",
-  "jobDescription": "deskripsi pekerjaan",
-  "jobRequirements": "persyaratan",
   "noTextFound": "tidak ada teks ditemukan dalam gambar",
   "noTextFoundInCV": "tidak ada teks yang ditemukan di cv",
   "ocrScanning": "pemindaian ocr",
@@ -405,26 +403,7 @@
   "fetchingTemplates": "mengambil template...",
   "folderEmpty": "folder kosong",
   "includeProfilePhoto": "sertakan foto profil",
-  "jobListTitle": "cari lowongan",
-  "jobListSubtitle": "Temukan peluang karir terbaik untukmu",
-  "jobListSocialTab": "sosial (top picks)",
-  "jobListApiTab": "portal kerja (api)",
   "jobListScannerHint": "nemu lowongan di sini? screenshot terus pake smart scanner kita buat rapihin data seketika!",
-  "jobListNoAccountsFound": "akun tidak ditemukan",
-  "jobListNoAccountsFoundDesc": "tidak ada akun yang cocok dengan \"{query}\". ingin kami menambahkan akun tertentu?",
-  "@jobListNoAccountsFoundDesc": {
-    "placeholders": {
-      "query": {
-        "type": "String"
-      }
-    }
-  },
-  "jobListGiveFeedback": "beri masukan",
-  "jobListSearchTagsHint": "cari tag (mis. design, tech, remote)",
-  "jobListNoApiJobs": "belum ada lowongan dari api",
-  "jobListNoApiJobsSub": "cek tab sosial buat nyari lowongan kurasi terbaik!",
-  "jobListCreateCvForJob": "buat cv untuk posisi ini",
-  "jobListViewOriginal": "lihat info asli",
   "locked": "terkunci",
   "loadingTemplatesBadge": "memuat template",
   "myCVs": "cv saya",
@@ -610,8 +589,6 @@
   "getStarted": "bangun master profile",
   "jobDetailHint": "paste deskripsi posisi, persyaratan, atau kualifikasi di sini...",
   "jobDetailLabel": "detail / kualifikasi (opsional)",
-  "jobCouldNotOpen": "gagal membuka tautan",
-  "jobs": "lowongan",
   "messageDetail": "pesan / detail",
   "allFilter": "semua",
   "question": "pertanyaan",

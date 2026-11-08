@@ -960,12 +960,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get jobExtractionSuccess => 'lowongan kerja berhasil diekstrak!';
 
   @override
-  String get jobDescription => 'deskripsi pekerjaan';
-
-  @override
-  String get jobRequirements => 'persyaratan';
-
-  @override
   String get noTextFound => 'tidak ada teks ditemukan dalam gambar';
 
   @override
@@ -1064,47 +1058,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get includeProfilePhoto => 'sertakan foto profil';
 
   @override
-  String get jobListTitle => 'cari lowongan';
-
-  @override
-  String get jobListSubtitle => 'Temukan peluang karir terbaik untukmu';
-
-  @override
-  String get jobListSocialTab => 'sosial (top picks)';
-
-  @override
-  String get jobListApiTab => 'portal kerja (api)';
-
-  @override
   String get jobListScannerHint =>
       'nemu lowongan di sini? screenshot terus pake smart scanner kita buat rapihin data seketika!';
-
-  @override
-  String get jobListNoAccountsFound => 'akun tidak ditemukan';
-
-  @override
-  String jobListNoAccountsFoundDesc(String query) {
-    return 'tidak ada akun yang cocok dengan \"$query\". ingin kami menambahkan akun tertentu?';
-  }
-
-  @override
-  String get jobListGiveFeedback => 'beri masukan';
-
-  @override
-  String get jobListSearchTagsHint => 'cari tag (mis. design, tech, remote)';
-
-  @override
-  String get jobListNoApiJobs => 'belum ada lowongan dari api';
-
-  @override
-  String get jobListNoApiJobsSub =>
-      'cek tab sosial buat nyari lowongan kurasi terbaik!';
-
-  @override
-  String get jobListCreateCvForJob => 'buat cv untuk posisi ini';
-
-  @override
-  String get jobListViewOriginal => 'lihat info asli';
 
   @override
   String get locked => 'terkunci';
@@ -1590,12 +1545,6 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get jobDetailLabel => 'detail / kualifikasi (opsional)';
-
-  @override
-  String get jobCouldNotOpen => 'gagal membuka tautan';
-
-  @override
-  String get jobs => 'lowongan';
 
   @override
   String get messageDetail => 'pesan / detail';
